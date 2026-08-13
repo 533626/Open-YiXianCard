@@ -1,0 +1,366 @@
+/* Candidate lists shared by character, talent, fate, and card pickers. */
+
+.deck-realm-col {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: rgba(10, 16, 32, 0.5);
+  border: 1px solid #1a2035;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.deck-realm-title {
+  font-size: var(--fs-xs);
+  color: var(--accent-bright);
+  font-weight: 700;
+  padding: 3px 6px;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.deck-realm-count {
+  font-size: var(--fs-2xs);
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.deck-realm-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.deck-candidate {
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--bg-elevated);
+  padding: 4px 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  overflow: hidden;
+  min-height: 26px;
+  text-align: left;
+}
+
+/* 身份类浮层的列容器、标题条、候选项统一采用卡牌浮层的配色 token。 */
+.identity-popup .deck-candidate {
+  position: relative;
+  border-color: #2d3444;
+  background: #171c27;
+}
+
+.identity-popup .deck-realm-col {
+  background: #101520;
+  border-color: #272e3d;
+}
+
+.identity-popup .deck-realm-title {
+  min-height: 34px;
+  padding: 0 10px;
+  border-bottom-color: #303747;
+  color: #d2c17f;
+  background: #1a202c;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.identity-popup .deck-realm-count {
+  min-width: 22px;
+  padding: 2px 5px;
+  border-radius: 2px;
+  color: #9da6b8;
+  background: #242b38;
+  font-weight: 700;
+  text-align: center;
+}
+
+.identity-popup .deck-realm-list {
+  gap: 5px;
+  padding: 7px;
+}
+
+.identity-popup .deck-candidate:hover:not(:disabled) {
+  border-color: #4a5368;
+  background: #1d2330;
+}
+
+.identity-popup .deck-candidate:focus-visible {
+  outline: 2px solid rgba(201, 168, 76, 0.58);
+  outline-offset: 1px;
+}
+
+.identity-popup .deck-candidate.dx,
+.identity-popup .deck-candidate.qx,
+.identity-popup .deck-candidate.normal,
+.identity-popup .talent-candidate.exclusive,
+.identity-popup .talent-candidate.sect,
+.identity-popup .talent-candidate.common {
+  border-left-width: 1px;
+}
+
+.identity-popup .cand-name {
+  font-size: 15px;
+  line-height: 1.15;
+}
+
+.deck-candidate.dx {
+  border-left: 3px solid #e94560;
+}
+
+.deck-candidate.qx {
+  border-left: 3px solid #4fc3f7;
+}
+
+.deck-candidate.normal {
+  border-left: 3px solid #6a7085;
+}
+
+.deck-candidate.used {
+  background: #1a2a4a;
+  border-color: #4a6a8a;
+}
+
+.deck-candidate.used-max {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.deck-candidate.unimplemented {
+  opacity: 0.42;
+  cursor: not-allowed;
+  border-style: dashed;
+}
+
+.deck-candidate:disabled .cand-name {
+  color: var(--muted);
+}
+
+.deck-candidate.selected {
+  border-color: var(--accent-bright);
+  background: var(--accent-soft);
+}
+
+.cand-name {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.talent-candidate.exclusive {
+  border-left: 3px solid #e94560;
+}
+
+.talent-candidate.sect {
+  border-left: 3px solid #4fc3f7;
+}
+
+.talent-candidate.common {
+  border-left: 3px solid #6a7085;
+}
+
+.talent-candidate.used {
+  background: #1a2a4a;
+  border-color: #4a6a8a;
+}
+
+.talent-popup .talent-candidate {
+  min-height: 58px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px 9px;
+}
+
+.talent-popup .talent-candidate .cand-sub {
+  width: 100%;
+  color: #8f99ab;
+  font-size: 10px;
+}
+
+.talent-popup .talent-candidate .cand-status {
+  position: absolute;
+  top: 7px;
+  right: 8px;
+}
+
+.talent-popup .talent-candidate.selected {
+  padding-right: 31px;
+}
+
+.talent-popup .talent-candidate.selected::after {
+  content: "✓";
+  position: absolute;
+  right: 10px;
+  color: var(--accent-bright);
+  font-weight: 900;
+}
+
+.cand-status {
+  flex: 0 0 auto;
+  padding: 2px 4px;
+  border: 1px solid #3b4556;
+  border-radius: 2px;
+  color: #98a2b5;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.talent-candidate.unimplemented {
+  opacity: 0.78;
+  border-style: solid;
+}
+
+.fate-popup-grid {
+  grid-template-columns: repeat(var(--picker-cols, 3), minmax(0, 1fr));
+}
+
+.fate-realm-col {
+  min-height: 220px;
+  max-height: 380px;
+}
+
+.build-picker-popup.fate-popup .fate-realm-col {
+  min-height: 0;
+  max-height: none;
+}
+
+.fate-candidate {
+  min-height: 48px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+  border-left: 3px solid #9b8cff;
+}
+
+.fate-candidate .cand-name {
+  font-size: var(--fs-sm);
+  line-height: 1.1;
+}
+
+.cand-sub {
+  min-width: 0;
+  max-width: 100%;
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-popup .deck-realm-col {
+  min-height: 0;
+  max-height: none;
+}
+
+.card-popup .deck-realm-title {
+  padding: 6px 8px;
+  font-size: var(--fs-sm);
+}
+
+.talent-popup .deck-realm-col {
+  min-height: 0;
+  max-height: none;
+}
+
+.talent-popup .picker-popup-grid,
+.talent-popup .deck-realm-list {
+  overflow: hidden;
+}
+
+.talent-popup .deck-realm-list,
+.character-popup .deck-realm-list,
+.career-popup .deck-realm-list,
+.fate-popup .deck-realm-list {
+  overflow-y: auto;
+}
+
+.empty-picker-note {
+  display: grid;
+  place-items: center;
+  min-height: 120px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  background: rgba(10, 16, 32, 0.45);
+  font-size: var(--fs-sm);
+}
+
+.deck-realm-list::-webkit-scrollbar,
+.card-popup-grid::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.deck-realm-list::-webkit-scrollbar-thumb,
+.card-popup-grid::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 2px;
+}
+
+/* ── 副职弹窗（与仙命/天衍弹窗统一为列布局） ── */
+.career-popup-grid {
+  grid-template-columns: repeat(var(--picker-cols, 1), minmax(0, 1fr));
+  overflow-y: auto;
+}
+
+.career-popup .deck-realm-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.career-popup .deck-realm-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* 副职候选项只保留自己的行内布局，配色/悬停/选中沿用 .identity-popup .deck-candidate。 */
+.career-candidate {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-size: var(--fs-sm, 13px);
+}
+
+.career-candidate.selected {
+  padding-right: 26px;
+  border-color: var(--accent-bright);
+  background: var(--accent-soft);
+}
+
+.career-candidate.selected::after {
+  content: "✓";
+  position: absolute;
+  right: 8px;
+  color: var(--accent-bright);
+  font-weight: 900;
+}
+
+/* 兼修副职用虚线边框与主副职区分。 */
+.career-candidate.dual {
+  border-style: dashed;
+}

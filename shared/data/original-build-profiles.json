@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 2,
+  "steamAppId": 1948800,
+  "projectTargetSteamBuild": "24666769",
+  "runtimeSupportedSteamBuilds": [
+    "24666769"
+  ],
+  "capabilities": {
+    "dreamThunderRefundsHexagramLoss": true,
+    "fate324GrantsCloudChain": true,
+    "fate335GrantsMomentum": true,
+    "hexagramLossDoesNotSpendCard422StarPower": true,
+    "lostHexagramLedgerAccumulatesPositiveLoss": true,
+    "spiritFormationEchoUsesBaseCard": true
+  },
+  "profiles": [
+    {
+      "steamBuild": "24013612",
+      "capabilities": {
+        "dreamThunderRefundsHexagramLoss": false,
+        "fate324GrantsCloudChain": false,
+        "fate335GrantsMomentum": false,
+        "hexagramLossDoesNotSpendCard422StarPower": false,
+        "lostHexagramLedgerAccumulatesPositiveLoss": false,
+        "spiritFormationEchoUsesBaseCard": false
+      }
+    },
+    {
+      "steamBuild": "24120316",
+      "capabilities": {
+        "dreamThunderRefundsHexagramLoss": false,
+        "fate324GrantsCloudChain": true,
+        "fate335GrantsMomentum": true,
+        "hexagramLossDoesNotSpendCard422StarPower": false,
+        "lostHexagramLedgerAccumulatesPositiveLoss": false,
+        "spiritFormationEchoUsesBaseCard": true
+      }
+    },
+    {
+      "steamBuild": "24124964",
+      "capabilities": {
+        "dreamThunderRefundsHexagramLoss": false,
+        "fate324GrantsCloudChain": true,
+        "fate335GrantsMomentum": true,
+        "hexagramLossDoesNotSpendCard422StarPower": false,
+        "lostHexagramLedgerAccumulatesPositiveLoss": false,
+        "spiritFormationEchoUsesBaseCard": true
+      }
+    },
+    {
+      "steamBuild": "24180265",
+      "capabilities": {
+        "dreamThunderRefundsHexagramLoss": true,
+        "fate324GrantsCloudChain": true,
+        "fate335GrantsMomentum": true,
+        "hexagramLossDoesNotSpendCard422StarPower": true,
+        "lostHexagramLedgerAccumulatesPositiveLoss": true,
+        "spiritFormationEchoUsesBaseCard": true
+      }
+    },
+    {
+      "steamBuild": "24217566",
+      "capabilities": {
+        "dreamThunderRefundsHexagramLoss": true,
+        "fate324GrantsCloudChain": true,
+        "fate335GrantsMomentum": true,
+        "hexagramLossDoesNotSpendCard422StarPower": true,
+        "lostHexagramLedgerAccumulatesPositiveLoss": true,
+        "spiritFormationEchoUsesBaseCard": true
+      }
+    },
+    {
+      "steamBuild": "24253909",
+      "capabilities": {
+        "dreamThunderRefundsHexagramLoss": true,
+        "fate324GrantsCloudChain": true,
+        "fate335GrantsMomentum": true,
+        "hexagramLossDoesNotSpendCard422StarPower": true,
+        "lostHexagramLedgerAccumulatesPositiveLoss": true,
+        "spiritFormationEchoUsesBaseCard": true
+      }
+    },
+    {
+      "steamBuild": "24346968",
+      "capabilities": {
+        "dreamThunderRefundsHexagramLoss": true,
+        "fate324GrantsCloudChain": true,
+        "fate335GrantsMomentum": true,
+        "hexagramLossDoesNotSpendCard422StarPower": true,
+        "lostHexagramLedgerAccumulatesPositiveLoss": true,
+        "spiritFormationEchoUsesBaseCard": true
+      }
+    },
+    {
+      "steamBuild": "24371489",
+      "capabilities": {
+        "dreamThunderRefundsHexagramLoss": true,
+        "fate324GrantsCloudChain": true,
+        "fate335GrantsMomentum": true,
+        "hexagramLossDoesNotSpendCard422StarPower": true,
+        "lostHexagramLedgerAccumulatesPositiveLoss": true,
+        "spiritFormationEchoUsesBaseCard": true
+      }
+    },
+    {
+      "steamBuild": "24466094",
+      "capabilities": {
+        "dreamThunderRefundsHexagramLoss": true,
+        "fate324GrantsCloudChain": true,
+        "fate335GrantsMomentum": true,
+        "hexagramLossDoesNotSpendCard422StarPower": true,
+        "lostHexagramLedgerAccumulatesPositiveLoss": true,
+        "spiritFormationEchoUsesBaseCard": true
+      }
+    },
+    {
+      "steamBuild": "24589371",
+      "capabilities": {
+        "dreamThunderRefundsHexagramLoss": true,
+        "fate324GrantsCloudChain": true,
+        "fate335GrantsMomentum": true,
+        "hexagramLossDoesNotSpendCard422StarPower": true,
+        "lostHexagramLedgerAccumulatesPositiveLoss": true,
+        "spiritFormationEchoUsesBaseCard": true
+      }
+    },
+    {
+      "steamBuild": "24610558",
+      "capabilities": {
+        "dreamThunderRefundsHexagramLoss": true,
+        "fate324GrantsCloudChain": true,
+        "fate335GrantsMomentum": true,
+        "hexagramLossDoesNotSpendCard422StarPower": true,
+        "lostHexagramLedgerAccumulatesPositiveLoss": true,
+        "spiritFormationEchoUsesBaseCard": true
+      }
+    },
+    {
+      "steamBuild": "24646245",
+      "capabilities": {
+        "dreamThunderRefundsHexagramLoss": true,
+        "fate324GrantsCloudChain": true,
+        "fate335GrantsMomentum": true,
+        "hexagramLossDoesNotSpendCard422StarPower": true,
+        "lostHexagramLedgerAccumulatesPositiveLoss": true,
+        "spiritFormationEchoUsesBaseCard": true
+      }
+    },
+    {
+      "steamBuild": "24666769",
+      "capabilities": {
+        "dreamThunderRefundsHexagramLoss": true,
+        "fate324GrantsCloudChain": true,
+        "fate335GrantsMomentum": true,
+        "hexagramLossDoesNotSpendCard422StarPower": true,
+        "lostHexagramLedgerAccumulatesPositiveLoss": true,
+        "spiritFormationEchoUsesBaseCard": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,451 @@
+/* CSS 缓存版本号统一 0→9 循环，由 bun run build:ui 自动递增 */
+@import "./base-fixture-import.css?v=0";
+
+:root {
+  color-scheme: dark;
+  --bg: #0b0d18;
+  --bg-elevated: #12151f;
+  --panel: #161a26;
+  --panel-soft: #1a1f2e;
+  --panel-hover: #1e2436;
+  --text: #e0e4f0;
+  --muted: #8a91a8;
+  --line: #2a3045;
+  --line-strong: #3d4660;
+  --accent: #c9a84c;
+  --accent-bright: #e0c060;
+  --accent-soft: rgba(201, 168, 76, 0.12);
+  --accent-glow: rgba(201, 168, 76, 0.28);
+  --jade: #3d8b7a;
+  --jade-soft: rgba(61, 139, 122, 0.14);
+  --danger: #e07060;
+  --danger-soft: rgba(224, 112, 96, 0.12);
+  --good: #6ec49a;
+  --good-soft: rgba(110, 196, 154, 0.12);
+  --shadow: 0 2px 8px rgb(0 0 0 / 32%);
+  --shadow-lg: 0 8px 24px rgb(0 0 0 / 40%);
+  --radius: 6px;
+  --radius-sm: 4px;
+  /* Shared type scale for dense labels, body text, and section headings. */
+  --fs-2xs: 10px;
+  --fs-xs: 11px;
+  --fs-sm: 12px;
+  --fs-md: 14px;
+  --fs-lg: 18px;
+  --fs-xl: 20px;
+  font-family:
+    "Noto Sans SC", "PingFang SC", "Microsoft YaHei", ui-sans-serif, system-ui,
+    -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 1180px;
+  height: 100vh;
+  overflow: hidden;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201, 168, 76, 0.06), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(61, 139, 122, 0.04), transparent),
+    var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+html,
+#app {
+  height: 100%;
+  overflow: hidden;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  min-height: 30px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--panel-soft);
+  color: var(--text);
+  padding: 0 12px;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  border-color: var(--line-strong);
+  background: var(--panel-hover);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--accent-glow);
+  outline-offset: 1px;
+}
+
+button:disabled {
+  opacity: 0.38;
+  cursor: default;
+}
+
+button.primary {
+  border-color: #8a7340;
+  background: linear-gradient(180deg, #c9a84c 0%, #a88a3a 100%);
+  color: #1a1408;
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(201, 168, 76, 0.25);
+}
+
+button.primary:hover:not(:disabled) {
+  border-color: var(--accent-bright);
+  background: linear-gradient(180deg, #e0c060 0%, #c9a84c 100%);
+  box-shadow: 0 2px 8px rgba(201, 168, 76, 0.35);
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  min-height: 30px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  color: var(--text);
+  padding: 4px 8px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+input::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+select option {
+  background: var(--panel);
+  color: var(--text);
+}
+
+textarea {
+  min-height: 70px;
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: var(--fs-sm);
+}
+
+.workbench {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.topbar {
+  height: 44px;
+  padding: 5px 10px;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, #1a1f2e 0%, #161a26 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  box-shadow: 0 1px 0 rgba(201, 168, 76, 0.08);
+}
+
+.topbar-brand {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.topbar-status {
+  margin-left: auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.workbench-mode,
+.release-snapshot {
+  min-width: 0;
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  background: var(--bg-elevated);
+  font-size: var(--fs-2xs);
+  font-weight: 800;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.release-snapshot {
+  max-width: min(36vw, 460px);
+}
+
+.release-snapshot.bound {
+  color: var(--muted);
+}
+
+.release-snapshot.unbound {
+  border-style: dashed;
+  color: var(--muted);
+}
+
+.workbench-mode.evidence {
+  border-color: rgba(110, 196, 154, 0.38);
+  color: var(--good);
+  background: var(--good-soft);
+}
+
+.workbench-mode.sandbox {
+  border-color: rgba(201, 168, 76, 0.34);
+  color: var(--accent-bright);
+  background: var(--accent-soft);
+}
+
+.first-picker {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 6px 2px 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+}
+
+.first-picker-label {
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.first-toggle {
+  display: inline-flex;
+  border: 1px solid rgba(201, 168, 76, 0.22);
+  border-radius: 4px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.first-toggle .toggle-opt {
+  min-height: 22px;
+  min-width: 28px;
+  padding: 0 9px;
+  border: 0;
+  border-right: 1px solid rgba(201, 168, 76, 0.16);
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+
+.first-toggle .toggle-opt:last-child {
+  border-right: 0;
+}
+
+.first-toggle .toggle-opt.active {
+  background: linear-gradient(180deg, rgba(201, 168, 76, 0.28), rgba(201, 168, 76, 0.12));
+  color: var(--accent-bright);
+  box-shadow: inset 0 0 0 1px rgba(201, 168, 76, 0.18);
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: var(--fs-lg);
+  line-height: 1.15;
+  font-weight: 700;
+  color: var(--accent-bright);
+  letter-spacing: 2px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.subtle {
+  margin-top: 0;
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0;
+}
+
+.top-actions,
+.mini-actions,
+.slot-controls,
+.playback,
+.view-tabs {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.top-actions > button {
+  min-height: 28px;
+  padding: 0 10px;
+}
+
+.view-tabs {
+  margin-left: auto;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-elevated);
+}
+
+.view-tabs button {
+  min-width: 88px;
+  background: transparent;
+  border-color: transparent;
+}
+
+.view-tabs button:hover:not(:disabled) {
+  background: var(--panel-soft);
+  border-color: transparent;
+}
+
+.view-tabs button.selected {
+  border-color: rgba(201, 168, 76, 0.4);
+  background: var(--accent-soft);
+  color: var(--accent-bright);
+  font-weight: 700;
+  box-shadow: inset 0 0 12px rgba(201, 168, 76, 0.08);
+}
+
+.error-bar {
+  padding: 8px 16px;
+  color: var(--danger);
+  background: var(--danger-soft);
+  border-bottom: 1px solid rgba(224, 112, 96, 0.3);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+}
+
+
+.layout {
+  flex: 1;
+  height: calc(100vh - 44px);
+  min-height: 0;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.combined-page {
+  position: relative;
+  flex: 1;
+  height: auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(460px, 0.4fr) minmax(620px, 0.6fr);
+  gap: 8px;
+  padding: 8px;
+  overflow: hidden;
+}
+
+.combined-setup,
+.combined-battle {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+}
+
+/* 战斗面板吃掉剩余高度，右列尾部的分组固定占位；否则加一块就把下沿顶出视口
+   （audit:ui 的 below-fold 规则会报）。 */
+.combined-battle > .panel,
+.combined-battle > .result-empty {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+.combined-battle > .battle-module-body {
+  flex: 0 0 auto;
+}
+
+.combined-setup {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.combined-battle {
+  display: flex;
+  flex-direction: column;
+}
+
+.setup-pane {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.combined-page .setup-pane {
+  gap: 4px;
+}
+
+.combined-page .mini-actions button {
+  min-height: 22px;
+  padding: 0 6px;
+  font-size: var(--fs-2xs);
+}
+
+.battle-page {
+  flex: 1;
+  min-height: 0;
+  padding: 10px 12px;
+  overflow: hidden;
+}
+
+.panel {
+  background: linear-gradient(180deg, var(--panel) 0%, #141820 100%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 10px;
+  min-height: 0;
+}
+
+.panel-title,
+.subhead {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  margin-bottom: 7px;
+  color: var(--accent-bright);
+  letter-spacing: 0.5px;
+}
+
+.subhead span,
+.fold summary span {
+  color: var(--muted);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.row-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}

@@ -1,0 +1,365 @@
+.player-panel {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 7px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 38%),
+    var(--panel);
+  overflow: hidden;
+  align-self: stretch;
+  cursor: pointer;
+}
+
+.player-panel.active {
+  border-color: rgba(201, 168, 76, 0.72);
+  box-shadow:
+    0 0 0 1px var(--accent-glow),
+    inset 0 0 0 1px rgba(201, 168, 76, 0.18);
+}
+
+.player-panel-head {
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+}
+
+.player-head-leading {
+  flex: 0 1 auto;
+  min-width: 0;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+}
+
+.player-name-trigger {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 108px;
+  min-height: 22px;
+  padding: 0 6px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-md);
+  font-weight: 800;
+  color: var(--accent-bright);
+  text-align: left;
+}
+
+.player-name-trigger:hover:not(:disabled),
+.player-name-trigger.editing,
+.player-name-trigger.selected {
+  border-color: rgba(201, 168, 76, 0.42);
+  background: var(--accent-soft);
+}
+
+.player-reset-btn {
+  flex: 0 0 auto;
+  min-height: 20px;
+  padding: 0 6px;
+  font-size: var(--fs-2xs);
+}
+
+.hp-field {
+  min-width: 0;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+.hp-field span {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.hp-field input {
+  width: 3.8rem;
+  min-width: 3.8rem;
+  min-height: 22px;
+  padding: 2px 6px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  box-sizing: border-box;
+}
+
+.hp-field select {
+  width: 4.6rem;
+  min-width: 4.6rem;
+  min-height: 22px;
+  padding: 2px 6px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  box-sizing: border-box;
+}
+
+.hp-field-readonly .hp-readonly-value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.8rem;
+  min-height: 22px;
+  padding: 2px 6px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.player-hp-setup {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.player-hp-battle-label {
+  color: #f0c090;
+  font-size: var(--fs-2xs);
+  font-weight: 800;
+}
+
+.player-hp-battle-value {
+  color: #ffe2c8;
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.player-setup-tools {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.player-setup-tools .build-toolbar {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+}
+
+.player-panel-setup {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.player-build-topline {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(126px, 0.28fr);
+  gap: 4px;
+  align-items: stretch;
+}
+
+.setup-field-label {
+  display: block;
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  font-weight: 600;
+  margin-bottom: 1px;
+}
+
+.character-picker-trigger {
+  width: 100%;
+  min-height: 38px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 4px 6px;
+  padding: 4px 7px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  text-align: left;
+}
+
+.character-picker-trigger .setup-field-label {
+  grid-column: 1 / -1;
+}
+
+.character-picker-trigger b {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+.character-picker-trigger .character-sect {
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.character-picker-trigger.editing {
+  border-color: var(--accent-bright);
+  background: var(--accent-soft);
+}
+
+.setup-career-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--border-dim, #444);
+  border-radius: 3px;
+  padding: 1px 6px;
+  font-size: var(--fs-xs, 11px);
+}
+
+.setup-career-trigger .setup-field-label {
+  color: var(--text-dim, #999);
+  white-space: nowrap;
+}
+
+.setup-career-trigger .setup-career-name {
+  white-space: nowrap;
+}
+
+.setup-stat-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+  gap: 4px;
+}
+
+.setup-stat-fields .field {
+  flex-direction: row;
+  align-items: center;
+  gap: 3px;
+}
+
+.setup-stat-fields .field span {
+  flex: 0 0 auto;
+  font-size: var(--fs-2xs);
+  white-space: nowrap;
+}
+
+.setup-stat-fields .field input {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 22px;
+  padding: 2px 5px;
+  font-size: var(--fs-xs);
+}
+
+.opening-stat-empty {
+  border-style: dashed;
+  color: var(--muted);
+}
+
+.opening-physique-field {
+  flex-direction: row;
+  align-items: center;
+  gap: 3px;
+}
+
+.opening-physique-field input {
+  min-height: 20px;
+  width: 46px;
+  padding: 2px 4px;
+  font-size: var(--fs-2xs);
+}
+
+.field-with-suffix {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 3px;
+}
+
+.field-with-suffix input {
+  width: 100%;
+}
+
+.field-with-suffix b {
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.combined-page .player-panel {
+  padding: 5px 6px;
+  gap: 3px;
+}
+
+.combined-page .player-panel-head {
+  gap: 4px;
+}
+
+.combined-page .player-hp-cluster {
+  gap: 4px;
+}
+
+.combined-page .player-hp-setup {
+  gap: 4px;
+  padding: 2px 5px;
+}
+
+.combined-page .hp-field input {
+  width: 3.4rem;
+  min-width: 3.4rem;
+  min-height: 20px;
+  font-size: var(--fs-2xs);
+}
+
+.combined-page .hp-field select {
+  width: 4.1rem;
+  min-width: 4.1rem;
+  min-height: 20px;
+  font-size: var(--fs-2xs);
+}
+
+.combined-page .player-hp-battle-value {
+  font-size: var(--fs-2xs);
+}
+
+.combined-page .player-name-trigger {
+  max-width: 108px;
+  font-size: var(--fs-md);
+  min-height: 20px;
+}
+
+
+
+.combined-page .player-panel-setup {
+  gap: 2px;
+}
+
+.combined-page .player-build-topline {
+  grid-template-columns: minmax(0, 1fr) minmax(108px, 0.26fr);
+  gap: 3px;
+}

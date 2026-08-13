@@ -1,0 +1,10 @@
+@import "./card-face.css?v=0";
+@import "./player-panel.css?v=0";
+@import "./player-panel-battle.css?v=0";
+@import "./player-panel-deck.css?v=0";
+@import "./setup-layout.css?v=0";
+@import "./setup-solver.css?v=0";
+@import "./setup-talents.css?v=0";
+@import "./setup-picker.css?v=1";
+@import "./setup-picker-card.css?v=3";
+@import "./setup-picker-candidates.css?v=1";

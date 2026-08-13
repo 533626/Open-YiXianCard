@@ -1,0 +1,57 @@
+# Prettier 显式作用域：只格式化工具链自有的配置类文件。
+#
+# 规则：不触碰既有源码、生成产物、Scheme A 迁移/历史、Rust、私有数据与研究缓存。
+# format:check 的绿线 = 以下排除之外的文件全部符合本仓库 Prettier 风格。
+
+# 依赖与构建产物
+node_modules/
+dist/
+public/build/
+out/
+coverage/
+logs/
+engine-rust/target/
+
+# Rust（由 cargo fmt 管理，不归 Prettier）
+engine-rust/
+
+# TypeScript 源码与测试（引入 Prettier 时禁止大规模重排既有源码；
+# 后续若需格式化，请先收窄到具体文件再逐批迁移）
+engine-ts/
+battle-evaluator/
+scripts/
+src/ui/
+src/
+
+# 文档（不属于本工具链的格式化范围；如需要再逐篇迁移）
+docs/
+
+# Python 与私有工程 companion（不属于公开构建面）
+research/
+analysis/
+private-companion/
+open-yixiancard-private-backup-*/
+
+# 生成/派生数据与缓存（不重新格式化）
+bun.lock
+research/original-game/extracted/
+research/original-game/inventory/
+research/original-game/tools/
+battle-evaluator/generated/
+engine-rust/data/
+*.pyc
+__pycache__/
+.ruff_cache/
+.pytest_cache/
+
+# 无文本解析器的文件 / 明确排除
+.gitignore
+.bun-version
+.grok/
+LICENSE
+NOTICE
+wrangler.jsonc
+PRIVATE_ENGINEERING_EXTRACTION.json
+*.swp
+*.log
+.DS_Store

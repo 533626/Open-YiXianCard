@@ -1,0 +1,36 @@
+node_modules/
+*.bak
+.DS_Store
+*.log
+*.bak
+*.js.bak
+*.html.bak
+*.swp
+.ruff_cache/
+coverage/
+.zed/
+public/build/
+dist/
+engine-rust/target/
+
+# Local GA experiments and operational logs are reproducible, machine/run-specific,
+# and can grow to multiple gigabytes. Track GA source/data contracts, not these outputs.
+analysis/ga/generated/
+logs/
+
+# Solver cross-validation is an on-demand run receipt. The command remains
+# versioned; its large fixture/build-specific row dump does not.
+analysis/generated/solver-cross-validation.json
+
+# Original game research generated data.
+# Keep at most the latest and previous build locally; do not commit bulk output.
+research/original-game/extracted/
+research/original-game/inventory/
+research/original-game/tools/
+out/
+
+# Private companion extraction / corpus backups must never enter the public tree.
+private-companion/
+open-yixiancard-private-backup-*/
+.tmp-hf-work/
+.tmp-hf-stash-*

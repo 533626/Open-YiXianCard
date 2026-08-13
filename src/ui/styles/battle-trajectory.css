@@ -1,0 +1,133 @@
+/* 生命曲线 / 伤害曲线。三条曲线平分模块高度，所以火柴图能画得比原来大得多。
+   曲线类型开关在模块选项卡行（.trajectory-switch），模块内部不再放第二个 toggle。 */
+.resource-flow-chart {
+  flex: 1 1 0;
+  min-height: 0;
+  display: grid;
+  grid-auto-rows: minmax(0, 1fr);
+  gap: 8px;
+  padding: 8px;
+  overflow: auto;
+}
+
+.flow-metric.hp-p2 .flow-line,
+.flow-metric.dmg-p2 .flow-line {
+  stroke: var(--jade);
+}
+
+.flow-metric.hp-p2 .flow-area,
+.flow-metric.dmg-p2 .flow-area {
+  fill: rgba(61, 139, 122, 0.13);
+}
+
+.flow-value.fact {
+  color: var(--text);
+}
+
+/* 伤害曲线依赖钩子链：trace 不可用时明示，不画误导成「0 伤」的空图。 */
+.resource-flow-unavailable {
+  margin: 10px;
+  padding: 10px 12px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  color: var(--muted);
+  font-size: var(--fs-xs);
+}
+
+/* ============ 用量面板式摘要读数（双方对战与打靶共用） ============
+   顶部先给出当前总量/阈值进度，主体再是低噪声趋势图，来源图例次之。 */
+.usage-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+}
+
+.usage-summary-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.usage-summary-label {
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+}
+
+.usage-summary-value {
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.usage-summary-item.tone-warm .usage-summary-value { color: var(--accent-bright); }
+.usage-summary-item.tone-good .usage-summary-value,
+.target-result-summary.reached .usage-summary-item.tone-good .usage-summary-value { color: var(--good); }
+.usage-summary-item.tone-danger .usage-summary-value { color: var(--danger); }
+
+/* 累计趋势层：低透明面积 + 细线，位于柱层之后，不遮挡选中/悬停。 */
+.cumulative-trend { pointer-events: none; }
+.cumulative-area { fill: rgba(201, 168, 76, 0.08); }
+.scope-flow .cumulative-area { fill: rgba(201, 168, 76, 0.07); }
+.cumulative-trend-line { fill: none; stroke: rgba(224, 192, 96, 0.55); stroke-width: 0.8; vector-effect: non-scaling-stroke; }
+.scope-flow .cumulative-trend-line { stroke: rgba(224, 192, 96, 0.5); }
+
+/* 双方对战伤害曲线：每侧一张较大的「本回合伤害 / 累计伤害」图，摘要读数置顶。 */
+.scope-flow .usage-summary {
+  border: 0;
+  background: transparent;
+  padding: 2px 2px 0;
+  gap: 4px 14px;
+}
+
+.scope-flow .usage-summary-item {
+  gap: 5px;
+}
+
+.scope-flow .usage-summary-value {
+  font-size: var(--fs-xs);
+}
+
+.scope-flow .stacked-chart-body {
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.scope-flow .stacked-chart-svg {
+  height: 100%;
+}
+
+/* ============ 阶梯式累计伤害曲线（打靶模式） ============ */
+.step-chart .stacked-chart-svg {
+  height: 150px;
+}
+
+/* 上升段/平台/回合边界：共用描边与 non-scaling-stroke，颜色深浅区分层次。 */
+.step-rise,
+.step-plateau,
+.step-round-boundary {
+  vector-effect: non-scaling-stroke;
+}
+.step-rise { stroke: rgba(11, 13, 24, 0.5); stroke-width: 0.3; }
+.step-plateau { stroke: rgba(224, 228, 240, 0.42); stroke-width: 0.55; }
+.step-round-boundary { stroke: rgba(224, 228, 240, 0.2); stroke-width: 0.7; stroke-dasharray: 1.2 1.2; }
+
+/* hover 热点：透明矩形盖住该步区间，悬停/点击显示详情。 */
+.step-hotspot {
+  fill: transparent;
+  cursor: pointer;
+}
+
+.step-hotspot:hover { fill: rgba(201, 168, 76, 0.07); }
+.step-hotspot.selected { fill: rgba(201, 168, 76, 0.12); }
+
+.step-endpoint {
+  fill: var(--text);
+  stroke: rgba(11, 13, 24, 0.6);
+  stroke-width: 0.4;
+}

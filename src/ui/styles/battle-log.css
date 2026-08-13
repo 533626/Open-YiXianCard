@@ -1,0 +1,17 @@
+/* 引擎透视与资源曲线共用的紧凑滚动条。 */
+
+.engine-step-list::-webkit-scrollbar,
+.resource-flow-chart::-webkit-scrollbar {
+  width: 5px;
+}
+
+.engine-step-list::-webkit-scrollbar-track,
+.resource-flow-chart::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.engine-step-list::-webkit-scrollbar-thumb,
+.resource-flow-chart::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background: var(--line-strong);
+}

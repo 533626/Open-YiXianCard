@@ -1,0 +1,656 @@
+{
+  "3": [
+    "cloudSword"
+  ],
+  "8": [
+    "cloudSword"
+  ],
+  "12": [
+    "rearMove"
+  ],
+  "15": [
+    "cloudSword"
+  ],
+  "17": [
+    "element:water"
+  ],
+  "18": [
+    "element:metal"
+  ],
+  "20": [
+    "element:wood"
+  ],
+  "21": [
+    "element:earth"
+  ],
+  "24": [
+    "rearMove"
+  ],
+  "36": [
+    "cloudSword"
+  ],
+  "47": [
+    "cloudSword"
+  ],
+  "49": [
+    "spiritSword"
+  ],
+  "53": [
+    "rearMove"
+  ],
+  "54": [
+    "rearMove"
+  ],
+  "74": [
+    "bengQuan"
+  ],
+  "122": [
+    "cloudSword"
+  ],
+  "123": [
+    "cloudSword"
+  ],
+  "127": [
+    "rearMove"
+  ],
+  "134": [
+    "element:wood"
+  ],
+  "140": [
+    "bengQuan"
+  ],
+  "141": [
+    "cloudSword"
+  ],
+  "143": [
+    "element:metal"
+  ],
+  "144": [
+    "bengQuan"
+  ],
+  "152": [
+    "rearMove"
+  ],
+  "184": [
+    "cloudSword"
+  ],
+  "187": [
+    "cloudSword"
+  ],
+  "190": [
+    "rearMove"
+  ],
+  "195": [
+    "rearMove"
+  ],
+  "198": [
+    "element:fire"
+  ],
+  "201": [
+    "element:wood"
+  ],
+  "203": [
+    "element:water"
+  ],
+  "258": [
+    "element:water"
+  ],
+  "260": [
+    "spiritSword"
+  ],
+  "264": [
+    "cloudSword"
+  ],
+  "270": [
+    "element:fire"
+  ],
+  "271": [
+    "element:water"
+  ],
+  "272": [
+    "element:wood"
+  ],
+  "273": [
+    "element:metal"
+  ],
+  "288": [
+    "cloudSword"
+  ],
+  "298": [
+    "rearMove"
+  ],
+  "274": [
+    "element:earth"
+  ],
+  "308": [
+    "bengQuan"
+  ],
+  "316": [
+    "element:metal"
+  ],
+  "317": [
+    "element:earth"
+  ],
+  "319": [
+    "bengQuan"
+  ],
+  "315": [
+    "element:fire"
+  ],
+  "331": [
+    "cloudSword"
+  ],
+  "337": [
+    "bengQuan"
+  ],
+  "373": [
+    "element:wood"
+  ],
+  "374": [
+    "element:fire"
+  ],
+  "375": [
+    "element:earth"
+  ],
+  "376": [
+    "element:metal"
+  ],
+  "377": [
+    "element:water"
+  ],
+  "428": [
+    "element:water"
+  ],
+  "401": [
+    "cloudSword"
+  ],
+  "403": [
+    "cloudSword"
+  ],
+  "413": [
+    "element:fire"
+  ],
+  "423": [
+    "element:water"
+  ],
+  "424": [
+    "cloudSword"
+  ],
+  "425": [
+    "rearMove"
+  ],
+  "1000001": [
+    "cloudSword"
+  ],
+  "1000002": [
+    "cloudSword"
+  ],
+  "1000003": [
+    "cloudSword"
+  ],
+  "1000007": [
+    "spiritSword"
+  ],
+  "1000047": [
+    "spiritSword"
+  ],
+  "1000048": [
+    "cloudSword"
+  ],
+  "1000016": [
+    "cloudSword"
+  ],
+  "1000015": [
+    "cloudSword"
+  ],
+  "1000014": [
+    "cloudSword"
+  ],
+  "1000019": [
+    "spiritSword"
+  ],
+  "1000026": [
+    "cloudSword"
+  ],
+  "1000028": [
+    "cloudSword"
+  ],
+  "1000027": [
+    "cloudSword"
+  ],
+  "1000063": [
+    "cloudSword"
+  ],
+  "1000020": [
+    "spiritSword"
+  ],
+  "1000029": [
+    "spiritSword"
+  ],
+  "1000039": [
+    "cloudSword"
+  ],
+  "1000040": [
+    "cloudSword"
+  ],
+  "1000065": [
+    "spiritSword"
+  ],
+  "1000059": [
+    "spiritSword"
+  ],
+  "1000036": [
+    "spiritSword"
+  ],
+  "1000042": [
+    "cloudSword"
+  ],
+  "1000060": [
+    "cloudSword"
+  ],
+  "1000045": [
+    "spiritSword"
+  ],
+  "1000055": [
+    "spiritSword"
+  ],
+  "1000069": [
+    "cloudSword"
+  ],
+  "1000070": [
+    "cloudSword"
+  ],
+  "1000074": [
+    "spiritSword"
+  ],
+  "1000075": [
+    "spiritSword"
+  ],
+  "1000078": [
+    "cloudSword"
+  ],
+  "1000081": [
+    "spiritSword"
+  ],
+  "1000083": [
+    "cloudSword"
+  ],
+  "1000086": [
+    "cloudSword"
+  ],
+  "1000089": [
+    "spiritSword"
+  ],
+  "1000090": [
+    "spiritSword"
+  ],
+  "1000091": [
+    "cloudSword"
+  ],
+  "1000096": [
+    "cloudSword"
+  ],
+  "1000097": [
+    "spiritSword"
+  ],
+  "1000098": [
+    "cloudSword"
+  ],
+  "4000013": [
+    "rearMove"
+  ],
+  "4000018": [
+    "rearMove"
+  ],
+  "4000054": [
+    "rearMove"
+  ],
+  "4000043": [
+    "rearMove"
+  ],
+  "4000033": [
+    "rearMove"
+  ],
+  "4000036": [
+    "rearMove"
+  ],
+  "4000060": [
+    "rearMove"
+  ],
+  "4000049": [
+    "rearMove"
+  ],
+  "4000066": [
+    "rearMove"
+  ],
+  "4000074": [
+    "rearMove"
+  ],
+  "4000075": [
+    "rearMove"
+  ],
+  "4000076": [
+    "rearMove"
+  ],
+  "4000085": [
+    "rearMove"
+  ],
+  "4000097": [
+    "rearMove"
+  ],
+  "4000101": [
+    "rearMove"
+  ],
+  "7000003": [
+    "element:wood"
+  ],
+  "7000004": [
+    "element:wood"
+  ],
+  "7000009": [
+    "element:fire"
+  ],
+  "7000010": [
+    "element:fire"
+  ],
+  "7000011": [
+    "element:earth"
+  ],
+  "7000013": [
+    "element:earth"
+  ],
+  "7000046": [
+    "element:earth"
+  ],
+  "7000001": [
+    "element:metal"
+  ],
+  "7000002": [
+    "element:metal"
+  ],
+  "7000063": [
+    "element:metal"
+  ],
+  "7000006": [
+    "element:water"
+  ],
+  "7000007": [
+    "element:water"
+  ],
+  "7000008": [
+    "element:water"
+  ],
+  "7000018": [
+    "element:wood"
+  ],
+  "7000017": [
+    "element:wood"
+  ],
+  "7000021": [
+    "element:fire"
+  ],
+  "7000022": [
+    "element:fire"
+  ],
+  "7000023": [
+    "element:earth"
+  ],
+  "7000024": [
+    "element:earth"
+  ],
+  "7000048": [
+    "element:water"
+  ],
+  "7000049": [
+    "element:fire"
+  ],
+  "7000016": [
+    "element:metal"
+  ],
+  "7000015": [
+    "element:metal"
+  ],
+  "7000019": [
+    "element:water"
+  ],
+  "7000037": [
+    "element:water"
+  ],
+  "7000036": [
+    "element:wood"
+  ],
+  "7000028": [
+    "element:wood"
+  ],
+  "7000064": [
+    "element:wood"
+  ],
+  "7000031": [
+    "element:fire"
+  ],
+  "7000032": [
+    "element:fire"
+  ],
+  "7000012": [
+    "element:earth"
+  ],
+  "7000062": [
+    "element:earth"
+  ],
+  "7000041": [
+    "element:earth"
+  ],
+  "7000025": [
+    "element:metal"
+  ],
+  "7000026": [
+    "element:metal"
+  ],
+  "7000029": [
+    "element:water"
+  ],
+  "7000059": [
+    "element:water"
+  ],
+  "7000050": [
+    "element:metal"
+  ],
+  "7000061": [
+    "element:wood"
+  ],
+  "7000027": [
+    "element:wood"
+  ],
+  "7000038": [
+    "element:fire"
+  ],
+  "7000039": [
+    "element:fire"
+  ],
+  "7000051": [
+    "element:wood"
+  ],
+  "7000040": [
+    "element:earth"
+  ],
+  "7000033": [
+    "element:earth"
+  ],
+  "7000034": [
+    "element:metal"
+  ],
+  "7000035": [
+    "element:metal"
+  ],
+  "7000047": [
+    "element:earth"
+  ],
+  "7000030": [
+    "element:water"
+  ],
+  "7000020": [
+    "element:water"
+  ],
+  "7000043": [
+    "element:wood"
+  ],
+  "7000056": [
+    "element:fire"
+  ],
+  "7000045": [
+    "element:fire"
+  ],
+  "7000053": [
+    "element:earth"
+  ],
+  "7000042": [
+    "element:metal"
+  ],
+  "7000057": [
+    "element:water"
+  ],
+  "7000044": [
+    "element:water"
+  ],
+  "7000068": [
+    "element:wood"
+  ],
+  "7000069": [
+    "element:fire"
+  ],
+  "7000070": [
+    "element:earth"
+  ],
+  "7000071": [
+    "element:metal"
+  ],
+  "7000072": [
+    "element:water"
+  ],
+  "7000074": [
+    "element:metal"
+  ],
+  "7000076": [
+    "element:water"
+  ],
+  "7000079": [
+    "element:water"
+  ],
+  "7000080": [
+    "element:wood"
+  ],
+  "7000081": [
+    "element:wood"
+  ],
+  "7000082": [
+    "element:fire"
+  ],
+  "7000083": [
+    "element:fire"
+  ],
+  "7000084": [
+    "element:metal"
+  ],
+  "7000085": [
+    "element:metal"
+  ],
+  "7000086": [
+    "element:earth"
+  ],
+  "7000088": [
+    "element:wood"
+  ],
+  "7000089": [
+    "element:fire"
+  ],
+  "7000090": [
+    "element:fire"
+  ],
+  "7000091": [
+    "element:earth"
+  ],
+  "7000103": [
+    "element:water"
+  ],
+  "7000096": [
+    "element:earth"
+  ],
+  "7000097": [
+    "element:wood"
+  ],
+  "7000098": [
+    "element:fire"
+  ],
+  "7000099": [
+    "element:metal"
+  ],
+  "7000100": [
+    "element:water"
+  ],
+  "7000104": [
+    "element:water"
+  ],
+  "7000105": [
+    "element:wood"
+  ],
+  "7000108": [
+    "element:metal"
+  ],
+  "10000001": [
+    "bengQuan"
+  ],
+  "10000002": [
+    "bengQuan"
+  ],
+  "10000003": [
+    "bengQuan"
+  ],
+  "10000013": [
+    "bengQuan"
+  ],
+  "10000014": [
+    "bengQuan"
+  ],
+  "10000015": [
+    "bengQuan"
+  ],
+  "10000024": [
+    "bengQuan"
+  ],
+  "10000036": [
+    "bengQuan"
+  ],
+  "10000025": [
+    "bengQuan"
+  ],
+  "10000035": [
+    "bengQuan"
+  ],
+  "10000045": [
+    "bengQuan"
+  ],
+  "10000046": [
+    "bengQuan"
+  ],
+  "10000060": [
+    "bengQuan"
+  ],
+  "10000071": [
+    "bengQuan"
+  ],
+  "10000074": [
+    "bengQuan"
+  ],
+  "10000076": [
+    "bengQuan"
+  ],
+  "10000082": [
+    "bengQuan"
+  ],
+  "10000089": [
+    "bengQuan"
+  ],
+  "10000093": [
+    "bengQuan"
+  ]
+}

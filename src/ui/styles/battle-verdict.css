@@ -1,0 +1,352 @@
+/* 战斗结论层：胜负、赢法一句话、价值通道构成、关键转折点。 */
+
+.battle-verdict {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--panel-soft), var(--panel));
+}
+
+.verdict-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+
+.verdict-winner {
+  font-size: 22px;
+  letter-spacing: 0.5px;
+  color: var(--accent-bright);
+}
+
+.verdict-winner.none {
+  color: var(--muted);
+}
+
+.verdict-metric {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+.verdict-metric b {
+  font-size: var(--fs-md);
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.verdict-headline {
+  margin: 0;
+  font-size: var(--fs-md);
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.verdict-headline.muted {
+  color: var(--muted);
+}
+
+.verdict-headline.degraded {
+  color: var(--danger);
+}
+
+.verdict-caveat {
+  margin: 0;
+  font-size: var(--fs-2xs);
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.verdict-counterfactuals {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 4px 10px;
+  padding: 6px 8px;
+  border-left: 2px solid var(--jade);
+  background: var(--bg-elevated);
+  font-size: var(--fs-xs);
+}
+
+.counterfactual-label {
+  color: var(--jade);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.counterfactual-item {
+  grid-column: 2;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 3px 10px;
+  min-width: 0;
+  color: var(--muted);
+}
+
+.counterfactual-item b {
+  color: var(--text);
+}
+
+.counterfactual-item span {
+  font-variant-numeric: tabular-nums;
+}
+
+.counterfactual-item i {
+  color: var(--muted);
+  font-style: normal;
+}
+
+.verdict-channels {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.verdict-channel-bar {
+  display: flex;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--bg-elevated);
+}
+
+.verdict-channel-slice {
+  width: var(--channel-share);
+  background: var(--channel-color, var(--accent));
+}
+
+.verdict-channel-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+.verdict-channel-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.verdict-channel-chip b {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.verdict-channel-loss {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 12px;
+  border-left: 1px solid var(--line);
+}
+
+.channel-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--channel-color, var(--accent));
+}
+
+/* 通道配色与「回合曲线」保持同一套语义色，避免同一通道两处不同颜色。 */
+.channel-hp {
+  --channel-color: #d8b552;
+}
+
+.channel-defense {
+  --channel-color: #5b8fd0;
+}
+
+.channel-guard {
+  --channel-color: #7f6fc4;
+}
+
+.channel-resource {
+  --channel-color: var(--jade);
+}
+
+.channel-debuff {
+  --channel-color: #c46f8f;
+}
+
+.channel-tempo {
+  --channel-color: #c98a4c;
+}
+
+.verdict-turns {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.verdict-turns li {
+  display: grid;
+  grid-template-columns: 56px 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  font-size: var(--fs-sm);
+}
+
+.turn-action {
+  color: var(--muted);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.turn-card {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.turn-channel {
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: var(--fs-2xs);
+  color: var(--channel-color, var(--accent));
+  border: 1px solid var(--channel-color, var(--accent));
+}
+
+.turn-delta {
+  font-variant-numeric: tabular-nums;
+}
+
+.turn-delta.gain {
+  color: var(--good);
+}
+
+.turn-delta.loss {
+  color: var(--danger);
+}
+
+/* 模块选项卡。选中的模块吃掉右列剩余的全部高度，内容在模块内滚动。
+   这里曾经是三块 `<details>`：每块只剩一条缝，钩子链和曲线都读不了，而且
+   `<details>` 的内容被包在 `::details-content` 里，撑满高度还得额外铺一层。 */
+.battle-module-tabs {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.battle-module-tab {
+  min-height: 26px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--panel-soft);
+  color: var(--muted);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+
+.battle-module-tab:hover:not(.active) {
+  background: var(--panel-hover);
+  color: var(--text);
+}
+
+.battle-module-tab.active {
+  border-color: var(--accent-bright);
+  background: var(--accent-soft);
+  color: var(--accent-bright);
+}
+
+/* 曲线模块的选项卡 = 生命/伤害分段开关：点哪一档就切到曲线模块并选中该口径。 */
+.trajectory-switch {
+  min-height: 26px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--panel-soft);
+}
+
+.trajectory-switch.active {
+  border-color: var(--accent-bright);
+}
+
+.trajectory-option {
+  align-self: stretch;
+  min-width: 44px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--muted);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+
+.trajectory-option:hover:not(.active) {
+  background: var(--panel-hover);
+  color: var(--text);
+}
+
+.trajectory-option.active {
+  color: #171208;
+  background: var(--accent-bright);
+}
+
+.battle-module-body {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.battle-module-body.standalone {
+  flex: 0 0 auto;
+}
+
+/* 模块内容跟着模块铺开。矮一截的话下方就是一片没人用的空白，
+   audit:ui 的 module-fill 规则会报。 */
+.battle-module-body > * {
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.battle-module-body:not(.standalone) > .solver-panel {
+  overflow: visible;
+}
+
+.battle-module {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--panel-soft) 0%, var(--panel) 100%);
+}
+
+/* 对手结算点也可能是最大落差；不标出行动方会让它读成"我靠这张牌赢的"。 */
+.turn-by-opponent {
+  margin-right: 4px;
+  padding: 0 4px;
+  border-radius: var(--radius-sm);
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-size: var(--fs-2xs);
+  font-style: normal;
+}

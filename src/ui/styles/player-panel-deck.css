@@ -1,0 +1,241 @@
+.deck-toolbar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 6px;
+  align-items: center;
+  padding: 2px 0;
+}
+
+.deck-toolbar-label {
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  font-weight: 700;
+}
+
+.deck-toolbar-actions {
+  display: inline-flex;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+
+.deck-tool {
+  min-height: 20px;
+  padding: 0 7px;
+  font-size: var(--fs-2xs);
+  font-weight: 700;
+}
+
+.deck-toolbar-hint {
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  white-space: nowrap;
+}
+
+.player-deck {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+  align-content: stretch;
+  gap: 4px;
+}
+
+.deck-slot {
+  position: relative;
+  min-width: 0;
+  min-height: 114px;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.deck-slot .card-face {
+  min-height: 100%;
+  border-color: rgba(135, 144, 165, 0.36);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), transparent 58%),
+    #151a28;
+}
+
+.deck-slot:not(.empty) .card-face[draggable="true"] {
+  cursor: grab;
+}
+
+.deck-slot.drag-source .card-face {
+  opacity: 0.42;
+  cursor: grabbing;
+}
+
+.deck-slot.drop-swap .card-face {
+  border-color: var(--accent-bright);
+  box-shadow: inset 0 0 0 2px rgba(201, 168, 76, 0.58);
+}
+
+.deck-slot.drop-before::before,
+.deck-slot.drop-after::after {
+  position: absolute;
+  z-index: 4;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--jade);
+  box-shadow: 0 0 0 1px rgba(81, 191, 160, 0.35);
+  content: "";
+  pointer-events: none;
+}
+
+.deck-slot.drop-before::before {
+  left: -3px;
+}
+
+.deck-slot.drop-after::after {
+  right: -3px;
+}
+
+.deck-slot.empty .card-face {
+  padding-bottom: 6px;
+}
+
+.deck-slot.active {
+  z-index: 1;
+}
+
+.deck-slot.active .card-face {
+  border-color: var(--accent-bright);
+  box-shadow:
+    inset 0 0 0 2px rgba(201, 168, 76, 0.58),
+    0 0 0 1px rgba(201, 168, 76, 0.55),
+    0 0 16px rgba(201, 168, 76, 0.22);
+}
+
+.deck-slot.temporarily-upgraded .card-face-sub {
+  flex: 0 0 auto;
+  margin-top: 5px;
+  color: var(--accent-bright);
+  font-size: var(--fs-2xs);
+  font-weight: 800;
+}
+
+.deck-slot.temporarily-upgraded .card-face-body {
+  flex-direction: column;
+}
+
+.slot-level-controls {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: 5px;
+  z-index: 2;
+  min-width: 0;
+  height: 24px;
+  display: block;
+  padding: 2px;
+  border-radius: 3px;
+  background: rgba(8, 12, 24, 0.82);
+  border: 1px solid rgba(135, 144, 165, 0.24);
+  backdrop-filter: blur(4px);
+}
+
+.slot-level-controls.level-1 {
+  border-color: rgba(201, 168, 76, 0.5);
+  background: rgba(78, 62, 22, 0.72);
+}
+
+.slot-level-controls.level-2 {
+  border-color: rgba(69, 184, 207, 0.5);
+  background: rgba(18, 59, 72, 0.72);
+}
+
+.slot-level-cycle {
+  width: 100%;
+  min-height: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--text);
+  font-size: 9px;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.combined-page .deck-toolbar {
+  padding: 1px 0;
+  gap: 4px;
+}
+
+.combined-page .deck-tool {
+  min-height: 18px;
+  padding: 0 5px;
+  font-size: var(--fs-2xs);
+}
+
+.combined-page .deck-toolbar-hint {
+  font-size: var(--fs-2xs);
+}
+
+.combined-page .player-deck {
+  gap: 4px;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.combined-page .deck-slot {
+  min-height: 112px;
+}
+
+.combined-page.has-battle .deck-slot,
+.combined-page.setup-empty .deck-slot {
+  min-height: 0;
+}
+
+.player-deck .card-face:not(.empty) {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  padding: 8px 6px 31px;
+}
+
+.player-deck .card-face-type {
+  display: none;
+}
+
+.player-deck .card-face-body {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.player-deck .card-face-name {
+  width: 100%;
+  text-align: center;
+  font-size: var(--fs-md);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.25;
+  -webkit-line-clamp: 5;
+}
+
+.player-deck .card-face-level {
+  display: none !important;
+}
+
+.combined-page .slot-level-controls {
+  left: 2px;
+  right: 2px;
+  bottom: 3px;
+  height: 24px;
+}
+
+.combined-page .slot-level-cycle {
+  height: 18px;
+  font-size: var(--fs-2xs);
+}

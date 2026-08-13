@@ -1,0 +1,47 @@
+{
+  "generatedFrom": "research/original-game/extracted/current/LevelConfig.json",
+  "records": [
+    {
+      "level": {
+        "value": 1,
+        "name": "LianQi"
+      },
+      "baseMaxHp": 40
+    },
+    {
+      "level": {
+        "value": 2,
+        "name": "ZhuJi"
+      },
+      "baseMaxHp": 45
+    },
+    {
+      "level": {
+        "value": 3,
+        "name": "JinDan"
+      },
+      "baseMaxHp": 52
+    },
+    {
+      "level": {
+        "value": 4,
+        "name": "YuanYing"
+      },
+      "baseMaxHp": 62
+    },
+    {
+      "level": {
+        "value": 5,
+        "name": "HuaShen"
+      },
+      "baseMaxHp": 75
+    },
+    {
+      "level": {
+        "value": 6,
+        "name": "FanXu"
+      },
+      "baseMaxHp": 100
+    }
+  ]
+}

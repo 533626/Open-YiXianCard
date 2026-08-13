@@ -1,0 +1,174 @@
+/* Card scope controls and the searchable card library.
+   顶部八槽已移除：构筑八槽只看左侧玩家面板，浮层只承载检索与卡池。 */
+
+.card-picker-scopes {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: max-content;
+  padding: 2px;
+  border: 1px solid #2d3444;
+  border-radius: var(--radius-sm);
+  background: #0e131d;
+}
+
+.card-picker-scope {
+  min-width: 58px;
+  min-height: 26px;
+  padding: 0 12px;
+  border-color: transparent;
+  background: transparent;
+  color: #8892a6;
+  font-weight: 700;
+}
+
+.card-picker-scope.selected {
+  border-color: #4a5368;
+  background: #242b39;
+  color: #e1c86f;
+}
+
+.card-picker-search {
+  width: 210px;
+  min-height: 26px;
+  padding: 0 9px;
+  font-size: var(--fs-sm);
+}
+
+.card-picker-library {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 3px;
+  scrollbar-gutter: stable;
+}
+
+/* 分组：左侧境界竖标签 + 右侧卡牌流。持续与普通牌合流，不再按类型分层；
+   同系列牌（星弈•、崩拳•、卦等）由排序聚到一起，靠左侧系列色条区分。 */
+.card-picker-group {
+  flex: 0 0 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: stretch;
+  border: 1px solid #272e3d;
+  border-radius: var(--radius-sm);
+  background: #101520;
+  overflow: hidden;
+}
+
+.card-picker-group-label {
+  min-height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 4px;
+  border-right: 1px solid #303747;
+  color: #d2c17f;
+  background: #1a202c;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.card-picker-group-name {
+  display: grid;
+  place-items: center;
+}
+
+.card-picker-group-label span {
+  display: block;
+  line-height: 1;
+}
+
+/* 副职分组徽标：区分主副职与各境界槽开出的兼修副职。 */
+.card-picker-group-badge {
+  padding: 2px 3px;
+  border: 1px solid #4a4231;
+  border-radius: 2px;
+  color: #9a8c5e;
+  background: #23242a;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* 卡牌流：十列竖长卡，留出呼吸空间，视觉不拥挤。 */
+.card-picker-cards {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 6px;
+  padding: 8px;
+}
+
+/* 卡面样式选择器带 .card-popup 前缀抬一档特异性，盖过 battle.css 重复 import 的
+   card-face.css 里 .card-popup .card-face 默认 min-height。 */
+.card-popup .card-picker-cards .card-face {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 1fr;
+  align-content: center;
+  border-color: #2d3444;
+  background: #171c27;
+  min-height: 96px;
+  padding: 8px 6px;
+}
+
+.card-popup .card-picker-cards .card-face-type {
+  display: none;
+}
+
+.card-popup .card-picker-cards button.card-face:hover:not(:disabled) {
+  border-color: #4a5368;
+  background: #1d2330;
+}
+
+.card-popup .card-picker-cards .card-face-body {
+  place-items: center;
+  text-align: center;
+  gap: 4px;
+}
+
+.card-popup .card-picker-cards .card-face-name {
+  width: 100%;
+  text-align: center;
+  font-weight: 680;
+  line-height: 1.28;
+}
+
+.card-popup .card-picker-cards .card-face-sub,
+.card-popup .card-picker-cards .card-face-level {
+  display: none;
+}
+
+/* 系列标记：同系列牌左侧一条色条，让星弈•/崩拳•/卦等进阶链一眼可辨。
+   颜色按系列词干的稳定哈希分配，保证同系列同色、不同系列不撞色。 */
+.card-popup .card-picker-cards .card-face[data-series] {
+  border-left: 3px solid var(--series-bar, #6a7085);
+  padding-left: 4px;
+}
+
+.card-popup .card-picker-cards .card-face[data-series="星弈"] { --series-bar: #4fc3f7; }
+.card-popup .card-picker-cards .card-face[data-series="崩拳"] { --series-bar: #e05a70; }
+.card-popup .card-picker-cards .card-face[data-series="云剑"] { --series-bar: #7ec8e3; }
+.card-popup .card-picker-cards .card-face[data-series="卦"]   { --series-bar: #c4a86a; }
+.card-popup .card-picker-cards .card-face[data-series="土灵"] { --series-bar: #c4a86a; }
+.card-popup .card-picker-cards .card-face[data-series="水灵"] { --series-bar: #56c7e8; }
+.card-popup .card-picker-cards .card-face[data-series="火灵"] { --series-bar: #e07050; }
+.card-popup .card-picker-cards .card-face[data-series="木灵"] { --series-bar: #5bbf9e; }
+.card-popup .card-picker-cards .card-face[data-series="金灵"] { --series-bar: #e2c969; }
+
+@media (max-width: 1280px) {
+  .card-picker-search {
+    width: 170px;
+  }
+
+  .card-picker-cards {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+}

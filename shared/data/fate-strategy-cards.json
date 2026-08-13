@@ -1,0 +1,1271 @@
+{
+  "source": "原游戏 CardConfig",
+  "mechanismId": 9,
+  "variantCount": 96,
+  "cards": [
+    {
+      "id": 1000088,
+      "name": "御灵心法",
+      "cardType": {
+        "value": 3,
+        "name": "Sustain"
+      },
+      "otherParams": [
+        2,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1010088,
+      "name": "御灵心法",
+      "cardType": {
+        "value": 3,
+        "name": "Sustain"
+      },
+      "otherParams": [
+        2,
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1020088,
+      "name": "御灵心法",
+      "cardType": {
+        "value": 3,
+        "name": "Sustain"
+      },
+      "def": 5,
+      "otherParams": [
+        2,
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1000089,
+      "name": "丹雀灵剑",
+      "anima": -1,
+      "attack": 6,
+      "attackCount": 2,
+      "otherParams": [
+        6
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1010089,
+      "name": "丹雀灵剑",
+      "anima": -1,
+      "attack": 8,
+      "attackCount": 2,
+      "otherParams": [
+        6
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1020089,
+      "name": "丹雀灵剑",
+      "anima": -1,
+      "attack": 10,
+      "attackCount": 2,
+      "otherParams": [
+        6
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1000090,
+      "name": "飞豹灵剑",
+      "anima": -1,
+      "attack": 2,
+      "otherParams": [
+        2,
+        2,
+        10
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1010090,
+      "name": "飞豹灵剑",
+      "anima": -1,
+      "attack": 3,
+      "otherParams": [
+        3,
+        2,
+        10
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1020090,
+      "name": "飞豹灵剑",
+      "anima": -1,
+      "attack": 4,
+      "otherParams": [
+        4,
+        2,
+        10
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1000091,
+      "name": "云剑•裂空",
+      "attack": 3,
+      "attackCount": 2,
+      "otherParams": [
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1010091,
+      "name": "云剑•裂空",
+      "attack": 4,
+      "attackCount": 2,
+      "otherParams": [
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1020091,
+      "name": "云剑•裂空",
+      "attack": 5,
+      "attackCount": 2,
+      "otherParams": [
+        3
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1000092,
+      "name": "灵枢剑阵",
+      "anima": 1,
+      "attack": 1,
+      "attackCount": 1,
+      "def": 1,
+      "otherParams": [
+        1,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1010092,
+      "name": "灵枢剑阵",
+      "anima": 2,
+      "attack": 1,
+      "attackCount": 1,
+      "def": 2,
+      "otherParams": [
+        1,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1020092,
+      "name": "灵枢剑阵",
+      "anima": 3,
+      "attack": 1,
+      "attackCount": 1,
+      "def": 3,
+      "otherParams": [
+        1,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1000094,
+      "name": "迅影飞剑",
+      "attack": 4,
+      "attackCount": 1,
+      "otherParams": [
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1010094,
+      "name": "迅影飞剑",
+      "attack": 5,
+      "attackCount": 1,
+      "otherParams": [
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1020094,
+      "name": "迅影飞剑",
+      "attack": 6,
+      "attackCount": 1,
+      "otherParams": [
+        3
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1000095,
+      "name": "剑影结界",
+      "attack": 3,
+      "attackCount": 2,
+      "def": 2,
+      "otherParams": [
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1010095,
+      "name": "剑影结界",
+      "attack": 3,
+      "attackCount": 3,
+      "def": 2,
+      "otherParams": [
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1020095,
+      "name": "剑影结界",
+      "attack": 3,
+      "attackCount": 4,
+      "def": 2,
+      "otherParams": [
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1000098,
+      "name": "云剑•追风",
+      "anima": -1,
+      "actionAgain": true,
+      "def": 2,
+      "otherParams": [
+        2,
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1010098,
+      "name": "云剑•追风",
+      "anima": -1,
+      "actionAgain": true,
+      "def": 8,
+      "otherParams": [
+        2,
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 1020098,
+      "name": "云剑•追风",
+      "anima": -1,
+      "actionAgain": true,
+      "def": 12,
+      "otherParams": [
+        2,
+        3
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4000090,
+      "name": "望星诀",
+      "anima": 2,
+      "def": 2,
+      "otherParams": [
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4010090,
+      "name": "望星诀",
+      "anima": 2,
+      "def": 4,
+      "otherParams": [
+        3
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4020090,
+      "name": "望星诀",
+      "anima": 2,
+      "def": 6,
+      "otherParams": [
+        4
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4000091,
+      "name": "犀牛望月",
+      "attack": 1,
+      "randomAttack": 7,
+      "otherParams": [
+        1,
+        7
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4010091,
+      "name": "犀牛望月",
+      "attack": 1,
+      "randomAttack": 9,
+      "otherParams": [
+        1,
+        9
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4020091,
+      "name": "犀牛望月",
+      "attack": 1,
+      "randomAttack": 11,
+      "otherParams": [
+        1,
+        11
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4000092,
+      "name": "伤魂咒阵",
+      "cardType": {
+        "value": 3,
+        "name": "Sustain"
+      },
+      "anima": 2,
+      "otherParams": [
+        3,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4010092,
+      "name": "伤魂咒阵",
+      "cardType": {
+        "value": 3,
+        "name": "Sustain"
+      },
+      "anima": 2,
+      "otherParams": [
+        4,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4020092,
+      "name": "伤魂咒阵",
+      "cardType": {
+        "value": 3,
+        "name": "Sustain"
+      },
+      "anima": 2,
+      "otherParams": [
+        5,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4000093,
+      "name": "星弈•长",
+      "attack": 2,
+      "otherParams": [
+        1,
+        4,
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4010093,
+      "name": "星弈•长",
+      "attack": 2,
+      "otherParams": [
+        1,
+        6,
+        3
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4020093,
+      "name": "星弈•长",
+      "attack": 2,
+      "otherParams": [
+        1,
+        8,
+        4
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4000094,
+      "name": "星弈•劫争",
+      "anima": 1,
+      "attack": 1,
+      "otherParams": [
+        1,
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4010094,
+      "name": "星弈•劫争",
+      "anima": 1,
+      "attack": 6,
+      "otherParams": [
+        1,
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4020094,
+      "name": "星弈•劫争",
+      "anima": 2,
+      "attack": 6,
+      "otherParams": [
+        1,
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4000095,
+      "name": "灵蛇绕柱",
+      "def": 1,
+      "otherParams": [
+        1,
+        1,
+        5,
+        5
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4010095,
+      "name": "灵蛇绕柱",
+      "def": 2,
+      "otherParams": [
+        2,
+        1,
+        5,
+        10
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4020095,
+      "name": "灵蛇绕柱",
+      "def": 3,
+      "otherParams": [
+        3,
+        1,
+        5,
+        15
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4000096,
+      "name": "折枝点穴",
+      "attack": 2,
+      "attackCount": 1,
+      "otherParams": [
+        2,
+        2,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4010096,
+      "name": "折枝点穴",
+      "attack": 2,
+      "attackCount": 2,
+      "otherParams": [
+        2,
+        2,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4020096,
+      "name": "折枝点穴",
+      "attack": 2,
+      "attackCount": 3,
+      "otherParams": [
+        2,
+        2,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4000097,
+      "name": "弯弓射虎",
+      "anima": -1,
+      "attack": 8,
+      "otherParams": [
+        16,
+        4,
+        10
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4010097,
+      "name": "弯弓射虎",
+      "anima": -1,
+      "attack": 8,
+      "otherParams": [
+        24,
+        4,
+        10
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 4020097,
+      "name": "弯弓射虎",
+      "anima": -1,
+      "attack": 8,
+      "otherParams": [
+        32,
+        4,
+        10
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7000094,
+      "name": "镇印心法",
+      "cardType": {
+        "value": 3,
+        "name": "Sustain"
+      },
+      "otherParams": [
+        6,
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7010094,
+      "name": "镇印心法",
+      "cardType": {
+        "value": 3,
+        "name": "Sustain"
+      },
+      "otherParams": [
+        7,
+        3
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7020094,
+      "name": "镇印心法",
+      "cardType": {
+        "value": 3,
+        "name": "Sustain"
+      },
+      "otherParams": [
+        8,
+        4
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7000095,
+      "name": "五行灵击",
+      "anima": -5,
+      "attack": 15,
+      "otherParams": [
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7010095,
+      "name": "五行灵击",
+      "anima": -5,
+      "attack": 19,
+      "otherParams": [
+        3
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7020095,
+      "name": "五行灵击",
+      "anima": -5,
+      "attack": 23,
+      "otherParams": [
+        4
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7000096,
+      "name": "土灵•遁地",
+      "def": 4,
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7010096,
+      "name": "土灵•遁地",
+      "def": 8,
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7020096,
+      "name": "土灵•遁地",
+      "def": 12,
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7000097,
+      "name": "木灵•春风拂",
+      "anima": 2,
+      "attack": 2,
+      "attackCount": 2,
+      "otherParams": [
+        2,
+        4
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7010097,
+      "name": "木灵•春风拂",
+      "anima": 3,
+      "attack": 2,
+      "attackCount": 3,
+      "otherParams": [
+        2,
+        4
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7020097,
+      "name": "木灵•春风拂",
+      "anima": 4,
+      "attack": 2,
+      "attackCount": 4,
+      "otherParams": [
+        2,
+        4
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7000098,
+      "name": "火灵•焚脉诀",
+      "anima": 3,
+      "otherParams": [
+        2,
+        4,
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7010098,
+      "name": "火灵•焚脉诀",
+      "anima": 3,
+      "otherParams": [
+        3,
+        4,
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7020098,
+      "name": "火灵•焚脉诀",
+      "anima": 3,
+      "otherParams": [
+        4,
+        4,
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7000099,
+      "name": "金灵•回锋刃",
+      "attack": 6,
+      "attackCount": 2,
+      "otherParams": [
+        60
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7010099,
+      "name": "金灵•回锋刃",
+      "attack": 6,
+      "attackCount": 3,
+      "otherParams": [
+        60
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7020099,
+      "name": "金灵•回锋刃",
+      "attack": 6,
+      "attackCount": 4,
+      "otherParams": [
+        60
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7000100,
+      "name": "水灵•乘风浪",
+      "otherParams": [
+        1,
+        4,
+        10
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7010100,
+      "name": "水灵•乘风浪",
+      "otherParams": [
+        2,
+        6,
+        10
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7020100,
+      "name": "水灵•乘风浪",
+      "otherParams": [
+        3,
+        8,
+        10
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7000101,
+      "name": "混元化灵",
+      "anima": 2,
+      "otherParams": [
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7010101,
+      "name": "混元化灵",
+      "anima": 4,
+      "otherParams": [
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 7020101,
+      "name": "混元化灵",
+      "anima": 5,
+      "otherParams": [
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10000097,
+      "name": "金刚捣碓",
+      "hpCost": 4,
+      "attack": 7,
+      "def": 4,
+      "otherParams": [
+        2,
+        3,
+        3
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10010097,
+      "name": "金刚捣碓",
+      "hpCost": 4,
+      "attack": 11,
+      "def": 4,
+      "otherParams": [
+        2,
+        3,
+        3
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10020097,
+      "name": "金刚捣碓",
+      "hpCost": 4,
+      "attack": 15,
+      "def": 4,
+      "otherParams": [
+        2,
+        3,
+        3
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10000090,
+      "name": "醉拳架势",
+      "cardType": {
+        "value": 3,
+        "name": "Sustain"
+      },
+      "physique": 2,
+      "otherParams": [
+        2,
+        2,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10010090,
+      "name": "醉拳架势",
+      "cardType": {
+        "value": 3,
+        "name": "Sustain"
+      },
+      "physique": 3,
+      "otherParams": [
+        5,
+        2,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10020090,
+      "name": "醉拳架势",
+      "cardType": {
+        "value": 3,
+        "name": "Sustain"
+      },
+      "physique": 4,
+      "otherParams": [
+        8,
+        2,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10000091,
+      "name": "玄灵愈体",
+      "anima": 3,
+      "otherParams": [
+        2,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10010091,
+      "name": "玄灵愈体",
+      "anima": 5,
+      "otherParams": [
+        3,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10020091,
+      "name": "玄灵愈体",
+      "anima": 7,
+      "otherParams": [
+        4,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10000092,
+      "name": "凌空飞扫",
+      "hpCost": 6,
+      "attack": 8,
+      "otherParams": [
+        1,
+        2,
+        3,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10010092,
+      "name": "凌空飞扫",
+      "hpCost": 6,
+      "attack": 13,
+      "otherParams": [
+        1,
+        2,
+        3,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10020092,
+      "name": "凌空飞扫",
+      "hpCost": 6,
+      "attack": 18,
+      "otherParams": [
+        1,
+        2,
+        3,
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10000093,
+      "name": "崩拳•碎骨",
+      "hpCost": 8,
+      "attack": 4,
+      "attackCount": 2,
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10010093,
+      "name": "崩拳•碎骨",
+      "hpCost": 8,
+      "attack": 4,
+      "attackCount": 3,
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10020093,
+      "name": "崩拳•碎骨",
+      "hpCost": 8,
+      "attack": 4,
+      "attackCount": 4,
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10000094,
+      "name": "万魂破军",
+      "hpCost": 8,
+      "attack": 10,
+      "otherParams": [
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10010094,
+      "name": "万魂破军",
+      "hpCost": 8,
+      "attack": 16,
+      "otherParams": [
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10020094,
+      "name": "万魂破军",
+      "hpCost": 8,
+      "attack": 22,
+      "otherParams": [
+        1
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10000095,
+      "name": "血影遁术",
+      "hpCost": 8,
+      "otherParams": [
+        8,
+        8
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10010095,
+      "name": "血影遁术",
+      "hpCost": 8,
+      "otherParams": [
+        14,
+        8
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10020095,
+      "name": "血影遁术",
+      "hpCost": 8,
+      "otherParams": [
+        20,
+        8
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10000096,
+      "name": "锻灵指",
+      "anima": 2,
+      "attack": 1,
+      "attackCount": 3,
+      "physique": 2,
+      "otherParams": [
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10010096,
+      "name": "锻灵指",
+      "anima": 3,
+      "attack": 1,
+      "attackCount": 4,
+      "physique": 3,
+      "otherParams": [
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    },
+    {
+      "id": 10020096,
+      "name": "锻灵指",
+      "anima": 4,
+      "attack": 1,
+      "attackCount": 5,
+      "physique": 4,
+      "otherParams": [
+        2
+      ],
+      "seasonMechanics": [
+        9
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+/* CSS 缓存版本号统一 0→9 循环，由 bun run build:ui 自动递增 */
+@import "./card-face.css?v=0";
+@import "./player-panel.css?v=0";
+@import "./player-panel-battle.css?v=0";
+@import "./player-panel-deck.css?v=0";
+@import "./battle-layout.css?v=1";
+@import "./battle-log.css?v=0";
+@import "./battle-trajectory.css?v=3";
+@import "./battle-inspector.css?v=4";
+@import "./battle-verdict.css?v=0";

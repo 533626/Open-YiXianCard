@@ -1,0 +1,374 @@
+.picker-popup-backdrop {
+  position: fixed;
+  inset: 44px 0 0;
+  z-index: 20;
+  background: rgba(3, 6, 14, 0.7);
+}
+
+.picker-popup {
+  position: fixed;
+  left: 50%;
+  bottom: 12px;
+  z-index: 21;
+  width: min(1120px, calc(100vw - 32px));
+  max-height: min(520px, calc(100vh - 92px));
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: 8px;
+  min-height: 0;
+  padding: 9px;
+  border: 1px solid rgba(201, 168, 76, 0.42);
+  border-radius: var(--radius) var(--radius) 10px 10px;
+  background: linear-gradient(180deg, #171c2a 0%, #111625 100%);
+  box-shadow: var(--shadow-lg);
+  transform: translateX(-50%);
+}
+
+.character-popup,
+.talent-popup,
+.career-popup,
+.fate-popup {
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 6px;
+  padding: 8px 10px 10px;
+}
+
+/* 身份类浮层（角色/仙命/副职/天衍）与卡牌浮层共用同一套外壳配色。 */
+.identity-popup {
+  padding: 14px;
+  gap: 12px;
+  border-color: #3f4658;
+  border-top: 2px solid rgba(201, 168, 76, 0.78);
+  border-radius: 4px;
+  background: #111621;
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.52);
+}
+
+.build-picker-popup {
+  border-color: #3f4658;
+  border-top: 2px solid rgba(201, 168, 76, 0.78);
+  border-radius: 4px;
+  background: #111621;
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.52);
+}
+
+.card-popup {
+  inset: 8px;
+  width: auto;
+  height: auto;
+  max-height: none;
+  transform: none;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  padding: 10px;
+  border-color: #3f4658;
+  background: #111621;
+  overflow: hidden;
+}
+
+.card-picker-heading {
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.build-picker-heading,
+.card-picker-heading {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.build-picker-tabs {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid #303746;
+  border-radius: var(--radius-sm);
+  background: #0d121b;
+}
+
+.build-picker-tab {
+  min-width: 64px;
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 14px;
+  border-color: transparent;
+  color: #919bad;
+  background: transparent;
+  font-weight: 750;
+}
+
+.build-picker-tab-count {
+  color: #707b8f;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.build-picker-tab.selected {
+  border-color: #4a5364;
+  color: #e2c969;
+  background: #252c38;
+}
+
+.build-picker-tab.selected .build-picker-tab-count {
+  color: #b8a963;
+}
+
+.build-picker-tab:disabled {
+  opacity: 0.38;
+}
+
+.setup-picker-host {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.setup-picker-host > * {
+  pointer-events: auto;
+}
+
+/* 全部浮层（卡牌/角色/仙命/副职/天衍）统一为右侧栏：host 复用 .combined-page
+   的列轨道与内边距，浮层与遮罩钉在第 2 列（右列战斗/求解面板），左列构筑区
+   不被遮挡、仍可直接点选卡槽。遮罩不压黑任何区域，只保留「点击关闭」的命中区。 */
+.combined-page > .setup-picker-host {
+  display: grid;
+  grid-template-columns: inherit;
+  gap: 8px;
+  padding: 8px;
+}
+
+.combined-page > .setup-picker-host .picker-popup-backdrop {
+  position: absolute;
+  inset: 0;
+  grid-column: 2;
+  background: transparent;
+}
+
+.combined-page > .setup-picker-host .card-popup,
+.combined-page > .setup-picker-host .character-popup,
+.combined-page > .setup-picker-host .talent-popup,
+.combined-page > .setup-picker-host .career-popup,
+.combined-page > .setup-picker-host .fate-popup {
+  position: absolute;
+  grid-column: 2;
+  inset: 8px;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: calc(100% - 16px);
+  transform: none;
+}
+
+.talent-popup {
+  width: min(820px, calc(100vw - 36px));
+  height: min(520px, calc(100vh - 88px));
+  max-height: min(520px, calc(100vh - 88px));
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.fate-popup {
+  width: min(900px, calc(100vw - 36px));
+  height: min(460px, calc(100vh - 108px));
+  max-height: min(460px, calc(100vh - 108px));
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.character-popup {
+  width: min(860px, calc(100vw - 36px));
+  height: min(372px, calc(100vh - 68px));
+  max-height: min(372px, calc(100vh - 68px));
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.character-popup-grid {
+  grid-template-columns: repeat(var(--picker-cols, 4), minmax(0, 1fr));
+}
+
+.build-picker-popup.character-popup .character-popup-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.build-picker-popup.talent-popup .talent-popup-grid {
+  grid-template-columns: repeat(min(var(--picker-cols, 2), 2), minmax(0, 1fr));
+}
+
+.talent-stages-grid {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  overflow: hidden;
+}
+
+/* 仙命境界列：容器与标题条沿用卡牌浮层分组的配色与字号。 */
+.talent-stage {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  border: 1px solid #272e3d;
+  border-radius: var(--radius-sm);
+  background: #101520;
+  overflow: hidden;
+}
+
+.talent-stage.active {
+  border-color: #4a4c43;
+}
+
+.talent-stage-title {
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  border-bottom: 1px solid #303747;
+  color: #d2c17f;
+  background: #1a202c;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.talent-stage-title b {
+  min-width: 22px;
+  padding: 2px 5px;
+  border-radius: 2px;
+  color: #9da6b8;
+  background: #242b38;
+  font-size: 10px;
+  text-align: center;
+}
+
+.talent-stage-list {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 7px;
+  overflow-y: auto;
+}
+
+.character-realm-col {
+  min-height: 0;
+  max-height: none;
+}
+
+.character-candidate {
+  min-height: 38px;
+  justify-content: center;
+  padding-inline: 12px 28px;
+}
+
+.character-candidate.selected {
+  border-color: var(--accent-bright);
+  background: var(--accent-soft);
+}
+
+.character-candidate.selected::after {
+  content: "✓";
+  position: absolute;
+  right: 10px;
+  color: var(--accent-bright);
+  font-weight: 900;
+}
+
+.picker-popup-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--accent-bright);
+}
+
+.identity-popup .picker-popup-head {
+  min-height: 42px;
+  padding: 0 2px 11px;
+  border-bottom: 1px solid #2c3340;
+}
+
+.picker-popup-title {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.picker-popup-title > span {
+  color: #858e9f;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.picker-popup-title > strong {
+  color: #e4c766;
+  font-size: 17px;
+  line-height: 1;
+}
+
+.picker-popup-head b {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.picker-popup-tools {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: 0 0 auto;
+}
+
+.picker-search {
+  width: 180px;
+  min-height: 32px;
+  padding: 0 9px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-size: var(--fs-sm);
+}
+
+.picker-popup-close {
+  width: 32px;
+  min-width: 32px;
+  min-height: 32px !important;
+  padding: 0 !important;
+  border-color: #343c4b;
+  color: #aab2c1;
+  background: #181e29;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.picker-search:focus-visible {
+  border-color: var(--accent-bright);
+  outline: 2px solid rgba(201, 168, 76, 0.28);
+  outline-offset: 1px;
+}
+
+.picker-popup-head button,
+.picker-popup-tools button {
+  min-height: 26px;
+  padding: 0 10px;
+}
+
+.picker-popup-grid {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--picker-cols, 4), minmax(0, 1fr));
+  gap: 6px;
+  overflow: hidden;
+}

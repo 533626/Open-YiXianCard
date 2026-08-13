@@ -1,0 +1,3710 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "config": "BuffConfig.json",
+    "localization": "localization.json",
+    "proto": "decompiled/Proto/BuffCategory.cs, decompiled/Proto/BuffConfig.cs",
+    "steamBuild": "24610558"
+  },
+  "note": "category 缺失的记录按 protobuf 默认值 Positive（BuffConfig.cs WriteTo 仅在 category != Positive 时写入）；name 取自 localization 的 Buff_<id> 词条（Hidden 类 buff 通常无词条，为 null）。显示规则见 BattleCharacterUI.RefreshBuff：Hidden 与 TiPo/TiPoShangXian 不显示；Positive/Negative → 角色区，Permanent → 仙命区，其余 → 卡牌区。",
+  "count": 738,
+  "categoryCounts": {
+    "Positive": 29,
+    "Negative": 8,
+    "Neutral": 242,
+    "Hidden": 310,
+    "Permanent": 149
+  },
+  "buffs": {
+    "GuaXiang": {
+      "id": 1,
+      "category": "Positive",
+      "name": "卦象"
+    },
+    "JiaGong": {
+      "id": 2,
+      "category": "Positive",
+      "name": "加攻"
+    },
+    "XingLi": {
+      "id": 3,
+      "category": "Positive",
+      "name": "星力"
+    },
+    "WuShiFangYu": {
+      "id": 4,
+      "category": "Positive",
+      "name": "无视防御"
+    },
+    "HuTi": {
+      "id": 5,
+      "category": "Positive",
+      "name": "护体"
+    },
+    "JianYi": {
+      "id": 6,
+      "category": "Positive",
+      "name": "剑意"
+    },
+    "XiaHuiHeJiaFang": {
+      "id": 7,
+      "category": "Positive",
+      "name": "下回合加防"
+    },
+    "FengRui": {
+      "id": 8,
+      "category": "Positive",
+      "name": "锋锐"
+    },
+    "TieGu": {
+      "id": 9,
+      "category": "Positive",
+      "name": "铁骨"
+    },
+    "ShuiShi": {
+      "id": 10,
+      "category": "Positive",
+      "name": "水势"
+    },
+    "HeBaHuang": {
+      "id": 11,
+      "category": "Positive",
+      "name": "合八荒"
+    },
+    "QianDun": {
+      "id": 12,
+      "category": "Positive",
+      "name": "潜遁"
+    },
+    "BiXie": {
+      "id": 13,
+      "category": "Positive",
+      "name": "辟邪"
+    },
+    "BingFengXueLian": {
+      "id": 14,
+      "category": "Positive",
+      "name": "冰封雪莲"
+    },
+    "ShenFa": {
+      "id": 15,
+      "category": "Positive",
+      "name": "身法"
+    },
+    "QiShi": {
+      "id": 16,
+      "category": "Positive",
+      "name": "气势"
+    },
+    "SiZhanZhiZhi": {
+      "id": 17,
+      "category": "Positive",
+      "name": "死战之志"
+    },
+    "SiZhanBuDao": {
+      "id": 18,
+      "category": "Positive",
+      "name": "死战不倒"
+    },
+    "NeiShang": {
+      "id": 100,
+      "category": "Negative",
+      "name": "内伤"
+    },
+    "XuRuo": {
+      "id": 101,
+      "category": "Negative",
+      "name": "虚弱"
+    },
+    "PoZhan": {
+      "id": 102,
+      "category": "Negative",
+      "name": "破绽"
+    },
+    "JianGong": {
+      "id": 103,
+      "category": "Negative",
+      "name": "减攻"
+    },
+    "KunFu": {
+      "id": 104,
+      "category": "Negative",
+      "name": "困缚"
+    },
+    "WaiShang": {
+      "id": 105,
+      "category": "Negative",
+      "name": "外伤"
+    },
+    "YunJianRouXin": {
+      "id": 200,
+      "category": "Neutral",
+      "name": "云剑柔心"
+    },
+    "JuLingXinFa": {
+      "id": 201,
+      "category": "Neutral",
+      "name": "聚灵心法"
+    },
+    "ShuiYueJianZhen": {
+      "id": 202,
+      "category": "Neutral",
+      "name": "水月剑阵"
+    },
+    "JingQiXinFa": {
+      "id": 203,
+      "category": "Neutral",
+      "name": "静气心法"
+    },
+    "LiuYaoShaZhen": {
+      "id": 204,
+      "category": "Neutral",
+      "name": "六爻绝阵"
+    },
+    "MeiKaiErDu": {
+      "id": 205,
+      "category": "Neutral",
+      "name": "梅开二度"
+    },
+    "MeiKaiErDuPlus": {
+      "id": 206,
+      "category": "Neutral",
+      "name": null
+    },
+    "XingYi_Duan": {
+      "id": 207,
+      "category": "Hidden",
+      "name": "星弈断"
+    },
+    "XiaoYaoQu": {
+      "id": 208,
+      "category": "Neutral",
+      "name": "逍遥曲"
+    },
+    "HuanYinQu": {
+      "id": 209,
+      "category": "Neutral",
+      "name": "幻音曲"
+    },
+    "CiNianQu": {
+      "id": 210,
+      "category": "Neutral",
+      "name": "慈念曲"
+    },
+    "DuanChangQu": {
+      "id": 211,
+      "category": "Neutral",
+      "name": "断肠曲"
+    },
+    "KuangWuQu": {
+      "id": 212,
+      "category": "Neutral",
+      "name": "狂舞曲"
+    },
+    "HuiChunQu": {
+      "id": 213,
+      "category": "Neutral",
+      "name": "回春曲"
+    },
+    "WanMoShiXinQu": {
+      "id": 214,
+      "category": "Neutral",
+      "name": "幽绪乱心曲"
+    },
+    "TianYinKunXianQu": {
+      "id": 215,
+      "category": "Neutral",
+      "name": "天音困仙曲"
+    },
+    "YiHuaJieMu": {
+      "id": 216,
+      "category": "Neutral",
+      "name": "移花接木"
+    },
+    "FanZhenXinFa": {
+      "id": 217,
+      "category": "Neutral",
+      "name": "反震心法"
+    },
+    "DiXuanGui": {
+      "id": 218,
+      "category": "Neutral",
+      "name": "地玄龟"
+    },
+    "XianFaZhiRen": {
+      "id": 219,
+      "category": "Neutral",
+      "name": "先发制人"
+    },
+    "ShengJiZhanFang": {
+      "id": 220,
+      "category": "Neutral",
+      "name": "生机绽放"
+    },
+    "FanShengZaoHuaDan": {
+      "id": 221,
+      "category": "Neutral",
+      "name": "返生造化丹"
+    },
+    "PoKongDiao": {
+      "id": 222,
+      "category": "Neutral",
+      "name": "破空雕"
+    },
+    "AnXingBianFu": {
+      "id": 223,
+      "category": "Neutral",
+      "name": "暗星蝙蝠"
+    },
+    "JinMaoShu": {
+      "id": 224,
+      "category": "Neutral",
+      "name": "锦毛鼠"
+    },
+    "QiCaiLingHe": {
+      "id": 225,
+      "category": "Neutral",
+      "name": "七彩灵鹤"
+    },
+    "TunTianChiYanShou": {
+      "id": 226,
+      "category": "Neutral",
+      "name": "吞天赤眼兽"
+    },
+    "ShiXuLingShou": {
+      "id": 227,
+      "category": "Neutral",
+      "name": "噬灵虚兽"
+    },
+    "JianYiLiuZhuan": {
+      "id": 228,
+      "category": "Neutral",
+      "name": "剑意流转"
+    },
+    "MingKongJianZhenJue": {
+      "id": 229,
+      "category": "Neutral",
+      "name": "溟空剑阵诀"
+    },
+    "LingJianXinFa": {
+      "id": 230,
+      "category": "Neutral",
+      "name": "凌剑心法"
+    },
+    "YuHuoFengHuang": {
+      "id": 231,
+      "category": "Neutral",
+      "name": "浴火凤凰"
+    },
+    "BuYueDengYun": {
+      "id": 232,
+      "category": "Neutral",
+      "name": "步月登云"
+    },
+    "PangXianLi": {
+      "id": 233,
+      "category": "Neutral",
+      "name": "胖仙狸"
+    },
+    "GuYeLang": {
+      "id": 234,
+      "category": "Neutral",
+      "name": "孤夜狼"
+    },
+    "YingXiaoTu": {
+      "id": 235,
+      "category": "Neutral",
+      "name": "影枭兔"
+    },
+    "YouMingXuHunQuan": {
+      "id": 236,
+      "category": "Neutral",
+      "name": null
+    },
+    "JiHuoJinLing": {
+      "id": 237,
+      "category": "Neutral",
+      "name": "激活金灵"
+    },
+    "JiHuoMuLing": {
+      "id": 238,
+      "category": "Neutral",
+      "name": "激活木灵"
+    },
+    "JiHuoShuiLing": {
+      "id": 239,
+      "category": "Neutral",
+      "name": "激活水灵"
+    },
+    "JiHuoHuoLing": {
+      "id": 240,
+      "category": "Neutral",
+      "name": "激活火灵"
+    },
+    "JiHuoTuLing": {
+      "id": 241,
+      "category": "Neutral",
+      "name": "激活土灵"
+    },
+    "JinLingZhen": {
+      "id": 242,
+      "category": "Neutral",
+      "name": "金灵阵"
+    },
+    "MuLingZhen": {
+      "id": 243,
+      "category": "Neutral",
+      "name": "木灵阵"
+    },
+    "ShuiLingZhen": {
+      "id": 244,
+      "category": "Neutral",
+      "name": "水灵阵"
+    },
+    "HuoLingZhen": {
+      "id": 245,
+      "category": "Neutral",
+      "name": "火灵阵"
+    },
+    "TuLingZhen": {
+      "id": 246,
+      "category": "Neutral",
+      "name": "土灵阵"
+    },
+    "HaiChao": {
+      "id": 247,
+      "category": "Neutral",
+      "name": "春雨"
+    },
+    "HuiFu": {
+      "id": 248,
+      "category": "Positive",
+      "name": "恢复"
+    },
+    "HunYuanWuJiZhen": {
+      "id": 249,
+      "category": "Neutral",
+      "name": "混元无极阵"
+    },
+    "YinLeiZhen": {
+      "id": 250,
+      "category": "Neutral",
+      "name": "引雷阵"
+    },
+    "SuiShaZhen": {
+      "id": 251,
+      "category": "Neutral",
+      "name": "碎杀阵"
+    },
+    "GuiJiaZhen": {
+      "id": 252,
+      "category": "Neutral",
+      "name": "龟甲阵"
+    },
+    "XieGuZhen": {
+      "id": 253,
+      "category": "Neutral",
+      "name": "邪蛊阵"
+    },
+    "JuLinZhen": {
+      "id": 254,
+      "category": "Neutral",
+      "name": "聚灵阵"
+    },
+    "ZhouTianJianZhen": {
+      "id": 255,
+      "category": "Neutral",
+      "name": "周天剑阵"
+    },
+    "BaMenJinSuoZhen": {
+      "id": 256,
+      "category": "Neutral",
+      "name": "八门金锁阵"
+    },
+    "TianGangJuLiZhen": {
+      "id": 257,
+      "category": "Neutral",
+      "name": "天罡聚力阵"
+    },
+    "WanHuaMiHunZhen": {
+      "id": 258,
+      "category": "Neutral",
+      "name": "万花迷魂阵"
+    },
+    "ShouHuZhenWen": {
+      "id": 259,
+      "category": "Neutral",
+      "name": "守护阵纹"
+    },
+    "XingYueYuShan": {
+      "id": 260,
+      "category": "Neutral",
+      "name": "星月折扇"
+    },
+    "KuangJianLingShi": {
+      "id": 261,
+      "category": "Neutral",
+      "name": "狂剑零式"
+    },
+    "BaiNiaoLingJianJue": {
+      "id": 262,
+      "category": "Neutral",
+      "name": "百鸟灵剑诀"
+    },
+    "LeiTingXinFa": {
+      "id": 263,
+      "category": "Neutral",
+      "name": "雷霆心法"
+    },
+    "HuangQueZaiHou": {
+      "id": 264,
+      "category": "Neutral",
+      "name": "黄雀在后"
+    },
+    "LingMaoTaYun": {
+      "id": 265,
+      "category": "Neutral",
+      "name": "灵猫踏云"
+    },
+    "WuJiGuaPan": {
+      "id": 266,
+      "category": "Neutral",
+      "name": "无极卦盘"
+    },
+    "DuanYa": {
+      "id": 267,
+      "category": "Neutral",
+      "name": "断崖"
+    },
+    "WuFaJiaShengMing": {
+      "id": 268,
+      "category": "Neutral",
+      "name": "无法加生命"
+    },
+    "XiangShengXiangCheng": {
+      "id": 269,
+      "category": "Neutral",
+      "name": "相生相成"
+    },
+    "QuanYong": {
+      "id": 270,
+      "category": "Neutral",
+      "name": "泉涌"
+    },
+    "BuDongJinGangZhen": {
+      "id": 271,
+      "category": "Neutral",
+      "name": "不动金刚阵"
+    },
+    "WuXingTianSuiJue": {
+      "id": 272,
+      "category": "Neutral",
+      "name": "五行天髓诀"
+    },
+    "KunWuJinHuan": {
+      "id": 273,
+      "category": "Neutral",
+      "name": "锟铻金环"
+    },
+    "XiaoYaoGuQin": {
+      "id": 274,
+      "category": "Neutral",
+      "name": "逍遥古琴"
+    },
+    "XiangLingKui": {
+      "id": 275,
+      "category": "Neutral",
+      "name": null
+    },
+    "YeDunHua": {
+      "id": 276,
+      "category": "Neutral",
+      "name": "叶盾花"
+    },
+    "FuXianGuTeng": {
+      "id": 277,
+      "category": "Neutral",
+      "name": "缚仙古藤"
+    },
+    "YeRenHua": {
+      "id": 278,
+      "category": "Neutral",
+      "name": "叶刃花"
+    },
+    "ShiXianGuTeng": {
+      "id": 279,
+      "category": "Neutral",
+      "name": "噬仙古藤"
+    },
+    "BingFengXieLian": {
+      "id": 280,
+      "category": "Neutral",
+      "name": null
+    },
+    "HuaLongDianJing": {
+      "id": 281,
+      "category": "Neutral",
+      "name": "画龙点睛"
+    },
+    "YingZhiZhu": {
+      "id": 282,
+      "category": "Neutral",
+      "name": "硬枝竹"
+    },
+    "BengQuanChuo": {
+      "id": 283,
+      "category": "Neutral",
+      "name": "崩拳戳"
+    },
+    "BengQuanFeng": {
+      "id": 284,
+      "category": "Neutral",
+      "name": "崩拳封"
+    },
+    "BengQuanTan": {
+      "id": 285,
+      "category": "Neutral",
+      "name": "崩拳弹"
+    },
+    "BengQuanHan": {
+      "id": 286,
+      "category": "Neutral",
+      "name": "崩拳撼"
+    },
+    "BengQuanChan": {
+      "id": 287,
+      "category": "Neutral",
+      "name": "崩拳缠"
+    },
+    "BengQuanTu": {
+      "id": 288,
+      "category": "Neutral",
+      "name": "崩拳突"
+    },
+    "BengQuanJieMai": {
+      "id": 289,
+      "category": "Neutral",
+      "name": "崩拳截脉"
+    },
+    "BengQuanCunJin": {
+      "id": 290,
+      "category": "Neutral",
+      "name": "崩拳寸劲"
+    },
+    "BengQuanJiangLong": {
+      "id": 291,
+      "category": "Neutral",
+      "name": "崩拳降龙"
+    },
+    "BengQuanLianBeng": {
+      "id": 292,
+      "category": "Neutral",
+      "name": null
+    },
+    "BengQuanShanJi": {
+      "id": 293,
+      "category": "Neutral",
+      "name": "崩拳闪击"
+    },
+    "BengQuanJingChu": {
+      "id": 294,
+      "category": "Neutral",
+      "name": "崩拳惊触"
+    },
+    "BengMeiXinFa": {
+      "id": 295,
+      "category": "Neutral",
+      "name": "崩灭心法"
+    },
+    "LingGuiMiZongBu": {
+      "id": 296,
+      "category": "Neutral",
+      "name": "灵玄迷踪步"
+    },
+    "BengTianBu": {
+      "id": 297,
+      "category": "Neutral",
+      "name": "崩天步"
+    },
+    "QiShiShangXian": {
+      "id": 298,
+      "category": "Hidden",
+      "name": null
+    },
+    "BaiDuBuQin": {
+      "id": 299,
+      "category": "Neutral",
+      "name": "百毒不侵"
+    },
+    "ExtraAttack": {
+      "id": 300,
+      "category": "Hidden",
+      "name": null
+    },
+    "ExtraAttackCount": {
+      "id": 301,
+      "category": "Hidden",
+      "name": null
+    },
+    "ActualDamage": {
+      "id": 302,
+      "category": "Hidden",
+      "name": null
+    },
+    "WoundedCount": {
+      "id": 303,
+      "category": "Hidden",
+      "name": null
+    },
+    "LianYun": {
+      "id": 304,
+      "category": "Hidden",
+      "name": null
+    },
+    "KuangJian": {
+      "id": 305,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaoHaoJianYi": {
+      "id": 306,
+      "category": "Hidden",
+      "name": null
+    },
+    "HuiFuJianYi": {
+      "id": 307,
+      "category": "Hidden",
+      "name": null
+    },
+    "ZaiCiXingDong": {
+      "id": 308,
+      "category": "Hidden",
+      "name": null
+    },
+    "BanDianLingQi": {
+      "id": 309,
+      "category": "Hidden",
+      "name": null
+    },
+    "BenLunWuShiFangYu": {
+      "id": 310,
+      "category": "Hidden",
+      "name": null
+    },
+    "XingWei": {
+      "id": 311,
+      "category": "Hidden",
+      "name": "星位"
+    },
+    "QinShiPai": {
+      "id": 312,
+      "category": "Hidden",
+      "name": null
+    },
+    "AddHpCount": {
+      "id": 313,
+      "category": "Hidden",
+      "name": null
+    },
+    "JianLingJiYing": {
+      "id": 314,
+      "category": "Hidden",
+      "name": null
+    },
+    "ExActionAgain": {
+      "id": 315,
+      "category": "Hidden",
+      "name": null
+    },
+    "GuanXing": {
+      "id": 316,
+      "category": "Hidden",
+      "name": null
+    },
+    "BeiXingShi": {
+      "id": 317,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaZhangPaiLinShiShengJi": {
+      "id": 318,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaZhangPaiLingQiJianHao": {
+      "id": 319,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaZhangPaiZaiCiXingDong": {
+      "id": 320,
+      "category": "Hidden",
+      "name": null
+    },
+    "WuFaXingDong": {
+      "id": 321,
+      "category": "Hidden",
+      "name": null
+    },
+    "WuShiXuRuo": {
+      "id": 322,
+      "category": "Hidden",
+      "name": null
+    },
+    "BENLUNGONGJICISHU": {
+      "id": 323,
+      "category": "Hidden",
+      "name": null
+    },
+    "LoseDefCount": {
+      "id": 324,
+      "category": "Hidden",
+      "name": null
+    },
+    "LoseMaxHpCount": {
+      "id": 325,
+      "category": "Hidden",
+      "name": null
+    },
+    "BeAttackedCount": {
+      "id": 326,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaZhangPaiJiHuoWuXing": {
+      "id": 327,
+      "category": "Hidden",
+      "name": null
+    },
+    "JuDingLuo": {
+      "id": 328,
+      "category": "Hidden",
+      "name": null
+    },
+    "ShuangLong": {
+      "id": 329,
+      "category": "Hidden",
+      "name": null
+    },
+    "UsedWuXing": {
+      "id": 330,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaZhangPaiSuanZuoKuangJian": {
+      "id": 331,
+      "category": "Hidden",
+      "name": null
+    },
+    "YongGuoChiXuPai": {
+      "id": 332,
+      "category": "Hidden",
+      "name": null
+    },
+    "DanKaGongJiJiShu": {
+      "id": 333,
+      "category": "Hidden",
+      "name": null
+    },
+    "BuHaoFengRui": {
+      "id": 334,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiHouZhaoZhiJieChuFa": {
+      "id": 335,
+      "category": "Hidden",
+      "name": null
+    },
+    "FanZhuanChuPai": {
+      "id": 336,
+      "category": "Hidden",
+      "name": null
+    },
+    "ShiYongHouZhao": {
+      "id": 337,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaZhangPaiSuanZuoYunJian": {
+      "id": 338,
+      "category": "Hidden",
+      "name": null
+    },
+    "GuaXiangShengXiaoCiShu": {
+      "id": 339,
+      "category": "Hidden",
+      "name": null
+    },
+    "SuiFang": {
+      "id": 340,
+      "category": "Hidden",
+      "name": null
+    },
+    "YanHunGuiFu": {
+      "id": 341,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiRanZhouYin": {
+      "id": 342,
+      "category": "Hidden",
+      "name": null
+    },
+    "YunJianZhiXin": {
+      "id": 343,
+      "category": "Hidden",
+      "name": null
+    },
+    "HaoRanZhengQi": {
+      "id": 344,
+      "category": "Neutral",
+      "name": null
+    },
+    "LiRuoFengMo": {
+      "id": 345,
+      "category": "Neutral",
+      "name": null
+    },
+    "FanPuGuiZhen": {
+      "id": 346,
+      "category": "Neutral",
+      "name": "返璞归真"
+    },
+    "XiaoHaoBengQuanChuo": {
+      "id": 347,
+      "category": "Hidden",
+      "name": null
+    },
+    "QiRuoXuanHe": {
+      "id": 348,
+      "category": "Neutral",
+      "name": "气若悬河"
+    },
+    "QiShiBeiLv": {
+      "id": 349,
+      "category": "Hidden",
+      "name": null
+    },
+    "LingGuiMiZongBuShengXiao": {
+      "id": 350,
+      "category": "Hidden",
+      "name": null
+    },
+    "LoseHpCount": {
+      "id": 351,
+      "category": "Hidden",
+      "name": null
+    },
+    "ChuFaJingChu": {
+      "id": 352,
+      "category": "Hidden",
+      "name": null
+    },
+    "QiShiBuJue": {
+      "id": 353,
+      "category": "Neutral",
+      "name": "气势不绝"
+    },
+    "ZuiWoXiaoYao": {
+      "id": 354,
+      "category": "Hidden",
+      "name": null
+    },
+    "BengQuanShuangYing": {
+      "id": 355,
+      "category": "Neutral",
+      "name": "崩拳双影"
+    },
+    "BaiShouLingJianZhen": {
+      "id": 356,
+      "category": "Neutral",
+      "name": "百兽灵剑阵"
+    },
+    "KuangLongTunYun": {
+      "id": 357,
+      "category": "Neutral",
+      "name": "狂龙吞云"
+    },
+    "LingGuaShu": {
+      "id": 358,
+      "category": "Neutral",
+      "name": "灵卦术"
+    },
+    "ZhaiHuaFeiYe": {
+      "id": 359,
+      "category": "Neutral",
+      "name": "摘花飞叶"
+    },
+    "JuLingJiaoZhu": {
+      "id": 360,
+      "category": "Neutral",
+      "name": "聚灵鲛珠"
+    },
+    "JieJingJiaoZhu": {
+      "id": 361,
+      "category": "Neutral",
+      "name": "结晶鲛珠"
+    },
+    "ShengQiLingRen": {
+      "id": 362,
+      "category": "Neutral",
+      "name": "盛气凌人"
+    },
+    "UsedCardCount": {
+      "id": 363,
+      "category": "Hidden",
+      "name": null
+    },
+    "YeDuZhiYin": {
+      "id": 364,
+      "category": "Neutral",
+      "name": "野渡之印"
+    },
+    "SanWeiHuan": {
+      "id": 365,
+      "category": "Neutral",
+      "name": "三尾讙"
+    },
+    "BaiShouLingJianZhenShengXiao": {
+      "id": 366,
+      "category": "Hidden",
+      "name": null
+    },
+    "Min": {
+      "id": 367,
+      "category": "Negative",
+      "name": "冥"
+    },
+    "MinYe": {
+      "id": 368,
+      "category": "Neutral",
+      "name": "冥夜"
+    },
+    "ExSpeed": {
+      "id": 369,
+      "category": "Permanent",
+      "name": null
+    },
+    "XiaHuiHeShunYing": {
+      "id": 370,
+      "category": "Hidden",
+      "name": null
+    },
+    "ShunYing": {
+      "id": 371,
+      "category": "Positive",
+      "name": "天机顺应"
+    },
+    "XiaHuiHeNiShi": {
+      "id": 372,
+      "category": "Hidden",
+      "name": null
+    },
+    "NiShi": {
+      "id": 373,
+      "category": "Positive",
+      "name": "天机逆施"
+    },
+    "XiaCiChaTi": {
+      "id": 374,
+      "category": "Hidden",
+      "name": null
+    },
+    "ChaTi": {
+      "id": 375,
+      "category": "Neutral",
+      "name": "察体"
+    },
+    "XiaHuiHeWanShiRuYi": {
+      "id": 376,
+      "category": "Hidden",
+      "name": null
+    },
+    "TianYunBiXiong": {
+      "id": 377,
+      "category": "Neutral",
+      "name": "天运避凶"
+    },
+    "TianYunQuJi": {
+      "id": 378,
+      "category": "Neutral",
+      "name": "天运趋吉"
+    },
+    "XueGuangZhiZai": {
+      "id": 379,
+      "category": "Neutral",
+      "name": "凶象"
+    },
+    "TianMingJueShe": {
+      "id": 380,
+      "category": "Neutral",
+      "name": null
+    },
+    "ZhuShiBuYi": {
+      "id": 381,
+      "category": "Neutral",
+      "name": "诸事不宜"
+    },
+    "AfterCardAciton": {
+      "id": 382,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiGongJiSuiFang": {
+      "id": 383,
+      "category": "Neutral",
+      "name": "下次攻击碎防"
+    },
+    "DuanGu": {
+      "id": 384,
+      "category": "Neutral",
+      "name": "锻骨"
+    },
+    "BenChangZhanDouTiPoJiShu": {
+      "id": 385,
+      "category": "Hidden",
+      "name": null
+    },
+    "XuanXinZhanPo": {
+      "id": 386,
+      "category": "Hidden",
+      "name": null
+    },
+    "WanShiRuYi": {
+      "id": 387,
+      "category": "Neutral",
+      "name": "万事如意"
+    },
+    "Long": {
+      "id": 388,
+      "category": "Neutral",
+      "name": "龙"
+    },
+    "TiaoZhiShangZhang": {
+      "id": 389,
+      "category": "Neutral",
+      "name": null
+    },
+    "DongZhuJiXian": {
+      "id": 390,
+      "category": "Neutral",
+      "name": "命运轮回"
+    },
+    "MinXinRuXuan": {
+      "id": 391,
+      "category": "Neutral",
+      "name": "冥心入玄"
+    },
+    "ShiYu": {
+      "id": 392,
+      "category": "Positive",
+      "name": "食欲"
+    },
+    "ShiZhi": {
+      "id": 393,
+      "category": "Negative",
+      "name": "食滞"
+    },
+    "HongZaoZong": {
+      "id": 394,
+      "category": "Hidden",
+      "name": null
+    },
+    "LianXuShiYongTianZong": {
+      "id": 395,
+      "category": "Hidden",
+      "name": null
+    },
+    "JianShuiZongTian": {
+      "id": 396,
+      "category": "Hidden",
+      "name": null
+    },
+    "DouShaZong": {
+      "id": 397,
+      "category": "Hidden",
+      "name": null
+    },
+    "ShiYongTianZong": {
+      "id": 398,
+      "category": "Hidden",
+      "name": null
+    },
+    "XianGuoBaoZong": {
+      "id": 399,
+      "category": "Hidden",
+      "name": null
+    },
+    "BaBaoZaLiangZongLingQi": {
+      "id": 400,
+      "category": "Hidden",
+      "name": null
+    },
+    "BaBaoZaLiangZongShengMing": {
+      "id": 401,
+      "category": "Hidden",
+      "name": null
+    },
+    "DanHuangZong": {
+      "id": 402,
+      "category": "Hidden",
+      "name": null
+    },
+    "XianDanHuangZong": {
+      "id": 403,
+      "category": "Hidden",
+      "name": null
+    },
+    "WuMiZong": {
+      "id": 404,
+      "category": "Hidden",
+      "name": null
+    },
+    "YingXiaoZong": {
+      "id": 405,
+      "category": "Hidden",
+      "name": null
+    },
+    "MeiHuaZong": {
+      "id": 406,
+      "category": "Hidden",
+      "name": null
+    },
+    "JianShuiZongXian": {
+      "id": 407,
+      "category": "Hidden",
+      "name": null
+    },
+    "ZongZiShiLian": {
+      "id": 408,
+      "category": "Hidden",
+      "name": null
+    },
+    "LoseHpTimesCount": {
+      "id": 409,
+      "category": "Hidden",
+      "name": null
+    },
+    "ChaseCount": {
+      "id": 410,
+      "category": "Hidden",
+      "name": null
+    },
+    "TianYuanWuJiPan": {
+      "id": 411,
+      "category": "Neutral",
+      "name": "天元无极盘"
+    },
+    "XingYueQianKunShan": {
+      "id": 412,
+      "category": "Neutral",
+      "name": "星月六爻扇"
+    },
+    "TianSuiHuLu": {
+      "id": 413,
+      "category": "Neutral",
+      "name": "天髓葫芦"
+    },
+    "HunYuanNiKeZhen": {
+      "id": 414,
+      "category": "Neutral",
+      "name": "混元逆克阵"
+    },
+    "WanWuShengZhang": {
+      "id": 415,
+      "category": "Neutral",
+      "name": "木灵•万物生"
+    },
+    "KunWuRongHuoHuan": {
+      "id": 416,
+      "category": "Neutral",
+      "name": "锟铻熔火环"
+    },
+    "MingYeMiZongBu": {
+      "id": 417,
+      "category": "Neutral",
+      "name": "冥夜迷踪步"
+    },
+    "BengQuanFanXuan": {
+      "id": 418,
+      "category": "Neutral",
+      "name": "崩拳•返玄"
+    },
+    "MingYeMiZongBuShengXiao": {
+      "id": 419,
+      "category": "Hidden",
+      "name": null
+    },
+    "BengQuanDuoXing": {
+      "id": 420,
+      "category": "Neutral",
+      "name": "崩拳•夺星"
+    },
+    "XiaoHaoBengQuanDuoXing": {
+      "id": 421,
+      "category": "Hidden",
+      "name": null
+    },
+    "XingChengDuanGuJue": {
+      "id": 422,
+      "category": "Neutral",
+      "name": "星辰锻骨诀"
+    },
+    "HunYuanNiKeZhenJiaFang": {
+      "id": 423,
+      "category": "Hidden",
+      "name": null
+    },
+    "XuanMinHuiChunQu": {
+      "id": 424,
+      "category": "Neutral",
+      "name": "玄冥回春曲"
+    },
+    "XuanMinJuLiZhen": {
+      "id": 425,
+      "category": "Neutral",
+      "name": "玄冥聚力阵"
+    },
+    "LastTurnStartHp": {
+      "id": 426,
+      "category": "Hidden",
+      "name": null
+    },
+    "ThisTurnStartHp": {
+      "id": 427,
+      "category": "Hidden",
+      "name": null
+    },
+    "XuanMinHuiChunQuJianShengMing": {
+      "id": 428,
+      "category": "Hidden",
+      "name": null
+    },
+    "TianNvBaiYuLun": {
+      "id": 429,
+      "category": "Neutral",
+      "name": "九天流光轮"
+    },
+    "PanGuFu": {
+      "id": 430,
+      "category": "Neutral",
+      "name": "裂穹开天斧"
+    },
+    "NvWaShi": {
+      "id": 431,
+      "category": "Neutral",
+      "name": "五色补天石"
+    },
+    "LianYaoHu": {
+      "id": 432,
+      "category": "Neutral",
+      "name": "幽冥化生壶"
+    },
+    "WuShiHuTi": {
+      "id": 433,
+      "category": "Hidden",
+      "name": null
+    },
+    "KongTongYin": {
+      "id": 434,
+      "category": "Neutral",
+      "name": "五帝长生印"
+    },
+    "WuJianTianFuCard_1": {
+      "id": 435,
+      "category": "Hidden",
+      "name": null
+    },
+    "WuJianTianFuCard_2": {
+      "id": 436,
+      "category": "Hidden",
+      "name": null
+    },
+    "WuJianTianFuCard_3": {
+      "id": 437,
+      "category": "Hidden",
+      "name": null
+    },
+    "WuJianTianFuCard_4": {
+      "id": 438,
+      "category": "Hidden",
+      "name": null
+    },
+    "LingGuaZiYanYiChuFa": {
+      "id": 439,
+      "category": "Hidden",
+      "name": null
+    },
+    "YinFuYuJian": {
+      "id": 440,
+      "category": "Neutral",
+      "name": "阴符玉简"
+    },
+    "BeiGu": {
+      "id": 441,
+      "category": "Neutral",
+      "name": "背孤"
+    },
+    "JiXu": {
+      "id": 442,
+      "category": "Neutral",
+      "name": "击虚"
+    },
+    "QuanJiaShi": {
+      "id": 443,
+      "category": "Positive",
+      "name": "拳"
+    },
+    "GunJiaShi": {
+      "id": 444,
+      "category": "Positive",
+      "name": "棍"
+    },
+    "YuLingQu": {
+      "id": 445,
+      "category": "Neutral",
+      "name": "御灵曲"
+    },
+    "YunJianZhouTian": {
+      "id": 446,
+      "category": "Neutral",
+      "name": "云剑•周天"
+    },
+    "TianJiDiSha": {
+      "id": 447,
+      "category": "Neutral",
+      "name": "天机•地煞"
+    },
+    "LingQueZaiHou": {
+      "id": 448,
+      "category": "Neutral",
+      "name": "灵雀在后"
+    },
+    "LiangYiJinGangZhen": {
+      "id": 449,
+      "category": "Neutral",
+      "name": "两仪金刚阵"
+    },
+    "XingYiTiao": {
+      "id": 450,
+      "category": "Hidden",
+      "name": null
+    },
+    "TianSuiKuangWuQu": {
+      "id": 451,
+      "category": "Neutral",
+      "name": "天髓狂舞曲"
+    },
+    "MuLingLiaoYuZhen": {
+      "id": 452,
+      "category": "Neutral",
+      "name": "木灵天罡阵"
+    },
+    "ShiLingZhen": {
+      "id": 453,
+      "category": "Neutral",
+      "name": "势灵阵"
+    },
+    "BengQuanShanYing": {
+      "id": 454,
+      "category": "Neutral",
+      "name": null
+    },
+    "BengTianXiaoYaoQu": {
+      "id": 455,
+      "category": "Neutral",
+      "name": "逍遥连音曲"
+    },
+    "TianJiFanGuJiaGongJi": {
+      "id": 456,
+      "category": "Neutral",
+      "name": "天机•返蛊"
+    },
+    "XuanYuXueLian": {
+      "id": 457,
+      "category": "Neutral",
+      "name": "玄域雪莲"
+    },
+    "LingQueZaiHouJiaLingQi": {
+      "id": 458,
+      "category": "Hidden",
+      "name": null
+    },
+    "ChaiZhao": {
+      "id": 459,
+      "category": "Neutral",
+      "name": "拆招"
+    },
+    "QinTianPiLiQu": {
+      "id": 460,
+      "category": "Neutral",
+      "name": "春雷霹雳曲"
+    },
+    "FuXianJiShouCi": {
+      "id": 461,
+      "category": "Hidden",
+      "name": null
+    },
+    "WuShiKunXianKunFu": {
+      "id": 462,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiaTongBao": {
+      "id": 463,
+      "category": "Hidden",
+      "name": null
+    },
+    "JianTongBao": {
+      "id": 464,
+      "category": "Hidden",
+      "name": null
+    },
+    "ErBeiTongBao": {
+      "id": 465,
+      "category": "Hidden",
+      "name": null
+    },
+    "SanBeiTongBao": {
+      "id": 466,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiuXiJiaTongBao": {
+      "id": 467,
+      "category": "Hidden",
+      "name": null
+    },
+    "LianDanChouPai": {
+      "id": 468,
+      "category": "Hidden",
+      "name": null
+    },
+    "BaGuaChouPai": {
+      "id": 469,
+      "category": "Hidden",
+      "name": null
+    },
+    "TaiXuChouPai": {
+      "id": 470,
+      "category": "Hidden",
+      "name": null
+    },
+    "LianHuaJiaTongBao": {
+      "id": 471,
+      "category": "Permanent",
+      "name": null
+    },
+    "LianHuaTongBaoFanBei": {
+      "id": 472,
+      "category": "Permanent",
+      "name": null
+    },
+    "TA18BianFu": {
+      "id": 473,
+      "category": "Hidden",
+      "name": null
+    },
+    "TA18YingXiaoTu": {
+      "id": 474,
+      "category": "Hidden",
+      "name": null
+    },
+    "WuShiJianGong": {
+      "id": 475,
+      "category": "Hidden",
+      "name": null
+    },
+    "ShengJiXiaZhangMuLingPai": {
+      "id": 476,
+      "category": "Hidden",
+      "name": null
+    },
+    "GongMingMingXinRuXuan": {
+      "id": 477,
+      "category": "Hidden",
+      "name": null
+    },
+    "HuanFeiYaJianDuoJiaJianYi": {
+      "id": 478,
+      "category": "Hidden",
+      "name": null
+    },
+    "LiuShuiWuQin": {
+      "id": 479,
+      "category": "Neutral",
+      "name": "幻•流水无情"
+    },
+    "HuanDouZhuanJiaXingWei": {
+      "id": 480,
+      "category": "Hidden",
+      "name": "幻•斗转星移"
+    },
+    "ChuFaHouZhao": {
+      "id": 481,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiaShengMingZaiDong": {
+      "id": 482,
+      "category": "Neutral",
+      "name": null
+    },
+    "JvYan": {
+      "id": 483,
+      "category": "Neutral",
+      "name": "幻•火灵聚炎"
+    },
+    "BoLan": {
+      "id": 484,
+      "category": "Neutral",
+      "name": "幻•水灵波澜"
+    },
+    "FanHuanFengRui": {
+      "id": 485,
+      "category": "Neutral",
+      "name": "幻•金灵针"
+    },
+    "XiaoHaoFengRui": {
+      "id": 486,
+      "category": "Hidden",
+      "name": null
+    },
+    "DouZhuanPlus": {
+      "id": 487,
+      "category": "Neutral",
+      "name": "幻•斗转星移"
+    },
+    "DuanGuPlusHp": {
+      "id": 488,
+      "category": "Neutral",
+      "name": "幻•锻骨"
+    },
+    "DuanGuPlusDmg": {
+      "id": 489,
+      "category": "Neutral",
+      "name": "幻•锻骨"
+    },
+    "QiChenDanTianPlus": {
+      "id": 490,
+      "category": "Neutral",
+      "name": "幻•气沉丹田"
+    },
+    "QunShanPlus": {
+      "id": 491,
+      "category": "Neutral",
+      "name": null
+    },
+    "WanNengJian": {
+      "id": 492,
+      "category": "Hidden",
+      "name": null
+    },
+    "ZhanDouGongJiJiShu": {
+      "id": 493,
+      "category": "Hidden",
+      "name": null
+    },
+    "ChanPlus": {
+      "id": 494,
+      "category": "Neutral",
+      "name": "幻•崩拳缠"
+    },
+    "HuiHeJiaShengMing": {
+      "id": 495,
+      "category": "Hidden",
+      "name": null
+    },
+    "WuXingJuLingYiChuFa": {
+      "id": 496,
+      "category": "Hidden",
+      "name": null
+    },
+    "HuanQiShiBuJue": {
+      "id": 497,
+      "category": "Neutral",
+      "name": null
+    },
+    "LuoHuaYouYiPlus": {
+      "id": 498,
+      "category": "Neutral",
+      "name": "幻•落花有意"
+    },
+    "AiCao": {
+      "id": 499,
+      "category": "Hidden",
+      "name": null
+    },
+    "TianSuiZong": {
+      "id": 500,
+      "category": "Hidden",
+      "name": null
+    },
+    "JinQiZong": {
+      "id": 501,
+      "category": "Hidden",
+      "name": null
+    },
+    "LingXiPlus": {
+      "id": 502,
+      "category": "Neutral",
+      "name": "幻•灵犀剑阵"
+    },
+    "LingXiPlusYiChuFa": {
+      "id": 503,
+      "category": "Hidden",
+      "name": null
+    },
+    "WanNengJianShengXiaoCengJi": {
+      "id": 504,
+      "category": "Hidden",
+      "name": null
+    },
+    "XianHouShouFanZhuan": {
+      "id": 505,
+      "category": "Permanent",
+      "name": null
+    },
+    "ZhanDouXianShouJiaShengMing": {
+      "id": 506,
+      "category": "Permanent",
+      "name": null
+    },
+    "ZhanDouHouShouJiaShengMing": {
+      "id": 507,
+      "category": "Permanent",
+      "name": null
+    },
+    "SuiJiYiFangXianShou": {
+      "id": 508,
+      "category": "Permanent",
+      "name": null
+    },
+    "ShuangFangSuoYouPaiBianErJi": {
+      "id": 509,
+      "category": "Permanent",
+      "name": null
+    },
+    "ShuangFangShengMingBianWeiXiangTong": {
+      "id": 510,
+      "category": "Permanent",
+      "name": null
+    },
+    "HuanPaiYouXianMenPai": {
+      "id": 511,
+      "category": "Permanent",
+      "name": null
+    },
+    "HuanPaiYouXianFuzhi": {
+      "id": 512,
+      "category": "Permanent",
+      "name": null
+    },
+    "HuanPaiYouXianJingJie": {
+      "id": 513,
+      "category": "Permanent",
+      "name": null
+    },
+    "YouFuTongXiangJiaMingYuan": {
+      "id": 514,
+      "category": "Permanent",
+      "name": null
+    },
+    "YouFuTongXiangJiaHuanPaiHeChuCunShangXian": {
+      "id": 515,
+      "category": "Permanent",
+      "name": null
+    },
+    "YouFuTongXiangJiaShengMingShangXian": {
+      "id": 516,
+      "category": "Permanent",
+      "name": null
+    },
+    "YouFuTongXiangChouPai": {
+      "id": 517,
+      "category": "Permanent",
+      "name": null
+    },
+    "YouFuTongXiangBuShengXiao": {
+      "id": 518,
+      "category": "Permanent",
+      "name": null
+    },
+    "YouFuTongXiangRound": {
+      "id": 519,
+      "category": "Permanent",
+      "name": null
+    },
+    "HaoRanZhengQiPlus": {
+      "id": 520,
+      "category": "Neutral",
+      "name": null
+    },
+    "LingQiGaiWeiXingLi": {
+      "id": 521,
+      "category": "Neutral",
+      "name": "幻•星罗棋布"
+    },
+    "JiLuJiaGuoGuaXiang": {
+      "id": 522,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiGongJiDuoGong": {
+      "id": 523,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiPuTongGongJiDuoGong": {
+      "id": 524,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiLingJianGongJiDuoGong": {
+      "id": 525,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiJianPiJianDangJiaJianYi": {
+      "id": 526,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiDouZhuanXingYiDuoXingWei": {
+      "id": 527,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiJiaGuaXiangZaoChengShangHai": {
+      "id": 528,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiFengRuiChuFaJianShengMing": {
+      "id": 529,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinReSha": {
+      "id": 530,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinZiYang": {
+      "id": 531,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiHuoDeFuMianZhuangTaiJiaFang": {
+      "id": 532,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiDuanQuanJiaTiPo": {
+      "id": 533,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiJiaShengMingDuoJiaShengMingJiShangXian": {
+      "id": 534,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiShouDaoGongJiQianJiaFang": {
+      "id": 535,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiGongJiHouJianShengMing": {
+      "id": 536,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiGongJiHouFanHuanJianYi": {
+      "id": 537,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiLeiPaiShiQuShengMing": {
+      "id": 538,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiLeiPaiJiaGuaXiang": {
+      "id": 539,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiMuLingShuYingJiaGong": {
+      "id": 540,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiHuiHeJieShuJianShaoFuMianBuff": {
+      "id": 541,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiHaoShengMingPaiFanHuan": {
+      "id": 542,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiJiaLingQiDuoJia": {
+      "id": 543,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiGongJiShiJiaNeiShang": {
+      "id": 544,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiJiaGongDuoJia": {
+      "id": 545,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaZhangPaiSuanZuoKuangJianCengJi": {
+      "id": 546,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiJiaJianYiDuoJia": {
+      "id": 547,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiTuLingPaiJiaFang": {
+      "id": 548,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiJinLingPaiJiaFengRui": {
+      "id": 549,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiShuiLingXiongYongEWaiGongJi": {
+      "id": 550,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiHuoDePoZhanShiShiJiaPoZhan": {
+      "id": 551,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiQiRuoXuanHeJiaQiShi": {
+      "id": 552,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiBaiNiaoLingJianJueJianXiaoHao": {
+      "id": 553,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiRouXinJiaShengMingShangXianBingZaiDong": {
+      "id": 554,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiJianZhenPaiMeiDianJianYiJiaFang": {
+      "id": 555,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiKuMuFengChunMeiDianLingQiJiaShengMing": {
+      "id": 556,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiShuiLingPaiJiaLingQi": {
+      "id": 557,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinDiSha": {
+      "id": 558,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiJiaLingQiJiaBei": {
+      "id": 559,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiPaiJiangJi": {
+      "id": 560,
+      "category": "Hidden",
+      "name": null
+    },
+    "BenHuiHeWuFaZaiCiXingDong": {
+      "id": 561,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiHanGongPaiZhuiJiaGong": {
+      "id": 562,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiTianYuanXinFaZaiCiXingDong": {
+      "id": 563,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiLingZhenPaiZaiCiXingDong": {
+      "id": 564,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiFeiXingCiJiaXingLi": {
+      "id": 565,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiJiaFangDuoJia": {
+      "id": 566,
+      "category": "Hidden",
+      "name": null
+    },
+    "XingYanJuePlus": {
+      "id": 567,
+      "category": "Hidden",
+      "name": null
+    },
+    "XingLiBeiLv": {
+      "id": 568,
+      "category": "Hidden",
+      "name": null
+    },
+    "HuoLingYinPlus": {
+      "id": 569,
+      "category": "Neutral",
+      "name": "幻•火灵印"
+    },
+    "TuLingZhenPlus": {
+      "id": 570,
+      "category": "Neutral",
+      "name": "幻•土灵阵"
+    },
+    "SuoYouPaiShiZuoYunJian": {
+      "id": 571,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinShanFeng": {
+      "id": 572,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiJiaGuaXiangDuoJia": {
+      "id": 573,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinJingLei": {
+      "id": 574,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinHuoYuan": {
+      "id": 575,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinShuiRen": {
+      "id": 576,
+      "category": "Hidden",
+      "name": null
+    },
+    "JinLingYinPlus": {
+      "id": 577,
+      "category": "Neutral",
+      "name": "幻•金灵印"
+    },
+    "KeYinXueYing": {
+      "id": 578,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinFaXiang": {
+      "id": 579,
+      "category": "Hidden",
+      "name": null
+    },
+    "JianZhenCount": {
+      "id": 580,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiJianZhenJiaFang": {
+      "id": 581,
+      "category": "Neutral",
+      "name": null
+    },
+    "KuangJianSuanZuoJianZhen": {
+      "id": 582,
+      "category": "Hidden",
+      "name": null
+    },
+    "HuTiInRoundXJiShu": {
+      "id": 583,
+      "category": "Hidden",
+      "name": null
+    },
+    "HuanJieMaiShiJiaFuMian": {
+      "id": 584,
+      "category": "Neutral",
+      "name": null
+    },
+    "HuanJieMaiJiaShenFa": {
+      "id": 585,
+      "category": "Neutral",
+      "name": null
+    },
+    "ChanPlusChuFa": {
+      "id": 586,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinQuanFeng": {
+      "id": 587,
+      "category": "Hidden",
+      "name": null
+    },
+    "HuaLongInRoundXJiShu": {
+      "id": 588,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiangJiInRoundXJiShu": {
+      "id": 589,
+      "category": "Hidden",
+      "name": null
+    },
+    "NeiShangDuoChuFa": {
+      "id": 590,
+      "category": "Neutral",
+      "name": "幻•死缠烂打"
+    },
+    "HuanQinZhuoJianZaiCiXingDong": {
+      "id": 591,
+      "category": "Neutral",
+      "name": "幻•勤拙剑"
+    },
+    "KeYinYinZheng": {
+      "id": 592,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinHuoBian": {
+      "id": 593,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinZhuCheng": {
+      "id": 594,
+      "category": "Hidden",
+      "name": null
+    },
+    "HuanShengJiZhanFang": {
+      "id": 595,
+      "category": "Neutral",
+      "name": "幻•生机绽放"
+    },
+    "KeYinTiaoXi": {
+      "id": 596,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinXuTianMing": {
+      "id": 597,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaHuiHeKaiShiQianBuZaiSunShiShengMing": {
+      "id": 598,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinJieZhenCiShu": {
+      "id": 599,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiGuanKeWen": {
+      "id": 600,
+      "category": "Positive",
+      "name": "机关刻纹"
+    },
+    "JiGuanLingWen": {
+      "id": 601,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiGuanJianLie": {
+      "id": 602,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiGuanJianZhan": {
+      "id": 603,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiGuanJianZhen": {
+      "id": 604,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiGuanXingYi": {
+      "id": 605,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiGuanLingYin": {
+      "id": 606,
+      "category": "Hidden",
+      "name": null
+    },
+    "HuanQiChenJianShang": {
+      "id": 607,
+      "category": "Neutral",
+      "name": "幻•气沉丹田"
+    },
+    "HuanQiChenJiaGong": {
+      "id": 608,
+      "category": "Neutral",
+      "name": "幻•气沉丹田"
+    },
+    "HunTianKe": {
+      "id": 609,
+      "category": "Hidden",
+      "name": null
+    },
+    "LingQiBengYongQuanShengXiao": {
+      "id": 610,
+      "category": "Hidden",
+      "name": null
+    },
+    "YunHaiYouLongShengXiao": {
+      "id": 611,
+      "category": "Hidden",
+      "name": null
+    },
+    "JinZhiFuHuo": {
+      "id": 612,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinWuKuangYan": {
+      "id": 613,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinHuLingLong": {
+      "id": 614,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinTaLingYun": {
+      "id": 615,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinYuLingFang": {
+      "id": 616,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinZhuoKunBie": {
+      "id": 617,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinBuLingDeng": {
+      "id": 618,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinBuXingGua": {
+      "id": 619,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinHuanYuanLing": {
+      "id": 620,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinZhenShanBeng": {
+      "id": 621,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinZhanLingYi": {
+      "id": 622,
+      "category": "Hidden",
+      "name": null
+    },
+    "LianHuanTempPos": {
+      "id": 623,
+      "category": "Hidden",
+      "name": null
+    },
+    "YunHai": {
+      "id": 624,
+      "category": "Positive",
+      "name": "云海"
+    },
+    "JianQi": {
+      "id": 625,
+      "category": "Positive",
+      "name": "剑气"
+    },
+    "XiaZhangKuangJianZaiCiXingDong": {
+      "id": 626,
+      "category": "Hidden",
+      "name": null
+    },
+    "ShengJiXiaZhangYunJian": {
+      "id": 627,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiaLingQiShiJiaFang": {
+      "id": 628,
+      "category": "Neutral",
+      "name": "梦•灵犀剑阵"
+    },
+    "JiLuJiaFang": {
+      "id": 629,
+      "category": "Hidden",
+      "name": null
+    },
+    "QuXiaoJianQiChuFaXianZhi": {
+      "id": 630,
+      "category": "Hidden",
+      "name": null
+    },
+    "MengLiangYiJiaShengMing": {
+      "id": 631,
+      "category": "Neutral",
+      "name": "梦•两仪阵"
+    },
+    "MengLiangYiJiaFang": {
+      "id": 632,
+      "category": "Neutral",
+      "name": "梦•两仪阵"
+    },
+    "FuMianJiaHuiFu": {
+      "id": 633,
+      "category": "Hidden",
+      "name": null
+    },
+    "HouZhaoPaiJiShu": {
+      "id": 634,
+      "category": "Hidden",
+      "name": null
+    },
+    "MengFanZhenJianGong": {
+      "id": 635,
+      "category": "Neutral",
+      "name": "梦•反震心法"
+    },
+    "MengFanZhenFanTan": {
+      "id": 636,
+      "category": "Hidden",
+      "name": null
+    },
+    "SheYing": {
+      "id": 637,
+      "category": "Neutral",
+      "name": "蛇影"
+    },
+    "MengXingLuoQiBu": {
+      "id": 638,
+      "category": "Neutral",
+      "name": "梦星罗棋布"
+    },
+    "MengXingLuoQiBuDiJingJie": {
+      "id": 639,
+      "category": "Neutral",
+      "name": "梦星罗棋布"
+    },
+    "ZaiCiXingDongJiaFengRui": {
+      "id": 640,
+      "category": "Neutral",
+      "name": "梦·金灵阵"
+    },
+    "ShuiShiLinShiJiaBei": {
+      "id": 641,
+      "category": "Neutral",
+      "name": "梦·水灵波澜"
+    },
+    "JiLuLinShiShuiShi": {
+      "id": 642,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiLuLinShiLingQi": {
+      "id": 643,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiLuZongJiShangZhi": {
+      "id": 644,
+      "category": "Hidden",
+      "name": null
+    },
+    "MuCi": {
+      "id": 645,
+      "category": "Positive",
+      "name": "木刺"
+    },
+    "JiaGongZhuanMuCi": {
+      "id": 646,
+      "category": "Neutral",
+      "name": "梦·木灵阵"
+    },
+    "MengLingXuan": {
+      "id": 647,
+      "category": "Neutral",
+      "name": "梦·灵玄迷踪步"
+    },
+    "JiLuJiaGuoLingQi": {
+      "id": 648,
+      "category": "Hidden",
+      "name": null
+    },
+    "MengDuanYa": {
+      "id": 649,
+      "category": "Hidden",
+      "name": null
+    },
+    "HuiHeKaiSHiJiaFang": {
+      "id": 650,
+      "category": "Neutral",
+      "name": "梦•云剑柔心"
+    },
+    "HuiHeKaiSHiJiaYunHai": {
+      "id": 651,
+      "category": "Hidden",
+      "name": null
+    },
+    "MengTianSui": {
+      "id": 652,
+      "category": "Neutral",
+      "name": "梦·五行天髓诀"
+    },
+    "MengTianSuiDiJingJie": {
+      "id": 653,
+      "category": "Neutral",
+      "name": "梦·五行天髓诀"
+    },
+    "MengLingXuanBuChuFa": {
+      "id": 654,
+      "category": "Hidden",
+      "name": null
+    },
+    "MengLingXuanChuFaCiShu": {
+      "id": 655,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinWangBaiLu": {
+      "id": 656,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinLiZhiHuo": {
+      "id": 657,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYinQuanZhiYong": {
+      "id": 658,
+      "category": "Hidden",
+      "name": null
+    },
+    "KeYInPangBoShi": {
+      "id": 659,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiLuZhanDouZuiGaoShengMing": {
+      "id": 660,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiLuShiQuQiShi": {
+      "id": 661,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaZhangPaiSuanBengQuan": {
+      "id": 662,
+      "category": "Hidden",
+      "name": null
+    },
+    "ShiYongXiaZhangPaiHouXiaoHao": {
+      "id": 663,
+      "category": "Neutral",
+      "name": "梦·火灵聚炎"
+    },
+    "MengKuMuJiShu": {
+      "id": 664,
+      "category": "Hidden",
+      "name": null
+    },
+    "JianBanFangZhuanShengMing": {
+      "id": 665,
+      "category": "Hidden",
+      "name": null
+    },
+    "JianShengMingShangXianJiaFang": {
+      "id": 666,
+      "category": "Neutral",
+      "name": "梦·火灵阵"
+    },
+    "JianShengMingShangXianDuoJian": {
+      "id": 667,
+      "category": "Neutral",
+      "name": "梦·火灵阵"
+    },
+    "GongJiXiQuShengMing": {
+      "id": 668,
+      "category": "Neutral",
+      "name": "梦·木灵阵"
+    },
+    "XiaCiGongJiShouShuangBeiJianYiJiaGongJiaCheng": {
+      "id": 669,
+      "category": "Neutral",
+      "name": "梦•凝意诀"
+    },
+    "ShiYongJianZhenJiaYunHai": {
+      "id": 670,
+      "category": "Hidden",
+      "name": null
+    },
+    "ShengJiXiaCiKuangJian": {
+      "id": 671,
+      "category": "Hidden",
+      "name": null
+    },
+    "JianShengMingShangXianCiShu": {
+      "id": 672,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiHaoShengMingJiaFang": {
+      "id": 673,
+      "category": "Neutral",
+      "name": "梦·崩拳弹"
+    },
+    "HaoShengMingJiaFang": {
+      "id": 674,
+      "category": "Neutral",
+      "name": "梦·崩拳弹"
+    },
+    "GongJiJiaQiSHi": {
+      "id": 675,
+      "category": "Neutral",
+      "name": "梦·气若悬河"
+    },
+    "JiLuYongGuoJianPai": {
+      "id": 676,
+      "category": "Hidden",
+      "name": null
+    },
+    "MengBuDongJinGangZhen": {
+      "id": 677,
+      "category": "Neutral",
+      "name": "梦·不动金刚阵"
+    },
+    "BengQuanFuHu": {
+      "id": 678,
+      "category": "Neutral",
+      "name": "崩拳•伏虎"
+    },
+    "ChuFaFuHu": {
+      "id": 679,
+      "category": "Hidden",
+      "name": null
+    },
+    "ShunYingJi": {
+      "id": 680,
+      "category": "Neutral",
+      "name": "瞬影击"
+    },
+    "MengKuangWuQu": {
+      "id": 681,
+      "category": "Neutral",
+      "name": "梦·狂舞曲"
+    },
+    "MengFeiYunDan": {
+      "id": 682,
+      "category": "Neutral",
+      "name": "梦·飞云丹"
+    },
+    "MengKunXian": {
+      "id": 683,
+      "category": "Neutral",
+      "name": "梦·天音困仙曲"
+    },
+    "MengDaHuanDan": {
+      "id": 684,
+      "category": "Neutral",
+      "name": "梦·大还丹"
+    },
+    "MengZhuanXian": {
+      "id": 685,
+      "category": "Neutral",
+      "name": "梦·转弦合调"
+    },
+    "MengXingLuoHuaShenChuFaCiShu": {
+      "id": 686,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaZhangBengQuanZhuiJiaGongJi": {
+      "id": 687,
+      "category": "Neutral",
+      "name": "下张崩拳追加攻击"
+    },
+    "XiaZhangBengQuanZhuiJiaGongJiYiChuFa": {
+      "id": 688,
+      "category": "Hidden",
+      "name": null
+    },
+    "MengWanFa": {
+      "id": 689,
+      "category": "Neutral",
+      "name": null
+    },
+    "MengHuoZhen": {
+      "id": 690,
+      "category": "Neutral",
+      "name": "梦·火灵阵"
+    },
+    "JiLuSHiQuFuMian": {
+      "id": 691,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiaJianYiJiaFang": {
+      "id": 692,
+      "category": "Neutral",
+      "name": "梦•灵犀剑阵"
+    },
+    "BiDingShiZuoJiShang": {
+      "id": 693,
+      "category": "Hidden",
+      "name": null
+    },
+    "MengYinLeiZhen": {
+      "id": 694,
+      "category": "Neutral",
+      "name": "无法加防"
+    },
+    "JingZhongXuanYing": {
+      "id": 695,
+      "category": "Hidden",
+      "name": null
+    },
+    "WanRuoYouLongShengXiao": {
+      "id": 696,
+      "category": "Hidden",
+      "name": null
+    },
+    "CeMaYangBian": {
+      "id": 697,
+      "category": "Hidden",
+      "name": null
+    },
+    "ZouMaGuanHuaZiShenShouShangHai": {
+      "id": 698,
+      "category": "Neutral",
+      "name": "走马观花"
+    },
+    "ZouMaGuanHuaDuiFangShouShangHai": {
+      "id": 699,
+      "category": "Neutral",
+      "name": "走马观花"
+    },
+    "JiLuShiQuGuaXiang": {
+      "id": 700,
+      "category": "Hidden",
+      "name": null
+    },
+    "MengYuLei": {
+      "id": 701,
+      "category": "Neutral",
+      "name": "梦·御雷卦诀"
+    },
+    "MengYuleiHuiHeXianZhi": {
+      "id": 702,
+      "category": "Hidden",
+      "name": null
+    },
+    "SnakeCardUsed": {
+      "id": 703,
+      "category": "Hidden",
+      "name": null
+    },
+    "MengEJie": {
+      "id": 704,
+      "category": "Hidden",
+      "name": null
+    },
+    "MengDuanQuan": {
+      "id": 705,
+      "category": "Neutral",
+      "name": "梦·锻拳"
+    },
+    "MengDuanQuanJieShu": {
+      "id": 706,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaZhangBengQuanJiaTiPo": {
+      "id": 707,
+      "category": "Neutral",
+      "name": "梦·锻拳"
+    },
+    "LongMaJingShen": {
+      "id": 708,
+      "category": "Neutral",
+      "name": "龙马精神"
+    },
+    "MengLingXuanHuaShenQi": {
+      "id": 709,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiaShengMingCiShu": {
+      "id": 710,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiaFangCiShu": {
+      "id": 711,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiaFengRuiCiShu": {
+      "id": 712,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiaLingQiCiShu": {
+      "id": 713,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiaShuiShiCiShu": {
+      "id": 714,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiaFangZaoChengShangHai": {
+      "id": 715,
+      "category": "Neutral",
+      "name": "梦·岿然不动"
+    },
+    "MengKuiRanBuDong": {
+      "id": 716,
+      "category": "Neutral",
+      "name": "梦·岿然不动"
+    },
+    "JiLuWuXingPaiShiYongCiShu": {
+      "id": 717,
+      "category": "Hidden",
+      "name": null
+    },
+    "MengKuangEr": {
+      "id": 718,
+      "category": "Neutral",
+      "name": "梦·狂剑二式"
+    },
+    "JiaLingQiJianBan": {
+      "id": 719,
+      "category": "Hidden",
+      "name": null
+    },
+    "YongGuoYunJianJiShu": {
+      "id": 720,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiLuJiaGuoDeFengRui": {
+      "id": 721,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiLuJiaGuoDeShuiShi": {
+      "id": 722,
+      "category": "Hidden",
+      "name": null
+    },
+    "JiLuJiaGuoDeQiShi": {
+      "id": 723,
+      "category": "Hidden",
+      "name": null
+    },
+    "FengLingDuanQuJiShu": {
+      "id": 724,
+      "category": "Hidden",
+      "name": null
+    },
+    "MengLianBeng": {
+      "id": 725,
+      "category": "Neutral",
+      "name": "梦·崩拳连崩"
+    },
+    "MengLianBengChuFa": {
+      "id": 726,
+      "category": "Hidden",
+      "name": null
+    },
+    "YuLingXinFaJiaLingQiShiJiaFang": {
+      "id": 727,
+      "category": "Neutral",
+      "name": "御灵心法"
+    },
+    "YuLingXinFaHaoLingQiShiJiaFang": {
+      "id": 728,
+      "category": "Neutral",
+      "name": "御灵心法"
+    },
+    "KaPaiBuChuFaJianYi": {
+      "id": 729,
+      "category": "Hidden",
+      "name": null
+    },
+    "ShangHunZhouZhenShiJiaNeiShangCiShu": {
+      "id": 730,
+      "category": "Neutral",
+      "name": "伤魂咒阵"
+    },
+    "GongJiShiShiJiaNeiShangHuiHeShu": {
+      "id": 731,
+      "category": "Neutral",
+      "name": "折枝点穴"
+    },
+    "ZhenYinXinFa": {
+      "id": 732,
+      "category": "Neutral",
+      "name": "镇印心法"
+    },
+    "MuLingChunFengFuHuiHeShu": {
+      "id": 733,
+      "category": "Neutral",
+      "name": "春风拂"
+    },
+    "ZuiQuanJiaShi": {
+      "id": 734,
+      "category": "Neutral",
+      "name": "醉拳架势"
+    },
+    "XiaCiBengQuanHaoShengMingShiZaoChengDengLiangShangHai": {
+      "id": 735,
+      "category": "Neutral",
+      "name": "崩拳碎骨"
+    },
+    "HaoShengMingDePaiJiShu": {
+      "id": 736,
+      "category": "Hidden",
+      "name": null
+    },
+    "XunYingFeiJianJiaJianYi": {
+      "id": 737,
+      "category": "Hidden",
+      "name": null
+    },
+    "ZaiCiXingDongCiShu": {
+      "id": 738,
+      "category": "Hidden",
+      "name": null
+    },
+    "BaiNiaoYeYingJue": {
+      "id": 739,
+      "category": "Neutral",
+      "name": "百鸟曳影诀"
+    },
+    "PingXuYuFeng": {
+      "id": 740,
+      "category": "Neutral",
+      "name": "冯虚御风"
+    },
+    "JianZhenHuTi": {
+      "id": 741,
+      "category": "Hidden",
+      "name": null
+    },
+    "LingZhenHuiXiang": {
+      "id": 742,
+      "category": "Hidden",
+      "name": null
+    },
+    "ChanXinJuLingYiChuFa": {
+      "id": 743,
+      "category": "Hidden",
+      "name": null
+    },
+    "YanQi": {
+      "id": 744,
+      "category": "Hidden",
+      "name": null
+    },
+    "TempHuTi": {
+      "id": 745,
+      "category": "Hidden",
+      "name": null
+    },
+    "QiXingLianZhu": {
+      "id": 746,
+      "category": "Hidden",
+      "name": null
+    },
+    "XianZongJiShu": {
+      "id": 747,
+      "category": "Hidden",
+      "name": null
+    },
+    "WanXiangJianShuiZong": {
+      "id": 748,
+      "category": "Hidden",
+      "name": null
+    },
+    "LingYuanHongDouZongJiShu": {
+      "id": 749,
+      "category": "Hidden",
+      "name": null
+    },
+    "XianFuDsaBaiZongJiShu": {
+      "id": 750,
+      "category": "Hidden",
+      "name": null
+    },
+    "FengLingZhanYi": {
+      "id": 751,
+      "category": "Hidden",
+      "name": null
+    },
+    "ZhuQueZhiLei": {
+      "id": 752,
+      "category": "Hidden",
+      "name": null
+    },
+    "DengYanCuiXin": {
+      "id": 753,
+      "category": "Hidden",
+      "name": null
+    },
+    "ReXueHuaQiYiChuFa": {
+      "id": 754,
+      "category": "Hidden",
+      "name": null
+    },
+    "KuangJianYunJi": {
+      "id": 755,
+      "category": "Hidden",
+      "name": null
+    },
+    "YunJianLianYu": {
+      "id": 756,
+      "category": "Hidden",
+      "name": null
+    },
+    "YunJianMaoYing": {
+      "id": 757,
+      "category": "Hidden",
+      "name": null
+    },
+    "QiCeZaiHou": {
+      "id": 758,
+      "category": "Hidden",
+      "name": null
+    },
+    "YinFuJueZhen": {
+      "id": 759,
+      "category": "Hidden",
+      "name": null
+    },
+    "FengXueZhiShu": {
+      "id": 760,
+      "category": "Hidden",
+      "name": null
+    },
+    "ShuiMuShuangHuaZhen": {
+      "id": 761,
+      "category": "Hidden",
+      "name": null
+    },
+    "LingXuanBuXi": {
+      "id": 762,
+      "category": "Hidden",
+      "name": null
+    },
+    "LeiShanErDu": {
+      "id": 763,
+      "category": "Hidden",
+      "name": null
+    },
+    "WuJingGuaYan": {
+      "id": 764,
+      "category": "Hidden",
+      "name": null
+    },
+    "XingYuan": {
+      "id": 765,
+      "category": "Hidden",
+      "name": null
+    },
+    "YiYongGuoShuiLingPai": {
+      "id": 766,
+      "category": "Hidden",
+      "name": null
+    },
+    "WuYouLingNiang": {
+      "id": 767,
+      "category": "Hidden",
+      "name": null
+    },
+    "CuJuFeiXi": {
+      "id": 768,
+      "category": "Hidden",
+      "name": null
+    },
+    "XiaCiQiShiDuoJia": {
+      "id": 769,
+      "category": "Hidden",
+      "name": null
+    },
+    "JieQuanShi": {
+      "id": 770,
+      "category": "Hidden",
+      "name": null
+    },
+    "TianYanFengLingDuanQu": {
+      "id": 771,
+      "category": "Hidden",
+      "name": null
+    },
+    "QiXingJieMing": {
+      "id": 772,
+      "category": "Hidden",
+      "name": null
+    },
+    "ZiMangXingBao": {
+      "id": 773,
+      "category": "Hidden",
+      "name": null
+    },
+    "LianXiMuZhuang": {
+      "id": 9998,
+      "category": "Positive",
+      "name": "打木桩倒计时"
+    },
+    "LunDaoId": {
+      "id": 9999,
+      "category": "Permanent",
+      "name": null
+    },
+    "HuanPaiJiShu": {
+      "id": 10000,
+      "category": "Permanent",
+      "name": null
+    },
+    "BiDingHouShou": {
+      "id": 10001,
+      "category": "Permanent",
+      "name": null
+    },
+    "KuangZhiZhiNian": {
+      "id": 10002,
+      "category": "Permanent",
+      "name": null
+    },
+    "YunZhiDao": {
+      "id": 10003,
+      "category": "Permanent",
+      "name": null
+    },
+    "HuiSuMingYuan": {
+      "id": 10004,
+      "category": "Permanent",
+      "name": null
+    },
+    "RogueBossId": {
+      "id": 10005,
+      "category": "Permanent",
+      "name": null
+    },
+    "HouShouJiShu": {
+      "id": 10006,
+      "category": "Permanent",
+      "name": null
+    },
+    "PlotDemon": {
+      "id": 10007,
+      "category": "Permanent",
+      "name": null
+    },
+    "GuiYuanCao": {
+      "id": 10008,
+      "category": "Permanent",
+      "name": "归元草"
+    },
+    "JinSuiCao": {
+      "id": 10009,
+      "category": "Permanent",
+      "name": "金梭兰"
+    },
+    "YuGanCao": {
+      "id": 10010,
+      "category": "Permanent",
+      "name": "愈甘菊"
+    },
+    "ShenLiCao": {
+      "id": 10011,
+      "category": "Permanent",
+      "name": "神力草"
+    },
+    "FeiXiaoLingZhi": {
+      "id": 10012,
+      "category": "Permanent",
+      "name": "飞枭灵芝"
+    },
+    "ChuanChangZiJue": {
+      "id": 10013,
+      "category": "Permanent",
+      "name": "穿肠紫蕨"
+    },
+    "GuiYanCao": {
+      "id": 10014,
+      "category": "Permanent",
+      "name": "归岩草"
+    },
+    "CanExtraSelectDaoYun": {
+      "id": 10015,
+      "category": "Permanent",
+      "name": null
+    },
+    "TempAddHandCardsCap": {
+      "id": 10016,
+      "category": "Permanent",
+      "name": null
+    },
+    "HuoSuoLan": {
+      "id": 10017,
+      "category": "Permanent",
+      "name": "火梭兰"
+    },
+    "ShiLiCao": {
+      "id": 10018,
+      "category": "Permanent",
+      "name": "失力草"
+    },
+    "QingGanJu": {
+      "id": 10019,
+      "category": "Permanent",
+      "name": "清甘菊"
+    },
+    "YingXiaoLingZhi": {
+      "id": 10020,
+      "category": "Permanent",
+      "name": "影枭灵芝"
+    },
+    "AllHint": {
+      "id": 10021,
+      "category": "Permanent",
+      "name": null
+    },
+    "KeChangJiShu": {
+      "id": 10022,
+      "category": "Permanent",
+      "name": null
+    },
+    "TiPo": {
+      "id": 10023,
+      "category": "Permanent",
+      "name": "体魄"
+    },
+    "TiPoShangXian": {
+      "id": 10024,
+      "category": "Permanent",
+      "name": null
+    },
+    "LiKeHuoDeDaoYun": {
+      "id": 10025,
+      "category": "Permanent",
+      "name": null
+    },
+    "PlotDialogueRound": {
+      "id": 10026,
+      "category": "Permanent",
+      "name": null
+    },
+    "TA02RandomCard": {
+      "id": 10027,
+      "category": "Permanent",
+      "name": null
+    },
+    "TA02JiaoZhuLv1Received": {
+      "id": 10028,
+      "category": "Permanent",
+      "name": null
+    },
+    "TA02JiaoZhuLv2Received": {
+      "id": 10029,
+      "category": "Permanent",
+      "name": null
+    },
+    "ShiTanZhiJuan": {
+      "id": 10030,
+      "category": "Permanent",
+      "name": null
+    },
+    "JvQiZhouTongBao": {
+      "id": 10034,
+      "category": "Permanent",
+      "name": null
+    },
+    "BaoCunGuaXiang": {
+      "id": 10037,
+      "category": "Permanent",
+      "name": "保存的卦象"
+    },
+    "DaDaoSuiPianBoShi": {
+      "id": 10038,
+      "category": "Permanent",
+      "name": null
+    },
+    "MaxLevel": {
+      "id": 10039,
+      "category": "Permanent",
+      "name": null
+    },
+    "TianJiShi": {
+      "id": 10040,
+      "category": "Permanent",
+      "name": null
+    },
+    "LessExpToBreakthrough": {
+      "id": 10041,
+      "category": "Permanent",
+      "name": null
+    },
+    "LessTiPoToBreakthrough": {
+      "id": 10042,
+      "category": "Permanent",
+      "name": null
+    },
+    "WenDingTuPo": {
+      "id": 10043,
+      "category": "Permanent",
+      "name": null
+    },
+    "ShouPaiShangXian": {
+      "id": 10044,
+      "category": "Permanent",
+      "name": null
+    },
+    "TouXi": {
+      "id": 10045,
+      "category": "Permanent",
+      "name": null
+    },
+    "YiChaHuiYou": {
+      "id": 10046,
+      "category": "Permanent",
+      "name": null
+    },
+    "HuShenFaBao": {
+      "id": 10047,
+      "category": "Permanent",
+      "name": null
+    },
+    "FuZhiZhuanHuan": {
+      "id": 10048,
+      "category": "Permanent",
+      "name": null
+    },
+    "JiaChiXuXiaoHaoWei": {
+      "id": 10049,
+      "category": "Permanent",
+      "name": null
+    },
+    "NiZhuanQianKun": {
+      "id": 10050,
+      "category": "Permanent",
+      "name": null
+    },
+    "DiHuoDuanXin": {
+      "id": 10051,
+      "category": "Permanent",
+      "name": null
+    },
+    "LinZhenDunWu": {
+      "id": 10052,
+      "category": "Permanent",
+      "name": null
+    },
+    "TianYanHuaShen": {
+      "id": 10053,
+      "category": "Permanent",
+      "name": null
+    },
+    "TianYanMiShuZaiShiYiCi": {
+      "id": 10054,
+      "category": "Permanent",
+      "name": null
+    },
+    "WuXingZhuanHua": {
+      "id": 10055,
+      "category": "Permanent",
+      "name": null
+    },
+    "JiZanQiYueBianHuan": {
+      "id": 20001,
+      "category": "Permanent",
+      "name": null
+    },
+    "JieJinQiYueBianHuan": {
+      "id": 20002,
+      "category": "Permanent",
+      "name": null
+    },
+    "ShengLiQiYueShengMing": {
+      "id": 20003,
+      "category": "Permanent",
+      "name": null
+    },
+    "XiaoYaoQiYueShengMing": {
+      "id": 20004,
+      "category": "Permanent",
+      "name": null
+    },
+    "BaoLiuQiYueJunHeng": {
+      "id": 20005,
+      "category": "Permanent",
+      "name": "均衡契约"
+    },
+    "ShengJiQiYue": {
+      "id": 20006,
+      "category": "Permanent",
+      "name": "生机契约"
+    },
+    "SuShaQiYue": {
+      "id": 20007,
+      "category": "Permanent",
+      "name": "肃杀契约"
+    },
+    "TempExp": {
+      "id": 20008,
+      "category": "Permanent",
+      "name": null
+    },
+    "HuiShouZhiJuan": {
+      "id": 20009,
+      "category": "Permanent",
+      "name": null
+    },
+    "LianHuaQiYueBianHuan": {
+      "id": 20010,
+      "category": "Permanent",
+      "name": null
+    },
+    "XiaLunDuoChouPai": {
+      "id": 20011,
+      "category": "Permanent",
+      "name": null
+    },
+    "NiJingQiYueQiangHua": {
+      "id": 20012,
+      "category": "Permanent",
+      "name": "逆境契约-强化"
+    },
+    "MingYuanQiYueBianHuan": {
+      "id": 20013,
+      "category": "Permanent",
+      "name": null
+    },
+    "AnGuQiYue": {
+      "id": 20014,
+      "category": "Permanent",
+      "name": null
+    },
+    "ShenLiQiYue": {
+      "id": 20015,
+      "category": "Permanent",
+      "name": "神力契约"
+    },
+    "ZhuanZhuQiYue": {
+      "id": 20016,
+      "category": "Permanent",
+      "name": null
+    },
+    "JiYunQiYue": {
+      "id": 20017,
+      "category": "Permanent",
+      "name": null
+    },
+    "LingWuQiYue": {
+      "id": 20018,
+      "category": "Permanent",
+      "name": null
+    },
+    "RongHuiZhiJuan": {
+      "id": 20019,
+      "category": "Permanent",
+      "name": null
+    },
+    "ShuangYunZhiJuan": {
+      "id": 20020,
+      "category": "Permanent",
+      "name": null
+    },
+    "KuXiuQiYue": {
+      "id": 20021,
+      "category": "Permanent",
+      "name": null
+    },
+    "MengJinZhiJuan": {
+      "id": 20022,
+      "category": "Permanent",
+      "name": null
+    },
+    "YuanYingZhuanJing": {
+      "id": 20023,
+      "category": "Permanent",
+      "name": null
+    },
+    "HuaShenZhuanJing": {
+      "id": 20024,
+      "category": "Permanent",
+      "name": null
+    },
+    "TuPoGanWu": {
+      "id": 20025,
+      "category": "Permanent",
+      "name": null
+    },
+    "YingXiaoShiLianDaCheng": {
+      "id": 20026,
+      "category": "Permanent",
+      "name": null
+    },
+    "BaiNiaoShiLianDaCheng": {
+      "id": 20027,
+      "category": "Permanent",
+      "name": null
+    },
+    "FeiLingShiLianDaCheng": {
+      "id": 20028,
+      "category": "Permanent",
+      "name": null
+    },
+    "LiGuaShiLianDaCheng": {
+      "id": 20029,
+      "category": "Permanent",
+      "name": null
+    },
+    "WuLeiShiLianDaCheng": {
+      "id": 20030,
+      "category": "Permanent",
+      "name": null
+    },
+    "ZhuoXinShiLianDaCheng": {
+      "id": 20031,
+      "category": "Permanent",
+      "name": null
+    },
+    "MeiCiShiLianDaCheng": {
+      "id": 20032,
+      "category": "Permanent",
+      "name": null
+    },
+    "MiZongShiLianDaCheng": {
+      "id": 20033,
+      "category": "Permanent",
+      "name": null
+    },
+    "XiuLuoShiLianDaCheng": {
+      "id": 20034,
+      "category": "Permanent",
+      "name": null
+    },
+    "TianSuiZhuanJingDaCheng": {
+      "id": 20035,
+      "category": "Permanent",
+      "name": null
+    },
+    "ShiZaiBiDeChuFa": {
+      "id": 20036,
+      "category": "Permanent",
+      "name": null
+    },
+    "ZhanDouJieShuJiaShengMin": {
+      "id": 20037,
+      "category": "Permanent",
+      "name": null
+    },
+    "ZhanDouKaiShiShengJiPai": {
+      "id": 20038,
+      "category": "Permanent",
+      "name": null
+    },
+    "ShengLiJiaHuanPai": {
+      "id": 20039,
+      "category": "Permanent",
+      "name": null
+    },
+    "ZhanBaiShaoKouMingYuan": {
+      "id": 20040,
+      "category": "Permanent",
+      "name": null
+    },
+    "FuJiaZaiCiXingDong": {
+      "id": 20041,
+      "category": "Permanent",
+      "name": null
+    },
+    "HuiShouMingYuan": {
+      "id": 20042,
+      "category": "Permanent",
+      "name": null
+    },
+    "HuiShouHuanPai": {
+      "id": 20043,
+      "category": "Permanent",
+      "name": null
+    },
+    "ZhanDouKaiShiJianShengMing": {
+      "id": 20044,
+      "category": "Permanent",
+      "name": null
+    },
+    "ZhanDouKaiShiZaiDong": {
+      "id": 20045,
+      "category": "Permanent",
+      "name": null
+    },
+    "ZhanDouKaiShiMeiKai": {
+      "id": 20046,
+      "category": "Permanent",
+      "name": null
+    },
+    "LianHuaJiaHuanPai": {
+      "id": 20047,
+      "category": "Permanent",
+      "name": null
+    },
+    "HuanJingZhanDou": {
+      "id": 20048,
+      "category": "Permanent",
+      "name": null
+    },
+    "HuanJingShengLi": {
+      "id": 20049,
+      "category": "Permanent",
+      "name": null
+    },
+    "HuanJingXiaCiLianHua": {
+      "id": 20050,
+      "category": "Permanent",
+      "name": null
+    },
+    "ZhanDouKaiShiJiaShengMing": {
+      "id": 20051,
+      "category": "Permanent",
+      "name": null
+    },
+    "ShengLiJiaXiuWei": {
+      "id": 20052,
+      "category": "Permanent",
+      "name": null
+    },
+    "ZhanDouShengJiErJiPai": {
+      "id": 20053,
+      "category": "Permanent",
+      "name": null
+    },
+    "ExDaoYunCard": {
+      "id": 20054,
+      "category": "Permanent",
+      "name": null
+    },
+    "FuJiaLingQi": {
+      "id": 20055,
+      "category": "Permanent",
+      "name": null
+    },
+    "ZhanDouKaiShiXuRuo": {
+      "id": 20056,
+      "category": "Permanent",
+      "name": null
+    },
+    "ZhanDouKaiShiNeiShang": {
+      "id": 20057,
+      "category": "Permanent",
+      "name": null
+    },
+    "ZhanDouKaiShiPoZhan": {
+      "id": 20058,
+      "category": "Permanent",
+      "name": null
+    },
+    "ZhanDouKaiShiWaiShang": {
+      "id": 20059,
+      "category": "Permanent",
+      "name": null
+    },
+    "DaoYunLV2": {
+      "id": 20060,
+      "category": "Permanent",
+      "name": null
+    },
+    "ShouPaiJiaSuDu": {
+      "id": 20061,
+      "category": "Permanent",
+      "name": null
+    },
+    "HuTiInRoundX": {
+      "id": 20062,
+      "category": "Permanent",
+      "name": null
+    },
+    "KaiJvShengJiYiJiPai": {
+      "id": 20063,
+      "category": "Permanent",
+      "name": null
+    },
+    "HuaLongInRoundX": {
+      "id": 20064,
+      "category": "Permanent",
+      "name": null
+    },
+    "JiangJiInRoundX": {
+      "id": 20065,
+      "category": "Permanent",
+      "name": null
+    },
+    "HuanChuJinDanPaiBianErJi": {
+      "id": 20066,
+      "category": "Permanent",
+      "name": null
+    },
+    "ShuaXinXianMingJiHui": {
+      "id": 20067,
+      "category": "Permanent",
+      "name": null
+    },
+    "ShuaXinDaoYunJiHui": {
+      "id": 20068,
+      "category": "Permanent",
+      "name": null
+    },
+    "MingYuanDiYu30JiaHuanPaiChuFa": {
+      "id": 20069,
+      "category": "Permanent",
+      "name": null
+    },
+    "MirageHuoDeHuaShenPai": {
+      "id": 20070,
+      "category": "Permanent",
+      "name": null
+    },
+    "ShengLiJiaShuaXinXianMingJiHui": {
+      "id": 20071,
+      "category": "Permanent",
+      "name": null
+    },
+    "ShengLiJiaShuaXinDaoYunJiHui": {
+      "id": 20072,
+      "category": "Permanent",
+      "name": null
+    },
+    "TianTiDiYiDuoJiaFen": {
+      "id": 20073,
+      "category": "Permanent",
+      "name": null
+    },
+    "MenPaiShiLian": {
+      "id": 20074,
+      "category": "Permanent",
+      "name": null
+    },
+    "FuZhiShiLian": {
+      "id": 20075,
+      "category": "Permanent",
+      "name": null
+    },
+    "ShengJiDiXGeDeYiJiPai": {
+      "id": 20076,
+      "category": "Permanent",
+      "name": null
+    },
+    "MengChuLeiPangTong": {
+      "id": 20077,
+      "category": "Permanent",
+      "name": null
+    },
+    "HouShouBiDingSiZhan": {
+      "id": 20078,
+      "category": "Permanent",
+      "name": null
+    },
+    "MengMiaoBiShengHua": {
+      "id": 20079,
+      "category": "Permanent",
+      "name": null
+    },
+    "FuXiQinTimes": {
+      "id": 9900001,
+      "category": "Hidden",
+      "name": null
+    },
+    "KunLunJingTimes": {
+      "id": 9900002,
+      "category": "Hidden",
+      "name": null
+    },
+    "DongHuangZhongTimes": {
+      "id": 9900003,
+      "category": "Hidden",
+      "name": null
+    },
+    "MengFanZhenCiShu": {
+      "id": 9900004,
+      "category": "Hidden",
+      "name": null
+    },
+    "MoHuaJiaoZhuCiShu": {
+      "id": 9900005,
+      "category": "Hidden",
+      "name": null
+    },
+    "MengKuiRanCiShu": {
+      "id": 9900006,
+      "category": "Hidden",
+      "name": null
+    },
+    "WuXingWangYouMengCiShu": {
+      "id": 9900007,
+      "category": "Hidden",
+      "name": null
+    },
+    "HuanYuYingCiShu": {
+      "id": 9900008,
+      "category": "Hidden",
+      "name": null
+    }
+  }
+}

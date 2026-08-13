@@ -1,0 +1,2337 @@
+{
+  "totals": {
+    "characters": 24,
+    "characterTalentEntries": 132,
+    "uniqueCharacterTalents": 132,
+    "implemented": 45,
+    "unverifiedRegistration": 0,
+    "missingRegistration": 0,
+    "missingBattle": 0,
+    "ignoredBattle": 0,
+    "scopeExcludedSeason": 0,
+    "recordOnly": 85,
+    "unclassifiedNonBattle": 2
+  },
+  "rows": [
+    {
+      "characterId": 1000001,
+      "characterName": "牧逸风",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 18,
+      "name": "云雾变幻",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [
+        "CardPanel.cs",
+        "ReplaceArea.cs"
+      ],
+      "otherParams": []
+    },
+    {
+      "characterId": 1000001,
+      "characterName": "牧逸风",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 66,
+      "name": "剑不出鞘",
+      "levelName": "ZhuJi",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": [
+        3
+      ]
+    },
+    {
+      "characterId": 1000001,
+      "characterName": "牧逸风",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 14,
+      "name": "云海连绵",
+      "levelName": "JinDan",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs",
+        "CardActionBase.cs"
+      ],
+      "otherParams": [
+        1
+      ]
+    },
+    {
+      "characterId": 1000001,
+      "characterName": "牧逸风",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 7,
+      "name": "云影化身",
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": [
+        3
+      ]
+    },
+    {
+      "characterId": 1000001,
+      "characterName": "牧逸风",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 17,
+      "name": "云泉道茶",
+      "levelName": "HuaShen",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        1,
+        2
+      ]
+    },
+    {
+      "characterId": 1000002,
+      "characterName": "炎雪",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 19,
+      "name": "血脉潜能",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        18,
+        12,
+        10
+      ]
+    },
+    {
+      "characterId": 1000002,
+      "characterName": "炎雪",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 67,
+      "name": "炽火炎刃",
+      "levelName": "ZhuJi",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": [
+        1
+      ]
+    },
+    {
+      "characterId": 1000002,
+      "characterName": "炎雪",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 68,
+      "name": "流冰寒刃",
+      "levelName": "JinDan",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": [
+        1,
+        1
+      ]
+    },
+    {
+      "characterId": 1000002,
+      "characterName": "炎雪",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 23,
+      "name": "崩雪",
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        3
+      ]
+    },
+    {
+      "characterId": 1000002,
+      "characterName": "炎雪",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 22,
+      "name": "炎舞",
+      "levelName": "HuaShen",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        2
+      ]
+    },
+    {
+      "characterId": 1000003,
+      "characterName": "龙瑶",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 24,
+      "name": "龙脉传承",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        2,
+        2,
+        8
+      ]
+    },
+    {
+      "characterId": 1000003,
+      "characterName": "龙瑶",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 25,
+      "name": "珊瑚剑",
+      "levelName": "ZhuJi",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": [
+        2
+      ]
+    },
+    {
+      "characterId": 1000003,
+      "characterName": "龙瑶",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 27,
+      "name": "龙鳞",
+      "levelName": "JinDan",
+      "battle": true,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": [
+        20,
+        0
+      ]
+    },
+    {
+      "characterId": 1000003,
+      "characterName": "龙瑶",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 85,
+      "name": "云剑唤雨",
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        15
+      ]
+    },
+    {
+      "characterId": 1000003,
+      "characterName": "龙瑶",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 86,
+      "name": "九霄玲珑镯",
+      "levelName": "HuaShen",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        16
+      ]
+    },
+    {
+      "characterId": 1000003,
+      "characterName": "龙瑶",
+      "sectName": "YunLingJianZong",
+      "slot": "ygTalents",
+      "talentId": 218,
+      "name": "潜龙",
+      "levelName": "ZhuJi",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        331
+      ]
+    },
+    {
+      "characterId": 1000003,
+      "characterName": "龙瑶",
+      "sectName": "YunLingJianZong",
+      "slot": "ygTalents",
+      "talentId": 220,
+      "name": "兴云布雨",
+      "levelName": "JinDan",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        3
+      ]
+    },
+    {
+      "characterId": 1000003,
+      "characterName": "龙瑶",
+      "sectName": "YunLingJianZong",
+      "slot": "ygTalents",
+      "talentId": 219,
+      "name": "玲珑剑阵",
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        332
+      ]
+    },
+    {
+      "characterId": 1000003,
+      "characterName": "龙瑶",
+      "sectName": "YunLingJianZong",
+      "slot": "ygTalents",
+      "talentId": 221,
+      "name": "婉若游龙",
+      "levelName": "HuaShen",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [
+        "CardActionBase.cs"
+      ],
+      "otherParams": []
+    },
+    {
+      "characterId": 1000003,
+      "characterName": "龙瑶",
+      "sectName": "YunLingJianZong",
+      "slot": "ygTalents",
+      "talentId": 222,
+      "name": "出渊",
+      "levelName": "FanXu",
+      "battle": true,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [
+        "BattleCharacter.cs",
+        "CardActionBase.cs",
+        "CardPanel.cs",
+        "Card_15.cs",
+        "Card_331.cs",
+        "Card_332.cs"
+      ],
+      "otherParams": []
+    },
+    {
+      "characterId": 1000004,
+      "characterName": "林小月",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 129,
+      "name": "好奇心",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        9
+      ]
+    },
+    {
+      "characterId": 1000004,
+      "characterName": "林小月",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 44,
+      "name": "猫爪",
+      "levelName": "ZhuJi",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        8
+      ]
+    },
+    {
+      "characterId": 1000004,
+      "characterName": "林小月",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 45,
+      "name": "猫魂庇佑",
+      "levelName": "JinDan",
+      "battle": true,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": []
+    },
+    {
+      "characterId": 1000004,
+      "characterName": "林小月",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 46,
+      "name": "灵猫乱剑",
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        9
+      ]
+    },
+    {
+      "characterId": 1000004,
+      "characterName": "林小月",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 15,
+      "name": "灵猫踏云",
+      "levelName": "HuaShen",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "CardActionBase.cs"
+      ],
+      "otherParams": [
+        1
+      ]
+    },
+    {
+      "characterId": 1000005,
+      "characterName": "陆剑心",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 92,
+      "name": "铸剑师",
+      "levelName": "LianQi",
+      "battle": true,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        18,
+        4
+      ]
+    },
+    {
+      "characterId": 1000005,
+      "characterName": "陆剑心",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 93,
+      "name": "剑锋锻造",
+      "levelName": "ZhuJi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 1000005,
+      "characterName": "陆剑心",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 94,
+      "name": "剑纹雕琢",
+      "levelName": "JinDan",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 1000005,
+      "characterName": "陆剑心",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 95,
+      "name": "灵气凝铸",
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 1000005,
+      "characterName": "陆剑心",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 96,
+      "name": "剑心淬炼",
+      "levelName": "HuaShen",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 1000006,
+      "characterName": "黎承云",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 189,
+      "name": "悟剑天赋",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 1000006,
+      "characterName": "黎承云",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 191,
+      "name": "八方来风",
+      "levelName": "ZhuJi",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        1,
+        7
+      ]
+    },
+    {
+      "characterId": 1000006,
+      "characterName": "黎承云",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 190,
+      "name": "观壁悟道",
+      "levelName": "JinDan",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 1000006,
+      "characterName": "黎承云",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 192,
+      "name": "剑招融汇",
+      "levelName": "YuanYing",
+      "battle": true,
+      "isMiJingTalent": false,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": []
+    },
+    {
+      "characterId": 1000006,
+      "characterName": "黎承云",
+      "sectName": "YunLingJianZong",
+      "slot": "talents",
+      "talentId": 193,
+      "name": "曳影剑阵",
+      "levelName": "HuaShen",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        213
+      ]
+    },
+    {
+      "characterId": 2000001,
+      "characterName": "谭舒雁",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 29,
+      "name": "勤学苦练",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [
+        "CardPanel.cs",
+        "Relic1Function.cs",
+        "YuanGuRongLuPanel.cs"
+      ],
+      "otherParams": [
+        8,
+        1,
+        6
+      ]
+    },
+    {
+      "characterId": 2000001,
+      "characterName": "谭舒雁",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 63,
+      "name": "飞鸿踏雪",
+      "levelName": "ZhuJi",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        12
+      ]
+    },
+    {
+      "characterId": 2000001,
+      "characterName": "谭舒雁",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 64,
+      "name": "雪羽清风",
+      "levelName": "JinDan",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": [
+        1
+      ]
+    },
+    {
+      "characterId": 2000001,
+      "characterName": "谭舒雁",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 65,
+      "name": "雁影化身",
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": []
+    },
+    {
+      "characterId": 2000001,
+      "characterName": "谭舒雁",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 42,
+      "name": "斩断俗尘",
+      "levelName": "HuaShen",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        0
+      ]
+    },
+    {
+      "characterId": 2000002,
+      "characterName": "炎尘",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 114,
+      "name": "血脉威能",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        28,
+        16
+      ]
+    },
+    {
+      "characterId": 2000002,
+      "characterName": "炎尘",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 115,
+      "name": "燃命之焰",
+      "levelName": "ZhuJi",
+      "battle": true,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        5,
+        6
+      ]
+    },
+    {
+      "characterId": 2000002,
+      "characterName": "炎尘",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 121,
+      "name": "无极卦盘",
+      "levelName": "JinDan",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        28
+      ]
+    },
+    {
+      "characterId": 2000002,
+      "characterName": "炎尘",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 35,
+      "name": "瓮中捉鳖",
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        5
+      ]
+    },
+    {
+      "characterId": 2000002,
+      "characterName": "炎尘",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 122,
+      "name": "狂雷电闪",
+      "levelName": "HuaShen",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        29,
+        1
+      ]
+    },
+    {
+      "characterId": 2000003,
+      "characterName": "曜灵",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 37,
+      "name": "先天灵躯",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        1
+      ]
+    },
+    {
+      "characterId": 2000003,
+      "characterName": "曜灵",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 105,
+      "name": "绛纱守护",
+      "levelName": "ZhuJi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": [
+        15
+      ]
+    },
+    {
+      "characterId": 2000003,
+      "characterName": "曜灵",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 39,
+      "name": "灯焰飞舞",
+      "levelName": "JinDan",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        6
+      ]
+    },
+    {
+      "characterId": 2000003,
+      "characterName": "曜灵",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 40,
+      "name": "旋灯占卦",
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        7
+      ]
+    },
+    {
+      "characterId": 2000003,
+      "characterName": "曜灵",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 28,
+      "name": "灯灵觉醒",
+      "levelName": "HuaShen",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "characterId": 2000004,
+      "characterName": "姜袭明",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 48,
+      "name": "运筹帷幄",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        1
+      ]
+    },
+    {
+      "characterId": 2000004,
+      "characterName": "姜袭明",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 61,
+      "name": "占星",
+      "levelName": "ZhuJi",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": [
+        1
+      ]
+    },
+    {
+      "characterId": 2000004,
+      "characterName": "姜袭明",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 50,
+      "name": "星爆术",
+      "levelName": "JinDan",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        10,
+        2
+      ]
+    },
+    {
+      "characterId": 2000004,
+      "characterName": "姜袭明",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 52,
+      "name": "七星定魂",
+      "levelName": "YuanYing",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 2000004,
+      "characterName": "姜袭明",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 62,
+      "name": "布星问卦",
+      "levelName": "HuaShen",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": [
+        1
+      ]
+    },
+    {
+      "characterId": 2000005,
+      "characterName": "吴策",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 104,
+      "name": "算无遗策",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        16,
+        7
+      ]
+    },
+    {
+      "characterId": 2000005,
+      "characterName": "吴策",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 142,
+      "name": "以逸待劳",
+      "levelName": "ZhuJi",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleExecuter.cs"
+      ],
+      "otherParams": [
+        3,
+        3
+      ]
+    },
+    {
+      "characterId": 2000005,
+      "characterName": "吴策",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 141,
+      "name": "计出万全",
+      "levelName": "JinDan",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [
+        "ReplaceArea.cs"
+      ],
+      "otherParams": [
+        3
+      ]
+    },
+    {
+      "characterId": 2000005,
+      "characterName": "吴策",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 108,
+      "name": "瞒天过海",
+      "levelName": "YuanYing",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "CardActionBase.cs"
+      ],
+      "otherParams": [
+        0
+      ]
+    },
+    {
+      "characterId": 2000005,
+      "characterName": "吴策",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 106,
+      "name": "星月折扇",
+      "levelName": "HuaShen",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": [
+        23
+      ]
+    },
+    {
+      "characterId": 2000006,
+      "characterName": "风绪",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 194,
+      "name": "风行天上",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        4,
+        4
+      ]
+    },
+    {
+      "characterId": 2000006,
+      "characterName": "风绪",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 196,
+      "name": "阴符玉简",
+      "levelName": "ZhuJi",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        214
+      ]
+    },
+    {
+      "characterId": 2000006,
+      "characterName": "风绪",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 195,
+      "name": "灵卦自衍",
+      "levelName": "JinDan",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": []
+    },
+    {
+      "characterId": 2000006,
+      "characterName": "风绪",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 197,
+      "name": "易卦自解",
+      "levelName": "YuanYing",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 2000006,
+      "characterName": "风绪",
+      "sectName": "QiXingGe",
+      "slot": "talents",
+      "talentId": 198,
+      "name": "孤虚金书",
+      "levelName": "HuaShen",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": [
+        215
+      ]
+    },
+    {
+      "characterId": 3000001,
+      "characterName": "吾行之",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 80,
+      "name": "战斗历练",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        2
+      ]
+    },
+    {
+      "characterId": 3000001,
+      "characterName": "吾行之",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 82,
+      "name": "五行印记",
+      "levelName": "ZhuJi",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 3000001,
+      "characterName": "吾行之",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 81,
+      "name": "悠然葫芦",
+      "levelName": "JinDan",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        13
+      ]
+    },
+    {
+      "characterId": 3000001,
+      "characterName": "吾行之",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 83,
+      "name": "五行化身",
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": []
+    },
+    {
+      "characterId": 3000001,
+      "characterName": "吾行之",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 123,
+      "name": "五行传承",
+      "levelName": "HuaShen",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        0,
+        31
+      ]
+    },
+    {
+      "characterId": 3000001,
+      "characterName": "吾行之",
+      "sectName": "WuXingDaoMeng",
+      "slot": "ygTalents",
+      "talentId": 261,
+      "name": "无忧灵酿",
+      "levelName": "ZhuJi",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": [
+        5,
+        2
+      ]
+    },
+    {
+      "characterId": 3000001,
+      "characterName": "吾行之",
+      "sectName": "WuXingDaoMeng",
+      "slot": "ygTalents",
+      "talentId": 262,
+      "name": "定风波",
+      "levelName": "JinDan",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        371
+      ]
+    },
+    {
+      "characterId": 3000001,
+      "characterName": "吾行之",
+      "sectName": "WuXingDaoMeng",
+      "slot": "ygTalents",
+      "talentId": 263,
+      "name": "随心灵印",
+      "levelName": "YuanYing",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 3000001,
+      "characterName": "吾行之",
+      "sectName": "WuXingDaoMeng",
+      "slot": "ygTalents",
+      "talentId": 264,
+      "name": "五行刀斩",
+      "levelName": "HuaShen",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 3000001,
+      "characterName": "吾行之",
+      "sectName": "WuXingDaoMeng",
+      "slot": "ygTalents",
+      "talentId": 265,
+      "name": "五行解封",
+      "levelName": "FanXu",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 3000002,
+      "characterName": "杜伶鸳",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 109,
+      "name": "先天五行",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 3000002,
+      "characterName": "杜伶鸳",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 110,
+      "name": "先天印记",
+      "levelName": "ZhuJi",
+      "battle": true,
+      "isMiJingTalent": false,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 3000002,
+      "characterName": "杜伶鸳",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 111,
+      "name": "先天灵阵",
+      "levelName": "JinDan",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 3000002,
+      "characterName": "杜伶鸳",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 124,
+      "name": "双鸳逆克",
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        2,
+        32
+      ]
+    },
+    {
+      "characterId": 3000002,
+      "characterName": "杜伶鸳",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 112,
+      "name": "五行元灵",
+      "levelName": "HuaShen",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": []
+    },
+    {
+      "characterId": 3000003,
+      "characterName": "花沁蕊",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 133,
+      "name": "五行润养",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        15,
+        0
+      ]
+    },
+    {
+      "characterId": 3000003,
+      "characterName": "花沁蕊",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 98,
+      "name": "桃花印",
+      "levelName": "ZhuJi",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        20
+      ]
+    },
+    {
+      "characterId": 3000003,
+      "characterName": "花沁蕊",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 99,
+      "name": "水灵印记",
+      "levelName": "JinDan",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": [
+        1
+      ]
+    },
+    {
+      "characterId": 3000003,
+      "characterName": "花沁蕊",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 90,
+      "name": "春雨",
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        17
+      ]
+    },
+    {
+      "characterId": 3000003,
+      "characterName": "花沁蕊",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 101,
+      "name": "花舞",
+      "levelName": "HuaShen",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": [
+        1,
+        1
+      ]
+    },
+    {
+      "characterId": 3000003,
+      "characterName": "花沁蕊",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 134,
+      "name": "桃枝如意",
+      "levelName": "LianQi",
+      "battle": true,
+      "isMiJingTalent": false,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 3000004,
+      "characterName": "慕虎",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 125,
+      "name": "猛虎之躯",
+      "levelName": "LianQi",
+      "battle": true,
+      "isMiJingTalent": false,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": [
+        120
+      ]
+    },
+    {
+      "characterId": 3000004,
+      "characterName": "慕虎",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 89,
+      "name": "木灵炼体",
+      "levelName": "ZhuJi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [
+        "CardPanel.cs"
+      ],
+      "otherParams": [
+        8
+      ]
+    },
+    {
+      "characterId": 3000004,
+      "characterName": "慕虎",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 132,
+      "name": "锟铻金环",
+      "levelName": "JinDan",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        38
+      ]
+    },
+    {
+      "characterId": 3000004,
+      "characterName": "慕虎",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 91,
+      "name": "刚劲",
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        18
+      ]
+    },
+    {
+      "characterId": 3000004,
+      "characterName": "慕虎",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 100,
+      "name": "山崩",
+      "levelName": "HuaShen",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        21
+      ]
+    },
+    {
+      "characterId": 3000005,
+      "characterName": "南宫生",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 136,
+      "name": "秘印亲和",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        2
+      ]
+    },
+    {
+      "characterId": 3000005,
+      "characterName": "南宫生",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 137,
+      "name": "相生之火",
+      "levelName": "ZhuJi",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "CardActionBase.cs",
+        "Card_295.cs",
+        "Card_7000067.cs",
+        "KeYinCardFunctions.cs"
+      ],
+      "otherParams": [
+        2
+      ]
+    },
+    {
+      "characterId": 3000005,
+      "characterName": "南宫生",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 138,
+      "name": "五行爆炎",
+      "levelName": "JinDan",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": [
+        4,
+        3,
+        0
+      ]
+    },
+    {
+      "characterId": 3000005,
+      "characterName": "南宫生",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 139,
+      "name": "焰魂归复",
+      "levelName": "YuanYing",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": [
+        15,
+        15
+      ]
+    },
+    {
+      "characterId": 3000005,
+      "characterName": "南宫生",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 140,
+      "name": "疾燃咒印",
+      "levelName": "HuaShen",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": [
+        18
+      ]
+    },
+    {
+      "characterId": 3000006,
+      "characterName": "祁忘忧",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 199,
+      "name": "五行玉瓶",
+      "levelName": "LianQi",
+      "battle": true,
+      "isMiJingTalent": false,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 3000006,
+      "characterName": "祁忘忧",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 200,
+      "name": "百草生息",
+      "levelName": "ZhuJi",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs",
+        "CardActionBase.cs"
+      ],
+      "otherParams": []
+    },
+    {
+      "characterId": 3000006,
+      "characterName": "祁忘忧",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 201,
+      "name": "天降甘霖",
+      "levelName": "JinDan",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        259
+      ]
+    },
+    {
+      "characterId": 3000006,
+      "characterName": "祁忘忧",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 202,
+      "name": "五行聚灵",
+      "levelName": "YuanYing",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": []
+    },
+    {
+      "characterId": 3000006,
+      "characterName": "祁忘忧",
+      "sectName": "WuXingDaoMeng",
+      "slot": "talents",
+      "talentId": 203,
+      "name": "忘忧",
+      "levelName": "HuaShen",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": [
+        218,
+        15
+      ]
+    },
+    {
+      "characterId": 4000001,
+      "characterName": "小布",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 151,
+      "name": "磨砺不止",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        7
+      ]
+    },
+    {
+      "characterId": 4000001,
+      "characterName": "小布",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 152,
+      "name": "锻体不息",
+      "levelName": "ZhuJi",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        45
+      ]
+    },
+    {
+      "characterId": 4000001,
+      "characterName": "小布",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 153,
+      "name": "灵涌不竭",
+      "levelName": "JinDan",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs",
+        "CardActionBase.cs"
+      ],
+      "otherParams": [
+        3,
+        1
+      ]
+    },
+    {
+      "characterId": 4000001,
+      "characterName": "小布",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 154,
+      "name": "生机不灭",
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": [
+        4
+      ]
+    },
+    {
+      "characterId": 4000001,
+      "characterName": "小布",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 177,
+      "name": "修玄不泯",
+      "levelName": "HuaShen",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": [
+        1,
+        0
+      ]
+    },
+    {
+      "characterId": 4000002,
+      "characterName": "屠馗",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 170,
+      "name": "锻躯之道",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        0
+      ]
+    },
+    {
+      "characterId": 4000002,
+      "characterName": "屠馗",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 172,
+      "name": "盛气凌人",
+      "levelName": "ZhuJi",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        0,
+        70
+      ]
+    },
+    {
+      "characterId": 4000002,
+      "characterName": "屠馗",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 171,
+      "name": "搏命之勇",
+      "levelName": "JinDan",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": [
+        3,
+        1
+      ]
+    },
+    {
+      "characterId": 4000002,
+      "characterName": "屠馗",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 174,
+      "name": "崩裂之拳",
+      "levelName": "YuanYing",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "CardActionBase.cs"
+      ],
+      "otherParams": [
+        0
+      ]
+    },
+    {
+      "characterId": 4000002,
+      "characterName": "屠馗",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 173,
+      "name": "猛攻之姿",
+      "levelName": "HuaShen",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "CardActionBase.cs"
+      ],
+      "otherParams": [
+        0,
+        3
+      ]
+    },
+    {
+      "characterId": 4000003,
+      "characterName": "叶冥冥",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 178,
+      "name": "阴晴圆缺",
+      "levelName": "LianQi",
+      "battle": true,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        1,
+        3,
+        8,
+        4
+      ]
+    },
+    {
+      "characterId": 4000003,
+      "characterName": "叶冥冥",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 179,
+      "name": "入冥",
+      "levelName": "ZhuJi",
+      "battle": true,
+      "isMiJingTalent": false,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": [
+        0,
+        1
+      ]
+    },
+    {
+      "characterId": 4000003,
+      "characterName": "叶冥冥",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 180,
+      "name": "疯魔",
+      "levelName": "JinDan",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        73
+      ]
+    },
+    {
+      "characterId": 4000003,
+      "characterName": "叶冥冥",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 181,
+      "name": "冥夜",
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        74
+      ]
+    },
+    {
+      "characterId": 4000003,
+      "characterName": "叶冥冥",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 182,
+      "name": "冥月蟾光",
+      "levelName": "HuaShen",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        75
+      ]
+    },
+    {
+      "characterId": 4000004,
+      "characterName": "姬方生",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 183,
+      "name": "禅心锻身",
+      "levelName": "LianQi",
+      "battle": true,
+      "isMiJingTalent": false,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": [
+        1,
+        4
+      ]
+    },
+    {
+      "characterId": 4000004,
+      "characterName": "姬方生",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 184,
+      "name": "心体共鸣",
+      "levelName": "ZhuJi",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": [
+        1,
+        5
+      ]
+    },
+    {
+      "characterId": 4000004,
+      "characterName": "姬方生",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 186,
+      "name": "记忆碎片",
+      "levelName": "JinDan",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [
+        "PlayerSelfInfoItem.cs"
+      ],
+      "otherParams": [
+        5
+      ]
+    },
+    {
+      "characterId": 4000004,
+      "characterName": "姬方生",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 185,
+      "name": "冥心入玄",
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        81
+      ]
+    },
+    {
+      "characterId": 4000004,
+      "characterName": "姬方生",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 187,
+      "name": "万玄破魔掌",
+      "levelName": "HuaShen",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        82
+      ]
+    },
+    {
+      "characterId": 4000005,
+      "characterName": "李㵘",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 204,
+      "name": "凡躯",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs",
+        "CardPanel.cs"
+      ],
+      "otherParams": []
+    },
+    {
+      "characterId": 4000005,
+      "characterName": "李㵘",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 205,
+      "name": "拆招",
+      "levelName": "ZhuJi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        221
+      ]
+    },
+    {
+      "characterId": 4000005,
+      "characterName": "李㵘",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 206,
+      "name": "志坚",
+      "levelName": "JinDan",
+      "battle": true,
+      "isMiJingTalent": false,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs",
+        "BattleExecuter.cs"
+      ],
+      "otherParams": []
+    },
+    {
+      "characterId": 4000005,
+      "characterName": "李㵘",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 207,
+      "name": "转势",
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        222
+      ]
+    },
+    {
+      "characterId": 4000005,
+      "characterName": "李㵘",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 208,
+      "name": "得炁",
+      "levelName": "HuaShen",
+      "battle": true,
+      "isMiJingTalent": false,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 4000005,
+      "characterName": "李㵘",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 209,
+      "name": "灵炁奔涌",
+      "levelName": "HuaShen",
+      "battle": true,
+      "isMiJingTalent": false,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs",
+        "BattleExecuter.cs"
+      ],
+      "otherParams": []
+    },
+    {
+      "characterId": 4000006,
+      "characterName": "聆羽",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 266,
+      "name": "羽翼渐丰",
+      "levelName": "LianQi",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": []
+    },
+    {
+      "characterId": 4000006,
+      "characterName": "聆羽",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 267,
+      "name": "风灵锻躯",
+      "levelName": "ZhuJi",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ],
+      "otherParams": [
+        3
+      ]
+    },
+    {
+      "characterId": 4000006,
+      "characterName": "聆羽",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 268,
+      "name": "气旋掌",
+      "levelName": "JinDan",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        382
+      ]
+    },
+    {
+      "characterId": 4000006,
+      "characterName": "聆羽",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 269,
+      "name": "御风飞闪",
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [],
+      "otherParams": [
+        383
+      ]
+    },
+    {
+      "characterId": 4000006,
+      "characterName": "聆羽",
+      "sectName": "DuanXuanZong",
+      "slot": "talents",
+      "talentId": 270,
+      "name": "化躯为风",
+      "levelName": "HuaShen",
+      "battle": true,
+      "isMiJingTalent": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "sourceFiles": [
+        "ReplaceArea.cs"
+      ],
+      "otherParams": [
+        3,
+        5
+      ]
+    }
+  ]
+}

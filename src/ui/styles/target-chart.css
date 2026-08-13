@@ -1,0 +1,674 @@
+/* 打靶模式：顶栏模式切换、左列多构筑槽、右列堆叠柱状图（按卡牌来源）。
+   深底低彩配色沿用 base.css 语义色 token，卡牌色为新增 --card-N token。 */
+
+/* ============ 顶栏模式切换 ============ */
+.workbench-mode-switch {
+  margin-left: 14px;
+  flex: 0 0 auto;
+  display: inline-flex;
+  border: 1px solid rgba(201, 168, 76, 0.22);
+  border-radius: 4px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.workbench-mode-switch .mode-opt {
+  min-height: 26px;
+  padding: 0 12px;
+  border: 0;
+  border-right: 1px solid rgba(201, 168, 76, 0.16);
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.workbench-mode-switch .mode-opt:last-child { border-right: 0; }
+
+.workbench-mode-switch .mode-opt.active {
+  background: linear-gradient(180deg, rgba(201, 168, 76, 0.28), rgba(201, 168, 76, 0.12));
+  color: var(--accent-bright);
+  box-shadow: inset 0 0 0 1px rgba(201, 168, 76, 0.18);
+}
+
+/* ============ 左列：参数行与构筑槽 ============ */
+.target-setup-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.target-setup-pane .target-params {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.target-params .hp-field {
+  margin: 0;
+}
+
+.target-params .hp-field input {
+  width: 64px;
+}
+
+/* 「显示至回合」滑条：与阈值/修炼轮同组，读数与滑条在一个控件内。 */
+.display-round-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+
+.display-round-field input[type="range"] {
+  width: 96px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.display-round-field input[type="range"]:disabled { opacity: 0.45; cursor: default; }
+.display-round-field input[type="range"]:focus-visible {
+  outline: 2px solid var(--accent-glow);
+  outline-offset: 1px;
+  border-radius: 6px;
+}
+
+.display-round-readout {
+  min-width: 58px;
+  color: var(--accent-bright);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.display-round-readout.waiting { color: var(--muted); }
+
+.target-compare-toggle .toggle-opt {
+  min-width: 40px;
+}
+
+.target-builds {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 2px;
+}
+
+.target-build-card {
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px;
+}
+
+.target-build-card.active {
+  border-color: rgba(201, 168, 76, 0.42);
+  box-shadow: inset 0 0 0 1px rgba(201, 168, 76, 0.12);
+}
+
+.target-build-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.target-build-status-dot {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+
+.target-build-card.status-running .target-build-status-dot {
+  background: var(--accent);
+  box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.5);
+  animation: target-status-pulse 1.1s ease-in-out infinite;
+}
+
+.target-build-card.status-done .target-build-status-dot {
+  background: var(--good);
+}
+
+.target-build-card.status-error .target-build-status-dot {
+  background: var(--danger);
+}
+
+@keyframes target-status-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.45); }
+  70% { box-shadow: 0 0 0 5px rgba(201, 168, 76, 0); }
+}
+
+.target-build-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 2px 6px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+.target-build-name:hover,
+.target-build-name:focus {
+  border-color: var(--line-strong);
+  background: var(--bg-elevated);
+}
+
+.target-build-card .build-action,
+.target-build-card .build-action:focus {
+  flex: 0 0 auto;
+  padding: 2px 7px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  cursor: pointer;
+}
+
+.target-build-card .build-action:hover,
+.target-build-card .build-action.delete:hover {
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+.target-build-card .build-action.delete:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.target-build-card .build-action:disabled,
+.target-add-build:disabled,
+.target-add-build:disabled:hover {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.target-build-panel .player-panel {
+  border-color: var(--line);
+}
+.target-build-summary {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3px;
+  padding: 8px 10px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.target-build-summary:hover {
+  border-color: var(--line-strong);
+  background: var(--panel-hover);
+}
+
+.target-summary-line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: var(--fs-sm);
+}
+
+.target-summary-line b,
+.target-summary-grid b {
+  color: var(--accent-bright);
+}
+
+.target-summary-line span,
+.target-summary-deck,
+.target-summary-hint {
+  color: var(--muted);
+  font-size: var(--fs-xs);
+}
+.target-summary-deck {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.target-summary-hint { font-size: var(--fs-2xs); }
+
+.target-build-result,
+.target-build-result.running,
+.target-build-result.done,
+.target-build-result.error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+.target-build-result.running { color: var(--accent-bright); background: var(--accent-soft); }
+.target-build-result.done { color: var(--text); background: rgba(110, 196, 154, 0.08); }
+.target-build-result.error { color: var(--danger); background: var(--danger-soft); }
+
+.target-build-result.done b {
+  color: var(--good);
+}
+
+.target-build-result .solver-spinner {
+  width: 10px;
+  height: 10px;
+  flex: 0 0 auto;
+}
+
+.target-add-build {
+  flex: 0 0 auto;
+  padding: 7px 10px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--muted);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+.target-add-build:hover {
+  border-color: var(--accent);
+  color: var(--accent-bright);
+  background: var(--accent-soft);
+}
+
+.target-add-build:disabled,
+.target-add-build:disabled:hover {
+  border-color: var(--line-strong);
+  color: var(--muted);
+  background: transparent;
+}
+
+.target-hint {
+  flex: 0 0 auto;
+  padding: 2px 8px;
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+}
+
+/* ============ 右列：结果面板 ============ */
+.target-result-panel {
+  overflow-y: auto;
+}
+
+.target-status-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 4px 8px;
+}
+
+.target-status-chip {
+  padding: 2px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  white-space: nowrap;
+}
+
+.target-status-chip.status-running { border-color: rgba(201, 168, 76, 0.4); color: var(--accent-bright); }
+.target-status-chip.status-done { border-color: rgba(110, 196, 154, 0.35); color: var(--good); }
+.target-status-chip.status-error { border-color: rgba(224, 112, 96, 0.4); color: var(--danger); }
+
+.target-result-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  font-size: var(--fs-sm);
+}
+
+.target-result-summary.reached {
+  background: rgba(110, 196, 154, 0.1);
+}
+
+/* 用量面板式摘要读数（共享样式在 battle-trajectory.css）：target 里只有容器覆写。 */
+.target-summary-grid .usage-summary {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.target-progress {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.target-progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+  transition: width 0.3s ease;
+}
+
+.target-chart-empty {
+  padding: 14px;
+}
+
+.target-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+  padding: 8px;
+}
+
+.target-grid-cell {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.target-grid-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: var(--fs-xs);
+  color: var(--text);
+  padding-left: 8px;
+  border-left: 3px solid var(--muted);
+}
+
+.target-grid-head b {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.target-overlay {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 8px;
+}
+
+/* ============ 堆叠柱状图（target 与双方对战伤害曲线共用） ============ */
+.stacked-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.stacked-chart-head,
+.stacked-chart-foot {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.stacked-chart-head {
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: var(--fs-xs);
+  color: var(--text);
+  font-weight: 700;
+}
+.stacked-chart-foot {
+  gap: 10px;
+  padding-top: 12px;
+}
+
+.stacked-chart-note {
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  font-weight: 500;
+}
+
+.stacked-chart-body {
+  position: relative;
+}
+
+.stacked-chart-svg {
+  display: block;
+  width: 100%;
+  height: 130px;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+
+/* 累计折线对比图：比堆叠柱矮一点，突出趋势。 */
+.cumulative-overlay .stacked-chart-svg { height: 110px; }
+.scope-flow .stacked-chart-svg { height: 84px; }
+
+.bar-seg {
+  stroke: rgba(11, 13, 24, 0.55);
+  stroke-width: 0.35;
+  cursor: pointer;
+}
+
+.bar-seg:hover,
+.bar-seg.selected {
+  stroke: var(--text);
+  stroke-width: 0.7;
+}
+.bar-seg.selected { stroke-width: 0.9; }
+
+.bar-empty {
+  fill: rgba(255, 255, 255, 0.045);
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 0.3;
+  pointer-events: none;
+}
+
+.bar-empty.selected {
+  fill: rgba(201, 168, 76, 0.1);
+  stroke: var(--accent);
+  stroke-width: 0.7;
+}
+
+.threshold-line {
+  stroke: rgba(224, 112, 96, 0.75);
+  stroke-width: 0.6;
+  stroke-dasharray: 1.6 1.2;
+  vector-effect: non-scaling-stroke;
+}
+
+/* 累计趋势层样式共享到 battle-trajectory.css（双方对战与打靶同一视觉语言）。 */
+
+.cumulative-line {
+  fill: none;
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+.cumulative-line:hover {
+  opacity: 1;
+  stroke-width: 2;
+}
+
+.round-ticks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.round-tick {
+  position: absolute;
+  bottom: -14px;
+  transform: translateX(-50%);
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  white-space: nowrap;
+}
+
+.build-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1px 7px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  cursor: pointer;
+}
+
+.build-legend-item:hover {
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+
+.build-line-swatch {
+  width: 14px;
+  height: 3px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.build-line-1, .build-line-1 .build-line-swatch { stroke: #e0c060; background: #e0c060; }
+.build-line-2, .build-line-2 .build-line-swatch { stroke: #4fb3c9; background: #4fb3c9; }
+.build-line-3, .build-line-3 .build-line-swatch { stroke: #9a7fd6; background: #9a7fd6; }
+.build-line-4, .build-line-4 .build-line-swatch { stroke: #6ec49a; background: #6ec49a; }
+.target-grid-head.build-line-1 { border-left-color: #e0c060; }
+.target-grid-head.build-line-2 { border-left-color: #4fb3c9; }
+.target-grid-head.build-line-3 { border-left-color: #9a7fd6; }
+.target-grid-head.build-line-4 { border-left-color: #6ec49a; }
+
+/* ============ 卡牌颜色 token（同卡跨回合同色，按 baseId 哈希分配） ============ */
+:root {
+  --card-1: #c9a84c;
+  --card-2: #4f9d8c;
+  --card-3: #d9775f;
+  --card-4: #5f8fd0;
+  --card-5: #6ec49a;
+  --card-6: #9a7fd6;
+  --card-7: #4fb3c9;
+  --card-8: #d6a05a;
+  --card-other: #6b7280;
+}
+
+.card-1 { fill: var(--card-1); }
+.card-2 { fill: var(--card-2); }
+.card-3 { fill: var(--card-3); }
+.card-4 { fill: var(--card-4); }
+.card-5 { fill: var(--card-5); }
+.card-6 { fill: var(--card-6); }
+.card-7 { fill: var(--card-7); }
+.card-8 { fill: var(--card-8); }
+.card-other { fill: var(--card-other); }
+
+/* ============ 图例与回合明细 ============ */
+.card-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  padding: 2px 2px 0;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  white-space: nowrap;
+}
+
+.legend-swatch {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+.target-round-detail {
+  margin: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+}
+
+.target-round-detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: var(--fs-sm);
+  color: var(--text);
+}
+
+.target-round-detail ul {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.target-round-detail li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-xs);
+  color: var(--text);
+}
+
+.target-round-detail li b,
+.round-detail-pct {
+  margin-left: auto;
+}
+.round-detail-pct {
+  width: 44px;
+  text-align: right;
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+}
+.target-round-detail li b { color: var(--accent-bright); }
+
+/* 双方对战伤害曲线模块内的小图：去掉多余的标题留白 */
+.scope-flow .stacked-chart-head {
+  font-size: var(--fs-2xs);
+}
+
+.scope-flow .stacked-chart-foot,
+.scope-flow .round-tick {
+  display: none;
+}
+
+/* 阶梯式累计伤害曲线（打靶模式）样式在 battle-trajectory.css（共享图表模块）。 */
+
+.stacked-chart-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: var(--fs-xs);
+}

@@ -1,0 +1,95 @@
+@media (max-width: 1280px) {
+  body {
+    min-width: 980px;
+  }
+
+  .combined-page {
+    grid-template-columns: minmax(360px, 0.4fr) minmax(0, 0.6fr);
+  }
+
+  .setup-command-row.has-solver {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .setup-command-row.has-solver .setup-match-controls {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .setup-command-row.has-solver .setup-command-actions {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .setup-command-row.has-solver .solver-panel {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .battle-view {
+    --flow-label-width: 76px;
+    --flow-value-width: 40px;
+  }
+
+  .battle-ready {
+    padding: 12px;
+  }
+
+  .simulator-intro-features {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px 0;
+  }
+
+  .simulator-intro-features dt {
+    padding-top: 4px;
+  }
+
+  .battle-ready-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .battle-ready-route {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .battle-ready-route span + span::before {
+    content: none;
+  }
+
+  .player-deck .card-face-name {
+    font-size: var(--fs-sm);
+    -webkit-line-clamp: 3;
+  }
+
+  .players-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .picker-popup-grid {
+    grid-template-columns: repeat(min(var(--picker-cols, 4), 2), minmax(0, 1fr));
+  }
+
+  .character-popup .character-popup-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .talent-popup .talent-popup-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .talent-stages-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  /* 打靶参数行：窄桌面下滑条与读数仍同组，不依赖 body 滚动。 */
+  .display-round-field input[type="range"] {
+    width: 76px;
+  }
+
+  .target-params {
+    row-gap: 4px;
+  }
+
+}

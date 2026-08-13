@@ -1,0 +1,5 @@
+# V1 source archives must not carry private replay-derived engineering corpus.
+# This is defense in depth only; the repository itself must remain private
+# while these paths are tracked.
+battle-evaluator/fixtures/** export-ignore
+research/original-game/extracted/** export-ignore

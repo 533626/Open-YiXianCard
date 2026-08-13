@@ -1,0 +1,5011 @@
+{
+  "schemaVersion": 1,
+  "generatedFrom": [
+    "shared/data/card-archive.json",
+    "shared/data/talent-archive.json",
+    "shared/data/fate-strategy-archive.json"
+  ],
+  "buffLabels": {
+    "AnXingBianFu": {
+      "label": "暗星蝙蝠",
+      "sourceKind": "card",
+      "sourceId": 99000201
+    },
+    "BaiDuBuQin": {
+      "label": "百毒不侵",
+      "sourceKind": "internal-counter"
+    },
+    "BaiNiaoLingJianJue": {
+      "label": "百鸟灵剑诀",
+      "sourceKind": "internal-counter"
+    },
+    "BaiNiaoYeYingJue": {
+      "label": "百鸟夜影诀",
+      "sourceKind": "internal-counter"
+    },
+    "BaiShouLingJianZhen": {
+      "label": "百兽灵剑阵",
+      "sourceKind": "card",
+      "sourceId": 49
+    },
+    "BaiShouLingJianZhenShengXiao": {
+      "label": "百兽灵剑阵生效",
+      "sourceKind": "card",
+      "sourceId": 49
+    },
+    "BanDianLingQi": {
+      "label": "半点灵气",
+      "sourceKind": "internal-counter"
+    },
+    "BeAttackedCount": {
+      "label": "被攻击次数",
+      "sourceKind": "internal-counter"
+    },
+    "BeiGu": {
+      "label": "背孤",
+      "sourceKind": "internal-counter"
+    },
+    "BengMeiXinFa": {
+      "label": "崩梅心法",
+      "sourceKind": "internal-counter"
+    },
+    "BengQuanChan": {
+      "label": "崩拳·缠",
+      "sourceKind": "internal-counter"
+    },
+    "BengQuanChuo": {
+      "label": "崩拳·戳",
+      "sourceKind": "internal-counter"
+    },
+    "BengQuanCunJin": {
+      "label": "崩拳寸劲",
+      "sourceKind": "internal-counter"
+    },
+    "BengQuanFanXuan": {
+      "label": "崩拳返玄",
+      "sourceKind": "card",
+      "sourceId": 140
+    },
+    "BengQuanFeng": {
+      "label": "崩拳·封",
+      "sourceKind": "internal-counter"
+    },
+    "BengQuanFuHu": {
+      "label": "崩拳·伏虎",
+      "sourceKind": "internal-counter"
+    },
+    "BengQuanHan": {
+      "label": "崩拳·撼",
+      "sourceKind": "internal-counter"
+    },
+    "BengQuanJieMai": {
+      "label": "崩拳·截脉",
+      "sourceKind": "internal-counter"
+    },
+    "BengQuanJingChu": {
+      "label": "崩拳·惊触",
+      "sourceKind": "internal-counter"
+    },
+    "BengQuanShanJi": {
+      "label": "崩拳·闪击",
+      "sourceKind": "internal-counter"
+    },
+    "BengQuanTan": {
+      "label": "崩拳·弹",
+      "sourceKind": "internal-counter"
+    },
+    "BengQuanTu": {
+      "label": "崩拳·吐",
+      "sourceKind": "internal-counter"
+    },
+    "BengTianBu": {
+      "label": "崩天步",
+      "sourceKind": "internal-counter"
+    },
+    "BenLunWuShiFangYu": {
+      "label": "本轮无视防御",
+      "sourceKind": "internal-counter"
+    },
+    "BoLan": {
+      "label": "幻•水灵波澜回合效果",
+      "sourceKind": "card",
+      "sourceId": 271
+    },
+    "ChanPlus": {
+      "label": "幻•崩拳缠",
+      "sourceKind": "card",
+      "sourceId": 319
+    },
+    "ChanPlusChuFa": {
+      "label": "幻•崩拳缠触发",
+      "sourceKind": "card",
+      "sourceId": 319
+    },
+    "ChanXinJuLingYiChuFa": {
+      "label": "禅心聚灵已触发",
+      "sourceKind": "fate-strategy",
+      "sourceId": 163
+    },
+    "ChuFaJingChu": {
+      "label": "触发惊触",
+      "sourceKind": "internal-counter"
+    },
+    "DengYanCuiXin": {
+      "label": "灯焰淬心",
+      "sourceKind": "internal-counter"
+    },
+    "DuanGuPlusDmg": {
+      "label": "幻•锻骨伤害",
+      "sourceKind": "card",
+      "sourceId": 277
+    },
+    "DuanGuPlusHp": {
+      "label": "幻•锻骨生命回复",
+      "sourceKind": "card",
+      "sourceId": 277
+    },
+    "FengLingDuanQuJiShu": {
+      "label": "风灵锻躯计数",
+      "sourceKind": "internal-counter"
+    },
+    "FengLingZhanYi": {
+      "label": "风灵战意",
+      "sourceKind": "internal-counter"
+    },
+    "GongMingMingXinRuXuan": {
+      "label": "共鸣·冥心入玄",
+      "sourceKind": "internal-counter"
+    },
+    "GuYeLang": {
+      "label": "孤夜狼",
+      "sourceKind": "internal-counter"
+    },
+    "HaoShengMingDePaiJiShu": {
+      "label": "生命消耗牌数",
+      "sourceKind": "internal-counter"
+    },
+    "HouZhaoPaiJiShu": {
+      "label": "后招牌数",
+      "sourceKind": "internal-counter"
+    },
+    "HuaLongDianJing": {
+      "label": "画龙点睛",
+      "sourceKind": "internal-counter"
+    },
+    "HuanFeiYaJianDuoJiaJianYi": {
+      "label": "幻飞鸦剑额外剑意",
+      "sourceKind": "internal-counter"
+    },
+    "HuanQinZhuoJianZaiCiXingDong": {
+      "label": "幻•勤拙剑",
+      "sourceKind": "card",
+      "sourceId": 323
+    },
+    "HuanShengJiZhanFang": {
+      "label": "幻生机绽放",
+      "sourceKind": "internal-counter"
+    },
+    "HuanYuYingCiShu": {
+      "label": "幻羽鹦复制保护",
+      "sourceKind": "card",
+      "sourceId": 99000216
+    },
+    "HuiFuJianYi": {
+      "label": "恢复剑意",
+      "sourceKind": "internal-counter"
+    },
+    "HuiHeJiaShengMing": {
+      "label": "回合恢复生命",
+      "sourceKind": "internal-counter"
+    },
+    "HunYuanNiKeZhen": {
+      "label": "混元逆克阵",
+      "sourceKind": "card",
+      "sourceId": 133
+    },
+    "HunYuanNiKeZhenJiaFang": {
+      "label": "混元逆克阵加防",
+      "sourceKind": "card",
+      "sourceId": 133
+    },
+    "HunYuanWuJiZhen": {
+      "label": "混元无极阵",
+      "sourceKind": "card",
+      "sourceId": 7000058
+    },
+    "JiaFangCiShu": {
+      "label": "获得防次数",
+      "sourceKind": "internal-counter"
+    },
+    "JiaFengRuiCiShu": {
+      "label": "获得锋锐次数",
+      "sourceKind": "internal-counter"
+    },
+    "JiaGongZhuanMuCi": {
+      "label": "梦•木灵阵加攻转木刺",
+      "sourceKind": "card",
+      "sourceId": 7000081
+    },
+    "JiaLingQiCiShu": {
+      "label": "获得灵气次数",
+      "sourceKind": "internal-counter"
+    },
+    "JianQi": {
+      "label": "剑气",
+      "sourceKind": "internal-counter"
+    },
+    "JianShengMingShangXianCiShu": {
+      "label": "失去生命上限次数",
+      "sourceKind": "internal-counter"
+    },
+    "JianYi": {
+      "label": "剑意",
+      "sourceKind": "internal-counter"
+    },
+    "JianYiLiuZhuan": {
+      "label": "剑意流转",
+      "sourceKind": "card",
+      "sourceId": 1000050
+    },
+    "JianZhenCount": {
+      "label": "剑阵计数",
+      "sourceKind": "internal-counter"
+    },
+    "JianZhenHuTi": {
+      "label": "护体剑阵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 109
+    },
+    "JiaShengMingCiShu": {
+      "label": "获得生命次数",
+      "sourceKind": "internal-counter"
+    },
+    "JiaShuiShiCiShu": {
+      "label": "获得水势次数",
+      "sourceKind": "internal-counter"
+    },
+    "JiLuJiaFang": {
+      "label": "累计获得防",
+      "sourceKind": "internal-counter"
+    },
+    "JiLuJiaGuoDeFengRui": {
+      "label": "累计获得锋锐",
+      "sourceKind": "internal-counter"
+    },
+    "JiLuJiaGuoDeQiShi": {
+      "label": "累计获得气势",
+      "sourceKind": "internal-counter"
+    },
+    "JiLuJiaGuoDeShuiShi": {
+      "label": "累计获得水势",
+      "sourceKind": "internal-counter"
+    },
+    "JiLuJiaGuoGuaXiang": {
+      "label": "累计获得卦象",
+      "sourceKind": "internal-counter"
+    },
+    "JiLuJiaGuoLingQi": {
+      "label": "累计获得灵气",
+      "sourceKind": "internal-counter"
+    },
+    "JiLuShiQuGuaXiang": {
+      "label": "累计失去卦象",
+      "sourceKind": "internal-counter"
+    },
+    "JiLuShiQuQiShi": {
+      "label": "累计失去气势",
+      "sourceKind": "internal-counter"
+    },
+    "JiLuWuXingPaiShiYongCiShu": {
+      "label": "已用五行牌数",
+      "sourceKind": "internal-counter"
+    },
+    "JiLuYongGuoJianPai": {
+      "label": "已用剑牌数",
+      "sourceKind": "internal-counter"
+    },
+    "JiLuZhanDouZuiGaoShengMing": {
+      "label": "战斗最高生命",
+      "sourceKind": "internal-counter"
+    },
+    "JiLuZongJiShangZhi": {
+      "label": "累计实际伤害",
+      "sourceKind": "internal-counter"
+    },
+    "JinMaoShu": {
+      "label": "锦毛鼠",
+      "sourceKind": "internal-counter"
+    },
+    "JiRanZhouYin": {
+      "label": "疾燃咒印",
+      "sourceKind": "internal-counter"
+    },
+    "JiXu": {
+      "label": "击虚",
+      "sourceKind": "internal-counter"
+    },
+    "JuLingXinFa": {
+      "label": "聚灵心法",
+      "sourceKind": "internal-counter"
+    },
+    "KeYinShuiRen": {
+      "label": "刻印水刃",
+      "sourceKind": "internal-counter"
+    },
+    "KeYinXueYing": {
+      "label": "刻印血影",
+      "sourceKind": "internal-counter"
+    },
+    "KuangJianLingShi": {
+      "label": "狂剑•零式",
+      "sourceKind": "card",
+      "sourceId": 1000066
+    },
+    "LastTurnStartHp": {
+      "label": "上回合开始生命",
+      "sourceKind": "internal-counter"
+    },
+    "LingGuaShu": {
+      "label": "灵卦术",
+      "sourceKind": "internal-counter"
+    },
+    "LingGuiMiZongBu": {
+      "label": "灵玄迷踪步",
+      "sourceKind": "card",
+      "sourceId": 10000050
+    },
+    "LingGuiMiZongBuShengXiao": {
+      "label": "灵玄迷踪步生效",
+      "sourceKind": "card",
+      "sourceId": 10000050
+    },
+    "LingQiGaiWeiXingLi": {
+      "label": "灵气转为星力",
+      "sourceKind": "internal-counter"
+    },
+    "LingZhenHuiXiang": {
+      "label": "灵阵回响",
+      "sourceKind": "internal-counter"
+    },
+    "LoseHpTimesCount": {
+      "label": "失去生命次数",
+      "sourceKind": "internal-counter"
+    },
+    "LoseMaxHpCount": {
+      "label": "累计失去生命上限",
+      "sourceKind": "internal-counter"
+    },
+    "LuoHuaYouYiPlus": {
+      "label": "幻•落花有意",
+      "sourceKind": "card",
+      "sourceId": 289
+    },
+    "MeiKaiErDu": {
+      "label": "梅开二度",
+      "sourceKind": "internal-counter"
+    },
+    "MengDuanQuan": {
+      "label": "梦•锻拳",
+      "sourceKind": "card",
+      "sourceId": 10000087
+    },
+    "MengDuanQuanJieShu": {
+      "label": "梦•锻拳结算",
+      "sourceKind": "card",
+      "sourceId": 10000087
+    },
+    "MengLianBeng": {
+      "label": "梦崩拳连崩",
+      "sourceKind": "internal-counter"
+    },
+    "MengLianBengChuFa": {
+      "label": "梦•崩拳连崩触发",
+      "sourceKind": "card",
+      "sourceId": 10000089
+    },
+    "MengLiangYiJiaFang": {
+      "label": "梦•两仪加防",
+      "sourceKind": "internal-counter"
+    },
+    "MengLiangYiJiaShengMing": {
+      "label": "梦•两仪加生命",
+      "sourceKind": "internal-counter"
+    },
+    "MengLingXuan": {
+      "label": "梦•灵玄迷踪步",
+      "sourceKind": "card",
+      "sourceId": 10000069
+    },
+    "MengLingXuanBuChuFa": {
+      "label": "梦•灵玄迷踪步本轮不触发",
+      "sourceKind": "card",
+      "sourceId": 10000069
+    },
+    "MengLingXuanChuFaCiShu": {
+      "label": "梦•灵玄迷踪步本轮触发次数",
+      "sourceKind": "card",
+      "sourceId": 10000069
+    },
+    "MengLingXuanHuaShenQi": {
+      "label": "梦•灵玄迷踪步化神效果",
+      "sourceKind": "card",
+      "sourceId": 10000069
+    },
+    "MingYeMiZongBu": {
+      "label": "冥夜迷踪步",
+      "sourceKind": "card",
+      "sourceId": 139
+    },
+    "MingYeMiZongBuShengXiao": {
+      "label": "冥夜迷踪步生效",
+      "sourceKind": "card",
+      "sourceId": 139
+    },
+    "MinXinRuXuan": {
+      "label": "冥心入玄",
+      "sourceKind": "card",
+      "sourceId": 81
+    },
+    "MinYe": {
+      "label": "冥夜",
+      "sourceKind": "internal-counter"
+    },
+    "MuCi": {
+      "label": "木刺",
+      "sourceKind": "internal-counter"
+    },
+    "MuLingChunFengFuHuiHeShu": {
+      "label": "木灵春风回合数",
+      "sourceKind": "internal-counter"
+    },
+    "MuLingWanWuSheng": {
+      "label": "木灵万物生",
+      "sourceKind": "internal-counter"
+    },
+    "MuLingZhen": {
+      "label": "木灵阵",
+      "sourceKind": "internal-counter"
+    },
+    "PoKongDiao": {
+      "label": "破空雕",
+      "sourceKind": "internal-counter"
+    },
+    "QiCaiLingHe": {
+      "label": "七彩灵鹤",
+      "sourceKind": "card",
+      "sourceId": 99000204
+    },
+    "QiChenDanTianPlus": {
+      "label": "幻•气沉丹田攻击强化",
+      "sourceKind": "card",
+      "sourceId": 278
+    },
+    "QiShiBeiLv": {
+      "label": "气势倍率",
+      "sourceKind": "internal-counter"
+    },
+    "QiShiBuJue": {
+      "label": "气势不绝",
+      "sourceKind": "card",
+      "sourceId": 10000053
+    },
+    "QiXingLianZhu": {
+      "label": "七星连珠",
+      "sourceKind": "internal-counter"
+    },
+    "SanWeiHuan": {
+      "label": "三尾讙",
+      "sourceKind": "card",
+      "sourceId": 99000212
+    },
+    "ShenFaZengJiaShiZaoChengShangHai": {
+      "label": "身法增加时造成伤害",
+      "sourceKind": "internal-counter"
+    },
+    "ShengQiLingRen": {
+      "label": "盛气凌人",
+      "sourceKind": "internal-counter"
+    },
+    "ShiXianGuTeng": {
+      "label": "噬仙古藤",
+      "sourceKind": "card",
+      "sourceId": 9000019
+    },
+    "ShiXuLingShou": {
+      "label": "噬灵虚兽",
+      "sourceKind": "card",
+      "sourceId": 99000206
+    },
+    "ShiYongHouZhao": {
+      "label": "已触发后招",
+      "sourceKind": "internal-counter"
+    },
+    "ShuiYueJianZhen": {
+      "label": "水月剑阵",
+      "sourceKind": "internal-counter"
+    },
+    "ShunYingJi": {
+      "label": "瞬影击",
+      "sourceKind": "card",
+      "sourceId": 338
+    },
+    "SiZhanBuDao": {
+      "label": "死战不倒",
+      "sourceKind": "internal-counter"
+    },
+    "SiZhanZhiZhi": {
+      "label": "死战之志",
+      "sourceKind": "internal-counter"
+    },
+    "SnakeCardUsed": {
+      "label": "已用蛇牌数",
+      "sourceKind": "internal-counter"
+    },
+    "Talent199BottleCardId": {
+      "label": "五行玉瓶存牌",
+      "sourceKind": "internal-counter"
+    },
+    "TempHuTi": {
+      "label": "料敌机先临时护体",
+      "sourceKind": "fate-strategy",
+      "sourceId": 330
+    },
+    "ThisTurnStartHp": {
+      "label": "本回合开始生命",
+      "sourceKind": "internal-counter"
+    },
+    "TianSuiHuLu": {
+      "label": "天髓葫芦",
+      "sourceKind": "internal-counter"
+    },
+    "TiaoZhiShangZhang": {
+      "label": "跳至",
+      "sourceKind": "internal-counter"
+    },
+    "TuLingZhenPlus": {
+      "label": "幻•土灵阵",
+      "sourceKind": "card",
+      "sourceId": 317
+    },
+    "TunTianChiYanShou": {
+      "label": "吞天赤眼兽",
+      "sourceKind": "internal-counter"
+    },
+    "UsedWuXing": {
+      "label": "已用五行",
+      "sourceKind": "internal-counter"
+    },
+    "WanNengJian": {
+      "label": "万能剑",
+      "sourceKind": "internal-counter"
+    },
+    "WanNengJianShengXiaoCengJi": {
+      "label": "万能剑生效层级",
+      "sourceKind": "internal-counter"
+    },
+    "WuShiXuRuo": {
+      "label": "一心一剑无视虚弱",
+      "sourceKind": "card",
+      "sourceId": 1000056
+    },
+    "WuXingJuLingYiChuFa": {
+      "label": "五行聚灵已触发",
+      "sourceKind": "internal-counter"
+    },
+    "WuXingTianSuiJue": {
+      "label": "五行天髓诀",
+      "sourceKind": "card",
+      "sourceId": 7000073
+    },
+    "XiaCiBengQuanHaoShengMingShiZaoChengDengLiangShangHai": {
+      "label": "下次崩拳生命消耗伤害",
+      "sourceKind": "internal-counter"
+    },
+    "XiaCiGongJiShouShuangBeiJianYiJiaGongJiaCheng": {
+      "label": "梦•凝意诀下次攻击强化",
+      "sourceKind": "card",
+      "sourceId": 1000085
+    },
+    "XiangShengXiangCheng": {
+      "label": "相生相成",
+      "sourceKind": "internal-counter"
+    },
+    "XiaoHaoBengQuanChuo": {
+      "label": "消耗崩拳·戳",
+      "sourceKind": "internal-counter"
+    },
+    "XiaoYaoGuQin": {
+      "label": "逍遥古琴",
+      "sourceKind": "card",
+      "sourceId": 99000113
+    },
+    "XiaZhangPaiSuanZuoKuangJian": {
+      "label": "下张牌算作狂剑",
+      "sourceKind": "internal-counter"
+    },
+    "XiaZhangPaiSuanZuoKuangJianCengJi": {
+      "label": "下张牌算作狂剑生效层级",
+      "sourceKind": "internal-counter"
+    },
+    "XingYi_Duan": {
+      "label": "星弈·断",
+      "sourceKind": "internal-counter"
+    },
+    "XingYueYuShan": {
+      "label": "星月折扇",
+      "sourceKind": "card",
+      "sourceId": 23
+    },
+    "XuanXinZhanPo": {
+      "label": "玄心斩魄",
+      "sourceKind": "internal-counter"
+    },
+    "YanHunGuiFu": {
+      "label": "焰魂归来",
+      "sourceKind": "internal-counter"
+    },
+    "YanQi": {
+      "label": "延气",
+      "sourceKind": "internal-counter"
+    },
+    "YeDuZhiYin": {
+      "label": "野渡之印",
+      "sourceKind": "internal-counter"
+    },
+    "YeRenHua": {
+      "label": "叶刃花",
+      "sourceKind": "card",
+      "sourceId": 9000018
+    },
+    "YiHuaJieMu": {
+      "label": "移花接木",
+      "sourceKind": "internal-counter"
+    },
+    "YinFuYuJian": {
+      "label": "引符御剑",
+      "sourceKind": "internal-counter"
+    },
+    "YingXiaoTu": {
+      "label": "影枭兔",
+      "sourceKind": "internal-counter"
+    },
+    "YingZhiZhu": {
+      "label": "硬枝竹",
+      "sourceKind": "internal-counter"
+    },
+    "YiYongGuoShuiLingPai": {
+      "label": "已用水灵牌",
+      "sourceKind": "internal-counter"
+    },
+    "YongGuoYunJianJiShu": {
+      "label": "已用云剑数",
+      "sourceKind": "internal-counter"
+    },
+    "YouMingXuHunQuan": {
+      "label": "幽冥虚魂犬",
+      "sourceKind": "card",
+      "sourceId": 99000211
+    },
+    "YuHuoFengHuang": {
+      "label": "浴火凤凰",
+      "sourceKind": "internal-counter"
+    },
+    "YunJianRouXin": {
+      "label": "云剑•柔心",
+      "sourceKind": "card",
+      "sourceId": 1000026
+    },
+    "YunJianZhiXin": {
+      "label": "云剑之心",
+      "sourceKind": "internal-counter"
+    },
+    "ZhaiHuaFeiYe": {
+      "label": "摘花飞叶",
+      "sourceKind": "card",
+      "sourceId": 52
+    },
+    "ZhuQueZhiLei": {
+      "label": "朱雀之泪",
+      "sourceKind": "internal-counter"
+    },
+    "ZuiQuanJiaShi": {
+      "label": "醉拳架势",
+      "sourceKind": "internal-counter"
+    },
+    "ZuiWoXiaoYao": {
+      "label": "醉卧逍遥",
+      "sourceKind": "internal-counter"
+    }
+  },
+  "talentLabels": {
+    "1": {
+      "label": "锻体",
+      "sourceKind": "talent",
+      "sourceId": 1
+    },
+    "2": {
+      "label": "融会贯通",
+      "sourceKind": "talent",
+      "sourceId": 2
+    },
+    "3": {
+      "label": "戒备防守",
+      "sourceKind": "talent",
+      "sourceId": 3
+    },
+    "4": {
+      "label": "感悟丛生",
+      "sourceKind": "talent",
+      "sourceId": 4
+    },
+    "5": {
+      "label": "善假于物",
+      "sourceKind": "talent",
+      "sourceId": 5
+    },
+    "6": {
+      "label": "变换之道",
+      "sourceKind": "talent",
+      "sourceId": 6
+    },
+    "7": {
+      "label": "云影化身",
+      "sourceKind": "talent",
+      "sourceId": 7
+    },
+    "8": {
+      "label": "休养生息",
+      "sourceKind": "talent",
+      "sourceId": 8
+    },
+    "9": {
+      "label": "云巅雷劫",
+      "sourceKind": "talent",
+      "sourceId": 9
+    },
+    "10": {
+      "label": "道韵传承",
+      "sourceKind": "talent",
+      "sourceId": 10
+    },
+    "11": {
+      "label": "博采众长",
+      "sourceKind": "talent",
+      "sourceId": 11
+    },
+    "12": {
+      "label": "顿悟",
+      "sourceKind": "talent",
+      "sourceId": 12
+    },
+    "13": {
+      "label": "储纳灵气",
+      "sourceKind": "talent",
+      "sourceId": 13
+    },
+    "14": {
+      "label": "云海连绵",
+      "sourceKind": "talent",
+      "sourceId": 14
+    },
+    "15": {
+      "label": "灵猫踏云",
+      "sourceKind": "talent",
+      "sourceId": 15
+    },
+    "16": {
+      "label": "剑韵修炼",
+      "sourceKind": "talent",
+      "sourceId": 16
+    },
+    "17": {
+      "label": "云泉道茶",
+      "sourceKind": "talent",
+      "sourceId": 17
+    },
+    "18": {
+      "label": "云雾变幻",
+      "sourceKind": "talent",
+      "sourceId": 18
+    },
+    "19": {
+      "label": "血脉潜能",
+      "sourceKind": "talent",
+      "sourceId": 19
+    },
+    "20": {
+      "label": "精进",
+      "sourceKind": "talent",
+      "sourceId": 20
+    },
+    "21": {
+      "label": "冷静",
+      "sourceKind": "talent",
+      "sourceId": 21
+    },
+    "22": {
+      "label": "炎舞",
+      "sourceKind": "talent",
+      "sourceId": 22
+    },
+    "23": {
+      "label": "崩雪",
+      "sourceKind": "talent",
+      "sourceId": 23
+    },
+    "24": {
+      "label": "龙脉传承",
+      "sourceKind": "talent",
+      "sourceId": 24
+    },
+    "25": {
+      "label": "珊瑚剑",
+      "sourceKind": "talent",
+      "sourceId": 25
+    },
+    "26": {
+      "label": "泪天镯",
+      "sourceKind": "talent",
+      "sourceId": 26
+    },
+    "27": {
+      "label": "龙鳞",
+      "sourceKind": "talent",
+      "sourceId": 27
+    },
+    "28": {
+      "label": "灯灵觉醒",
+      "sourceKind": "talent",
+      "sourceId": 28
+    },
+    "29": {
+      "label": "勤学苦练",
+      "sourceKind": "talent",
+      "sourceId": 29
+    },
+    "30": {
+      "label": "卜卦",
+      "sourceKind": "talent",
+      "sourceId": 30
+    },
+    "31": {
+      "label": "观星",
+      "sourceKind": "talent",
+      "sourceId": 31
+    },
+    "32": {
+      "label": "生机绽放",
+      "sourceKind": "talent",
+      "sourceId": 32
+    },
+    "33": {
+      "label": "北斗星盘",
+      "sourceKind": "talent",
+      "sourceId": 33
+    },
+    "34": {
+      "label": "七星灯",
+      "sourceKind": "talent",
+      "sourceId": 34
+    },
+    "35": {
+      "label": "瓮中捉鳖",
+      "sourceKind": "talent",
+      "sourceId": 35
+    },
+    "36": {
+      "label": "聚灵卦",
+      "sourceKind": "talent",
+      "sourceId": 36
+    },
+    "37": {
+      "label": "先天灵躯",
+      "sourceKind": "talent",
+      "sourceId": 37
+    },
+    "38": {
+      "label": "稳固防御",
+      "sourceKind": "talent",
+      "sourceId": 38
+    },
+    "39": {
+      "label": "灯焰飞舞",
+      "sourceKind": "talent",
+      "sourceId": 39
+    },
+    "40": {
+      "label": "旋灯占卦",
+      "sourceKind": "talent",
+      "sourceId": 40
+    },
+    "41": {
+      "label": "枯木逢春",
+      "sourceKind": "talent",
+      "sourceId": 41
+    },
+    "42": {
+      "label": "斩断俗尘",
+      "sourceKind": "talent",
+      "sourceId": 42
+    },
+    "43": {
+      "label": "好奇心（旧）",
+      "sourceKind": "talent",
+      "sourceId": 43
+    },
+    "44": {
+      "label": "猫爪",
+      "sourceKind": "talent",
+      "sourceId": 44
+    },
+    "45": {
+      "label": "猫魂庇佑",
+      "sourceKind": "talent",
+      "sourceId": 45
+    },
+    "46": {
+      "label": "灵猫乱剑",
+      "sourceKind": "talent",
+      "sourceId": 46
+    },
+    "47": {
+      "label": "剑灵极影",
+      "sourceKind": "talent",
+      "sourceId": 47
+    },
+    "48": {
+      "label": "运筹帷幄",
+      "sourceKind": "talent",
+      "sourceId": 48
+    },
+    "50": {
+      "label": "星爆术",
+      "sourceKind": "talent",
+      "sourceId": 50
+    },
+    "52": {
+      "label": "七星定魂",
+      "sourceKind": "talent",
+      "sourceId": 52
+    },
+    "53": {
+      "label": "机缘造化",
+      "sourceKind": "talent",
+      "sourceId": 53
+    },
+    "54": {
+      "label": "云剑传承",
+      "sourceKind": "talent",
+      "sourceId": 54
+    },
+    "55": {
+      "label": "灵剑传承",
+      "sourceKind": "talent",
+      "sourceId": 55
+    },
+    "56": {
+      "label": "斩道",
+      "sourceKind": "talent",
+      "sourceId": 56
+    },
+    "57": {
+      "label": "剑阵守护",
+      "sourceKind": "talent",
+      "sourceId": 57
+    },
+    "58": {
+      "label": "星弈传承",
+      "sourceKind": "talent",
+      "sourceId": 58
+    },
+    "59": {
+      "label": "陨星淬体",
+      "sourceKind": "talent",
+      "sourceId": 59
+    },
+    "60": {
+      "label": "木灵之躯",
+      "sourceKind": "talent",
+      "sourceId": 60
+    },
+    "61": {
+      "label": "占星",
+      "sourceKind": "talent",
+      "sourceId": 61
+    },
+    "62": {
+      "label": "布星问卦",
+      "sourceKind": "talent",
+      "sourceId": 62
+    },
+    "63": {
+      "label": "飞鸿踏雪",
+      "sourceKind": "talent",
+      "sourceId": 63
+    },
+    "64": {
+      "label": "雪羽清风",
+      "sourceKind": "talent",
+      "sourceId": 64
+    },
+    "65": {
+      "label": "雁影化身",
+      "sourceKind": "talent",
+      "sourceId": 65
+    },
+    "66": {
+      "label": "剑不出鞘",
+      "sourceKind": "talent",
+      "sourceId": 66
+    },
+    "67": {
+      "label": "炽火炎刃",
+      "sourceKind": "talent",
+      "sourceId": 67
+    },
+    "68": {
+      "label": "流冰寒刃",
+      "sourceKind": "talent",
+      "sourceId": 68
+    },
+    "69": {
+      "label": "云之道",
+      "sourceKind": "talent",
+      "sourceId": 69
+    },
+    "70": {
+      "label": "狂之执念",
+      "sourceKind": "talent",
+      "sourceId": 70
+    },
+    "71": {
+      "label": "后发制人",
+      "sourceKind": "talent",
+      "sourceId": 71
+    },
+    "72": {
+      "label": "易数化劫",
+      "sourceKind": "talent",
+      "sourceId": 72
+    },
+    "73": {
+      "label": "金灵传承",
+      "sourceKind": "talent",
+      "sourceId": 73
+    },
+    "74": {
+      "label": "木灵传承",
+      "sourceKind": "talent",
+      "sourceId": 74
+    },
+    "75": {
+      "label": "水灵传承",
+      "sourceKind": "talent",
+      "sourceId": 75
+    },
+    "76": {
+      "label": "火灵传承",
+      "sourceKind": "talent",
+      "sourceId": 76
+    },
+    "77": {
+      "label": "土灵传承",
+      "sourceKind": "talent",
+      "sourceId": 77
+    },
+    "78": {
+      "label": "舍身化道",
+      "sourceKind": "talent",
+      "sourceId": 78
+    },
+    "79": {
+      "label": "元灵沟通",
+      "sourceKind": "talent",
+      "sourceId": 79
+    },
+    "80": {
+      "label": "战斗历练",
+      "sourceKind": "talent",
+      "sourceId": 80
+    },
+    "81": {
+      "label": "悠然葫芦",
+      "sourceKind": "talent",
+      "sourceId": 81
+    },
+    "82": {
+      "label": "五行印记",
+      "sourceKind": "talent",
+      "sourceId": 82
+    },
+    "83": {
+      "label": "五行化身",
+      "sourceKind": "talent",
+      "sourceId": 83
+    },
+    "84": {
+      "label": "五行凝炼",
+      "sourceKind": "talent",
+      "sourceId": 84
+    },
+    "85": {
+      "label": "云剑唤雨",
+      "sourceKind": "talent",
+      "sourceId": 85
+    },
+    "86": {
+      "label": "九霄玲珑镯",
+      "sourceKind": "talent",
+      "sourceId": 86
+    },
+    "87": {
+      "label": "灵阵精通",
+      "sourceKind": "talent",
+      "sourceId": 87
+    },
+    "88": {
+      "label": "土灵印记",
+      "sourceKind": "talent",
+      "sourceId": 88
+    },
+    "89": {
+      "label": "木灵炼体",
+      "sourceKind": "talent",
+      "sourceId": 89
+    },
+    "90": {
+      "label": "春雨",
+      "sourceKind": "talent",
+      "sourceId": 90
+    },
+    "91": {
+      "label": "刚劲",
+      "sourceKind": "talent",
+      "sourceId": 91
+    },
+    "92": {
+      "label": "铸剑师",
+      "sourceKind": "talent",
+      "sourceId": 92
+    },
+    "93": {
+      "label": "剑锋锻造",
+      "sourceKind": "talent",
+      "sourceId": 93
+    },
+    "94": {
+      "label": "剑纹雕琢",
+      "sourceKind": "talent",
+      "sourceId": 94
+    },
+    "95": {
+      "label": "灵气凝铸",
+      "sourceKind": "talent",
+      "sourceId": 95
+    },
+    "96": {
+      "label": "剑心淬炼",
+      "sourceKind": "talent",
+      "sourceId": 96
+    },
+    "97": {
+      "label": "生机之种",
+      "sourceKind": "talent",
+      "sourceId": 97
+    },
+    "98": {
+      "label": "桃花印",
+      "sourceKind": "talent",
+      "sourceId": 98
+    },
+    "99": {
+      "label": "水灵印记",
+      "sourceKind": "talent",
+      "sourceId": 99
+    },
+    "100": {
+      "label": "山崩",
+      "sourceKind": "talent",
+      "sourceId": 100
+    },
+    "101": {
+      "label": "花舞",
+      "sourceKind": "talent",
+      "sourceId": 101
+    },
+    "102": {
+      "label": "五行循环",
+      "sourceKind": "talent",
+      "sourceId": 102
+    },
+    "103": {
+      "label": "星蚀",
+      "sourceKind": "talent",
+      "sourceId": 103
+    },
+    "104": {
+      "label": "算无遗策",
+      "sourceKind": "talent",
+      "sourceId": 104
+    },
+    "105": {
+      "label": "绛纱守护",
+      "sourceKind": "talent",
+      "sourceId": 105
+    },
+    "106": {
+      "label": "星月折扇",
+      "sourceKind": "talent",
+      "sourceId": 106
+    },
+    "107": {
+      "label": "无中生有",
+      "sourceKind": "talent",
+      "sourceId": 107
+    },
+    "108": {
+      "label": "瞒天过海",
+      "sourceKind": "talent",
+      "sourceId": 108
+    },
+    "109": {
+      "label": "先天五行",
+      "sourceKind": "talent",
+      "sourceId": 109
+    },
+    "110": {
+      "label": "先天印记",
+      "sourceKind": "talent",
+      "sourceId": 110
+    },
+    "111": {
+      "label": "先天灵阵",
+      "sourceKind": "talent",
+      "sourceId": 111
+    },
+    "112": {
+      "label": "五行元灵",
+      "sourceKind": "talent",
+      "sourceId": 112
+    },
+    "114": {
+      "label": "血脉威能",
+      "sourceKind": "talent",
+      "sourceId": 114
+    },
+    "115": {
+      "label": "燃命之焰",
+      "sourceKind": "talent",
+      "sourceId": 115
+    },
+    "116": {
+      "label": "剑阵传承",
+      "sourceKind": "talent",
+      "sourceId": 116
+    },
+    "117": {
+      "label": "雷霆传承",
+      "sourceKind": "talent",
+      "sourceId": 117
+    },
+    "118": {
+      "label": "稳固根基",
+      "sourceKind": "talent",
+      "sourceId": 118
+    },
+    "119": {
+      "label": "剑池问心",
+      "sourceKind": "talent",
+      "sourceId": 119
+    },
+    "120": {
+      "label": "妙手回春",
+      "sourceKind": "talent",
+      "sourceId": 120
+    },
+    "121": {
+      "label": "无极卦盘",
+      "sourceKind": "talent",
+      "sourceId": 121
+    },
+    "122": {
+      "label": "狂雷电闪",
+      "sourceKind": "talent",
+      "sourceId": 122
+    },
+    "123": {
+      "label": "五行传承",
+      "sourceKind": "talent",
+      "sourceId": 123
+    },
+    "124": {
+      "label": "双鸳逆克",
+      "sourceKind": "talent",
+      "sourceId": 124
+    },
+    "125": {
+      "label": "猛虎之躯",
+      "sourceKind": "talent",
+      "sourceId": 125
+    },
+    "127": {
+      "label": "相生相成",
+      "sourceKind": "talent",
+      "sourceId": 127
+    },
+    "128": {
+      "label": "五行专一",
+      "sourceKind": "talent",
+      "sourceId": 128
+    },
+    "129": {
+      "label": "好奇心",
+      "sourceKind": "talent",
+      "sourceId": 129
+    },
+    "130": {
+      "label": "相生五灵阵",
+      "sourceKind": "talent",
+      "sourceId": 130
+    },
+    "131": {
+      "label": "无中生有",
+      "sourceKind": "talent",
+      "sourceId": 131
+    },
+    "132": {
+      "label": "锟铻金环",
+      "sourceKind": "talent",
+      "sourceId": 132
+    },
+    "133": {
+      "label": "五行润养",
+      "sourceKind": "talent",
+      "sourceId": 133
+    },
+    "134": {
+      "label": "桃枝如意",
+      "sourceKind": "talent",
+      "sourceId": 134
+    },
+    "135": {
+      "label": "生机卦诀",
+      "sourceKind": "talent",
+      "sourceId": 135
+    },
+    "136": {
+      "label": "秘印亲和",
+      "sourceKind": "talent",
+      "sourceId": 136
+    },
+    "137": {
+      "label": "相生之火",
+      "sourceKind": "talent",
+      "sourceId": 137
+    },
+    "138": {
+      "label": "五行爆炎",
+      "sourceKind": "talent",
+      "sourceId": 138
+    },
+    "139": {
+      "label": "焰魂归复",
+      "sourceKind": "talent",
+      "sourceId": 139
+    },
+    "140": {
+      "label": "疾燃咒印",
+      "sourceKind": "talent",
+      "sourceId": 140
+    },
+    "141": {
+      "label": "计出万全",
+      "sourceKind": "talent",
+      "sourceId": 141
+    },
+    "142": {
+      "label": "以逸待劳",
+      "sourceKind": "talent",
+      "sourceId": 142
+    },
+    "143": {
+      "label": "崩拳传承",
+      "sourceKind": "talent",
+      "sourceId": 143
+    },
+    "144": {
+      "label": "炼体传承",
+      "sourceKind": "talent",
+      "sourceId": 144
+    },
+    "145": {
+      "label": "气势充沛",
+      "sourceKind": "talent",
+      "sourceId": 145
+    },
+    "146": {
+      "label": "体修入道",
+      "sourceKind": "talent",
+      "sourceId": 146
+    },
+    "147": {
+      "label": "身轻如燕",
+      "sourceKind": "talent",
+      "sourceId": 147
+    },
+    "148": {
+      "label": "血痕记忆",
+      "sourceKind": "talent",
+      "sourceId": 148
+    },
+    "149": {
+      "label": "再生之躯",
+      "sourceKind": "talent",
+      "sourceId": 149
+    },
+    "150": {
+      "label": "冥心烙印",
+      "sourceKind": "talent",
+      "sourceId": 150
+    },
+    "151": {
+      "label": "磨砺不止",
+      "sourceKind": "talent",
+      "sourceId": 151
+    },
+    "152": {
+      "label": "锻体不息",
+      "sourceKind": "talent",
+      "sourceId": 152
+    },
+    "153": {
+      "label": "灵涌不竭",
+      "sourceKind": "talent",
+      "sourceId": 153
+    },
+    "154": {
+      "label": "生机不灭",
+      "sourceKind": "talent",
+      "sourceId": 154
+    },
+    "155": {
+      "label": "逆境不弃",
+      "sourceKind": "talent",
+      "sourceId": 155
+    },
+    "156": {
+      "label": "疾驰不休",
+      "sourceKind": "talent",
+      "sourceId": 156
+    },
+    "157": {
+      "label": "晚霞",
+      "sourceKind": "talent",
+      "sourceId": 157
+    },
+    "158": {
+      "label": "青龙剑阵",
+      "sourceKind": "talent",
+      "sourceId": 158
+    },
+    "159": {
+      "label": "百兽灵剑阵",
+      "sourceKind": "talent",
+      "sourceId": 159
+    },
+    "160": {
+      "label": "狂龙吞云",
+      "sourceKind": "talent",
+      "sourceId": 160
+    },
+    "161": {
+      "label": "灵卦术",
+      "sourceKind": "talent",
+      "sourceId": 161
+    },
+    "162": {
+      "label": "摘花飞叶",
+      "sourceKind": "talent",
+      "sourceId": 162
+    },
+    "163": {
+      "label": "双飞燕",
+      "sourceKind": "talent",
+      "sourceId": 163
+    },
+    "164": {
+      "label": "滴水穿石",
+      "sourceKind": "talent",
+      "sourceId": 164
+    },
+    "165": {
+      "label": "野渡之印",
+      "sourceKind": "talent",
+      "sourceId": 165
+    },
+    "166": {
+      "label": "熔岩之印",
+      "sourceKind": "talent",
+      "sourceId": 166
+    },
+    "167": {
+      "label": "滚石之印",
+      "sourceKind": "talent",
+      "sourceId": 167
+    },
+    "168": {
+      "label": "斩浪之印",
+      "sourceKind": "talent",
+      "sourceId": 168
+    },
+    "169": {
+      "label": "传承不绝",
+      "sourceKind": "talent",
+      "sourceId": 169
+    },
+    "170": {
+      "label": "锻躯之道",
+      "sourceKind": "talent",
+      "sourceId": 170
+    },
+    "171": {
+      "label": "搏命之勇",
+      "sourceKind": "talent",
+      "sourceId": 171
+    },
+    "172": {
+      "label": "盛气凌人",
+      "sourceKind": "talent",
+      "sourceId": 172
+    },
+    "173": {
+      "label": "猛攻之姿",
+      "sourceKind": "talent",
+      "sourceId": 173
+    },
+    "174": {
+      "label": "崩裂之拳",
+      "sourceKind": "talent",
+      "sourceId": 174
+    },
+    "175": {
+      "label": "历战不屈",
+      "sourceKind": "talent",
+      "sourceId": 175
+    },
+    "176": {
+      "label": "筋骨健壮",
+      "sourceKind": "talent",
+      "sourceId": 176
+    },
+    "177": {
+      "label": "修玄不泯",
+      "sourceKind": "talent",
+      "sourceId": 177
+    },
+    "178": {
+      "label": "阴晴圆缺",
+      "sourceKind": "talent",
+      "sourceId": 178
+    },
+    "179": {
+      "label": "入冥",
+      "sourceKind": "talent",
+      "sourceId": 179
+    },
+    "180": {
+      "label": "疯魔",
+      "sourceKind": "talent",
+      "sourceId": 180
+    },
+    "181": {
+      "label": "冥夜",
+      "sourceKind": "talent",
+      "sourceId": 181
+    },
+    "182": {
+      "label": "冥月蟾光",
+      "sourceKind": "talent",
+      "sourceId": 182
+    },
+    "183": {
+      "label": "禅心锻身",
+      "sourceKind": "talent",
+      "sourceId": 183
+    },
+    "184": {
+      "label": "心体共鸣",
+      "sourceKind": "talent",
+      "sourceId": 184
+    },
+    "185": {
+      "label": "冥心入玄",
+      "sourceKind": "talent",
+      "sourceId": 185
+    },
+    "186": {
+      "label": "记忆碎片",
+      "sourceKind": "talent",
+      "sourceId": 186
+    },
+    "187": {
+      "label": "万玄破魔掌",
+      "sourceKind": "talent",
+      "sourceId": 187
+    },
+    "188": {
+      "label": "副职兼修",
+      "sourceKind": "talent",
+      "sourceId": 188
+    },
+    "189": {
+      "label": "悟剑天赋",
+      "sourceKind": "talent",
+      "sourceId": 189
+    },
+    "190": {
+      "label": "观壁悟道",
+      "sourceKind": "talent",
+      "sourceId": 190
+    },
+    "191": {
+      "label": "八方来风",
+      "sourceKind": "talent",
+      "sourceId": 191
+    },
+    "192": {
+      "label": "剑招融汇",
+      "sourceKind": "talent",
+      "sourceId": 192
+    },
+    "193": {
+      "label": "曳影剑阵",
+      "sourceKind": "talent",
+      "sourceId": 193
+    },
+    "194": {
+      "label": "风行天上",
+      "sourceKind": "talent",
+      "sourceId": 194
+    },
+    "195": {
+      "label": "灵卦自衍",
+      "sourceKind": "talent",
+      "sourceId": 195
+    },
+    "196": {
+      "label": "阴符玉简",
+      "sourceKind": "talent",
+      "sourceId": 196
+    },
+    "197": {
+      "label": "易卦自解",
+      "sourceKind": "talent",
+      "sourceId": 197
+    },
+    "198": {
+      "label": "孤虚金书",
+      "sourceKind": "talent",
+      "sourceId": 198
+    },
+    "199": {
+      "label": "五行玉瓶",
+      "sourceKind": "talent",
+      "sourceId": 199
+    },
+    "200": {
+      "label": "百草生息",
+      "sourceKind": "talent",
+      "sourceId": 200
+    },
+    "201": {
+      "label": "天降甘霖",
+      "sourceKind": "talent",
+      "sourceId": 201
+    },
+    "202": {
+      "label": "五行聚灵",
+      "sourceKind": "talent",
+      "sourceId": 202
+    },
+    "203": {
+      "label": "忘忧",
+      "sourceKind": "talent",
+      "sourceId": 203
+    },
+    "204": {
+      "label": "凡躯",
+      "sourceKind": "talent",
+      "sourceId": 204
+    },
+    "205": {
+      "label": "拆招",
+      "sourceKind": "talent",
+      "sourceId": 205
+    },
+    "206": {
+      "label": "志坚",
+      "sourceKind": "talent",
+      "sourceId": 206
+    },
+    "207": {
+      "label": "转势",
+      "sourceKind": "talent",
+      "sourceId": 207
+    },
+    "208": {
+      "label": "得炁",
+      "sourceKind": "talent",
+      "sourceId": 208
+    },
+    "209": {
+      "label": "灵炁奔涌",
+      "sourceKind": "talent",
+      "sourceId": 209
+    },
+    "210": {
+      "label": "变换无界",
+      "sourceKind": "talent",
+      "sourceId": 210
+    },
+    "211": {
+      "label": "感悟臻境",
+      "sourceKind": "talent",
+      "sourceId": 211
+    },
+    "212": {
+      "label": "假物证道",
+      "sourceKind": "talent",
+      "sourceId": 212
+    },
+    "213": {
+      "label": "顿悟登峰",
+      "sourceKind": "talent",
+      "sourceId": 213
+    },
+    "214": {
+      "label": "斩道重修",
+      "sourceKind": "talent",
+      "sourceId": 214
+    },
+    "215": {
+      "label": "造化随心",
+      "sourceKind": "talent",
+      "sourceId": 215
+    },
+    "216": {
+      "label": "大道至简",
+      "sourceKind": "talent",
+      "sourceId": 216
+    },
+    "217": {
+      "label": "点石成金",
+      "sourceKind": "talent",
+      "sourceId": 217
+    },
+    "218": {
+      "label": "潜龙",
+      "sourceKind": "talent",
+      "sourceId": 218
+    },
+    "219": {
+      "label": "玲珑剑阵",
+      "sourceKind": "talent",
+      "sourceId": 219
+    },
+    "220": {
+      "label": "兴云布雨",
+      "sourceKind": "talent",
+      "sourceId": 220
+    },
+    "221": {
+      "label": "婉若游龙",
+      "sourceKind": "talent",
+      "sourceId": 221
+    },
+    "222": {
+      "label": "出渊",
+      "sourceKind": "talent",
+      "sourceId": 222
+    },
+    "223": {
+      "label": "晚霞",
+      "sourceKind": "talent",
+      "sourceId": 223
+    },
+    "224": {
+      "label": "青龙剑阵",
+      "sourceKind": "talent",
+      "sourceId": 224
+    },
+    "225": {
+      "label": "百兽灵剑阵",
+      "sourceKind": "talent",
+      "sourceId": 225
+    },
+    "226": {
+      "label": "狂龙吞云",
+      "sourceKind": "talent",
+      "sourceId": 226
+    },
+    "227": {
+      "label": "灵卦术",
+      "sourceKind": "talent",
+      "sourceId": 227
+    },
+    "228": {
+      "label": "摘花飞叶",
+      "sourceKind": "talent",
+      "sourceId": 228
+    },
+    "229": {
+      "label": "双飞燕",
+      "sourceKind": "talent",
+      "sourceId": 229
+    },
+    "230": {
+      "label": "滴水穿石",
+      "sourceKind": "talent",
+      "sourceId": 230
+    },
+    "231": {
+      "label": "野渡之印",
+      "sourceKind": "talent",
+      "sourceId": 231
+    },
+    "232": {
+      "label": "熔岩之印",
+      "sourceKind": "talent",
+      "sourceId": 232
+    },
+    "233": {
+      "label": "滚石之印",
+      "sourceKind": "talent",
+      "sourceId": 233
+    },
+    "234": {
+      "label": "斩浪之印",
+      "sourceKind": "talent",
+      "sourceId": 234
+    },
+    "235": {
+      "label": "选择之道",
+      "sourceKind": "talent",
+      "sourceId": 235
+    },
+    "236": {
+      "label": "财之力",
+      "sourceKind": "talent",
+      "sourceId": 236
+    },
+    "237": {
+      "label": "财之护",
+      "sourceKind": "talent",
+      "sourceId": 237
+    },
+    "238": {
+      "label": "天降横财",
+      "sourceKind": "talent",
+      "sourceId": 238
+    },
+    "239": {
+      "label": "神机百解",
+      "sourceKind": "talent",
+      "sourceId": 239
+    },
+    "240": {
+      "label": "烟花爆竹",
+      "sourceKind": "talent",
+      "sourceId": 240
+    },
+    "241": {
+      "label": "复刻",
+      "sourceKind": "talent",
+      "sourceId": 241
+    },
+    "242": {
+      "label": "玄灵附身",
+      "sourceKind": "talent",
+      "sourceId": 242
+    },
+    "243": {
+      "label": "崩拳•伏虎",
+      "sourceKind": "talent",
+      "sourceId": 243
+    },
+    "244": {
+      "label": "瞬影击",
+      "sourceKind": "talent",
+      "sourceId": 244
+    },
+    "245": {
+      "label": "逍遥无影拳",
+      "sourceKind": "talent",
+      "sourceId": 245
+    },
+    "246": {
+      "label": "剑阵展开",
+      "sourceKind": "talent",
+      "sourceId": 246
+    },
+    "247": {
+      "label": "破甲灵剑",
+      "sourceKind": "talent",
+      "sourceId": 247
+    },
+    "248": {
+      "label": "云起剑术",
+      "sourceKind": "talent",
+      "sourceId": 248
+    },
+    "249": {
+      "label": "北斗星盘",
+      "sourceKind": "talent",
+      "sourceId": 249
+    },
+    "250": {
+      "label": "惊雷透甲",
+      "sourceKind": "talent",
+      "sourceId": 250
+    },
+    "251": {
+      "label": "催心毒焰",
+      "sourceKind": "talent",
+      "sourceId": 251
+    },
+    "252": {
+      "label": "天雷滚滚",
+      "sourceKind": "talent",
+      "sourceId": 252
+    },
+    "253": {
+      "label": "火灵印记",
+      "sourceKind": "talent",
+      "sourceId": 253
+    },
+    "254": {
+      "label": "金灵印记",
+      "sourceKind": "talent",
+      "sourceId": 254
+    },
+    "255": {
+      "label": "木灵印记",
+      "sourceKind": "talent",
+      "sourceId": 255
+    },
+    "256": {
+      "label": "镜中玄影",
+      "sourceKind": "talent",
+      "sourceId": 256
+    },
+    "257": {
+      "label": "气势护身",
+      "sourceKind": "talent",
+      "sourceId": 257
+    },
+    "258": {
+      "label": "锻体秘法",
+      "sourceKind": "talent",
+      "sourceId": 258
+    },
+    "259": {
+      "label": "天资聪颖",
+      "sourceKind": "talent",
+      "sourceId": 259
+    },
+    "260": {
+      "label": "招式复刻",
+      "sourceKind": "talent",
+      "sourceId": 260
+    },
+    "261": {
+      "label": "无忧灵酿",
+      "sourceKind": "talent",
+      "sourceId": 261
+    },
+    "262": {
+      "label": "定风波",
+      "sourceKind": "talent",
+      "sourceId": 262
+    },
+    "263": {
+      "label": "随心灵印",
+      "sourceKind": "talent",
+      "sourceId": 263
+    },
+    "264": {
+      "label": "五行刀斩",
+      "sourceKind": "talent",
+      "sourceId": 264
+    },
+    "265": {
+      "label": "五行解封",
+      "sourceKind": "talent",
+      "sourceId": 265
+    },
+    "266": {
+      "label": "羽翼渐丰",
+      "sourceKind": "talent",
+      "sourceId": 266
+    },
+    "267": {
+      "label": "风灵锻躯",
+      "sourceKind": "talent",
+      "sourceId": 267
+    },
+    "268": {
+      "label": "气旋掌",
+      "sourceKind": "talent",
+      "sourceId": 268
+    },
+    "269": {
+      "label": "御风飞闪",
+      "sourceKind": "talent",
+      "sourceId": 269
+    },
+    "270": {
+      "label": "化躯为风",
+      "sourceKind": "talent",
+      "sourceId": 270
+    },
+    "10001": {
+      "label": "锻体",
+      "sourceKind": "talent",
+      "sourceId": 10001
+    },
+    "10002": {
+      "label": "融会贯通",
+      "sourceKind": "talent",
+      "sourceId": 10002
+    },
+    "10004": {
+      "label": "感悟丛生",
+      "sourceKind": "talent",
+      "sourceId": 10004
+    },
+    "10005": {
+      "label": "善假于物",
+      "sourceKind": "talent",
+      "sourceId": 10005
+    },
+    "10006": {
+      "label": "变换之道",
+      "sourceKind": "talent",
+      "sourceId": 10006
+    },
+    "10008": {
+      "label": "休养生息",
+      "sourceKind": "talent",
+      "sourceId": 10008
+    },
+    "10009": {
+      "label": "云巅雷劫",
+      "sourceKind": "talent",
+      "sourceId": 10009
+    },
+    "10010": {
+      "label": "道韵传承",
+      "sourceKind": "talent",
+      "sourceId": 10010
+    },
+    "10012": {
+      "label": "顿悟",
+      "sourceKind": "talent",
+      "sourceId": 10012
+    },
+    "10013": {
+      "label": "储纳灵气",
+      "sourceKind": "talent",
+      "sourceId": 10013
+    },
+    "10016": {
+      "label": "剑韵修炼",
+      "sourceKind": "talent",
+      "sourceId": 10016
+    },
+    "10030": {
+      "label": "卜卦",
+      "sourceKind": "talent",
+      "sourceId": 10030
+    },
+    "10031": {
+      "label": "观星",
+      "sourceKind": "talent",
+      "sourceId": 10031
+    },
+    "10053": {
+      "label": "机缘造化",
+      "sourceKind": "talent",
+      "sourceId": 10053
+    },
+    "10054": {
+      "label": "云剑传承",
+      "sourceKind": "talent",
+      "sourceId": 10054
+    },
+    "10055": {
+      "label": "灵剑传承",
+      "sourceKind": "talent",
+      "sourceId": 10055
+    },
+    "10056": {
+      "label": "斩道",
+      "sourceKind": "talent",
+      "sourceId": 10056
+    },
+    "10057": {
+      "label": "剑阵守护",
+      "sourceKind": "talent",
+      "sourceId": 10057
+    },
+    "10058": {
+      "label": "星弈传承",
+      "sourceKind": "talent",
+      "sourceId": 10058
+    },
+    "10059": {
+      "label": "陨星淬体",
+      "sourceKind": "talent",
+      "sourceId": 10059
+    },
+    "10060": {
+      "label": "木灵之躯",
+      "sourceKind": "talent",
+      "sourceId": 10060
+    },
+    "10069": {
+      "label": "云之道",
+      "sourceKind": "talent",
+      "sourceId": 10069
+    },
+    "10070": {
+      "label": "狂之执念",
+      "sourceKind": "talent",
+      "sourceId": 10070
+    },
+    "10071": {
+      "label": "后发制人",
+      "sourceKind": "talent",
+      "sourceId": 10071
+    },
+    "10072": {
+      "label": "易数化劫",
+      "sourceKind": "talent",
+      "sourceId": 10072
+    },
+    "10073": {
+      "label": "金灵传承",
+      "sourceKind": "talent",
+      "sourceId": 10073
+    },
+    "10074": {
+      "label": "木灵传承",
+      "sourceKind": "talent",
+      "sourceId": 10074
+    },
+    "10075": {
+      "label": "水灵传承",
+      "sourceKind": "talent",
+      "sourceId": 10075
+    },
+    "10076": {
+      "label": "火灵传承",
+      "sourceKind": "talent",
+      "sourceId": 10076
+    },
+    "10077": {
+      "label": "土灵传承",
+      "sourceKind": "talent",
+      "sourceId": 10077
+    },
+    "10078": {
+      "label": "舍身化道",
+      "sourceKind": "talent",
+      "sourceId": 10078
+    },
+    "10079": {
+      "label": "元灵沟通",
+      "sourceKind": "talent",
+      "sourceId": 10079
+    },
+    "10093": {
+      "label": "锐利剑锋",
+      "sourceKind": "talent",
+      "sourceId": 10093
+    },
+    "10094": {
+      "label": "追击剑纹",
+      "sourceKind": "talent",
+      "sourceId": 10094
+    },
+    "10095": {
+      "label": "聚灵凝铸",
+      "sourceKind": "talent",
+      "sourceId": 10095
+    },
+    "10096": {
+      "label": "狂剑之心",
+      "sourceKind": "talent",
+      "sourceId": 10096
+    },
+    "10102": {
+      "label": "五行循环",
+      "sourceKind": "talent",
+      "sourceId": 10102
+    },
+    "10103": {
+      "label": "星蚀",
+      "sourceKind": "talent",
+      "sourceId": 10103
+    },
+    "10109": {
+      "label": "先天五行•金",
+      "sourceKind": "talent",
+      "sourceId": 10109
+    },
+    "10116": {
+      "label": "剑阵传承",
+      "sourceKind": "talent",
+      "sourceId": 10116
+    },
+    "10117": {
+      "label": "雷霆传承",
+      "sourceKind": "talent",
+      "sourceId": 10117
+    },
+    "10118": {
+      "label": "稳固根基",
+      "sourceKind": "talent",
+      "sourceId": 10118
+    },
+    "10119": {
+      "label": "剑池问心",
+      "sourceKind": "talent",
+      "sourceId": 10119
+    },
+    "10120": {
+      "label": "妙手回春",
+      "sourceKind": "talent",
+      "sourceId": 10120
+    },
+    "10127": {
+      "label": "相生相成",
+      "sourceKind": "talent",
+      "sourceId": 10127
+    },
+    "10128": {
+      "label": "五行专一",
+      "sourceKind": "talent",
+      "sourceId": 10128
+    },
+    "10143": {
+      "label": "崩拳传承",
+      "sourceKind": "talent",
+      "sourceId": 10143
+    },
+    "10144": {
+      "label": "炼体传承",
+      "sourceKind": "talent",
+      "sourceId": 10144
+    },
+    "10145": {
+      "label": "气势充沛",
+      "sourceKind": "talent",
+      "sourceId": 10145
+    },
+    "10146": {
+      "label": "体修入道",
+      "sourceKind": "talent",
+      "sourceId": 10146
+    },
+    "10148": {
+      "label": "血痕记忆",
+      "sourceKind": "talent",
+      "sourceId": 10148
+    },
+    "10149": {
+      "label": "再生之躯",
+      "sourceKind": "talent",
+      "sourceId": 10149
+    },
+    "10150": {
+      "label": "冥心烙印",
+      "sourceKind": "talent",
+      "sourceId": 10150
+    },
+    "10157": {
+      "label": "晚霞",
+      "sourceKind": "talent",
+      "sourceId": 10157
+    },
+    "10158": {
+      "label": "青龙剑阵",
+      "sourceKind": "talent",
+      "sourceId": 10158
+    },
+    "10159": {
+      "label": "百兽灵剑阵",
+      "sourceKind": "talent",
+      "sourceId": 10159
+    },
+    "10160": {
+      "label": "狂龙吞云",
+      "sourceKind": "talent",
+      "sourceId": 10160
+    },
+    "10161": {
+      "label": "灵卦术",
+      "sourceKind": "talent",
+      "sourceId": 10161
+    },
+    "10162": {
+      "label": "摘花飞叶",
+      "sourceKind": "talent",
+      "sourceId": 10162
+    },
+    "10163": {
+      "label": "双飞燕",
+      "sourceKind": "talent",
+      "sourceId": 10163
+    },
+    "10164": {
+      "label": "滴水穿石",
+      "sourceKind": "talent",
+      "sourceId": 10164
+    },
+    "10165": {
+      "label": "野渡之印",
+      "sourceKind": "talent",
+      "sourceId": 10165
+    },
+    "10166": {
+      "label": "熔岩之印",
+      "sourceKind": "talent",
+      "sourceId": 10166
+    },
+    "10167": {
+      "label": "滚石之印",
+      "sourceKind": "talent",
+      "sourceId": 10167
+    },
+    "10168": {
+      "label": "斩浪之印",
+      "sourceKind": "talent",
+      "sourceId": 10168
+    },
+    "10175": {
+      "label": "历战不屈",
+      "sourceKind": "talent",
+      "sourceId": 10175
+    },
+    "10176": {
+      "label": "筋骨健壮",
+      "sourceKind": "talent",
+      "sourceId": 10176
+    },
+    "10188": {
+      "label": "副职兼修",
+      "sourceKind": "talent",
+      "sourceId": 10188
+    },
+    "20001": {
+      "label": "锻体",
+      "sourceKind": "talent",
+      "sourceId": 20001
+    },
+    "20002": {
+      "label": "融会贯通",
+      "sourceKind": "talent",
+      "sourceId": 20002
+    },
+    "20004": {
+      "label": "感悟丛生",
+      "sourceKind": "talent",
+      "sourceId": 20004
+    },
+    "20005": {
+      "label": "善假于物",
+      "sourceKind": "talent",
+      "sourceId": 20005
+    },
+    "20006": {
+      "label": "变换之道",
+      "sourceKind": "talent",
+      "sourceId": 20006
+    },
+    "20008": {
+      "label": "休养生息",
+      "sourceKind": "talent",
+      "sourceId": 20008
+    },
+    "20009": {
+      "label": "云巅雷劫",
+      "sourceKind": "talent",
+      "sourceId": 20009
+    },
+    "20010": {
+      "label": "道韵传承",
+      "sourceKind": "talent",
+      "sourceId": 20010
+    },
+    "20012": {
+      "label": "顿悟",
+      "sourceKind": "talent",
+      "sourceId": 20012
+    },
+    "20013": {
+      "label": "储纳灵气",
+      "sourceKind": "talent",
+      "sourceId": 20013
+    },
+    "20016": {
+      "label": "剑韵修炼",
+      "sourceKind": "talent",
+      "sourceId": 20016
+    },
+    "20030": {
+      "label": "卜卦",
+      "sourceKind": "talent",
+      "sourceId": 20030
+    },
+    "20031": {
+      "label": "观星",
+      "sourceKind": "talent",
+      "sourceId": 20031
+    },
+    "20053": {
+      "label": "机缘造化",
+      "sourceKind": "talent",
+      "sourceId": 20053
+    },
+    "20054": {
+      "label": "云剑传承",
+      "sourceKind": "talent",
+      "sourceId": 20054
+    },
+    "20055": {
+      "label": "灵剑传承",
+      "sourceKind": "talent",
+      "sourceId": 20055
+    },
+    "20056": {
+      "label": "斩道",
+      "sourceKind": "talent",
+      "sourceId": 20056
+    },
+    "20057": {
+      "label": "剑阵守护",
+      "sourceKind": "talent",
+      "sourceId": 20057
+    },
+    "20058": {
+      "label": "星弈传承",
+      "sourceKind": "talent",
+      "sourceId": 20058
+    },
+    "20059": {
+      "label": "陨星淬体",
+      "sourceKind": "talent",
+      "sourceId": 20059
+    },
+    "20060": {
+      "label": "木灵之躯",
+      "sourceKind": "talent",
+      "sourceId": 20060
+    },
+    "20069": {
+      "label": "云之道",
+      "sourceKind": "talent",
+      "sourceId": 20069
+    },
+    "20070": {
+      "label": "狂之执念",
+      "sourceKind": "talent",
+      "sourceId": 20070
+    },
+    "20071": {
+      "label": "后发制人",
+      "sourceKind": "talent",
+      "sourceId": 20071
+    },
+    "20072": {
+      "label": "易数化劫",
+      "sourceKind": "talent",
+      "sourceId": 20072
+    },
+    "20073": {
+      "label": "金灵传承",
+      "sourceKind": "talent",
+      "sourceId": 20073
+    },
+    "20074": {
+      "label": "木灵传承",
+      "sourceKind": "talent",
+      "sourceId": 20074
+    },
+    "20075": {
+      "label": "水灵传承",
+      "sourceKind": "talent",
+      "sourceId": 20075
+    },
+    "20076": {
+      "label": "火灵传承",
+      "sourceKind": "talent",
+      "sourceId": 20076
+    },
+    "20077": {
+      "label": "土灵传承",
+      "sourceKind": "talent",
+      "sourceId": 20077
+    },
+    "20078": {
+      "label": "舍身化道",
+      "sourceKind": "talent",
+      "sourceId": 20078
+    },
+    "20079": {
+      "label": "元灵沟通",
+      "sourceKind": "talent",
+      "sourceId": 20079
+    },
+    "20093": {
+      "label": "稳固剑锋",
+      "sourceKind": "talent",
+      "sourceId": 20093
+    },
+    "20094": {
+      "label": "蓄攻剑纹",
+      "sourceKind": "talent",
+      "sourceId": 20094
+    },
+    "20095": {
+      "label": "御灵凝铸",
+      "sourceKind": "talent",
+      "sourceId": 20095
+    },
+    "20096": {
+      "label": "云剑之心",
+      "sourceKind": "talent",
+      "sourceId": 20096
+    },
+    "20102": {
+      "label": "五行循环",
+      "sourceKind": "talent",
+      "sourceId": 20102
+    },
+    "20103": {
+      "label": "星蚀",
+      "sourceKind": "talent",
+      "sourceId": 20103
+    },
+    "20109": {
+      "label": "先天五行•水",
+      "sourceKind": "talent",
+      "sourceId": 20109
+    },
+    "20116": {
+      "label": "剑阵传承",
+      "sourceKind": "talent",
+      "sourceId": 20116
+    },
+    "20117": {
+      "label": "雷霆传承",
+      "sourceKind": "talent",
+      "sourceId": 20117
+    },
+    "20118": {
+      "label": "稳固根基",
+      "sourceKind": "talent",
+      "sourceId": 20118
+    },
+    "20119": {
+      "label": "剑池问心",
+      "sourceKind": "talent",
+      "sourceId": 20119
+    },
+    "20120": {
+      "label": "妙手回春",
+      "sourceKind": "talent",
+      "sourceId": 20120
+    },
+    "20127": {
+      "label": "相生相成",
+      "sourceKind": "talent",
+      "sourceId": 20127
+    },
+    "20128": {
+      "label": "五行专一",
+      "sourceKind": "talent",
+      "sourceId": 20128
+    },
+    "20143": {
+      "label": "崩拳传承",
+      "sourceKind": "talent",
+      "sourceId": 20143
+    },
+    "20144": {
+      "label": "炼体传承",
+      "sourceKind": "talent",
+      "sourceId": 20144
+    },
+    "20145": {
+      "label": "气势充沛",
+      "sourceKind": "talent",
+      "sourceId": 20145
+    },
+    "20146": {
+      "label": "体修入道",
+      "sourceKind": "talent",
+      "sourceId": 20146
+    },
+    "20148": {
+      "label": "血痕记忆",
+      "sourceKind": "talent",
+      "sourceId": 20148
+    },
+    "20149": {
+      "label": "再生之躯",
+      "sourceKind": "talent",
+      "sourceId": 20149
+    },
+    "20150": {
+      "label": "冥心烙印",
+      "sourceKind": "talent",
+      "sourceId": 20150
+    },
+    "20157": {
+      "label": "晚霞",
+      "sourceKind": "talent",
+      "sourceId": 20157
+    },
+    "20158": {
+      "label": "青龙剑阵",
+      "sourceKind": "talent",
+      "sourceId": 20158
+    },
+    "20159": {
+      "label": "百兽灵剑阵",
+      "sourceKind": "talent",
+      "sourceId": 20159
+    },
+    "20160": {
+      "label": "狂龙吞云",
+      "sourceKind": "talent",
+      "sourceId": 20160
+    },
+    "20161": {
+      "label": "灵卦术",
+      "sourceKind": "talent",
+      "sourceId": 20161
+    },
+    "20162": {
+      "label": "摘花飞叶",
+      "sourceKind": "talent",
+      "sourceId": 20162
+    },
+    "20163": {
+      "label": "双飞燕",
+      "sourceKind": "talent",
+      "sourceId": 20163
+    },
+    "20164": {
+      "label": "滴水穿石",
+      "sourceKind": "talent",
+      "sourceId": 20164
+    },
+    "20165": {
+      "label": "野渡之印",
+      "sourceKind": "talent",
+      "sourceId": 20165
+    },
+    "20166": {
+      "label": "熔岩之印",
+      "sourceKind": "talent",
+      "sourceId": 20166
+    },
+    "20167": {
+      "label": "滚石之印",
+      "sourceKind": "talent",
+      "sourceId": 20167
+    },
+    "20168": {
+      "label": "斩浪之印",
+      "sourceKind": "talent",
+      "sourceId": 20168
+    },
+    "20175": {
+      "label": "历战不屈",
+      "sourceKind": "talent",
+      "sourceId": 20175
+    },
+    "20176": {
+      "label": "筋骨健壮",
+      "sourceKind": "talent",
+      "sourceId": 20176
+    },
+    "20188": {
+      "label": "副职兼修",
+      "sourceKind": "talent",
+      "sourceId": 20188
+    },
+    "30001": {
+      "label": "锻体",
+      "sourceKind": "talent",
+      "sourceId": 30001
+    },
+    "30002": {
+      "label": "融会贯通",
+      "sourceKind": "talent",
+      "sourceId": 30002
+    },
+    "30004": {
+      "label": "感悟丛生",
+      "sourceKind": "talent",
+      "sourceId": 30004
+    },
+    "30005": {
+      "label": "善假于物",
+      "sourceKind": "talent",
+      "sourceId": 30005
+    },
+    "30006": {
+      "label": "变换之道",
+      "sourceKind": "talent",
+      "sourceId": 30006
+    },
+    "30008": {
+      "label": "休养生息",
+      "sourceKind": "talent",
+      "sourceId": 30008
+    },
+    "30009": {
+      "label": "云巅雷劫",
+      "sourceKind": "talent",
+      "sourceId": 30009
+    },
+    "30010": {
+      "label": "道韵传承",
+      "sourceKind": "talent",
+      "sourceId": 30010
+    },
+    "30012": {
+      "label": "顿悟",
+      "sourceKind": "talent",
+      "sourceId": 30012
+    },
+    "30013": {
+      "label": "储纳灵气",
+      "sourceKind": "talent",
+      "sourceId": 30013
+    },
+    "30016": {
+      "label": "剑韵修炼",
+      "sourceKind": "talent",
+      "sourceId": 30016
+    },
+    "30030": {
+      "label": "卜卦",
+      "sourceKind": "talent",
+      "sourceId": 30030
+    },
+    "30031": {
+      "label": "观星",
+      "sourceKind": "talent",
+      "sourceId": 30031
+    },
+    "30053": {
+      "label": "机缘造化",
+      "sourceKind": "talent",
+      "sourceId": 30053
+    },
+    "30054": {
+      "label": "云剑传承",
+      "sourceKind": "talent",
+      "sourceId": 30054
+    },
+    "30055": {
+      "label": "灵剑传承",
+      "sourceKind": "talent",
+      "sourceId": 30055
+    },
+    "30056": {
+      "label": "斩道",
+      "sourceKind": "talent",
+      "sourceId": 30056
+    },
+    "30057": {
+      "label": "剑阵守护",
+      "sourceKind": "talent",
+      "sourceId": 30057
+    },
+    "30058": {
+      "label": "星弈传承",
+      "sourceKind": "talent",
+      "sourceId": 30058
+    },
+    "30059": {
+      "label": "陨星淬体",
+      "sourceKind": "talent",
+      "sourceId": 30059
+    },
+    "30060": {
+      "label": "木灵之躯",
+      "sourceKind": "talent",
+      "sourceId": 30060
+    },
+    "30069": {
+      "label": "云之道",
+      "sourceKind": "talent",
+      "sourceId": 30069
+    },
+    "30070": {
+      "label": "狂之执念",
+      "sourceKind": "talent",
+      "sourceId": 30070
+    },
+    "30071": {
+      "label": "后发制人",
+      "sourceKind": "talent",
+      "sourceId": 30071
+    },
+    "30072": {
+      "label": "易数化劫",
+      "sourceKind": "talent",
+      "sourceId": 30072
+    },
+    "30073": {
+      "label": "金灵传承",
+      "sourceKind": "talent",
+      "sourceId": 30073
+    },
+    "30074": {
+      "label": "木灵传承",
+      "sourceKind": "talent",
+      "sourceId": 30074
+    },
+    "30075": {
+      "label": "水灵传承",
+      "sourceKind": "talent",
+      "sourceId": 30075
+    },
+    "30076": {
+      "label": "火灵传承",
+      "sourceKind": "talent",
+      "sourceId": 30076
+    },
+    "30077": {
+      "label": "土灵传承",
+      "sourceKind": "talent",
+      "sourceId": 30077
+    },
+    "30078": {
+      "label": "舍身化道",
+      "sourceKind": "talent",
+      "sourceId": 30078
+    },
+    "30079": {
+      "label": "元灵沟通",
+      "sourceKind": "talent",
+      "sourceId": 30079
+    },
+    "30094": {
+      "label": "锐意剑纹",
+      "sourceKind": "talent",
+      "sourceId": 30094
+    },
+    "30095": {
+      "label": "灵威凝铸",
+      "sourceKind": "talent",
+      "sourceId": 30095
+    },
+    "30096": {
+      "label": "无极之心",
+      "sourceKind": "talent",
+      "sourceId": 30096
+    },
+    "30102": {
+      "label": "五行循环",
+      "sourceKind": "talent",
+      "sourceId": 30102
+    },
+    "30103": {
+      "label": "星蚀",
+      "sourceKind": "talent",
+      "sourceId": 30103
+    },
+    "30109": {
+      "label": "先天五行•木",
+      "sourceKind": "talent",
+      "sourceId": 30109
+    },
+    "30116": {
+      "label": "剑阵传承",
+      "sourceKind": "talent",
+      "sourceId": 30116
+    },
+    "30117": {
+      "label": "雷霆传承",
+      "sourceKind": "talent",
+      "sourceId": 30117
+    },
+    "30118": {
+      "label": "稳固根基",
+      "sourceKind": "talent",
+      "sourceId": 30118
+    },
+    "30119": {
+      "label": "剑池问心",
+      "sourceKind": "talent",
+      "sourceId": 30119
+    },
+    "30120": {
+      "label": "妙手回春",
+      "sourceKind": "talent",
+      "sourceId": 30120
+    },
+    "30127": {
+      "label": "相生相成",
+      "sourceKind": "talent",
+      "sourceId": 30127
+    },
+    "30128": {
+      "label": "五行专一",
+      "sourceKind": "talent",
+      "sourceId": 30128
+    },
+    "30143": {
+      "label": "崩拳传承",
+      "sourceKind": "talent",
+      "sourceId": 30143
+    },
+    "30144": {
+      "label": "炼体传承",
+      "sourceKind": "talent",
+      "sourceId": 30144
+    },
+    "30145": {
+      "label": "气势充沛",
+      "sourceKind": "talent",
+      "sourceId": 30145
+    },
+    "30146": {
+      "label": "体修入道",
+      "sourceKind": "talent",
+      "sourceId": 30146
+    },
+    "30148": {
+      "label": "血痕记忆",
+      "sourceKind": "talent",
+      "sourceId": 30148
+    },
+    "30149": {
+      "label": "再生之躯",
+      "sourceKind": "talent",
+      "sourceId": 30149
+    },
+    "30150": {
+      "label": "冥心烙印",
+      "sourceKind": "talent",
+      "sourceId": 30150
+    },
+    "30157": {
+      "label": "晚霞",
+      "sourceKind": "talent",
+      "sourceId": 30157
+    },
+    "30158": {
+      "label": "青龙剑阵",
+      "sourceKind": "talent",
+      "sourceId": 30158
+    },
+    "30159": {
+      "label": "百兽灵剑阵",
+      "sourceKind": "talent",
+      "sourceId": 30159
+    },
+    "30160": {
+      "label": "狂龙吞云",
+      "sourceKind": "talent",
+      "sourceId": 30160
+    },
+    "30161": {
+      "label": "灵卦术",
+      "sourceKind": "talent",
+      "sourceId": 30161
+    },
+    "30162": {
+      "label": "摘花飞叶",
+      "sourceKind": "talent",
+      "sourceId": 30162
+    },
+    "30163": {
+      "label": "双飞燕",
+      "sourceKind": "talent",
+      "sourceId": 30163
+    },
+    "30164": {
+      "label": "滴水穿石",
+      "sourceKind": "talent",
+      "sourceId": 30164
+    },
+    "30165": {
+      "label": "野渡之印",
+      "sourceKind": "talent",
+      "sourceId": 30165
+    },
+    "30166": {
+      "label": "熔岩之印",
+      "sourceKind": "talent",
+      "sourceId": 30166
+    },
+    "30167": {
+      "label": "滚石之印",
+      "sourceKind": "talent",
+      "sourceId": 30167
+    },
+    "30168": {
+      "label": "斩浪之印",
+      "sourceKind": "talent",
+      "sourceId": 30168
+    },
+    "30175": {
+      "label": "历战不屈",
+      "sourceKind": "talent",
+      "sourceId": 30175
+    },
+    "30176": {
+      "label": "筋骨健壮",
+      "sourceKind": "talent",
+      "sourceId": 30176
+    },
+    "30188": {
+      "label": "副职兼修",
+      "sourceKind": "talent",
+      "sourceId": 30188
+    },
+    "40109": {
+      "label": "先天五行•火",
+      "sourceKind": "talent",
+      "sourceId": 40109
+    },
+    "50109": {
+      "label": "先天五行•土",
+      "sourceKind": "talent",
+      "sourceId": 50109
+    }
+  },
+  "fateStrategyLabels": {
+    "1": {
+      "label": "生命底蕴",
+      "sourceKind": "fate-strategy",
+      "sourceId": 1
+    },
+    "2": {
+      "label": "换牌底蕴",
+      "sourceKind": "fate-strategy",
+      "sourceId": 2
+    },
+    "3": {
+      "label": "命元底蕴",
+      "sourceKind": "fate-strategy",
+      "sourceId": 3
+    },
+    "4": {
+      "label": "境界感悟",
+      "sourceKind": "fate-strategy",
+      "sourceId": 4
+    },
+    "5": {
+      "label": "勤修",
+      "sourceKind": "fate-strategy",
+      "sourceId": 5
+    },
+    "6": {
+      "label": "记忆案卷",
+      "sourceKind": "fate-strategy",
+      "sourceId": 6
+    },
+    "7": {
+      "label": "斩道之法",
+      "sourceKind": "fate-strategy",
+      "sourceId": 7
+    },
+    "8": {
+      "label": "命途-副职兼修",
+      "sourceKind": "fate-strategy",
+      "sourceId": 8
+    },
+    "9": {
+      "label": "钻研副职",
+      "sourceKind": "fate-strategy",
+      "sourceId": 9
+    },
+    "10": {
+      "label": "副职大师",
+      "sourceKind": "fate-strategy",
+      "sourceId": 10
+    },
+    "11": {
+      "label": "另辟蹊径",
+      "sourceKind": "fate-strategy",
+      "sourceId": 11
+    },
+    "12": {
+      "label": "我命由我",
+      "sourceKind": "fate-strategy",
+      "sourceId": 12
+    },
+    "13": {
+      "label": "三思抉择",
+      "sourceKind": "fate-strategy",
+      "sourceId": 13
+    },
+    "14": {
+      "label": "根骨奇佳",
+      "sourceKind": "fate-strategy",
+      "sourceId": 14
+    },
+    "15": {
+      "label": "稳定突破",
+      "sourceKind": "fate-strategy",
+      "sourceId": 15
+    },
+    "16": {
+      "label": "记忆修炼",
+      "sourceKind": "fate-strategy",
+      "sourceId": 16
+    },
+    "17": {
+      "label": "道韵气息",
+      "sourceKind": "fate-strategy",
+      "sourceId": 17
+    },
+    "18": {
+      "label": "双重道韵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 18
+    },
+    "19": {
+      "label": "隐忍",
+      "sourceKind": "fate-strategy",
+      "sourceId": 19
+    },
+    "20": {
+      "label": "偷袭",
+      "sourceKind": "fate-strategy",
+      "sourceId": 20
+    },
+    "21": {
+      "label": "广结善缘",
+      "sourceKind": "fate-strategy",
+      "sourceId": 21
+    },
+    "22": {
+      "label": "临阵顿悟",
+      "sourceKind": "fate-strategy",
+      "sourceId": 22
+    },
+    "23": {
+      "label": "强身健体",
+      "sourceKind": "fate-strategy",
+      "sourceId": 23
+    },
+    "24": {
+      "label": "云剑修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 24
+    },
+    "25": {
+      "label": "云剑大师",
+      "sourceKind": "fate-strategy",
+      "sourceId": 25
+    },
+    "27": {
+      "label": "徐如林",
+      "sourceKind": "fate-strategy",
+      "sourceId": 27
+    },
+    "28": {
+      "label": "静心悟道",
+      "sourceKind": "fate-strategy",
+      "sourceId": 28
+    },
+    "29": {
+      "label": "疾如风",
+      "sourceKind": "fate-strategy",
+      "sourceId": 29
+    },
+    "30": {
+      "label": "副职转换",
+      "sourceKind": "fate-strategy",
+      "sourceId": 30
+    },
+    "31": {
+      "label": "全能副职",
+      "sourceKind": "fate-strategy",
+      "sourceId": 31
+    },
+    "32": {
+      "label": "逍遥点穴手",
+      "sourceKind": "fate-strategy",
+      "sourceId": 32
+    },
+    "33": {
+      "label": "逍遥护身诀",
+      "sourceKind": "fate-strategy",
+      "sourceId": 33
+    },
+    "34": {
+      "label": "狂剑修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 34
+    },
+    "35": {
+      "label": "剑阵大师",
+      "sourceKind": "fate-strategy",
+      "sourceId": 35
+    },
+    "36": {
+      "label": "逍遥神力掌",
+      "sourceKind": "fate-strategy",
+      "sourceId": 36
+    },
+    "37": {
+      "label": "天衍-触类旁通",
+      "sourceKind": "fate-strategy",
+      "sourceId": 37
+    },
+    "38": {
+      "label": "偷师学艺",
+      "sourceKind": "fate-strategy",
+      "sourceId": 38
+    },
+    "39": {
+      "label": "承载之躯",
+      "sourceKind": "fate-strategy",
+      "sourceId": 39
+    },
+    "40": {
+      "label": "境界专精",
+      "sourceKind": "fate-strategy",
+      "sourceId": 40
+    },
+    "41": {
+      "label": "梦境追忆",
+      "sourceKind": "fate-strategy",
+      "sourceId": 41
+    },
+    "42": {
+      "label": "剑阵修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 42
+    },
+    "43": {
+      "label": "剑意修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 43
+    },
+    "44": {
+      "label": "连击修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 44
+    },
+    "45": {
+      "label": "星弈修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 45
+    },
+    "46": {
+      "label": "卦象修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 46
+    },
+    "47": {
+      "label": "雷法修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 47
+    },
+    "48": {
+      "label": "后招修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 48
+    },
+    "49": {
+      "label": "生命修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 49
+    },
+    "50": {
+      "label": "木灵修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 50
+    },
+    "51": {
+      "label": "火灵修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 51
+    },
+    "52": {
+      "label": "土灵修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 52
+    },
+    "53": {
+      "label": "金灵修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 53
+    },
+    "54": {
+      "label": "水灵修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 54
+    },
+    "55": {
+      "label": "五行大师",
+      "sourceKind": "fate-strategy",
+      "sourceId": 55
+    },
+    "56": {
+      "label": "崩拳修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 56
+    },
+    "57": {
+      "label": "气势修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 57
+    },
+    "58": {
+      "label": "体魄修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 58
+    },
+    "59": {
+      "label": "身法修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 59
+    },
+    "60": {
+      "label": "灵气修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 60
+    },
+    "61": {
+      "label": "防御修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 61
+    },
+    "62": {
+      "label": "元婴修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 62
+    },
+    "63": {
+      "label": "命途-机缘造化",
+      "sourceKind": "fate-strategy",
+      "sourceId": 63
+    },
+    "64": {
+      "label": "命途-陨星淬体",
+      "sourceKind": "fate-strategy",
+      "sourceId": 64
+    },
+    "65": {
+      "label": "命途-云巅雷劫",
+      "sourceKind": "fate-strategy",
+      "sourceId": 65
+    },
+    "66": {
+      "label": "命途-变换之道",
+      "sourceKind": "fate-strategy",
+      "sourceId": 66
+    },
+    "67": {
+      "label": "命途-储纳灵气",
+      "sourceKind": "fate-strategy",
+      "sourceId": 67
+    },
+    "68": {
+      "label": "命途-狂之执念",
+      "sourceKind": "fate-strategy",
+      "sourceId": 68
+    },
+    "69": {
+      "label": "命途-云之道",
+      "sourceKind": "fate-strategy",
+      "sourceId": 69
+    },
+    "70": {
+      "label": "命途-剑韵修炼",
+      "sourceKind": "fate-strategy",
+      "sourceId": 70
+    },
+    "71": {
+      "label": "命途-剑阵守护",
+      "sourceKind": "fate-strategy",
+      "sourceId": 71
+    },
+    "72": {
+      "label": "命途-卜卦",
+      "sourceKind": "fate-strategy",
+      "sourceId": 72
+    },
+    "73": {
+      "label": "命途-观星",
+      "sourceKind": "fate-strategy",
+      "sourceId": 73
+    },
+    "74": {
+      "label": "命途-星蚀",
+      "sourceKind": "fate-strategy",
+      "sourceId": 74
+    },
+    "75": {
+      "label": "命途-妙手回春",
+      "sourceKind": "fate-strategy",
+      "sourceId": 75
+    },
+    "76": {
+      "label": "命途-五行循环",
+      "sourceKind": "fate-strategy",
+      "sourceId": 76
+    },
+    "77": {
+      "label": "命途-五行专一",
+      "sourceKind": "fate-strategy",
+      "sourceId": 77
+    },
+    "78": {
+      "label": "命途-体修入道",
+      "sourceKind": "fate-strategy",
+      "sourceId": 78
+    },
+    "79": {
+      "label": "命途-气势充沛",
+      "sourceKind": "fate-strategy",
+      "sourceId": 79
+    },
+    "80": {
+      "label": "命途-冥心烙印",
+      "sourceKind": "fate-strategy",
+      "sourceId": 80
+    },
+    "81": {
+      "label": "命途-再生之躯",
+      "sourceKind": "fate-strategy",
+      "sourceId": 81
+    },
+    "82": {
+      "label": "以茶会友",
+      "sourceKind": "fate-strategy",
+      "sourceId": 82
+    },
+    "83": {
+      "label": "天衍-云泉道茶",
+      "sourceKind": "fate-strategy",
+      "sourceId": 83
+    },
+    "84": {
+      "label": "天衍-剑不出鞘",
+      "sourceKind": "fate-strategy",
+      "sourceId": 84
+    },
+    "85": {
+      "label": "天衍-云雾变幻",
+      "sourceKind": "fate-strategy",
+      "sourceId": 85
+    },
+    "86": {
+      "label": "天衍-炎舞",
+      "sourceKind": "fate-strategy",
+      "sourceId": 86
+    },
+    "87": {
+      "label": "天衍-崩雪",
+      "sourceKind": "fate-strategy",
+      "sourceId": 87
+    },
+    "88": {
+      "label": "天衍-血脉潜能",
+      "sourceKind": "fate-strategy",
+      "sourceId": 88
+    },
+    "89": {
+      "label": "流风回雪",
+      "sourceKind": "fate-strategy",
+      "sourceId": 89
+    },
+    "90": {
+      "label": "天衍-九霄玲珑镯",
+      "sourceKind": "fate-strategy",
+      "sourceId": 90
+    },
+    "91": {
+      "label": "天衍-唤雨",
+      "sourceKind": "fate-strategy",
+      "sourceId": 91
+    },
+    "92": {
+      "label": "天衍-潜龙",
+      "sourceKind": "fate-strategy",
+      "sourceId": 92
+    },
+    "93": {
+      "label": "天衍-玲珑剑阵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 93
+    },
+    "94": {
+      "label": "天衍-猫爪",
+      "sourceKind": "fate-strategy",
+      "sourceId": 94
+    },
+    "95": {
+      "label": "天衍-好奇心",
+      "sourceKind": "fate-strategy",
+      "sourceId": 95
+    },
+    "96": {
+      "label": "天衍-灵猫乱剑",
+      "sourceKind": "fate-strategy",
+      "sourceId": 96
+    },
+    "97": {
+      "label": "天衍-灵猫踏云",
+      "sourceKind": "fate-strategy",
+      "sourceId": 97
+    },
+    "98": {
+      "label": "天衍-飞砂",
+      "sourceKind": "fate-strategy",
+      "sourceId": 98
+    },
+    "99": {
+      "label": "剑心演武",
+      "sourceKind": "fate-strategy",
+      "sourceId": 99
+    },
+    "100": {
+      "label": "淬剑-灵气",
+      "sourceKind": "fate-strategy",
+      "sourceId": 100
+    },
+    "101": {
+      "label": "淬剑-剑气",
+      "sourceKind": "fate-strategy",
+      "sourceId": 101
+    },
+    "102": {
+      "label": "淬剑-清心",
+      "sourceKind": "fate-strategy",
+      "sourceId": 102
+    },
+    "103": {
+      "label": "淬剑-水月",
+      "sourceKind": "fate-strategy",
+      "sourceId": 103
+    },
+    "104": {
+      "label": "天衍-铸剑师",
+      "sourceKind": "fate-strategy",
+      "sourceId": 104
+    },
+    "105": {
+      "label": "剑招修行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 105
+    },
+    "106": {
+      "label": "剑影互通",
+      "sourceKind": "fate-strategy",
+      "sourceId": 106
+    },
+    "107": {
+      "label": "天衍-悟剑天赋",
+      "sourceKind": "fate-strategy",
+      "sourceId": 107
+    },
+    "108": {
+      "label": "天衍-曳影剑阵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 108
+    },
+    "109": {
+      "label": "护体剑阵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 109
+    },
+    "110": {
+      "label": "天衍-勤学苦练",
+      "sourceKind": "fate-strategy",
+      "sourceId": 110
+    },
+    "111": {
+      "label": "天衍-飞鸿踏雪",
+      "sourceKind": "fate-strategy",
+      "sourceId": 111
+    },
+    "112": {
+      "label": "天衍-瓮中捉鳖",
+      "sourceKind": "fate-strategy",
+      "sourceId": 112
+    },
+    "113": {
+      "label": "天衍-血脉威能",
+      "sourceKind": "fate-strategy",
+      "sourceId": 113
+    },
+    "114": {
+      "label": "天衍-无极卦盘",
+      "sourceKind": "fate-strategy",
+      "sourceId": 114
+    },
+    "115": {
+      "label": "天衍-狂雷电闪",
+      "sourceKind": "fate-strategy",
+      "sourceId": 115
+    },
+    "116": {
+      "label": "天衍-先天灵躯",
+      "sourceKind": "fate-strategy",
+      "sourceId": 116
+    },
+    "117": {
+      "label": "天衍-灯焰飞舞",
+      "sourceKind": "fate-strategy",
+      "sourceId": 117
+    },
+    "118": {
+      "label": "天衍-旋灯占卦",
+      "sourceKind": "fate-strategy",
+      "sourceId": 118
+    },
+    "119": {
+      "label": "天衍-运筹帷幄",
+      "sourceKind": "fate-strategy",
+      "sourceId": 119
+    },
+    "120": {
+      "label": "天衍-七星定魂",
+      "sourceKind": "fate-strategy",
+      "sourceId": 120
+    },
+    "121": {
+      "label": "七星伤魂",
+      "sourceKind": "fate-strategy",
+      "sourceId": 121
+    },
+    "122": {
+      "label": "天衍-星爆术",
+      "sourceKind": "fate-strategy",
+      "sourceId": 122
+    },
+    "123": {
+      "label": "天衍-星月折扇",
+      "sourceKind": "fate-strategy",
+      "sourceId": 123
+    },
+    "124": {
+      "label": "天衍-计出万全",
+      "sourceKind": "fate-strategy",
+      "sourceId": 124
+    },
+    "125": {
+      "label": "天衍-算无遗策",
+      "sourceKind": "fate-strategy",
+      "sourceId": 125
+    },
+    "126": {
+      "label": "天衍-卜卦",
+      "sourceKind": "fate-strategy",
+      "sourceId": 126
+    },
+    "127": {
+      "label": "水灵•悠然",
+      "sourceKind": "fate-strategy",
+      "sourceId": 127
+    },
+    "128": {
+      "label": "抽刀断水",
+      "sourceKind": "fate-strategy",
+      "sourceId": 128
+    },
+    "129": {
+      "label": "天衍-悠然葫芦",
+      "sourceKind": "fate-strategy",
+      "sourceId": 129
+    },
+    "130": {
+      "label": "天衍-五行传承",
+      "sourceKind": "fate-strategy",
+      "sourceId": 130
+    },
+    "131": {
+      "label": "天衍-先天印记",
+      "sourceKind": "fate-strategy",
+      "sourceId": 131
+    },
+    "132": {
+      "label": "天衍-先天五行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 132
+    },
+    "133": {
+      "label": "相生灵阵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 133
+    },
+    "134": {
+      "label": "天衍-双鸳逆克",
+      "sourceKind": "fate-strategy",
+      "sourceId": 134
+    },
+    "135": {
+      "label": "灵阵回响",
+      "sourceKind": "fate-strategy",
+      "sourceId": 135
+    },
+    "136": {
+      "label": "天衍-桃花印",
+      "sourceKind": "fate-strategy",
+      "sourceId": 136
+    },
+    "137": {
+      "label": "凝水化刃",
+      "sourceKind": "fate-strategy",
+      "sourceId": 137
+    },
+    "138": {
+      "label": "天衍-木灵印记",
+      "sourceKind": "fate-strategy",
+      "sourceId": 138
+    },
+    "139": {
+      "label": "极•水灵春雨",
+      "sourceKind": "fate-strategy",
+      "sourceId": 139
+    },
+    "140": {
+      "label": "天衍-猛虎之躯",
+      "sourceKind": "fate-strategy",
+      "sourceId": 140
+    },
+    "141": {
+      "label": "天衍-山崩",
+      "sourceKind": "fate-strategy",
+      "sourceId": 141
+    },
+    "142": {
+      "label": "天衍-锟铻金环",
+      "sourceKind": "fate-strategy",
+      "sourceId": 142
+    },
+    "143": {
+      "label": "天衍-土灵印记",
+      "sourceKind": "fate-strategy",
+      "sourceId": 143
+    },
+    "144": {
+      "label": "天衍-刚劲",
+      "sourceKind": "fate-strategy",
+      "sourceId": 144
+    },
+    "145": {
+      "label": "天衍-秘印亲和",
+      "sourceKind": "fate-strategy",
+      "sourceId": 145
+    },
+    "146": {
+      "label": "天衍-火灵印记",
+      "sourceKind": "fate-strategy",
+      "sourceId": 146
+    },
+    "147": {
+      "label": "混元异火",
+      "sourceKind": "fate-strategy",
+      "sourceId": 147
+    },
+    "148": {
+      "label": "荆棘伴生",
+      "sourceKind": "fate-strategy",
+      "sourceId": 148
+    },
+    "149": {
+      "label": "魂体不竭",
+      "sourceKind": "fate-strategy",
+      "sourceId": 149
+    },
+    "150": {
+      "label": "天衍-锻体不息",
+      "sourceKind": "fate-strategy",
+      "sourceId": 150
+    },
+    "151": {
+      "label": "灵香缭绕",
+      "sourceKind": "fate-strategy",
+      "sourceId": 151
+    },
+    "152": {
+      "label": "灵烟化爪",
+      "sourceKind": "fate-strategy",
+      "sourceId": 152
+    },
+    "153": {
+      "label": "天衍-崩裂之拳",
+      "sourceKind": "fate-strategy",
+      "sourceId": 153
+    },
+    "154": {
+      "label": "天衍-锻躯之道",
+      "sourceKind": "fate-strategy",
+      "sourceId": 154
+    },
+    "155": {
+      "label": "掌法感悟",
+      "sourceKind": "fate-strategy",
+      "sourceId": 155
+    },
+    "156": {
+      "label": "天衍-盛气凌人",
+      "sourceKind": "fate-strategy",
+      "sourceId": 156
+    },
+    "157": {
+      "label": "天衍-疯魔",
+      "sourceKind": "fate-strategy",
+      "sourceId": 157
+    },
+    "158": {
+      "label": "天衍-冥夜",
+      "sourceKind": "fate-strategy",
+      "sourceId": 158
+    },
+    "159": {
+      "label": "天衍-冥月蟾光",
+      "sourceKind": "fate-strategy",
+      "sourceId": 159
+    },
+    "160": {
+      "label": "以冥化灵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 160
+    },
+    "161": {
+      "label": "天衍-入冥",
+      "sourceKind": "fate-strategy",
+      "sourceId": 161
+    },
+    "162": {
+      "label": "天衍-万玄破魔掌",
+      "sourceKind": "fate-strategy",
+      "sourceId": 162
+    },
+    "163": {
+      "label": "禅心聚灵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 163
+    },
+    "164": {
+      "label": "枯荣往复",
+      "sourceKind": "fate-strategy",
+      "sourceId": 164
+    },
+    "165": {
+      "label": "天衍-冥心入玄",
+      "sourceKind": "fate-strategy",
+      "sourceId": 165
+    },
+    "166": {
+      "label": "天衍-禅心锻身",
+      "sourceKind": "fate-strategy",
+      "sourceId": 166
+    },
+    "167": {
+      "label": "天衍-拆招",
+      "sourceKind": "fate-strategy",
+      "sourceId": 167
+    },
+    "168": {
+      "label": "天衍-双节棍",
+      "sourceKind": "fate-strategy",
+      "sourceId": 168
+    },
+    "169": {
+      "label": "天衍-转势",
+      "sourceKind": "fate-strategy",
+      "sourceId": 169
+    },
+    "170": {
+      "label": "云剑·龙泉",
+      "sourceKind": "fate-strategy",
+      "sourceId": 170
+    },
+    "171": {
+      "label": "云剑·雪影飞",
+      "sourceKind": "fate-strategy",
+      "sourceId": 171
+    },
+    "172": {
+      "label": "百鸟玲珑镯",
+      "sourceKind": "fate-strategy",
+      "sourceId": 172
+    },
+    "173": {
+      "label": "狂剑·猫爪",
+      "sourceKind": "fate-strategy",
+      "sourceId": 173
+    },
+    "174": {
+      "label": "澄心剑阵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 174
+    },
+    "175": {
+      "label": "百鸟曳影诀",
+      "sourceKind": "fate-strategy",
+      "sourceId": 175
+    },
+    "176": {
+      "label": "瑞雪迎春",
+      "sourceKind": "fate-strategy",
+      "sourceId": 176
+    },
+    "177": {
+      "label": "天元无极盘",
+      "sourceKind": "fate-strategy",
+      "sourceId": 177
+    },
+    "178": {
+      "label": "灯影蚀焰",
+      "sourceKind": "fate-strategy",
+      "sourceId": 178
+    },
+    "179": {
+      "label": "千星天爆",
+      "sourceKind": "fate-strategy",
+      "sourceId": 179
+    },
+    "180": {
+      "label": "星月六爻扇",
+      "sourceKind": "fate-strategy",
+      "sourceId": 180
+    },
+    "181": {
+      "label": "星弈·治孤",
+      "sourceKind": "fate-strategy",
+      "sourceId": 181
+    },
+    "182": {
+      "label": "天髓葫芦",
+      "sourceKind": "fate-strategy",
+      "sourceId": 182
+    },
+    "183": {
+      "label": "混元逆克阵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 183
+    },
+    "184": {
+      "label": "木灵·万物生",
+      "sourceKind": "fate-strategy",
+      "sourceId": 184
+    },
+    "185": {
+      "label": "锟铻熔火环",
+      "sourceKind": "fate-strategy",
+      "sourceId": 185
+    },
+    "186": {
+      "label": "水火交融",
+      "sourceKind": "fate-strategy",
+      "sourceId": 186
+    },
+    "187": {
+      "label": "五行忘忧梦",
+      "sourceKind": "fate-strategy",
+      "sourceId": 187
+    },
+    "188": {
+      "label": "浩荡不息",
+      "sourceKind": "fate-strategy",
+      "sourceId": 188
+    },
+    "189": {
+      "label": "玄心盛气掌",
+      "sourceKind": "fate-strategy",
+      "sourceId": 189
+    },
+    "190": {
+      "label": "冥夜迷踪步",
+      "sourceKind": "fate-strategy",
+      "sourceId": 190
+    },
+    "191": {
+      "label": "崩拳·返玄",
+      "sourceKind": "fate-strategy",
+      "sourceId": 191
+    },
+    "192": {
+      "label": "闪转腾挪",
+      "sourceKind": "fate-strategy",
+      "sourceId": 192
+    },
+    "193": {
+      "label": "冯虚御风",
+      "sourceKind": "fate-strategy",
+      "sourceId": 193
+    },
+    "194": {
+      "label": "幻•暗鸦灵剑",
+      "sourceKind": "fate-strategy",
+      "sourceId": 194
+    },
+    "197": {
+      "label": "幻•云剑探云",
+      "sourceKind": "fate-strategy",
+      "sourceId": 197
+    },
+    "198": {
+      "label": "幻•斩草除根",
+      "sourceKind": "fate-strategy",
+      "sourceId": 198
+    },
+    "200": {
+      "label": "幻•斗转星移",
+      "sourceKind": "fate-strategy",
+      "sourceId": 200
+    },
+    "201": {
+      "label": "幻•火灵聚炎",
+      "sourceKind": "fate-strategy",
+      "sourceId": 201
+    },
+    "202": {
+      "label": "幻•水灵波澜",
+      "sourceKind": "fate-strategy",
+      "sourceId": 202
+    },
+    "203": {
+      "label": "幻•木灵复苏",
+      "sourceKind": "fate-strategy",
+      "sourceId": 203
+    },
+    "204": {
+      "label": "幻•金灵针",
+      "sourceKind": "fate-strategy",
+      "sourceId": 204
+    },
+    "205": {
+      "label": "幻•血气方刚",
+      "sourceKind": "fate-strategy",
+      "sourceId": 205
+    },
+    "206": {
+      "label": "幻•锻骨",
+      "sourceKind": "fate-strategy",
+      "sourceId": 206
+    },
+    "208": {
+      "label": "幻•云剑无锋",
+      "sourceKind": "fate-strategy",
+      "sourceId": 208
+    },
+    "209": {
+      "label": "幻•飞星刺",
+      "sourceKind": "fate-strategy",
+      "sourceId": 209
+    },
+    "210": {
+      "label": "幻•五行流转",
+      "sourceKind": "fate-strategy",
+      "sourceId": 210
+    },
+    "211": {
+      "label": "幻•双鬼拍门",
+      "sourceKind": "fate-strategy",
+      "sourceId": 211
+    },
+    "213": {
+      "label": "幻•藕断丝连",
+      "sourceKind": "fate-strategy",
+      "sourceId": 213
+    },
+    "214": {
+      "label": "幻•土灵群山",
+      "sourceKind": "fate-strategy",
+      "sourceId": 214
+    },
+    "215": {
+      "label": "幻•坤卦",
+      "sourceKind": "fate-strategy",
+      "sourceId": 215
+    },
+    "216": {
+      "label": "幻•崩拳戳",
+      "sourceKind": "fate-strategy",
+      "sourceId": 216
+    },
+    "217": {
+      "label": "幻•飞牙剑",
+      "sourceKind": "fate-strategy",
+      "sourceId": 217
+    },
+    "219": {
+      "label": "幻•浑天印",
+      "sourceKind": "fate-strategy",
+      "sourceId": 219
+    },
+    "221": {
+      "label": "幻•落花有意",
+      "sourceKind": "fate-strategy",
+      "sourceId": 221
+    },
+    "222": {
+      "label": "幻•云舞诀",
+      "sourceKind": "fate-strategy",
+      "sourceId": 222
+    },
+    "223": {
+      "label": "幻•浩然正气",
+      "sourceKind": "fate-strategy",
+      "sourceId": 223
+    },
+    "224": {
+      "label": "幻•狂剑盘龙",
+      "sourceKind": "fate-strategy",
+      "sourceId": 224
+    },
+    "227": {
+      "label": "幻•崩拳缠",
+      "sourceKind": "fate-strategy",
+      "sourceId": 227
+    },
+    "228": {
+      "label": "幻•两仪阵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 228
+    },
+    "229": {
+      "label": "幻•灵犀剑阵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 229
+    },
+    "231": {
+      "label": "幻•死缠烂打",
+      "sourceKind": "fate-strategy",
+      "sourceId": 231
+    },
+    "234": {
+      "label": "云剑·晚霞",
+      "sourceKind": "fate-strategy",
+      "sourceId": 234
+    },
+    "235": {
+      "label": "青龙剑阵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 235
+    },
+    "236": {
+      "label": "百兽灵剑阵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 236
+    },
+    "237": {
+      "label": "狂龙吞云",
+      "sourceKind": "fate-strategy",
+      "sourceId": 237
+    },
+    "238": {
+      "label": "灵卦术",
+      "sourceKind": "fate-strategy",
+      "sourceId": 238
+    },
+    "239": {
+      "label": "摘花飞叶",
+      "sourceKind": "fate-strategy",
+      "sourceId": 239
+    },
+    "240": {
+      "label": "星弈·双飞燕",
+      "sourceKind": "fate-strategy",
+      "sourceId": 240
+    },
+    "241": {
+      "label": "滴水穿石",
+      "sourceKind": "fate-strategy",
+      "sourceId": 241
+    },
+    "242": {
+      "label": "野渡之印",
+      "sourceKind": "fate-strategy",
+      "sourceId": 242
+    },
+    "243": {
+      "label": "熔岩之印",
+      "sourceKind": "fate-strategy",
+      "sourceId": 243
+    },
+    "244": {
+      "label": "滚石之印",
+      "sourceKind": "fate-strategy",
+      "sourceId": 244
+    },
+    "245": {
+      "label": "斩浪之印",
+      "sourceKind": "fate-strategy",
+      "sourceId": 245
+    },
+    "246": {
+      "label": "玄灵附身",
+      "sourceKind": "fate-strategy",
+      "sourceId": 246
+    },
+    "247": {
+      "label": "崩拳•伏虎",
+      "sourceKind": "fate-strategy",
+      "sourceId": 247
+    },
+    "248": {
+      "label": "瞬影击",
+      "sourceKind": "fate-strategy",
+      "sourceId": 248
+    },
+    "249": {
+      "label": "逍遥无影拳",
+      "sourceKind": "fate-strategy",
+      "sourceId": 249
+    },
+    "250": {
+      "label": "悟道丹",
+      "sourceKind": "fate-strategy",
+      "sourceId": 250
+    },
+    "251": {
+      "label": "冰灵护体丹",
+      "sourceKind": "fate-strategy",
+      "sourceId": 251
+    },
+    "252": {
+      "label": "万邪入体咒",
+      "sourceKind": "fate-strategy",
+      "sourceId": 252
+    },
+    "253": {
+      "label": "千里神行符",
+      "sourceKind": "fate-strategy",
+      "sourceId": 253
+    },
+    "254": {
+      "label": "转弦合调",
+      "sourceKind": "fate-strategy",
+      "sourceId": 254
+    },
+    "255": {
+      "label": "天音困仙曲",
+      "sourceKind": "fate-strategy",
+      "sourceId": 255
+    },
+    "256": {
+      "label": "画龙点睛",
+      "sourceKind": "fate-strategy",
+      "sourceId": 256
+    },
+    "257": {
+      "label": "运笔如飞",
+      "sourceKind": "fate-strategy",
+      "sourceId": 257
+    },
+    "258": {
+      "label": "须弥阵纹",
+      "sourceKind": "fate-strategy",
+      "sourceId": 258
+    },
+    "259": {
+      "label": "阵纹雕琢",
+      "sourceKind": "fate-strategy",
+      "sourceId": 259
+    },
+    "260": {
+      "label": "变异浇灌",
+      "sourceKind": "fate-strategy",
+      "sourceId": 260
+    },
+    "261": {
+      "label": "空间灵田",
+      "sourceKind": "fate-strategy",
+      "sourceId": 261
+    },
+    "262": {
+      "label": "厄劫缠身",
+      "sourceKind": "fate-strategy",
+      "sourceId": 262
+    },
+    "263": {
+      "label": "命运轮回",
+      "sourceKind": "fate-strategy",
+      "sourceId": 263
+    },
+    "264": {
+      "label": "灵剑大师",
+      "sourceKind": "fate-strategy",
+      "sourceId": 264
+    },
+    "265": {
+      "label": "剑意大师",
+      "sourceKind": "fate-strategy",
+      "sourceId": 265
+    },
+    "266": {
+      "label": "混元大师",
+      "sourceKind": "fate-strategy",
+      "sourceId": 266
+    },
+    "267": {
+      "label": "星弈大师",
+      "sourceKind": "fate-strategy",
+      "sourceId": 267
+    },
+    "268": {
+      "label": "卦象大师",
+      "sourceKind": "fate-strategy",
+      "sourceId": 268
+    },
+    "269": {
+      "label": "崩拳大师",
+      "sourceKind": "fate-strategy",
+      "sourceId": 269
+    },
+    "270": {
+      "label": "体魄大师",
+      "sourceKind": "fate-strategy",
+      "sourceId": 270
+    },
+    "271": {
+      "label": "修玄大师",
+      "sourceKind": "fate-strategy",
+      "sourceId": 271
+    },
+    "272": {
+      "label": "再动大师",
+      "sourceKind": "fate-strategy",
+      "sourceId": 272
+    },
+    "273": {
+      "label": "随心悟道",
+      "sourceKind": "fate-strategy",
+      "sourceId": 273
+    },
+    "274": {
+      "label": "炼气强化",
+      "sourceKind": "fate-strategy",
+      "sourceId": 274
+    },
+    "296": {
+      "label": "影枭兔",
+      "sourceKind": "fate-strategy",
+      "sourceId": 296
+    },
+    "298": {
+      "label": "护身法宝",
+      "sourceKind": "fate-strategy",
+      "sourceId": 298
+    },
+    "299": {
+      "label": "天衍-风行天上",
+      "sourceKind": "fate-strategy",
+      "sourceId": 299
+    },
+    "300": {
+      "label": "天衍-阴符玉简",
+      "sourceKind": "fate-strategy",
+      "sourceId": 300
+    },
+    "301": {
+      "label": "背孤击虚",
+      "sourceKind": "fate-strategy",
+      "sourceId": 301
+    },
+    "302": {
+      "label": "天衍-定风波",
+      "sourceKind": "fate-strategy",
+      "sourceId": 302
+    },
+    "303": {
+      "label": "天衍-五行刀斩",
+      "sourceKind": "fate-strategy",
+      "sourceId": 303
+    },
+    "304": {
+      "label": "天衍-灵羽",
+      "sourceKind": "fate-strategy",
+      "sourceId": 304
+    },
+    "305": {
+      "label": "天衍-气旋掌",
+      "sourceKind": "fate-strategy",
+      "sourceId": 305
+    },
+    "306": {
+      "label": "天衍-御风飞闪",
+      "sourceKind": "fate-strategy",
+      "sourceId": 306
+    },
+    "307": {
+      "label": "天衍-天降甘霖",
+      "sourceKind": "fate-strategy",
+      "sourceId": 307
+    },
+    "308": {
+      "label": "天衍-忘忧",
+      "sourceKind": "fate-strategy",
+      "sourceId": 308
+    },
+    "309": {
+      "label": "天衍-五行玉瓶",
+      "sourceKind": "fate-strategy",
+      "sourceId": 309
+    },
+    "310": {
+      "label": "天衍-五行聚灵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 310
+    },
+    "311": {
+      "label": "极·云剑柔心",
+      "sourceKind": "fate-strategy",
+      "sourceId": 311
+    },
+    "312": {
+      "label": "极·暗鸦灵剑 ",
+      "sourceKind": "fate-strategy",
+      "sourceId": 312
+    },
+    "313": {
+      "label": "极·静气心法 ",
+      "sourceKind": "fate-strategy",
+      "sourceId": 313
+    },
+    "314": {
+      "label": "极·两仪阵 ",
+      "sourceKind": "fate-strategy",
+      "sourceId": 314
+    },
+    "315": {
+      "label": "极·水灵阵 ",
+      "sourceKind": "fate-strategy",
+      "sourceId": 315
+    },
+    "316": {
+      "label": "极·木灵巡林 ",
+      "sourceKind": "fate-strategy",
+      "sourceId": 316
+    },
+    "317": {
+      "label": "极·崩天步 ",
+      "sourceKind": "fate-strategy",
+      "sourceId": 317
+    },
+    "318": {
+      "label": "极·迎风掌 ",
+      "sourceKind": "fate-strategy",
+      "sourceId": 318
+    },
+    "319": {
+      "label": "琴心剑胆",
+      "sourceKind": "fate-strategy",
+      "sourceId": 319
+    },
+    "320": {
+      "label": "霜寒水月",
+      "sourceKind": "fate-strategy",
+      "sourceId": 320
+    },
+    "321": {
+      "label": "玲珑游",
+      "sourceKind": "fate-strategy",
+      "sourceId": 321
+    },
+    "322": {
+      "label": "猫之狂念",
+      "sourceKind": "fate-strategy",
+      "sourceId": 322
+    },
+    "323": {
+      "label": "地火锻心",
+      "sourceKind": "fate-strategy",
+      "sourceId": 323
+    },
+    "324": {
+      "label": "淬剑-云海",
+      "sourceKind": "fate-strategy",
+      "sourceId": 324
+    },
+    "325": {
+      "label": "狂剑聚灵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 325
+    },
+    "326": {
+      "label": "雁栖",
+      "sourceKind": "fate-strategy",
+      "sourceId": 326
+    },
+    "327": {
+      "label": "恃风雷",
+      "sourceKind": "fate-strategy",
+      "sourceId": 327
+    },
+    "329": {
+      "label": "谋定后动",
+      "sourceKind": "fate-strategy",
+      "sourceId": 329
+    },
+    "330": {
+      "label": "料敌机先",
+      "sourceKind": "fate-strategy",
+      "sourceId": 330
+    },
+    "331": {
+      "label": "七星连珠",
+      "sourceKind": "fate-strategy",
+      "sourceId": 331
+    },
+    "332": {
+      "label": "引虚",
+      "sourceKind": "fate-strategy",
+      "sourceId": 332
+    },
+    "333": {
+      "label": "天衍-金灵印记",
+      "sourceKind": "fate-strategy",
+      "sourceId": 333
+    },
+    "334": {
+      "label": "百草织霞",
+      "sourceKind": "fate-strategy",
+      "sourceId": 334
+    },
+    "335": {
+      "label": "无尽棍势",
+      "sourceKind": "fate-strategy",
+      "sourceId": 335
+    },
+    "336": {
+      "label": "风灵展翼",
+      "sourceKind": "fate-strategy",
+      "sourceId": 336
+    },
+    "337": {
+      "label": "灵之羽",
+      "sourceKind": "fate-strategy",
+      "sourceId": 337
+    },
+    "338": {
+      "label": "天衍-孤虚金书",
+      "sourceKind": "fate-strategy",
+      "sourceId": 338
+    },
+    "339": {
+      "label": "天衍-斩断俗尘",
+      "sourceKind": "fate-strategy",
+      "sourceId": 339
+    },
+    "340": {
+      "label": "乘雁而行",
+      "sourceKind": "fate-strategy",
+      "sourceId": 340
+    },
+    "341": {
+      "label": "逆转乾坤",
+      "sourceKind": "fate-strategy",
+      "sourceId": 341
+    },
+    "342": {
+      "label": "灯焰催心",
+      "sourceKind": "fate-strategy",
+      "sourceId": 342
+    },
+    "343": {
+      "label": "天衍-五行润养",
+      "sourceKind": "fate-strategy",
+      "sourceId": 343
+    },
+    "344": {
+      "label": "朱雀之泪",
+      "sourceKind": "fate-strategy",
+      "sourceId": 344
+    },
+    "345": {
+      "label": "灵气引燃",
+      "sourceKind": "fate-strategy",
+      "sourceId": 345
+    },
+    "346": {
+      "label": "天衍-磨砺不止",
+      "sourceKind": "fate-strategy",
+      "sourceId": 346
+    },
+    "347": {
+      "label": "热血化气",
+      "sourceKind": "fate-strategy",
+      "sourceId": 347
+    },
+    "348": {
+      "label": "盈月飞影",
+      "sourceKind": "fate-strategy",
+      "sourceId": 348
+    },
+    "349": {
+      "label": "拳风破空",
+      "sourceKind": "fate-strategy",
+      "sourceId": 349
+    },
+    "350": {
+      "label": "铜镜（能品）",
+      "sourceKind": "fate-strategy",
+      "sourceId": 350
+    },
+    "351": {
+      "label": "铜镜（妙品）",
+      "sourceKind": "fate-strategy",
+      "sourceId": 351
+    },
+    "352": {
+      "label": "铜镜（神品）",
+      "sourceKind": "fate-strategy",
+      "sourceId": 352
+    },
+    "353": {
+      "label": "天衍-休养生息",
+      "sourceKind": "fate-strategy",
+      "sourceId": 353
+    }
+  },
+  "sourceTokenLabels": {
+    "animaToStarPower": {
+      "label": "幻•星罗棋布",
+      "sourceKind": "card",
+      "sourceId": 268
+    },
+    "bengMeiMindset": {
+      "label": "崩灭心法",
+      "sourceKind": "card",
+      "sourceId": 10000044
+    },
+    "bengQuanReturnProfound": {
+      "label": "崩拳•返玄",
+      "sourceKind": "card",
+      "sourceId": 140
+    },
+    "bloodCalamity": {
+      "label": "血光之灾",
+      "sourceKind": "card",
+      "sourceId": 11000024
+    },
+    "bodyObservation": {
+      "label": "察体",
+      "sourceKind": "card",
+      "sourceId": 11000022
+    },
+    "chaoticMindTune": {
+      "label": "幽绪乱心曲",
+      "sourceKind": "card",
+      "sourceId": 5000013
+    },
+    "cloudSwordHeart": {
+      "label": "云剑之心",
+      "sourceKind": "talent",
+      "sourceId": 20096
+    },
+    "cloudSwordSoftHeart": {
+      "label": "云剑•柔心",
+      "sourceKind": "card",
+      "sourceId": 1000026
+    },
+    "counterElement": {
+      "label": "混元逆克阵",
+      "sourceKind": "card",
+      "sourceId": 133
+    },
+    "devouringAncientVine": {
+      "label": "噬仙古藤",
+      "sourceKind": "card",
+      "sourceId": 9000019
+    },
+    "dismantleMove": {
+      "label": "拆招",
+      "sourceKind": "card",
+      "sourceId": 221
+    },
+    "dreamTwoPolarity": {
+      "label": "梦•两仪阵",
+      "sourceKind": "card",
+      "sourceId": 4000072
+    },
+    "drunkenFistStance": {
+      "label": "醉拳架势",
+      "sourceKind": "card",
+      "sourceId": 10000090
+    },
+    "earthCliffCounter": {
+      "label": "土灵•断崖",
+      "sourceKind": "card",
+      "sourceId": 7000062
+    },
+    "earthEightWastes": {
+      "label": "土灵•合八荒",
+      "sourceKind": "card",
+      "sourceId": 7000053
+    },
+    "evilGuFormation": {
+      "label": "邪蛊阵",
+      "sourceKind": "card",
+      "sourceId": 8000005
+    },
+    "fateCycle": {
+      "label": "命运轮回",
+      "sourceKind": "card",
+      "sourceId": 11000021
+    },
+    "firePhoenixRevive": {
+      "label": "浴火凤凰",
+      "sourceKind": "card",
+      "sourceId": 99000207
+    },
+    "fiveElementsMarrowArt": {
+      "label": "五行天髓诀",
+      "sourceKind": "card",
+      "sourceId": 7000073
+    },
+    "flameHeartUrging": {
+      "label": "灯焰催心",
+      "sourceKind": "fate-strategy",
+      "sourceId": 342
+    },
+    "flameSoulReturn": {
+      "label": "焰魂归复",
+      "sourceKind": "talent",
+      "sourceId": 139
+    },
+    "flowerMaze": {
+      "label": "万花迷魂阵",
+      "sourceKind": "card",
+      "sourceId": 8000013
+    },
+    "forgeBone": {
+      "label": "锻骨",
+      "sourceKind": "card",
+      "sourceId": 10000027
+    },
+    "fortuneAvoidMisfortune": {
+      "label": "天运•避凶",
+      "sourceKind": "card",
+      "sourceId": 11000007
+    },
+    "fortuneSeekAuspicious": {
+      "label": "天运•趋吉",
+      "sourceKind": "card",
+      "sourceId": 11000008
+    },
+    "frenzySwordZero": {
+      "label": "狂剑•零式",
+      "sourceKind": "card",
+      "sourceId": 1000066
+    },
+    "generatingInteractionUpgrade": {
+      "label": "相生相成",
+      "sourceKind": "talent",
+      "sourceId": 127
+    },
+    "graftFlowersToTree": {
+      "label": "移花接木",
+      "sourceKind": "card",
+      "sourceId": 4000052
+    },
+    "hardBranchBamboo": {
+      "label": "硬枝竹",
+      "sourceKind": "card",
+      "sourceId": 9000027
+    },
+    "heartbreakTune": {
+      "label": "断肠曲",
+      "sourceKind": "card",
+      "sourceId": 5000007
+    },
+    "heavenCycleSwordFormation": {
+      "label": "周天剑阵",
+      "sourceKind": "card",
+      "sourceId": 8000008
+    },
+    "heavenForceFormation": {
+      "label": "天罡聚力阵",
+      "sourceKind": "card",
+      "sourceId": 8000011
+    },
+    "heavenlySecretReverse": {
+      "label": "天机•逆施",
+      "sourceKind": "card",
+      "sourceId": 11000020
+    },
+    "hundredBirdTrailingShadowArt": {
+      "label": "百鸟曳影诀",
+      "sourceKind": "card",
+      "sourceId": 388
+    },
+    "illusoryTune": {
+      "label": "幻音曲",
+      "sourceKind": "card",
+      "sourceId": 5000005
+    },
+    "immortalBindingVine": {
+      "label": "缚仙古藤",
+      "sourceKind": "card",
+      "sourceId": 9000011
+    },
+    "immovableFormation": {
+      "label": "不动金刚阵",
+      "sourceKind": "card",
+      "sourceId": 8000016
+    },
+    "infiniteHexagramPlate": {
+      "label": "无极卦盘",
+      "sourceKind": "card",
+      "sourceId": 28
+    },
+    "leafPluckFlyingLeaf": {
+      "label": "摘花飞叶",
+      "sourceKind": "card",
+      "sourceId": 52
+    },
+    "leafShieldFlower": {
+      "label": "叶盾花",
+      "sourceKind": "card",
+      "sourceId": 9000009
+    },
+    "lingGuaArt": {
+      "label": "灵卦术",
+      "sourceKind": "card",
+      "sourceId": 51
+    },
+    "mirageVitalityBloom": {
+      "label": "幻•生机绽放",
+      "sourceKind": "card",
+      "sourceId": 324
+    },
+    "mysticHeartEnterProfound": {
+      "label": "冥心入玄",
+      "sourceKind": "card",
+      "sourceId": 81
+    },
+    "nineHeavensRevive": {
+      "label": "九天流光轮",
+      "sourceKind": "card",
+      "sourceId": 172
+    },
+    "paintFinishingTouch": {
+      "label": "画龙点睛",
+      "sourceKind": "card",
+      "sourceId": 6000013
+    },
+    "plumBlossomTwice": {
+      "label": "梅开二度",
+      "sourceKind": "card",
+      "sourceId": 4000041
+    },
+    "poKongDiao": {
+      "label": "破空雕",
+      "sourceKind": "card",
+      "sourceId": 99000200
+    },
+    "primordialInfinityFormation": {
+      "label": "混元无极阵",
+      "sourceKind": "card",
+      "sourceId": 7000058
+    },
+    "quietMindset": {
+      "label": "静气心法",
+      "sourceKind": "card",
+      "sourceId": 4000027
+    },
+    "reflectMindset": {
+      "label": "反震心法",
+      "sourceKind": "card",
+      "sourceId": 4000037
+    },
+    "rejuvenationTune": {
+      "label": "回春曲",
+      "sourceKind": "card",
+      "sourceId": 5000010
+    },
+    "sealSuppressingMindset": {
+      "label": "镇印心法",
+      "sourceKind": "card",
+      "sourceId": 7000094
+    },
+    "shengQiLingRen": {
+      "label": "盛气凌人",
+      "sourceKind": "card",
+      "sourceId": 70
+    },
+    "shiXuLingShou": {
+      "label": "噬灵虚兽",
+      "sourceKind": "card",
+      "sourceId": 99000206
+    },
+    "sixYaoFormation": {
+      "label": "六爻绝阵",
+      "sourceKind": "card",
+      "sourceId": 4000014
+    },
+    "soulInjuryCurseFormation": {
+      "label": "伤魂咒阵",
+      "sourceKind": "card",
+      "sourceId": 4000092
+    },
+    "spiritControlMindset": {
+      "label": "御灵心法",
+      "sourceKind": "card",
+      "sourceId": 1000088
+    },
+    "spiritGatheringFormation": {
+      "label": "聚灵阵",
+      "sourceKind": "card",
+      "sourceId": 8000007
+    },
+    "spiritTurtleFootwork": {
+      "label": "灵玄迷踪步",
+      "sourceKind": "card",
+      "sourceId": 10000050
+    },
+    "springFlow": {
+      "label": "水灵•泉涌",
+      "sourceKind": "card",
+      "sourceId": 7000059
+    },
+    "starChessBreak": {
+      "label": "星弈•断",
+      "sourceKind": "card",
+      "sourceId": 4000044
+    },
+    "thunderFormation": {
+      "label": "引雷阵",
+      "sourceKind": "card",
+      "sourceId": 8000001
+    },
+    "tunTianChiYanShou": {
+      "label": "吞天赤眼兽",
+      "sourceKind": "card",
+      "sourceId": 99000205
+    },
+    "turtleFormation": {
+      "label": "龟甲阵",
+      "sourceKind": "card",
+      "sourceId": 8000004
+    },
+    "wildFerrySeal": {
+      "label": "野渡之印",
+      "sourceKind": "card",
+      "sourceId": 55
+    },
+    "woodSpiritAllGrowth": {
+      "label": "木灵•万物生",
+      "sourceKind": "card",
+      "sourceId": 134
+    },
+    "woodSpring": {
+      "label": "木灵•春风拂",
+      "sourceKind": "card",
+      "sourceId": 7000097
+    },
+    "yellowBirdBehind": {
+      "label": "黄雀在后",
+      "sourceKind": "card",
+      "sourceId": 4000066
+    },
+    "youMingXuHunQuan": {
+      "label": "幽冥虚魂犬",
+      "sourceKind": "card",
+      "sourceId": 99000211
+    }
+  }
+}

@@ -1,0 +1,562 @@
+.result-empty {
+  min-height: 0;
+}
+
+.combined-battle .result-empty {
+  /* 不能用 height: 100%：右列现在还有尾部分组，撑满会把它顶出视口。 */
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.combined-battle .result-empty .simulator-intro {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* 空态模拟器说明：贴合右列、不套独立浮层，功能介绍与使用指南直接铺开。 */
+.simulator-intro {
+  padding: 14px 16px;
+  color: var(--text);
+  font-size: var(--fs-sm);
+  line-height: 1.65;
+}
+
+.simulator-intro-heading {
+  margin-bottom: 10px;
+  color: var(--accent-bright);
+  font-size: var(--fs-md);
+  font-weight: 800;
+}
+
+.simulator-intro-features {
+  margin: 0 0 14px;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 7px 12px;
+}
+
+.simulator-intro-features dt {
+  color: var(--accent);
+  font-weight: 800;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.04em;
+  padding-top: 1px;
+}
+
+.simulator-intro-features dd {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+}
+
+.simulator-intro-guide {
+  margin: 0;
+  padding: 0 0 0 20px;
+  color: var(--text);
+  font-size: var(--fs-sm);
+  line-height: 1.8;
+}
+
+.simulator-intro-guide li {
+  margin: 0;
+}
+
+.simulator-intro-guide li::marker {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.battle-ready-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.battle-ready-metric {
+  min-width: 0;
+  padding: 7px 8px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.battle-ready-metric span,
+.battle-ready-metric b {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.battle-ready-metric span {
+  margin-bottom: 3px;
+  color: var(--muted);
+  font-size: var(--fs-xs);
+}
+
+.battle-ready-metric b {
+  color: var(--text);
+  font-size: var(--fs-md);
+  font-variant-numeric: tabular-nums;
+}
+
+.battle-ready-metric.ready {
+  border-color: rgba(110, 196, 154, 0.26);
+}
+
+.battle-ready-metric.ready b {
+  color: var(--good);
+}
+
+.battle-ready-metric.pending b {
+  color: var(--accent-bright);
+}
+
+.battle-ready-route {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+  color: var(--text);
+  font-size: var(--fs-sm);
+}
+
+.battle-ready-route span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.battle-ready-route span + span::before {
+  content: "→";
+  margin-right: 2px;
+  color: var(--line-strong);
+}
+
+.battle-ready-route b {
+  width: 18px;
+  height: 18px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(201, 168, 76, 0.34);
+  border-radius: 50%;
+  color: var(--accent-bright);
+  font-size: var(--fs-2xs);
+}
+
+.battle-ready p {
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: var(--fs-xs);
+}
+
+.battle-view {
+  --flow-label-width: 76px;
+  --flow-value-width: 52px;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.insight-companion {
+  display: none;
+  min-width: 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.insight-companion > .solver-panel {
+  align-items: stretch;
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  overflow: visible;
+}
+
+.insight-companion .solver-panel-head > div > span {
+  overflow: visible;
+  line-height: 1.35;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.battle-view.module-trajectory > .insight-companion,
+.battle-view.module-advice > .insight-companion {
+  flex: 1 1 0;
+  display: flex;
+}
+
+.battle-view.module-trajectory > .battle-module-body,
+.battle-view.module-advice > .battle-module-body {
+  display: none;
+}
+
+/*
+ * 宽桌面的引擎透视是独立竖向日志列：左边保留结论、导航和时间轴，右边从顶到底
+ * 都交给钩子链；左下复用已有生命曲线，避免增加另一套状态诊断。
+ * 较窄窗口仍走默认上下布局，避免把日志压成窄缝。
+ */
+.combined-battle {
+  container-type: inline-size;
+}
+
+@container (min-width: 900px) {
+  .battle-view.insight-split {
+    display: grid;
+    grid-template-columns: minmax(0, 0.58fr) minmax(380px, 0.42fr);
+    grid-template-rows: auto auto auto minmax(0, 1fr);
+    column-gap: 6px;
+    align-content: stretch;
+  }
+
+  .battle-view.insight-split > .battle-verdict,
+  .battle-view.insight-split > .battle-progress-rail,
+  .battle-view.insight-split > .battle-module-tabs {
+    grid-column: 1;
+  }
+
+  .battle-view.insight-split > .battle-verdict { grid-row: 1; }
+  .battle-view.insight-split > .battle-progress-rail { grid-row: 2; }
+  .battle-view.insight-split > .battle-module-tabs { grid-row: 3; }
+
+  .battle-view.insight-split > .insight-companion {
+    grid-column: 1;
+    grid-row: 4;
+    display: flex;
+  }
+
+  .battle-view.insight-split > .insight-companion > .resource-flow,
+  .battle-view.insight-split > .insight-companion > .resource-flow {
+    flex: 1 1 0;
+  }
+
+  .battle-view.insight-split > .insight-companion > .solver-panel {
+    flex: 0 0 auto;
+  }
+
+  .battle-view.insight-split > .battle-module-body {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    display: flex;
+    height: 100%;
+  }
+
+  .battle-view.insight-split .battle-module-tab[data-module="insight"] {
+    display: none;
+  }
+}
+
+.winner {
+  color: var(--good);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--good-soft);
+  border: 1px solid rgba(110, 196, 154, 0.25);
+}
+
+.combined-page .battle-view,
+.combined-page .result-empty {
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.battle-view .current-action-panel {
+  flex: 0 0 auto;
+  min-height: 0;
+}
+
+.battle-section-title {
+  flex: 0 0 auto;
+  color: var(--accent-bright);
+  font-size: var(--fs-sm);
+  font-weight: 800;
+}
+
+.battle-progress-rail {
+  flex: 0 0 auto;
+  min-height: 40px;
+  display: grid;
+  /* 轨道是这一行唯一的内容；留着当年放标签和数值的两列会在左边空出 116px。 */
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  padding: 4px 8px;
+  margin-bottom: 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(90deg, var(--accent-soft), transparent 28%, transparent 72%, rgba(61, 139, 122, 0.12)),
+    var(--bg-elevated);
+  overflow: hidden;
+}
+
+/* Round marks (row 1) and action dots (row 2) are separate layers so a
+   narrow single-action round never squeezes its "Rn" label against the
+   neighboring dot's number. Both rows share the same per-action grid, so a
+   round label spans and centers over exactly the columns used by its dots. */
+.battle-progress-track {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  min-width: 0;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-color: var(--line-strong) transparent;
+  scrollbar-width: thin;
+  scroll-behavior: auto;
+  overscroll-behavior-inline: contain;
+}
+
+.progress-round-labels,
+.progress-dots {
+  display: grid;
+  grid-template-columns: repeat(var(--progress-action-count, 1), minmax(16px, 1fr));
+  column-gap: 2px;
+  width: max(100%, calc(var(--progress-action-count, 1) * 18px));
+}
+
+.progress-round-labels {
+  align-items: center;
+  min-width: 0;
+  height: 9px;
+}
+
+.progress-round-mark {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--jade);
+  font-size: 8px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.progress-round-mark:empty {
+  border-left: 0;
+}
+
+.progress-round-mark + .progress-round-mark {
+  border-left: 1px solid var(--line-strong);
+  padding-left: 3px;
+}
+
+.progress-dots {
+  align-items: center;
+  min-width: 0;
+}
+
+.battle-progress-dot {
+  width: auto;
+  min-width: 16px;
+  height: 24px;
+  min-height: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.battle-progress-dot span {
+  display: block;
+  line-height: 1.05;
+}
+
+.progress-action {
+  color: inherit;
+  font-size: var(--fs-2xs);
+  line-height: 1;
+}
+
+/* 一/二 在 9px 下笔画差别很小，靠颜色区分行动方。 */
+.battle-progress-dot[data-actor="p1"] {
+  color: var(--accent-bright);
+}
+
+.battle-progress-dot[data-actor="p2"] {
+  color: #d98b7f;
+  background: rgba(224, 112, 96, 0.08);
+}
+
+.battle-progress-dot:hover:not(:disabled) {
+  background: var(--panel-hover);
+  color: var(--text);
+}
+
+.battle-progress-dot.selected {
+  border-color: var(--accent-bright);
+  background: var(--accent-soft);
+  color: var(--accent-bright);
+  box-shadow: inset 0 0 0 1px rgba(201, 168, 76, 0.25);
+}
+
+.battle-progress-track::-webkit-scrollbar {
+  height: 4px;
+}
+
+.battle-progress-track::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.battle-progress-track::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background: var(--line-strong);
+}
+
+.resource-flow-head {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--line);
+  font-size: var(--fs-2xs);
+}
+
+.resource-flow-head b {
+  flex: 0 0 auto;
+  color: var(--accent-bright);
+  font-size: var(--fs-sm);
+}
+
+.resource-flow-head span {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.flow-metric {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: var(--flow-label-width) var(--flow-value-width) minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+}
+
+.flow-label {
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.flow-value {
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.flow-value.positive {
+  color: var(--good);
+}
+
+.flow-value.negative {
+  color: var(--danger);
+}
+
+.flow-spark {
+  width: 100%;
+  height: 100%;
+  min-height: 56px;
+  overflow: visible;
+  border-radius: 3px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent),
+    rgba(6, 9, 18, 0.34);
+}
+
+.flow-zero {
+  stroke: rgba(135, 144, 165, 0.24);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.flow-line {
+  fill: none;
+  stroke: var(--accent-bright);
+  stroke-width: 2.2;
+  vector-effect: non-scaling-stroke;
+}
+
+.flow-area {
+  fill: rgba(201, 168, 76, 0.16);
+}
+
+.flow-cursor {
+  stroke: rgba(255, 255, 255, 0.72);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.flow-marker {
+  fill: var(--accent-bright);
+  stroke: var(--bg);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.resource-readout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.resource-readout span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fixture-consistency {
+  color: var(--muted);
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  padding: 2px 7px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+}
+
+.fixture-consistency.ok {
+  color: var(--good);
+  border-color: rgba(110, 196, 154, 0.35);
+  background: var(--good-soft);
+}
+
+.fixture-consistency.bad {
+  color: var(--danger);
+  border-color: rgba(224, 112, 96, 0.35);
+  background: var(--danger-soft);
+}

@@ -1,0 +1,8420 @@
+{
+  "schemaVersion": "rust-static-handler-dependencies-v1",
+  "source": "Static scan of Rust replay card-dispatch match arms. Each route is a source location, not original-game evidence or a runtime call trace.",
+  "policy": "Lifecycle stages are verified by named Rust functions. Handler routes cover direct numeric match arms only; unrouted cards remain explicit rather than inferred.",
+  "lifecycle": [
+    {
+      "id": "catalog-resolution",
+      "label": "Catalog 预检",
+      "location": {
+        "path": "src/replay/flow_card_effect.rs",
+        "line": 16,
+        "function": "resolve_card_effect_before_execution"
+      }
+    },
+    {
+      "id": "before-execute",
+      "label": "出牌前钩子",
+      "location": {
+        "path": "src/replay/flow_card_effect.rs",
+        "line": 59,
+        "function": "apply_before_execute_effect_hooks"
+      }
+    },
+    {
+      "id": "body",
+      "label": "卡牌主体 dispatch",
+      "location": {
+        "path": "src/replay/flow_card_effect.rs",
+        "line": 186,
+        "function": "apply_card_effect_body"
+      }
+    },
+    {
+      "id": "printed-effects",
+      "label": "配置印刷字段",
+      "location": {
+        "path": "src/replay/flow_card_effect.rs",
+        "line": 459,
+        "function": "apply_regular_printed_card_effects"
+      }
+    },
+    {
+      "id": "action-again",
+      "label": "再动判定",
+      "location": {
+        "path": "src/replay/action_again.rs",
+        "line": 20,
+        "function": "resolve_card_action_again"
+      }
+    },
+    {
+      "id": "after-effect",
+      "label": "牌后钩子",
+      "location": {
+        "path": "src/replay/flow_card_effect.rs",
+        "line": 497,
+        "function": "apply_regular_after_card_effect_hooks"
+      }
+    },
+    {
+      "id": "completed-hooks",
+      "label": "完成钩子",
+      "location": {
+        "path": "src/replay/elements_late.rs",
+        "line": 29,
+        "function": "apply_card_completed_hooks"
+      }
+    },
+    {
+      "id": "completion",
+      "label": "完成态结算",
+      "location": {
+        "path": "src/replay/flow.rs",
+        "line": 1298,
+        "function": "complete_card_effect_repetition"
+      }
+    }
+  ],
+  "handlers": [
+    {
+      "baseId": 2,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 3,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 5,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 6,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 8,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 9,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 12,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 13,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 14,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 15,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 16,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 17,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 18,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 19,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 20,
+      "routes": [
+        {
+          "path": "src/replay/cards_misc.rs",
+          "line": 6,
+          "function": "apply_card_effect_misc",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 21,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 22,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 23,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 26,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 28,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 29,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 32,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 36,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 37,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 38,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 39,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 43,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 44,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 45,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 47,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified.rs",
+          "line": 8,
+          "function": "apply_synthetic_oracle_verified_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 48,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified.rs",
+          "line": 8,
+          "function": "apply_synthetic_oracle_verified_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 49,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_fate.rs",
+          "line": 8,
+          "function": "apply_dream_fate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 50,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 51,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 52,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 53,
+      "routes": [
+        {
+          "path": "src/replay/cards_qixing.rs",
+          "line": 12,
+          "function": "apply_qi_xing_star_slot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 54,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_fate.rs",
+          "line": 8,
+          "function": "apply_dream_fate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 55,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 56,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 57,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 58,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_fate.rs",
+          "line": 8,
+          "function": "apply_dream_fate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 70,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 71,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 72,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 73,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 74,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 75,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 79,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 81,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 82,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 122,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 123,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 124,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 125,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 126,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 127,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 128,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 129,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 130,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 131,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 132,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 133,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 134,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 135,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 136,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui_early.rs",
+          "line": 9,
+          "function": "apply_ronghui_early_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 137,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 138,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 139,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 140,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 141,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 142,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 143,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui_early.rs",
+          "line": 9,
+          "function": "apply_ronghui_early_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 144,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 151,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 152,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 153,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 154,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 156,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 157,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 158,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 159,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 160,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 161,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 162,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 163,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 164,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 165,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 166,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 167,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 168,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 169,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui_early.rs",
+          "line": 9,
+          "function": "apply_ronghui_early_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 170,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 171,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 172,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 173,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 174,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 175,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 176,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 177,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 178,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 179,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 180,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui_early.rs",
+          "line": 9,
+          "function": "apply_ronghui_early_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 181,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 183,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui_early.rs",
+          "line": 9,
+          "function": "apply_ronghui_early_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 184,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui_early.rs",
+          "line": 9,
+          "function": "apply_ronghui_early_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 185,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 186,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 187,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 188,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 189,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 190,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 191,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 192,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 193,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 194,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 195,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 196,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 197,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui_early.rs",
+          "line": 9,
+          "function": "apply_ronghui_early_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 198,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        },
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 199,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 200,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui_early.rs",
+          "line": 9,
+          "function": "apply_ronghui_early_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 201,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 202,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 203,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 204,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui_early.rs",
+          "line": 9,
+          "function": "apply_ronghui_early_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 205,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 206,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 207,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 208,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 209,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 210,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 213,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 214,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 215,
+      "routes": [
+        {
+          "path": "src/replay/cards_misc.rs",
+          "line": 6,
+          "function": "apply_card_effect_misc",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 216,
+      "routes": [
+        {
+          "path": "src/replay/cards_misc.rs",
+          "line": 6,
+          "function": "apply_card_effect_misc",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 217,
+      "routes": [
+        {
+          "path": "src/replay/cards_misc.rs",
+          "line": 6,
+          "function": "apply_card_effect_misc",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 218,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 219,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 220,
+      "routes": [
+        {
+          "path": "src/replay/mechanic_cards_extra.rs",
+          "line": 6,
+          "function": "apply_mechanic_card_effect_extra",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 221,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 222,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 258,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 260,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 261,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 262,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 263,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 264,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 265,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage_direct.rs",
+          "line": 6,
+          "function": "apply_dream_mirage_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 266,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 268,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 269,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 270,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 271,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 272,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 273,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 274,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage_direct.rs",
+          "line": 6,
+          "function": "apply_dream_mirage_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 275,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 277,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 278,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 280,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 281,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 282,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 283,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 284,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 285,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 288,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_dream_mirage_pilot.rs",
+          "line": 7,
+          "function": "apply_synthetic_oracle_dream_mirage_pilot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 289,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 291,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 292,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 293,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 294,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 295,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 296,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 297,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage_direct.rs",
+          "line": 6,
+          "function": "apply_dream_mirage_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 298,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage_direct.rs",
+          "line": 6,
+          "function": "apply_dream_mirage_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 307,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage_direct.rs",
+          "line": 6,
+          "function": "apply_dream_mirage_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 308,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 309,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_dream_mirage_pilot.rs",
+          "line": 7,
+          "function": "apply_synthetic_oracle_dream_mirage_pilot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 310,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 312,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 315,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 316,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 317,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 318,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 319,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 320,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage_direct.rs",
+          "line": 6,
+          "function": "apply_dream_mirage_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 323,
+      "routes": [
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 324,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 325,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_dream_mirage_pilot.rs",
+          "line": 7,
+          "function": "apply_synthetic_oracle_dream_mirage_pilot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 329,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 330,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 331,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 332,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 333,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_fate.rs",
+          "line": 8,
+          "function": "apply_dream_fate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 334,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 335,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 336,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified.rs",
+          "line": 8,
+          "function": "apply_synthetic_oracle_verified_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 337,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 338,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_fate.rs",
+          "line": 8,
+          "function": "apply_dream_fate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 339,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 340,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 341,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 342,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_fate.rs",
+          "line": 8,
+          "function": "apply_dream_fate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 343,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage_direct.rs",
+          "line": 6,
+          "function": "apply_dream_mirage_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 344,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 345,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 346,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 348,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 349,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 350,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 351,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 369,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 371,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 373,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 374,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 375,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 376,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 377,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 378,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 379,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_fate.rs",
+          "line": 8,
+          "function": "apply_dream_fate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 381,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 382,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 383,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 387,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 388,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 389,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 390,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui.rs",
+          "line": 10,
+          "function": "apply_synthetic_oracle_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 391,
+      "routes": [
+        {
+          "path": "src/replay/cards_ronghui_early.rs",
+          "line": 9,
+          "function": "apply_ronghui_early_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 392,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 395,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 401,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 403,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 407,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 413,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 415,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 417,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 418,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 422,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 423,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 424,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 425,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 426,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 428,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 429,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000002,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000003,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000004,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000006,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000008,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000009,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000011,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000014,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000015,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000016,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000018,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000020,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000021,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000022,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000023,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000024,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000025,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000026,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000027,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000028,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000029,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000030,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000033,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000034,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000035,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000036,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000038,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000039,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000040,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000041,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000042,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000043,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000044,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000045,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000046,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000047,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000048,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000049,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000050,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_sword.rs",
+          "line": 9,
+          "function": "apply_synthetic_oracle_verified_secret_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000051,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_sword.rs",
+          "line": 9,
+          "function": "apply_synthetic_oracle_verified_secret_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000052,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000053,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_sword.rs",
+          "line": 9,
+          "function": "apply_synthetic_oracle_verified_secret_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000054,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000055,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000056,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_sword.rs",
+          "line": 9,
+          "function": "apply_synthetic_oracle_verified_secret_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000057,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_sword.rs",
+          "line": 9,
+          "function": "apply_synthetic_oracle_verified_secret_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000058,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000059,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000060,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000061,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_sword.rs",
+          "line": 9,
+          "function": "apply_synthetic_oracle_verified_secret_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000062,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000063,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000064,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000065,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000066,
+      "routes": [
+        {
+          "path": "src/replay/mechanic_cards_extra.rs",
+          "line": 6,
+          "function": "apply_mechanic_card_effect_extra",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000067,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000069,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000070,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000071,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_dream_mirage_pilot.rs",
+          "line": 7,
+          "function": "apply_synthetic_oracle_dream_mirage_pilot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000072,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage_direct.rs",
+          "line": 6,
+          "function": "apply_dream_mirage_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000073,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage_direct.rs",
+          "line": 6,
+          "function": "apply_dream_mirage_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000074,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000075,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000076,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000077,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000078,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000079,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000080,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000081,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_direct.rs",
+          "line": 6,
+          "function": "apply_dream_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000082,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_direct.rs",
+          "line": 6,
+          "function": "apply_dream_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000083,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000084,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000085,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000086,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000087,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000088,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000089,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000090,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000091,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000092,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000094,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000095,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000096,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000097,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified.rs",
+          "line": 8,
+          "function": "apply_synthetic_oracle_verified_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000098,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000099,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 1000100,
+      "routes": [
+        {
+          "path": "src/replay/swords.rs",
+          "line": 23,
+          "function": "apply_sword_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 2000001,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 2000002,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 2000003,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 2000004,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 2000005,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 2000007,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 2000008,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 2000010,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 2000011,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 2000013,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 3000001,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 3000002,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 3000003,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 3000004,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 3000005,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 3000006,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 3000007,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 3000008,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 3000009,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 3000010,
+      "routes": [
+        {
+          "path": "src/replay/cards_misc.rs",
+          "line": 6,
+          "function": "apply_card_effect_misc",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 3000011,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 3000012,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 3000013,
+      "routes": [
+        {
+          "path": "src/replay/cards_misc.rs",
+          "line": 6,
+          "function": "apply_card_effect_misc",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 3000014,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 3000015,
+      "routes": [
+        {
+          "path": "src/replay/cards_misc.rs",
+          "line": 6,
+          "function": "apply_card_effect_misc",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000001,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000002,
+      "routes": [
+        {
+          "path": "src/replay/cards_qixing.rs",
+          "line": 12,
+          "function": "apply_qi_xing_star_slot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000003,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000004,
+      "routes": [
+        {
+          "path": "src/replay/cards_qixing.rs",
+          "line": 12,
+          "function": "apply_qi_xing_star_slot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000005,
+      "routes": [
+        {
+          "path": "src/replay/cards_qixing.rs",
+          "line": 12,
+          "function": "apply_qi_xing_star_slot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000006,
+      "routes": [
+        {
+          "path": "src/replay/cards_qixing.rs",
+          "line": 12,
+          "function": "apply_qi_xing_star_slot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000008,
+      "routes": [
+        {
+          "path": "src/replay/cards_qixing.rs",
+          "line": 12,
+          "function": "apply_qi_xing_star_slot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000009,
+      "routes": [
+        {
+          "path": "src/replay/cards_qixing.rs",
+          "line": 12,
+          "function": "apply_qi_xing_star_slot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000010,
+      "routes": [
+        {
+          "path": "src/replay/cards_qixing.rs",
+          "line": 12,
+          "function": "apply_qi_xing_star_slot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000011,
+      "routes": [
+        {
+          "path": "src/replay/cards_qixing.rs",
+          "line": 12,
+          "function": "apply_qi_xing_star_slot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000013,
+      "routes": [
+        {
+          "path": "src/replay/cards_qixing.rs",
+          "line": 12,
+          "function": "apply_qi_xing_star_slot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000014,
+      "routes": [
+        {
+          "path": "src/replay/mechanic_cards_extra.rs",
+          "line": 6,
+          "function": "apply_mechanic_card_effect_extra",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000015,
+      "routes": [
+        {
+          "path": "src/replay/cards_qixing.rs",
+          "line": 12,
+          "function": "apply_qi_xing_star_slot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000016,
+      "routes": [
+        {
+          "path": "src/replay/cards_qixing.rs",
+          "line": 12,
+          "function": "apply_qi_xing_star_slot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000017,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000018,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000019,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000020,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_fallback.rs",
+          "line": 56,
+          "function": "apply_card_effect_fallback",
+          "kind": "fallback"
+        }
+      ]
+    },
+    {
+      "baseId": 4000021,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_fallback.rs",
+          "line": 56,
+          "function": "apply_card_effect_fallback",
+          "kind": "fallback"
+        }
+      ]
+    },
+    {
+      "baseId": 4000022,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000023,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_fallback.rs",
+          "line": 56,
+          "function": "apply_card_effect_fallback",
+          "kind": "fallback"
+        }
+      ]
+    },
+    {
+      "baseId": 4000024,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_fallback.rs",
+          "line": 56,
+          "function": "apply_card_effect_fallback",
+          "kind": "fallback"
+        }
+      ]
+    },
+    {
+      "baseId": 4000025,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000026,
+      "routes": [
+        {
+          "path": "src/replay/cards_misc.rs",
+          "line": 6,
+          "function": "apply_card_effect_misc",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000027,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_fallback.rs",
+          "line": 56,
+          "function": "apply_card_effect_fallback",
+          "kind": "fallback"
+        }
+      ]
+    },
+    {
+      "baseId": 4000028,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_fallback.rs",
+          "line": 56,
+          "function": "apply_card_effect_fallback",
+          "kind": "fallback"
+        }
+      ]
+    },
+    {
+      "baseId": 4000029,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_fallback.rs",
+          "line": 56,
+          "function": "apply_card_effect_fallback",
+          "kind": "fallback"
+        }
+      ]
+    },
+    {
+      "baseId": 4000030,
+      "routes": [
+        {
+          "path": "src/replay/cards_qixing.rs",
+          "line": 12,
+          "function": "apply_qi_xing_star_slot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000031,
+      "routes": [
+        {
+          "path": "src/replay/cards_qixing.rs",
+          "line": 12,
+          "function": "apply_qi_xing_star_slot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000032,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_fallback.rs",
+          "line": 56,
+          "function": "apply_card_effect_fallback",
+          "kind": "fallback"
+        }
+      ]
+    },
+    {
+      "baseId": 4000033,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_fallback.rs",
+          "line": 56,
+          "function": "apply_card_effect_fallback",
+          "kind": "fallback"
+        }
+      ]
+    },
+    {
+      "baseId": 4000034,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000035,
+      "routes": [
+        {
+          "path": "src/replay/cards_qixing.rs",
+          "line": 12,
+          "function": "apply_qi_xing_star_slot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000036,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000037,
+      "routes": [
+        {
+          "path": "src/replay/mechanic_cards_extra.rs",
+          "line": 6,
+          "function": "apply_mechanic_card_effect_extra",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000038,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_fallback.rs",
+          "line": 56,
+          "function": "apply_card_effect_fallback",
+          "kind": "fallback"
+        }
+      ]
+    },
+    {
+      "baseId": 4000039,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_fallback.rs",
+          "line": 56,
+          "function": "apply_card_effect_fallback",
+          "kind": "fallback"
+        }
+      ]
+    },
+    {
+      "baseId": 4000040,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000041,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000042,
+      "routes": [
+        {
+          "path": "src/replay/mechanic_cards_extra.rs",
+          "line": 6,
+          "function": "apply_mechanic_card_effect_extra",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000043,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000044,
+      "routes": [
+        {
+          "path": "src/replay/cards_misc.rs",
+          "line": 6,
+          "function": "apply_card_effect_misc",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000045,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000046,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000047,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000048,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_misc.rs",
+          "line": 11,
+          "function": "apply_synthetic_oracle_verified_secret_misc_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000049,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_misc.rs",
+          "line": 11,
+          "function": "apply_synthetic_oracle_verified_secret_misc_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000050,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000051,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000052,
+      "routes": [
+        {
+          "path": "src/replay/mechanic_cards_extra.rs",
+          "line": 6,
+          "function": "apply_mechanic_card_effect_extra",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000053,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000054,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000056,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000057,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_misc.rs",
+          "line": 11,
+          "function": "apply_synthetic_oracle_verified_secret_misc_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000058,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified.rs",
+          "line": 8,
+          "function": "apply_synthetic_oracle_verified_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000059,
+      "routes": [
+        {
+          "path": "src/replay/cards_misc.rs",
+          "line": 6,
+          "function": "apply_card_effect_misc",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000060,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000061,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_fallback.rs",
+          "line": 56,
+          "function": "apply_card_effect_fallback",
+          "kind": "fallback"
+        }
+      ]
+    },
+    {
+      "baseId": 4000062,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_fallback.rs",
+          "line": 56,
+          "function": "apply_card_effect_fallback",
+          "kind": "fallback"
+        }
+      ]
+    },
+    {
+      "baseId": 4000063,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000064,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_misc.rs",
+          "line": 11,
+          "function": "apply_synthetic_oracle_verified_secret_misc_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000065,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_misc.rs",
+          "line": 11,
+          "function": "apply_synthetic_oracle_verified_secret_misc_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000066,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000067,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000068,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_fallback.rs",
+          "line": 56,
+          "function": "apply_card_effect_fallback",
+          "kind": "fallback"
+        }
+      ]
+    },
+    {
+      "baseId": 4000069,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000070,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000071,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_dream_mirage_pilot.rs",
+          "line": 7,
+          "function": "apply_synthetic_oracle_dream_mirage_pilot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000072,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000073,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000074,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_direct.rs",
+          "line": 6,
+          "function": "apply_dream_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000075,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000076,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000078,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000079,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000080,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_fate.rs",
+          "line": 8,
+          "function": "apply_dream_fate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000081,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000082,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000083,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified.rs",
+          "line": 8,
+          "function": "apply_synthetic_oracle_verified_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000084,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000085,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000086,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_dream_mirage_pilot.rs",
+          "line": 7,
+          "function": "apply_synthetic_oracle_dream_mirage_pilot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000087,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000088,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000089,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000090,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000091,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000092,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000093,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000094,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000095,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000096,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000097,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000098,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_extreme_remaining.rs",
+          "line": 7,
+          "function": "apply_synthetic_oracle_verified_secret_extreme_remaining_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000099,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified.rs",
+          "line": 8,
+          "function": "apply_synthetic_oracle_verified_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000100,
+      "routes": [
+        {
+          "path": "src/replay/hexagram_cards.rs",
+          "line": 8,
+          "function": "apply_hexagram_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 4000101,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 5000001,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 5000002,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 5000003,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 5000004,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 5000005,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 5000006,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 5000007,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 5000008,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 5000009,
+      "routes": [
+        {
+          "path": "src/replay/mechanic_cards_extra.rs",
+          "line": 6,
+          "function": "apply_mechanic_card_effect_extra",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 5000010,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 5000011,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 5000012,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 5000013,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 5000014,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 5000015,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 6000003,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 6000004,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 6000005,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 6000006,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 6000007,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 6000008,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 6000011,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 6000012,
+      "routes": [
+        {
+          "path": "src/replay/cards_misc.rs",
+          "line": 6,
+          "function": "apply_card_effect_misc",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 6000013,
+      "routes": [
+        {
+          "path": "src/replay/mechanic_cards_extra.rs",
+          "line": 6,
+          "function": "apply_mechanic_card_effect_extra",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 6000014,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000001,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000002,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000003,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000004,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000006,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000007,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000008,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000009,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000010,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000011,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000012,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000013,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000014,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000015,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000016,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000017,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000018,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000019,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000020,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000021,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000022,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000023,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000024,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000025,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000026,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000027,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000028,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000029,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000030,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000031,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000032,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000033,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000034,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000035,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000036,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000037,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000038,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000039,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000040,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000041,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000042,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000043,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000044,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000045,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_misc.rs",
+          "line": 11,
+          "function": "apply_synthetic_oracle_verified_secret_misc_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000046,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000047,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000048,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000049,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_misc.rs",
+          "line": 11,
+          "function": "apply_synthetic_oracle_verified_secret_misc_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000050,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000051,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_misc.rs",
+          "line": 11,
+          "function": "apply_synthetic_oracle_verified_secret_misc_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000052,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000053,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000054,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000056,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000057,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000058,
+      "routes": [
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000059,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000060,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000061,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000062,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000063,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000064,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_misc.rs",
+          "line": 11,
+          "function": "apply_synthetic_oracle_verified_secret_misc_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000065,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        },
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000066,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000067,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000068,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000069,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000070,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000071,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000072,
+      "routes": [
+        {
+          "path": "src/replay/elements_late.rs",
+          "line": 41,
+          "function": "apply_element_card_effect_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000073,
+      "routes": [
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000074,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000075,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000076,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000077,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000078,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000079,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000080,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000081,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000082,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000083,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000084,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000085,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_direct.rs",
+          "line": 6,
+          "function": "apply_dream_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000086,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000087,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000088,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_dream_mirage_pilot.rs",
+          "line": 7,
+          "function": "apply_synthetic_oracle_dream_mirage_pilot_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000089,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000090,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000091,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage_direct.rs",
+          "line": 6,
+          "function": "apply_dream_mirage_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000093,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        },
+        {
+          "path": "src/replay/cards_mirage_ronghui.rs",
+          "line": 630,
+          "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000094,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000095,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy_elements.rs",
+          "line": 8,
+          "function": "apply_fate_strategy_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000096,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy_elements.rs",
+          "line": 8,
+          "function": "apply_fate_strategy_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000097,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy_elements.rs",
+          "line": 8,
+          "function": "apply_fate_strategy_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000098,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy_elements.rs",
+          "line": 8,
+          "function": "apply_fate_strategy_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000099,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy_elements.rs",
+          "line": 8,
+          "function": "apply_fate_strategy_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000100,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy_elements.rs",
+          "line": 8,
+          "function": "apply_fate_strategy_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000101,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy_elements.rs",
+          "line": 8,
+          "function": "apply_fate_strategy_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000103,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_direct.rs",
+          "line": 6,
+          "function": "apply_dream_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000104,
+      "routes": [
+        {
+          "path": "src/replay/elements.rs",
+          "line": 516,
+          "function": "apply_element_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000105,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_extreme_remaining.rs",
+          "line": 7,
+          "function": "apply_synthetic_oracle_verified_secret_extreme_remaining_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000107,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 7000108,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 8000001,
+      "routes": [
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 8000002,
+      "routes": [
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 8000003,
+      "routes": [
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 8000004,
+      "routes": [
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 8000005,
+      "routes": [
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 8000006,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        },
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 8000007,
+      "routes": [
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 8000008,
+      "routes": [
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 8000009,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        },
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 8000010,
+      "routes": [
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 8000011,
+      "routes": [
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 8000012,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 8000013,
+      "routes": [
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 8000014,
+      "routes": [
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 8000016,
+      "routes": [
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 9000005,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 9000009,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 9000011,
+      "routes": [
+        {
+          "path": "src/replay/mechanic_cards_extra.rs",
+          "line": 6,
+          "function": "apply_mechanic_card_effect_extra",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 9000013,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 9000017,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 9000018,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 9000019,
+      "routes": [
+        {
+          "path": "src/replay/mechanic_cards_extra.rs",
+          "line": 6,
+          "function": "apply_mechanic_card_effect_extra",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 9000020,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 9000026,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_full_scope_candidates.rs",
+          "line": 13,
+          "function": "apply_synthetic_full_scope_candidate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 9000027,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000001,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000002,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000003,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000004,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000005,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000006,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000007,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000008,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000009,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000010,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000011,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000012,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000013,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000014,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000015,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000016,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000017,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000018,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000019,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000020,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000021,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000022,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000023,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000024,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000025,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000026,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000027,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000028,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000030,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000031,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000032,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000033,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000034,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000036,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000037,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000038,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000039,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000040,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000041,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000042,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000043,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000044,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000045,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000046,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000047,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000048,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000050,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000051,
+      "routes": [
+        {
+          "path": "src/replay/mechanic_cards_extra.rs",
+          "line": 6,
+          "function": "apply_mechanic_card_effect_extra",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000052,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000053,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_misc.rs",
+          "line": 11,
+          "function": "apply_synthetic_oracle_verified_secret_misc_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000054,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000055,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000056,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000057,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000060,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000061,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000062,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified.rs",
+          "line": 8,
+          "function": "apply_synthetic_oracle_verified_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000064,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000065,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_extreme_remaining.rs",
+          "line": 7,
+          "function": "apply_synthetic_oracle_verified_secret_extreme_remaining_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000066,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_extreme_remaining.rs",
+          "line": 7,
+          "function": "apply_synthetic_oracle_verified_secret_extreme_remaining_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000067,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000068,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000069,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000070,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_direct.rs",
+          "line": 6,
+          "function": "apply_dream_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000071,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000072,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_fate.rs",
+          "line": 8,
+          "function": "apply_dream_fate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000073,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_direct.rs",
+          "line": 6,
+          "function": "apply_dream_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000074,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_direct.rs",
+          "line": 6,
+          "function": "apply_dream_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000075,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_fate.rs",
+          "line": 8,
+          "function": "apply_dream_fate_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000076,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000077,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000078,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000079,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_direct.rs",
+          "line": 6,
+          "function": "apply_dream_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000080,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000081,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000082,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000083,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000084,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000085,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000086,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_direct.rs",
+          "line": 6,
+          "function": "apply_dream_direct_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000087,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000088,
+      "routes": [
+        {
+          "path": "src/replay/cards_dream_mirage.rs",
+          "line": 318,
+          "function": "apply_synthetic_oracle_dream_mirage_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000089,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000090,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000091,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000092,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000093,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000094,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000095,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000096,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000097,
+      "routes": [
+        {
+          "path": "src/replay/fate_strategy.rs",
+          "line": 88,
+          "function": "apply_fate_strategy_main_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000098,
+      "routes": [
+        {
+          "path": "src/replay/cards_synthetic_oracle_verified_secret_extreme_remaining.rs",
+          "line": 7,
+          "function": "apply_synthetic_oracle_verified_secret_extreme_remaining_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000099,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000100,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 10000101,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000001,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000003,
+      "routes": [
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000004,
+      "routes": [
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000005,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000007,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000008,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000011,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000012,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000013,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000014,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000018,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000019,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000020,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000021,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 9,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000022,
+      "routes": [
+        {
+          "path": "src/replay/formations.rs",
+          "line": 37,
+          "function": "apply_formation_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000023,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000024,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000025,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 11000026,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000100,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000101,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000102,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000103,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000104,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000105,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000106,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_late.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_late",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000107,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000108,
+      "routes": [
+        {
+          "path": "src/replay/cards_misc.rs",
+          "line": 6,
+          "function": "apply_card_effect_misc",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000109,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000110,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000111,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000112,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000113,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000114,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000200,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000201,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000202,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000203,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000204,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000205,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000206,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000207,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000208,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000209,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000210,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000211,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000212,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000213,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000214,
+      "routes": [
+        {
+          "path": "src/replay/cards_missing.rs",
+          "line": 13,
+          "function": "apply_card_effect_missing",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000215,
+      "routes": [
+        {
+          "path": "src/replay/body.rs",
+          "line": 20,
+          "function": "apply_body_card_effect",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
+      "baseId": 99000216,
+      "routes": [
+        {
+          "path": "src/replay/chance_cards.rs",
+          "line": 7,
+          "function": "apply_chance_card_effect",
+          "kind": "typed"
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "handlerRoutes": 760,
+    "routedCards": 755
+  }
+}

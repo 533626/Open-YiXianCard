@@ -1,0 +1,239 @@
+.talent-row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 4px;
+  flex: 0 0 auto;
+  margin: 2px 0 3px;
+}
+
+.player-build-topline .talent-row {
+  margin: 0;
+}
+
+.combined-page .talent-row {
+  gap: 3px;
+  margin: 1px 0 2px;
+}
+
+.talent-slot {
+  position: relative;
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-left-width: 3px;
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 48%),
+    var(--bg-elevated);
+  display: flex;
+  align-items: center;
+  padding: 8px 7px 6px 18px;
+  overflow: hidden;
+  text-align: left;
+}
+
+.combined-page .talent-slot {
+  min-height: 24px;
+  padding: 3px 4px 2px 14px;
+}
+
+.talent-slot.exclusive {
+  border-left-color: #e94560;
+}
+
+.talent-slot.sect {
+  border-left-color: #4fc3f7;
+}
+
+.talent-slot.common {
+  border-left-color: #6a7085;
+}
+
+.talent-slot.empty .talent-slot-name {
+  display: none;
+}
+
+.talent-slot.locked-by-level {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.talent-slot.locked {
+  border-style: dashed;
+  border-color: rgba(201, 168, 76, 0.35);
+  border-left-color: var(--accent-bright);
+  background: var(--accent-soft);
+  cursor: default;
+}
+
+.talent-slot.locked .talent-slot-name {
+  color: var(--accent-bright);
+}
+
+.locked-talent-rank {
+  flex: 0 0 auto;
+  display: inline-grid;
+  grid-template-columns: 18px 18px 18px;
+  align-items: stretch;
+  gap: 2px;
+  margin-left: 4px;
+}
+
+.locked-talent-rank button {
+  min-width: 0;
+  min-height: 18px;
+  padding: 0;
+  font-size: var(--fs-2xs);
+  line-height: 1;
+}
+
+.locked-talent-rank b {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 18px;
+  border: 1px solid rgba(201, 168, 76, 0.32);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--accent-bright);
+  font-size: var(--fs-2xs);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.talent-slot.editing {
+  border-color: var(--accent-bright);
+  border-left-color: var(--accent-bright);
+  background: var(--accent-soft);
+  box-shadow:
+    inset 0 0 0 1px rgba(201, 168, 76, 0.35),
+    0 0 0 1px rgba(201, 168, 76, 0.18);
+}
+
+.talent-slot .slot-badge {
+  position: absolute;
+  top: 5px;
+  left: 6px;
+  font-size: var(--fs-2xs);
+  line-height: 1;
+  color: rgba(224, 228, 240, 0.46);
+  font-weight: 700;
+}
+
+.talent-slot-name {
+  min-width: 0;
+  flex: 1 1 auto;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.season-fate-strip {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 4px;
+  align-items: stretch;
+  min-height: 28px;
+  flex: 0 0 auto;
+  margin: 1px 0 0;
+}
+
+.player-build-topline .season-fate-strip {
+  margin: 0;
+}
+
+.combined-page .season-fate-strip {
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 24px;
+}
+
+.combined-page .season-fate-chips {
+  display: none;
+}
+
+.season-fate-open {
+  min-width: 0;
+  min-height: 28px;
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 7px;
+  border: 1px solid var(--line);
+  border-left: 3px solid #9b8cff;
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(180deg, rgba(155, 140, 255, 0.08), transparent 52%),
+    var(--bg-elevated);
+  text-align: left;
+}
+
+.combined-page .season-fate-open {
+  min-height: 24px;
+  padding: 3px 5px;
+}
+
+.season-fate-strip.editing .season-fate-open {
+  border-color: var(--accent-bright);
+  border-left-color: var(--accent-bright);
+  background: var(--accent-soft);
+}
+
+.season-fate-icon {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #9b8cff;
+  box-shadow: 0 0 12px rgba(155, 140, 255, 0.38);
+}
+
+.season-fate-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-sm);
+  font-weight: 800;
+}
+
+.season-fate-count {
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  font-weight: 700;
+}
+
+.season-fate-chips {
+  min-width: 0;
+  display: flex;
+  align-items: stretch;
+  gap: 5px;
+  overflow: hidden;
+}
+
+.season-fate-chip,
+.season-fate-empty {
+  min-width: 0;
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: rgba(10, 16, 32, 0.66);
+  padding: 0 9px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.season-fate-chip {
+  color: var(--text);
+  cursor: pointer;
+}
+
+.season-fate-empty {
+  color: var(--muted);
+  border-style: dashed;
+}

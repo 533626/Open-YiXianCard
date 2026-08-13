@@ -1,0 +1,27 @@
+{
+  "provenance": "Derived from original TalentConfig evidence for UI pre-battle derived stats; values mirror the previous src/ui/derived-state.ts tables.",
+  "maxHpTalentGains": {
+    "1": 5,
+    "10001": 7,
+    "20001": 10,
+    "30001": 12,
+    "59": 6,
+    "10059": 9,
+    "20059": 13,
+    "30059": 17
+  },
+  "physiqueLimitTalentGains": {
+    "146": 5,
+    "10146": 6,
+    "20146": 8,
+    "30146": 12,
+    "171": 3
+  },
+  "initialPhysiqueTalentGains": {
+    "146": 2,
+    "10146": 3,
+    "20146": 4,
+    "30146": 8,
+    "171": 3
+  }
+}
