@@ -472,9 +472,6 @@ impl ReplayState {
                 }
             }
         }
-        if used_hexagram {
-            return max;
-        }
         if !self.random_fallback_tape.is_empty() {
             let fallback = self.random_fallback_tape.remove(0);
             if fallback < min || fallback > max {
@@ -550,9 +547,6 @@ impl ReplayState {
                     }
                 }
             }
-        }
-        if used_hexagram {
-            return max;
         }
         if !self.random_fallback_tape.is_empty() {
             let fallback = self.random_fallback_tape.remove(0);

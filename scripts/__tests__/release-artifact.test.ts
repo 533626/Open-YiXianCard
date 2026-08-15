@@ -27,6 +27,8 @@ import {
 import {
   auditReleaseArtifact,
   contentHashedAssetName,
+  MAX_PUBLIC_ARTIFACT_BYTES,
+  publicArtifactSizeFailure,
   RELEASE_CLOUDFLARE_HEADERS,
   sha256Bytes,
   writeReleaseManifest,
@@ -48,6 +50,12 @@ afterEach(async () => {
 });
 
 describe("release artifact allowlist", () => {
+  test("rejects an artifact above the 100 MB ceiling", () => {
+    expect(publicArtifactSizeFailure([{ bytes: MAX_PUBLIC_ARTIFACT_BYTES + 1 }]))
+      .toContain("exceeding");
+    expect(publicArtifactSizeFailure([{ bytes: MAX_PUBLIC_ARTIFACT_BYTES }])).toBeNull();
+  });
+
   test("accepts the exact clean static artifact shape", async () => {
     const root = await createCleanArtifact();
     const audit = await auditReleaseArtifact(root);
@@ -58,6 +66,7 @@ describe("release artifact allowlist", () => {
       remoteFetch: false,
     });
     expect(audit.files).toHaveLength(11);
+    expect(audit.totalBytes).toBeLessThanOrEqual(MAX_PUBLIC_ARTIFACT_BYTES);
     expect(audit.manifest.inventory.files).toHaveLength(10);
     expect(RELEASE_CLOUDFLARE_HEADERS).toContain("worker-src 'self'");
     expect(RELEASE_CLOUDFLARE_HEADERS).toContain("connect-src 'self'");

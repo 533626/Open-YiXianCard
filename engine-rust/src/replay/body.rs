@@ -153,9 +153,15 @@ impl ReplayState {
                 self.apply_configured_defense(actor_side, card);
                 self.actor_mut(actor_side).formations.hard_branch_bamboo +=
                     other_param(card, 0).max(0);
-                self.actor_mut(actor_side)
-                    .formations
-                    .hard_branch_bamboo_defense_per_damage = other_param(card, 1).max(0);
+                // 原版：Card_9000027.cs 只在 otherParams[0] > 0 时安装
+                // YingZhiZhu；回合结束伤害除数固定读 9020027 配置
+                // otherParams[1]=4（BattleCharacter.cs:6080），非持续变体
+                // （9000027/9010027）不得把已安装的除数清零。
+                if other_param(card, 1) > 0 {
+                    self.actor_mut(actor_side)
+                        .formations
+                        .hard_branch_bamboo_defense_per_damage = other_param(card, 1).max(0);
+                }
             }
             377 => {
                 // 原版 Card_377.cs:81-83 水灵激活时读持有者持久

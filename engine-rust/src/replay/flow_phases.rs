@@ -10,11 +10,11 @@
 pub(in crate::replay) enum TurnStartPhase {
     ResetActionAgain,
     ClearTurnHpGainedLedgers,
+    MarkSpiritTurtleFootwork,
     MirageRonghuiTurnStart,
     RonghuiTurnStart,
     DreamMirageDurationTicks,
     ResetTurnStartFlags,
-    MarkSpiritTurtleFootwork,
     BuffDurationTicks,
     ResetFateTurnFlags,
     VermilionBirdTearGuard,
@@ -26,6 +26,7 @@ pub(in crate::replay) enum TurnStartPhase {
     WoodSpiritAllGrowth,
     MysticHeartRecovery,
     TurnStartHealing,
+    DreamGreatReturnPill,
     TurnStartChanceHooks,
     NextTurnDefense,
     InternalInjuryTick,
@@ -34,14 +35,16 @@ pub(in crate::replay) enum TurnStartPhase {
     DreamMirageTurnStartLate,
 }
 
-pub(in crate::replay) const TURN_START_PHASES: [TurnStartPhase; 24] = [
+pub(in crate::replay) const TURN_START_PHASES: [TurnStartPhase; 25] = [
     TurnStartPhase::ResetActionAgain,
     TurnStartPhase::ClearTurnHpGainedLedgers,
+    // BattleCharacter.OnTurnStarted marks the opponent's 灵玄迷踪步 before
+    // any later turn-start hook can make that opponent lose HP.
+    TurnStartPhase::MarkSpiritTurtleFootwork,
     TurnStartPhase::MirageRonghuiTurnStart,
     TurnStartPhase::RonghuiTurnStart,
     TurnStartPhase::DreamMirageDurationTicks,
     TurnStartPhase::ResetTurnStartFlags,
-    TurnStartPhase::MarkSpiritTurtleFootwork,
     TurnStartPhase::BuffDurationTicks,
     TurnStartPhase::ResetFateTurnFlags,
     TurnStartPhase::VermilionBirdTearGuard,
@@ -53,6 +56,7 @@ pub(in crate::replay) const TURN_START_PHASES: [TurnStartPhase; 24] = [
     TurnStartPhase::WoodSpiritAllGrowth,
     TurnStartPhase::MysticHeartRecovery,
     TurnStartPhase::TurnStartHealing,
+    TurnStartPhase::DreamGreatReturnPill,
     TurnStartPhase::TurnStartChanceHooks,
     TurnStartPhase::NextTurnDefense,
     TurnStartPhase::InternalInjuryTick,
@@ -70,8 +74,8 @@ pub(in crate::replay) enum TurnEndPhase {
     FateStrategy84SwordIntent,
     Ronghui,
     MirageRonghui,
-    DreamBeforeWater,
     Formations,
+    DreamBeforeWater,
     WaterMomentum,
     TemporaryResources,
     HardBranchBamboo,
@@ -92,8 +96,10 @@ pub(in crate::replay) const TURN_END_PHASES: [TurnEndPhase; 19] = [
     TurnEndPhase::FateStrategy84SwordIntent,
     TurnEndPhase::Ronghui,
     TurnEndPhase::MirageRonghui,
-    TurnEndPhase::DreamBeforeWater,
     TurnEndPhase::Formations,
+    // HuiChunQu (IL_0b61) updates the turn healing ledger before MengKuangEr
+    // (IL_18c6) tests it; both still precede ordinary water damage (IL_1cd0).
+    TurnEndPhase::DreamBeforeWater,
     TurnEndPhase::WaterMomentum,
     TurnEndPhase::TemporaryResources,
     TurnEndPhase::HardBranchBamboo,

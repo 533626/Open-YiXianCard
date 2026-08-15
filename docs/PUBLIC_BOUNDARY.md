@@ -22,6 +22,8 @@ The following remain private engineering material on `main`:
 
 The checked-in [`public-export-policy.json`](../public-export-policy.json) is the authoritative public projection allowlist. `bun run export:public -- --target /tmp/public-export` creates the export from a clean commit and validates that private paths are absent. `PRIVATE_ENGINEERING_EXTRACTION.json` remains only as a compatibility manifest for older companion backups; daily development does not require a second source directory.
 
+Both public deliverables are fail-closed at 100,000,000 bytes: `audit.maxExportBytes` limits the complete source projection (including `public-export-manifest.json`), while `auditReleaseArtifact` applies the same ceiling to the complete static artifact (including `release-manifest.json`). Dependency caches and `.git` metadata are not public deliverables and are outside these byte counts.
+
 ## Corpus policy
 
 Replay-derived fixtures are not covered by the project MIT distribution. They must be retained in a private evidence store, not silently deleted, copied into public history, or bundled into `dist/`. Rust corpus-dependent tests are explicitly gated behind the non-default `private-fixtures` feature and are maintained only in the private companion. See [`CORPUS_POLICY.md`](../CORPUS_POLICY.md) and [`NOTICE`](../NOTICE).

@@ -74,7 +74,7 @@ impl ReplayState {
                 }
             }
             18 => {
-                let bonus = if self.is_element_activated(actor_side, Element::Metal) {
+                let bonus = if self.check_wu_xing(actor_side, Element::Metal) {
                     self.actor_mut(actor_side).elements.no_sharpness_for_attack += 1;
                     self.actor(actor_side).sword.sharpness.max(0)
                 } else {
@@ -84,7 +84,7 @@ impl ReplayState {
             }
             7_000_015 => {
                 attacked |= self.attack_by_config(actor_side, card, 0, slot);
-                if self.is_element_activated(actor_side, Element::Metal) {
+                if self.check_wu_xing(actor_side, Element::Metal) {
                     self.actor_mut(actor_side).turn.ignore_defense_attacks +=
                         other_param(card, 0).max(0);
                 }
@@ -99,14 +99,16 @@ impl ReplayState {
                     self.modify_actor_max_hp(actor_side, hp_gain);
                     self.modify_actor_hp(actor_side, hp_gain, false, false);
                 }
-                if self.is_element_activated(actor_side, Element::Water) {
+                // Card_7000020.cs:97 CheckWuXing(JiHuoShuiLing)（卡组含
+                // 7030077|7040077 五行刺恒真），不是仅看水灵激活。
+                if self.check_wu_xing(actor_side, Element::Water) {
                     self.actor_mut(actor_side).elements.water_stealth +=
                         other_param(card, 1).max(0);
                 }
             }
             7_000_021 => {
                 self.apply_configured_anima(actor_side, card);
-                if self.is_element_activated(actor_side, Element::Fire) {
+                if self.check_wu_xing(actor_side, Element::Fire) {
                     let amount = other_param(card, 0).max(0);
                     if amount > 0 {
                         self.modify_target_hp(actor_side, -amount);
@@ -116,7 +118,7 @@ impl ReplayState {
             }
             7_000_025 => {
                 self.apply_configured_defense(actor_side, card);
-                let bonus = if self.is_element_activated(actor_side, Element::Metal) {
+                let bonus = if self.check_wu_xing(actor_side, Element::Metal) {
                     let divisor = other_param(card, 1).max(1);
                     self.actor(actor_side).core.defense / divisor
                 } else {
@@ -129,13 +131,13 @@ impl ReplayState {
                 // ActualDamage(302)（残留 + 本卡）→ 锋锐 +302/2。
                 attacked |= self.attack_by_config(actor_side, card, 0, slot);
                 let actual_damage = self.actor(actor_side).turn.actual_damage_carry;
-                if self.is_element_activated(actor_side, Element::Metal) && actual_damage > 0 {
+                if self.check_wu_xing(actor_side, Element::Metal) && actual_damage > 0 {
                     self.gain_sharpness(actor_side, actual_damage / 2);
                 }
             }
             7_000_032 => {
                 self.gain_attack_bonus(actor_side, other_param(card, 0).max(0));
-                if self.is_element_activated(actor_side, Element::Fire) {
+                if self.check_wu_xing(actor_side, Element::Fire) {
                     let amount =
                         other_param(card, 1).max(0) + self.actor(actor_side).core.attack_bonus;
                     if amount > 0 {
@@ -177,11 +179,11 @@ impl ReplayState {
                 }
             }
             7_000_050 => {
-                if self.is_element_activated(actor_side, Element::Metal) {
+                if self.check_wu_xing(actor_side, Element::Metal) {
                     self.gain_sharpness(actor_side, other_param(card, 0).max(0));
                 }
                 let sharpness = self.actor(actor_side).sword.sharpness.max(0);
-                if self.is_element_activated(actor_side, Element::Water) && sharpness > 0 {
+                if self.check_wu_xing(actor_side, Element::Water) && sharpness > 0 {
                     let converted = div_ceil(sharpness, 2);
                     self.actor_mut(actor_side).sword.sharpness =
                         (self.actor(actor_side).sword.sharpness - converted).max(0);
@@ -207,7 +209,7 @@ impl ReplayState {
                 // 读持有者持久 302（残留 + 本卡）。
                 attacked |= self.attack_by_config(actor_side, card, 0, slot);
                 let actual_damage = self.actor(actor_side).turn.actual_damage_carry;
-                if self.is_element_activated(actor_side, Element::Fire) && actual_damage > 0 {
+                if self.check_wu_xing(actor_side, Element::Fire) && actual_damage > 0 {
                     self.modify_target_max_hp(
                         actor_side,
                         -actual_damage * other_param(card, 0).max(0),
@@ -229,7 +231,7 @@ impl ReplayState {
                 }
             }
             7_000_042 => {
-                let active = self.is_element_activated(actor_side, Element::Metal);
+                let active = self.check_wu_xing(actor_side, Element::Metal);
                 if active {
                     self.actor_mut(actor_side).elements.metal_cauldron_drop += 1;
                 }
@@ -245,7 +247,7 @@ impl ReplayState {
             7_000_047 => {
                 // 土灵·韵金：土灵分支先加防，再把当前防御清空并重新获得，
                 // 因而新旧防御都会计入本回合失防；金灵分支随后读取该累计值。
-                if self.is_element_activated(actor_side, Element::Earth) {
+                if self.check_wu_xing(actor_side, Element::Earth) {
                     self.gain_defense(actor_side, other_param(card, 0).max(0));
                     let defense = self.actor(actor_side).core.defense.max(0);
                     if defense > 0 {
@@ -253,7 +255,7 @@ impl ReplayState {
                         self.gain_defense(actor_side, defense);
                     }
                 }
-                if self.is_element_activated(actor_side, Element::Metal) {
+                if self.check_wu_xing(actor_side, Element::Metal) {
                     let divisor = other_param(card, 1).max(1);
                     let sharpness = self.actor(actor_side).turn.lost_defense_count / divisor;
                     if sharpness > 0 {
@@ -263,7 +265,7 @@ impl ReplayState {
             }
             7_000_044 => {
                 self.gain_water_momentum(actor_side, other_param(card, 0).max(0));
-                if self.is_element_activated(actor_side, Element::Water) {
+                if self.check_wu_xing(actor_side, Element::Water) {
                     let target_side = opponent_side(actor_side);
                     self.actor_mut(target_side).status.cannot_act += 1;
                 }
@@ -330,7 +332,9 @@ impl ReplayState {
             }
             7_000_062 => {
                 self.apply_configured_defense(actor_side, card);
-                if self.is_element_activated(actor_side, Element::Earth) {
+                // Card_7000062.cs:97 CheckWuXing(JiHuoTuLing)（卡组含
+                // 7030077|7040077 五行刺恒真），不是仅看土灵激活。
+                if self.check_wu_xing(actor_side, Element::Earth) {
                     self.actor_mut(actor_side).elements.earth_cliff_counter +=
                         other_param(card, 0).max(0);
                 }

@@ -454,6 +454,63 @@ fn wan_shi_ru_yi_opening_reads_downgraded_deck_slot_params() {
 }
 
 #[test]
+fn hard_branch_bamboo_sustain_divisor_survives_plain_variant() {
+    // 原版 Card_9000027.cs 只在 otherParams[0] > 0 时加 YingZhiZhu；
+    // 回合结束伤害除数固定读 9020027 配置 otherParams[1]=4
+    // （BattleCharacter.cs:6080）。非持续变体 9010027 不得把已安装的
+    // 除数清零。锚点：hf-latest-32391000-03b604c4 497310ce2b824e77/
+    // round-15 t3 结束 p1 100→96（p2 防 19，19/4=4）。
+    let mut sustain = card(9_020_027, 9_000_027, "硬枝竹");
+    sustain.defense = Some(8);
+    sustain.other_params = vec![1, 4];
+    let mut plain = card(9_010_027, 9_000_027, "硬枝竹");
+    plain.defense = Some(6);
+    plain.other_params = vec![0];
+    let mut battle = fixture(deck(basic_attack()), vec![sustain, plain]);
+    battle.players.p2.active_slot_count = 2;
+    battle.max_actor_turns = Some(4);
+    let mut state = ReplayState::test_from_fixture(&battle);
+    // p1 回合 1：普通攻击。
+    state.test_play_actor_turn();
+    // p2 回合 1：9020027（防 8，count 1，per 4）→ 回合结束 p1 受 8/4=2。
+    state.test_advance_actor();
+    state.test_play_actor_turn();
+    assert_eq!(state.p1.core.hp, 28);
+    // p1 回合 2：普通攻击（p2 防 8→5）。
+    state.test_advance_actor();
+    state.test_play_actor_turn();
+    // p2 回合 2 开始：防御减半（5→2，BattleCharacter.cs OnTurnStarted
+    // CeilToInt(def*0.5)）；9010027 防 +6 → 8，count 不变；除数保持 4，
+    // 回合结束 p1 受 8/4=2。
+    state.test_advance_actor();
+    state.test_play_actor_turn();
+    assert_eq!(state.p2.core.defense, 8);
+    assert_eq!(state.p1.core.hp, 26); // 30 - 2 - 2；除数被清零则停在 28
+}
+
+#[test]
+fn calamity_opening_damage_reads_current_downgraded_slot_card() {
+    // 原版 TriggerOpening case 11000018（BattleCharacter.cs:11132-11147）
+    // 读 cardItem2 = 牌组格位**当前**卡牌：先手方厄劫缠身已把后手方
+    // 11020018 降级为 11010018 时，后手方开局伤害取 11010018 的
+    // otherParams[1]=9，而非 fixture 原卡 11020018 的 12。
+    // 锚点：hf-latest-32391000-03b604c4 d11b6adfe79418e2/round-17
+    // cp0 p2.hp 96（107-11=96，而非 107-12=95）。
+    let mut calamity_r2 = card(11_020_018, 11_000_018, "厄劫缠身");
+    calamity_r2.other_params = vec![6, 12];
+    let mut calamity_base = card(11_000_018, 11_000_018, "厄劫缠身");
+    calamity_base.other_params = vec![4, 6];
+    let mut battle = fixture(deck(calamity_r2), deck(calamity_base));
+    battle.first_player_side = PlayerSide::P2;
+    let state = ReplayState::test_from_fixture(&battle);
+    // p2 先结算开局：把 p1 格 0 的 11020018 降级为 11010018。
+    assert_eq!(state.p1.deck.slots[0].card.id, 11_010_018);
+    // p1 再结算：目标 p2 格 0 的 11000018（rarity 0，无法降级）→
+    // 造成当前格位卡（11010018）otherParams[1]=9 伤害给 p2。
+    assert_eq!(state.p2.core.hp, 30 - 9);
+}
+
+#[test]
 fn frenzy_stance_turn_end_decay_triggers_passive() {
     // 原版 OnTurnEnded 对 虚弱/破绽/困缚 逐层走 ModifyBuffValue(-1)
     // （BattleCharacter.cs:5686-5695），Negative 分类 delta != 0 触发
@@ -560,11 +617,11 @@ fn water_spring_rain_tide_converts_to_water_momentum_at_turn_start() {
 #[test]
 fn extreme_flying_snow_step_config_matches_build_24610558() {
     let base = original_card_definition_by_id(425).expect("missing 极•飞鸿踏雪");
-    assert_eq!(base.anima, Some(2));
+    assert_eq!(base.anima, Some(3));
     assert_eq!(base.other_params, vec![10, 6]);
     assert_eq!(
         original_card_definition_by_id(10_425).unwrap().anima,
-        Some(3)
+        Some(4)
     );
     assert_eq!(
         original_card_definition_by_id(10_425).unwrap().other_params,
@@ -572,7 +629,7 @@ fn extreme_flying_snow_step_config_matches_build_24610558() {
     );
     assert_eq!(
         original_card_definition_by_id(20_425).unwrap().anima,
-        Some(4)
+        Some(5)
     );
     assert_eq!(
         original_card_definition_by_id(20_425).unwrap().other_params,
@@ -584,6 +641,7 @@ fn extreme_flying_snow_step_config_matches_build_24610558() {
 fn extreme_flying_snow_step_grants_anima_and_agility_without_rear_move() {
     // Card_425.cs: ModifyAnima(anima)、ModifyBuffValue(ShenFa, otherParams[0])、
     // 后招成功才 ModifyHp(otherParams[1])。与卡 12 不同：无 rarity 分支。
+    // 24705509 起 anima=3（24666769 为 2）。
     let step = original_card_definition_by_id(425).expect("missing 极•飞鸿踏雪");
     let mut battle = fixture(deck(step.clone()), deck(basic_attack()));
     battle.players.p1.initial_anima = 3;
@@ -592,7 +650,7 @@ fn extreme_flying_snow_step_grants_anima_and_agility_without_rear_move() {
     // 走牌体直调路径（不做再次行动结算），直接观察身法 +10。
     state.test_apply_card_effect(PlayerSide::P1, &step, 0);
 
-    assert_eq!(state.p1.core.anima, 5); // 灵气+2
+    assert_eq!(state.p1.core.anima, 6); // 灵气+3
     assert_eq!(state.p1.turn.agility, 10); // 身法+10
     assert_eq!(state.p1.core.hp, 30); // 无后招 → 不回血
 }
@@ -608,7 +666,7 @@ fn extreme_flying_snow_step_transaction_grants_agility_action_again() {
 
     assert!(action_again); // 身法再次行动
     assert_eq!(state.p1.turn.agility, 0); // 身法 10 被再次行动消耗
-    assert_eq!(state.p1.core.anima, 2);
+    assert_eq!(state.p1.core.anima, 3);
 }
 
 #[test]
@@ -622,7 +680,7 @@ fn extreme_flying_snow_step_heals_on_rear_move() {
 
     state.test_apply_card_effect(PlayerSide::P1, &step, 0);
 
-    assert_eq!(state.p1.core.anima, 3);
+    assert_eq!(state.p1.core.anima, 4);
     assert_eq!(state.p1.turn.agility, 10);
     assert_eq!(state.p1.core.hp, 26); // 20 + 后招回血 6
 }
@@ -806,14 +864,14 @@ fn extreme_frenzy_sword_first_form_adds_kuang_jian_count_per_use() {
 #[test]
 fn extreme_ling_xi_sword_formation_config_matches_build_24610558() {
     let base = original_card_definition_by_id(1000100).expect("missing 极•灵犀剑阵");
-    assert_eq!(base.defense, Some(2));
+    assert_eq!(base.defense, Some(4));
     assert_eq!(base.other_params, vec![8]);
     assert_eq!(base.action_again, Some(true));
     let rare = original_card_definition_by_id(1010100).unwrap();
-    assert_eq!(rare.defense, Some(6));
+    assert_eq!(rare.defense, Some(8));
     assert_eq!(rare.other_params, vec![12]);
     let epic = original_card_definition_by_id(1020100).unwrap();
-    assert_eq!(epic.defense, Some(10));
+    assert_eq!(epic.defense, Some(12));
     assert_eq!(epic.other_params, vec![16]);
 }
 
@@ -821,6 +879,7 @@ fn extreme_ling_xi_sword_formation_config_matches_build_24610558() {
 fn extreme_ling_xi_sword_formation_converts_capped_sword_intent_to_anima() {
     // Card_1000100.cs: def>0 → ModifyDef(def)；num3 = min(剑意, otherParams[0])，
     // 先 ModifyBuffValue(JianYi, -num3) 再 ModifyAnima(num3)。
+    // 24705509 起 def=4（24666769 为 2）。
     let formation = original_card_definition_by_id(1000100).expect("missing 极•灵犀剑阵");
     let mut battle = fixture(deck(formation.clone()), deck(basic_attack()));
     battle.players.p1.initial_anima = 1; // 满足费用
@@ -829,7 +888,7 @@ fn extreme_ling_xi_sword_formation_converts_capped_sword_intent_to_anima() {
 
     state.test_apply_card_effect(PlayerSide::P1, &formation, 0);
 
-    assert_eq!(state.p1.core.defense, 2); // 防+2
+    assert_eq!(state.p1.core.defense, 4); // 防+4
     assert_eq!(state.p1.core.anima, 6); // 灵气 1 + 剑意 5
     assert_eq!(state.p1.sword.sword_intent, 0);
 

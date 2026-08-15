@@ -56,13 +56,16 @@ impl ReplayState {
                 Some(attacked)
             }
             4_000_005 => {
-                self.apply_configured_anima(actor_side, card);
+                // The random attack resolves before the printed anima gain.
+                // Otherwise 灵卦术-created hexagram from this card's own anima
+                // is immediately consumed by the same random roll.
                 let attack = self.consume_random_range(
                     actor_side,
                     card.attack.unwrap_or(0),
                     card.random_attack.unwrap_or(card.attack.unwrap_or(0)),
                 );
                 self.apply_attack(actor_side, attack, slot);
+                self.apply_configured_anima(actor_side, card);
                 Some(attack > 0)
             }
             4_000_006 => {

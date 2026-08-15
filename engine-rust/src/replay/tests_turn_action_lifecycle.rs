@@ -919,6 +919,40 @@ fn internal_injury_ticks_after_turn_start_healing() {
 }
 
 #[test]
+fn dream_great_return_pill_compares_hp_before_internal_injury_tick() {
+    // 原版 OnTurnStarted：常规恢复 IL_12ef → 梦•大还丹 IL_1448 →
+    // 内伤 IL_1a4c。恢复后我方 98 > 对方 95，因此大还丹不回血；
+    // 内伤结算后才降到 85，不能倒过来触发大还丹。
+    let fixture = minimal_fixture(
+        filler_cards(basic_attack_test_card()),
+        filler_cards(basic_attack_test_card()),
+        FixtureExpected {
+            winner_side: PlayerSide::P1,
+            actor_turn_count: 1,
+            hp_delta_p1_minus_p2: 0,
+            final_hp: None,
+        },
+    );
+    let mut state = ReplayState::test_from_fixture(&fixture);
+    state.test_configure_p1(|player| {
+        player.core.hp = 90;
+        player.core.max_hp = 100;
+        player.status.recovery = 8;
+        player.status.internal_injury = 13;
+        player.dream_mirage.dream_great_return_pill = 8;
+    });
+    state.test_configure_p2(|player| {
+        player.core.hp = 95;
+        player.core.max_hp = 100;
+    });
+
+    state.test_play_actor_turn();
+
+    assert_eq!(state.p1.core.hp, 85);
+    assert_eq!(state.p1.core.max_hp, 100);
+}
+
+#[test]
 fn turn_start_phase_table_keeps_documented_order() {
     use super::flow::{TurnStartPhase, TURN_START_PHASES};
     let index = |phase: TurnStartPhase| {
@@ -936,9 +970,17 @@ fn turn_start_phase_table_keeps_documented_order() {
     assert!(index(TurnStartPhase::NextTurnDefense) < index(TurnStartPhase::InternalInjuryTick));
     // 回合开始治疗先于内伤 tick：治疗先封顶、内伤再扣血。
     assert!(index(TurnStartPhase::TurnStartHealing) < index(TurnStartPhase::InternalInjuryTick));
+    assert!(index(TurnStartPhase::TurnStartHealing) < index(TurnStartPhase::DreamGreatReturnPill));
+    assert!(
+        index(TurnStartPhase::DreamGreatReturnPill) < index(TurnStartPhase::InternalInjuryTick)
+    );
     // 水月剑阵快照（MarkSpiritTurtleFootwork）必须先于 buff duration tick
     // （BuffDurationTicks，其会递减阵层数本身）再进入防御衰减（DefenseDecay，
     // 读的是快照）。快照驱动局部默认 0 = “衰减生效”，乱序会静默改变行为。
+    assert!(
+        index(TurnStartPhase::MarkSpiritTurtleFootwork)
+            < index(TurnStartPhase::MirageRonghuiTurnStart)
+    );
     assert!(
         index(TurnStartPhase::MarkSpiritTurtleFootwork) < index(TurnStartPhase::BuffDurationTicks)
     );

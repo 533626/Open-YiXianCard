@@ -879,3 +879,21 @@ fn double_ghost_knock_does_not_inherit_beng_quan_han() {
     assert_eq!(state.p1.beng.momentum, 0);
     assert_eq!(state.p1.beng.beng_quan_han, 3);
 }
+
+#[test]
+fn white_crane_random_roll_precedes_its_anima_and_ling_gua_reward() {
+    let mut white_crane = custom_card(4_020_005, 4_000_005, "白鹤亮翅");
+    white_crane.anima = Some(3);
+    white_crane.attack = Some(1);
+    white_crane.random_attack = Some(8);
+    let mut state = ReplayState::test_from_fixture(&fixture(
+        one_slot_player(one_slot_deck_with(white_crane)),
+        one_slot_player(one_slot_deck_with(basic_attack())),
+    ));
+    state.p1.astrology.ling_gua_art = 1;
+
+    state.test_execute_one_card(PlayerSide::P1);
+
+    assert_eq!(state.p1.core.anima, 3);
+    assert_eq!(state.p1.astrology.hexagram, 3);
+}

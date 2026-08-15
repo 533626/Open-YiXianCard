@@ -11,7 +11,7 @@ Open-YiXianCard 是一个非官方、本地优先的《弈仙牌》单场战斗�
 - Rust 是规则权威。TypeScript 是兼容档案,必须跟随 Rust,不能作为新规则的证据。
 - 不支持或证据不足的机制 fail closed。近似行为不会被表述为精确复现。
 - 精确回放检查完整保留 `winner`、`actorTurn`、`hpDelta` 契约;本项目不会为掩盖偏差而放宽这些断言。
-- 兼容性绑定到当前原作 Steam build **24666769**（见 `research/original-game/EVIDENCE_MANIFEST.json` 的机器可读证据快照）。更新的游戏 build 可能需要新的准入与兼容性审校。
+- 兼容性绑定到当前原作 Steam build **24705509**（见 `research/original-game/EVIDENCE_MANIFEST.json` 的机器可读证据快照）。更新的游戏 build 可能需要新的准入与兼容性审校。
 
 ## 浏览器行为
 

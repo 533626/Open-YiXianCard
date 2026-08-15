@@ -12,23 +12,6 @@ use super::ReplayState;
 use crate::fixture::{BattleFixture, FixturePlayer};
 use crate::model::{CardDefinition, PlayerSide};
 
-fn star_erosion_from_talents(talents: &[i64]) -> i64 {
-    let mut amount = 0;
-    if talents.contains(&103) {
-        amount += 1;
-    }
-    if talents.contains(&10_103) {
-        amount += 1;
-    }
-    if talents.contains(&20_103) {
-        amount += 2;
-    }
-    if talents.contains(&30_103) {
-        amount += 3;
-    }
-    amount
-}
-
 fn dark_heart_mark_from_talent(talent: i64) -> Option<(i64, i64)> {
     match talent {
         150 => Some((1, 1)),
@@ -76,22 +59,36 @@ impl ReplayState {
             // 179/FateStrategy 161 adds 冥.  Keep this actor-local mutation in
             // the loop instead of healing both players in a prelude.
             self.apply_battle_start_meditation_healing(player_fixture, actor_side);
-            // 筋骨健壮（talent 176 系，DuanXuanZong）：OnBattleStarted 天赋
-            // switch 的 case 176（BattleCharacter.cs IL_1411）——
-            // ModifyHp(floor(TiPo / otherParams[1]))，采样该天赋在天赋循环
-            // 中执行时的当前体魄。入冥（179）在天赋列表中先于筋骨健壮
-            // （境界 ZhuJi < YuanYing），其 415 疯魔架势体魄增益已入账；
-            // FS 161 的冥 +2 属于命运函数链（晚于整个天赋循环），不参与
-            // 采样。oracle 锚点：hf-latest-32308000-16f9c778
-            // 4e59d5176f512748/round-14 cp0 p2.hp 134（70/7 = 10；构造期
-            // 69/7 = 9 少 1）。各档位除数取 TalentConfig otherParams[1]
-            //（176→10、10176→9、20176→7、30176→6）。
-            for (talent, divisor) in [(176, 10), (10_176, 9), (20_176, 7), (30_176, 6)] {
-                if player_fixture.talents.contains(&talent) {
-                    let gain = self.actor(actor_side).core.physique / divisor;
-                    if gain > 0 {
-                        self.modify_actor_hp(actor_side, gain, false, false);
+            // These two talent families must follow the fixture's original
+            // talent-list order. 储纳灵气 can therefore trigger 风灵锻躯
+            // before a later 筋骨健壮 samples current physique. Grouping all
+            // healthy-bones ranks ahead of all stored-anima ranks loses one HP
+            // at the threshold (HF 6152/aa21/bf90).
+            for talent in &player_fixture.talents {
+                match talent {
+                    13 | 10_013 | 20_013 | 30_013 => {
+                        let amount = match talent {
+                            13 | 10_013 => 1,
+                            20_013 => 2,
+                            30_013 => 3,
+                            _ => unreachable!(),
+                        };
+                        self.gain_anima(actor_side, amount);
                     }
+                    176 | 10_176 | 20_176 | 30_176 => {
+                        let divisor = match talent {
+                            176 => 10,
+                            10_176 => 9,
+                            20_176 => 7,
+                            30_176 => 6,
+                            _ => unreachable!(),
+                        };
+                        let gain = self.actor(actor_side).core.physique / divisor;
+                        if gain > 0 {
+                            self.modify_actor_hp(actor_side, gain, false, false);
+                        }
+                    }
+                    _ => {}
                 }
             }
             // Innate marks are part of this actor's OnBattleStarted opening,
@@ -158,21 +155,6 @@ impl ReplayState {
                     self.modify_actor_hp(actor_side, overflow_healing, false, false);
                 }
             }
-            // 原版 OnBattleStarted 的 `case 13` 分支（BattleCharacter.cs:1124
-            // + 1238）：13/10013/20013/30013 每个天赋单独 ModifyAnima（各自
-            // 计入隐藏 buff 713 加灵气次数），不能合并成一次 +N。oracle 锚点：
-            // mirror-32299000 ec92abefd7642db6/round-18 cp2 p2 713=3
-            // （开局两次 +1 + 天髓诀 +2）vs 引擎合并后 2；水灵斩 377 按
-            // 713+714 计数加攻（10 + 3×9 = 37 vs 引擎 34）。
-            for talent in &player_fixture.talents {
-                let amount = match talent {
-                    13 | 10_013 => 1,
-                    20_013 => 2,
-                    30_013 => 3,
-                    _ => continue,
-                };
-                self.gain_anima(actor_side, amount);
-            }
             if player_fixture.talents.contains(&183)
                 && player_fixture.fate_strategies.contains(&163)
             {
@@ -206,7 +188,6 @@ impl ReplayState {
                     dream_frenzy_sword_zero;
             }
             self.apply_battle_start_divination(actor_side, player_fixture);
-            self.apply_star_erosion_talent(actor_side, player_fixture);
             if player_fixture.talents.contains(&171) {
                 // Talent 171（搏命之勇；BattleCharacter.cs:1180, 1738-1740）
                 // uses the normal ModifyBuffValue path for JiaGong and WaiShang.
@@ -225,24 +206,6 @@ impl ReplayState {
             // +13（27: 111×12/100），引擎原 130 = 106+12+12（27 误采样
             // 177 回血前的 106）；hp 124 vs 123）。
             self.apply_dark_heart_mark_talent(actor_side, player_fixture);
-            if player_fixture.fate_strategies.contains(&326) {
-                // 原版 FateStrategyFunctions.cs:462-465 先写入 YanQi；随后
-                // BattleCharacter.cs:9917-9935 的 ModifyMaxHp 才能让 10008 的
-                // 开局增上限流程触发一次 20% 回复。
-                self.actor_mut(actor_side).fate.yan_qi += 1;
-            }
-            if player_fixture.fate_strategies.contains(&340) {
-                // 乘雁而行（FateStrategyFunctions.cs:487-489，OnBattleStart 内）：
-                // ModifyMaxHp(otherParams[0]=20)。ModifyMaxHp 的 YanQi 检查
-                // （BattleCharacter.cs:9981-9986）随即消耗 326 写入的砚气，
-                // 回 newMaxHp×20/100 生命；Talent64（BattleCharacter.cs:9874-9883）
-                // 在回血时 +1 防御。每回合再次行动 +2 hp 见 action_again.rs
-                // （BattleExecuter.cs:2080-2082）。oracle 锚点：
-                // mirror-32219000-human-01 a6b2ce98f7989074/round-12 cp0
-                // （p1 maxHp 104 = 84+20，hp 104 = 84 + 104×20/100，buffs
-                // {495:20, 629:1, 711:1, 313:20}）、round-15 cp0（maxHp 123）。
-                self.modify_actor_max_hp(actor_side, 20);
-            }
             if player_fixture.fate_strategies.contains(&342) {
                 self.actor_mut(opponent_side(actor_side))
                     .status
@@ -382,6 +345,16 @@ impl ReplayState {
                     self.modify_actor_max_hp(actor_side, hp_gain);
                     self.modify_actor_hp(actor_side, hp_gain, false, false);
                 }
+            }
+            // 徐如林's opening max-HP transaction precedes 雁栖. It must not
+            // consume the once-per-battle YanQi charge; a later 乘雁而行 does.
+            // HF b1bb round-10 retains buff 744 through checkpoint 7 and
+            // consumes it only when 犀牛望月 first raises max HP.
+            if player_fixture.fate_strategies.contains(&326) {
+                self.actor_mut(actor_side).fate.yan_qi += 1;
+            }
+            if player_fixture.fate_strategies.contains(&340) {
+                self.modify_actor_max_hp(actor_side, 20);
             }
             // FateStrategy 161（天衍-入冥）在命运函数链中位于 FS 27 之后
             // （FateStrategyFunctions.cs IL_088b < IL_0938/IL_09d8）：先让
@@ -540,7 +513,24 @@ impl ReplayState {
                                         .card = lowered;
                                 }
                             } else {
-                                let damage = other_param(card, 1).max(0);
+                                // 伤害数值取当前牌组格位卡（可能已被对方
+                                // 先行的厄劫缠身降级），原版 TriggerOpening 读
+                                // cardItem2 = 当前格位卡，不是 fixture 原卡
+                                // （oracle 锚点：d11b6adfe79418e2/round-17
+                                // cp0 p2.hp 96：11020018 被对方 11000018 先
+                                // 降级为 11010018 后，伤害 9 = 11010018 的
+                                // otherParams[1]，不是 fixture 原卡 12）。
+                                let current_card = self
+                                    .actor(actor_side)
+                                    .deck
+                                    .slots
+                                    .get(slot_index)
+                                    .map(|slot| slot.card.clone());
+                                let damage = current_card
+                                    .as_ref()
+                                    .map(|slot_card| other_param(slot_card, 1))
+                                    .unwrap_or_else(|| other_param(card, 1))
+                                    .max(0);
                                 if damage > 0 {
                                     self.apply_damage(actor_side, damage, false, false, false);
                                 }
@@ -881,19 +871,6 @@ impl ReplayState {
         }
     }
 
-    fn apply_star_erosion_talent(
-        &mut self,
-        actor_side: PlayerSide,
-        player_fixture: &FixturePlayer,
-    ) {
-        let amount = star_erosion_from_talents(&player_fixture.talents);
-        if amount > 0 {
-            self.actor_mut(opponent_side(actor_side))
-                .astrology
-                .star_erosion = amount;
-        }
-    }
-
     fn apply_abundant_momentum_talent(
         &mut self,
         actor_side: PlayerSide,
@@ -929,24 +906,37 @@ impl ReplayState {
         actor_side: PlayerSide,
         player_fixture: &FixturePlayer,
     ) {
-        let hexagram = (if player_fixture.talents.contains(&30) {
-            1
-        } else {
-            0
-        }) + (if player_fixture.talents.contains(&10_030) {
-            1
-        } else {
-            0
-        }) + (if player_fixture.talents.contains(&20_030) {
-            2
-        } else {
-            0
-        }) + (if player_fixture.talents.contains(&30_030) {
-            3
-        } else {
-            0
-        });
-        self.gain_hexagram(actor_side, hexagram);
+        // 观星、星蚀、布阵 are all talent-loop mutations. Preserve their
+        // fixture order: an earlier 星蚀 must arm the opponent before a later
+        // star-power grant is redirected by Fate 399.
+        for talent in &player_fixture.talents {
+            match talent {
+                30 | 10_030 | 20_030 | 30_030 => {
+                    let amount = match talent {
+                        30 | 10_030 => 1,
+                        20_030 => 2,
+                        30_030 => 3,
+                        _ => unreachable!(),
+                    };
+                    self.gain_hexagram(actor_side, amount);
+                }
+                103 | 10_103 | 20_103 | 30_103 => {
+                    let amount = match talent {
+                        103 | 10_103 => 1,
+                        20_103 => 2,
+                        30_103 => 3,
+                        _ => unreachable!(),
+                    };
+                    self.actor_mut(opponent_side(actor_side))
+                        .astrology
+                        .star_erosion += amount;
+                }
+                31 | 10_031 | 20_031 | 30_031 => {
+                    self.modify_star_power(actor_side, 1);
+                }
+                _ => {}
+            }
+        }
 
         let saved_hexagram = if player_fixture.fate_strategies.contains(&126) {
             player_fixture
@@ -959,14 +949,6 @@ impl ReplayState {
             0
         };
         self.gain_hexagram(actor_side, saved_hexagram);
-
-        let star_power = [31, 10_031, 20_031, 30_031]
-            .iter()
-            .filter(|talent| player_fixture.talents.contains(talent))
-            .count() as i64;
-        if star_power > 0 {
-            self.modify_star_power(actor_side, star_power);
-        }
     }
 
     fn apply_talent_199_bottle_elements(

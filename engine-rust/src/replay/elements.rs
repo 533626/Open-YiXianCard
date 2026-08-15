@@ -531,7 +531,7 @@ impl ReplayState {
             }
             7_000_002 => {
                 attacked |= self.attack_by_config(actor_side, card, 0, slot);
-                if self.is_element_activated(actor_side, Element::Metal) {
+                if self.check_wu_xing(actor_side, Element::Metal) {
                     self.gain_sharpness(actor_side, other_param(card, 0));
                 }
             }
@@ -553,7 +553,7 @@ impl ReplayState {
             }
             7_000_004 => {
                 attacked |= self.attack_by_config(actor_side, card, 0, slot);
-                if self.is_element_activated(actor_side, Element::Wood) {
+                if self.check_wu_xing(actor_side, Element::Wood) {
                     self.modify_actor_hp(actor_side, other_param(card, 0), false, false);
                 }
             }
@@ -569,7 +569,7 @@ impl ReplayState {
             }
             7_000_018 => {
                 self.apply_configured_anima(actor_side, card);
-                if self.is_element_activated(actor_side, Element::Wood) {
+                if self.check_wu_xing(actor_side, Element::Wood) {
                     let heal = other_param(card, 0)
                         + self.actor(actor_side).core.attack_bonus * other_param(card, 1);
                     self.modify_actor_hp(actor_side, heal, false, false);
@@ -662,7 +662,7 @@ impl ReplayState {
             }
             7_000_007 => {
                 attacked |= self.attack_by_config(actor_side, card, 0, slot);
-                if self.is_element_activated(actor_side, Element::Water) {
+                if self.check_wu_xing(actor_side, Element::Water) {
                     let momentum_gain = other_param(card, 0).max(0);
                     if momentum_gain > 0 {
                         self.gain_water_momentum(actor_side, momentum_gain);
@@ -670,7 +670,7 @@ impl ReplayState {
                 }
             }
             7_000_037 => {
-                let bonus = if self.is_element_activated(actor_side, Element::Water) {
+                let bonus = if self.check_wu_xing(actor_side, Element::Water) {
                     self.actor(actor_side).elements.water_momentum.max(0)
                 } else {
                     0
@@ -679,7 +679,9 @@ impl ReplayState {
             }
             7_000_059 => {
                 self.apply_configured_anima(actor_side, card);
-                if self.is_element_activated(actor_side, Element::Water) {
+                // Card_7000059.cs:93 CheckWuXing(JiHuoShuiLing)（卡组含
+                // 7030077|7040077 五行刺恒真），不是仅看水灵激活。
+                if self.check_wu_xing(actor_side, Element::Water) {
                     self.actor_mut(actor_side).elements.spring_flow += other_param(card, 0).max(0);
                 }
             }
@@ -694,7 +696,7 @@ impl ReplayState {
             }
             7_000_010 | 7_000_022 => {
                 attacked |= self.attack_by_config(actor_side, card, 0, slot);
-                if self.is_element_activated(actor_side, Element::Fire) {
+                if self.check_wu_xing(actor_side, Element::Fire) {
                     self.apply_attack(actor_side, other_param(card, 0), slot);
                     attacked = true;
                 }
@@ -757,7 +759,7 @@ impl ReplayState {
                 self.actor_mut(actor_side).elements.earth_formation += other_param(card, 0).max(0);
             }
             7_000_013 => {
-                let bonus = if self.is_element_activated(actor_side, Element::Earth)
+                let bonus = if self.check_wu_xing(actor_side, Element::Earth)
                     && (self.actor(actor_side).core.defense > 0
                         || self.actor(opponent_side(actor_side)).core.defense > 0)
                 {
@@ -770,7 +772,7 @@ impl ReplayState {
             7_000_024 => {
                 attacked |= self.attack_by_config(actor_side, card, 0, slot);
                 self.apply_configured_defense(actor_side, card);
-                if self.is_element_activated(actor_side, Element::Earth) {
+                if self.check_wu_xing(actor_side, Element::Earth) {
                     self.actor_mut(actor_side).turn.next_turn_defense +=
                         other_param(card, 0).max(0);
                 }
@@ -789,7 +791,7 @@ impl ReplayState {
                 attacked |= self.attack_by_config(actor_side, card, bonus, slot);
             }
             21 => {
-                let lost_defense = if self.is_element_activated(actor_side, Element::Earth) {
+                let lost_defense = if self.check_wu_xing(actor_side, Element::Earth) {
                     div_ceil(self.actor(actor_side).core.defense, 2)
                 } else {
                     0

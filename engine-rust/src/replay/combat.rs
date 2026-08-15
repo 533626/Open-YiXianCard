@@ -618,11 +618,14 @@ impl ReplayState {
         }
         // 花沁蕊 fate 411（BattleCharacter.cs:8987-8997，ModifyBuffValue 内
         // 的五行钩子）：激活水灵时同步激活土灵；激活土灵时 ModifyDef
-        // (FateStrategyConfig(411).otherParams[0] = 2)。原版位置在
-        // talent 138/202 之后、ModifyBuffValue 尾部，重入的土激活走完整
-        // 语义路径（talent 79/112 等钩子照常触发）。oracle 锚点：
-        // mirror-32299000 dcc66e8dfc226124/round-10 cp0（原版 p2 buffs
-        // 241 JiHuoTuLing=1 且 def=1 = (0+2) 经 turn1 防御减半）。
+        // (FateStrategyConfig(411).otherParams[0]，24666769=2、24705509=4)。
+        // 原版位置在 talent 138/202 之后、ModifyBuffValue 尾部，重入的土激活
+        // 走完整语义路径（talent 79/112 等钩子照常触发）。数值迁移证据：
+        // 客户端首方 oracle（build 24705509，2026-08-14）078c7b858762da9d/
+        // round-13 cp0（p2.defense original=4 rust=2）、7a1dc7adf37b2472/
+        // round-09 cp3（p2.defense original=4 rust=2）；旧值锚点
+        // mirror-32299000 dcc66e8dfc226124/round-10 cp0（24666769，
+        // p2 def=1 = (0+2) 经 turn1 防御减半）。
         self.apply_fate_strategy_411_element_hook(actor_side, element);
         self.apply_synthetic_ding_feng_bo_activation_damage(actor_side);
     }
@@ -648,7 +651,9 @@ impl ReplayState {
                 self.activate_element(actor_side, super::Element::Earth);
             }
             super::Element::Earth => {
-                self.gain_defense(actor_side, 2);
+                // 土灵激活时 ModifyDef(FateStrategyConfig(411).otherParams[0])；
+                // 24705509 起 otherParams=[4]（24666769 为 [2]）。
+                self.gain_defense(actor_side, 4);
             }
             _ => {}
         }

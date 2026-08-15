@@ -579,13 +579,13 @@ mod tests {
         let parity = run_replay_fixture_with_parity_events(&fixture).expect("parity replay");
         assert_eq!(detailed.summary, parity.summary);
 
-        // 原版 OnTurnEnded：formations（万花迷魂阵吸取）先于 waterMomentum
-        // （BattleCharacter.cs:6000-6105 → 6231-6245）。
+        // 原版 OnTurnEnded：formations 先于 梦狂耳，再先于 waterMomentum
+        // （BattleCharacter.cs IL_0b61 → IL_18c6 → IL_1cd0）。
         let expected = [
             "ronghui",
             "mirageRonghui",
-            "dreamBeforeWater",
             "formations",
+            "dreamBeforeWater",
             "waterMomentum",
             "temporaryResources",
             "hardBranchBamboo",

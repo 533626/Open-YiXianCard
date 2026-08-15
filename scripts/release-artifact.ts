@@ -10,6 +10,7 @@ import { join, relative, resolve, sep } from "node:path";
 export const RELEASE_PRODUCT = "Open-YiXianCard";
 export const RELEASE_SCHEMA_VERSION = 2;
 export const RELEASE_MANIFEST_FILENAME = "release-manifest.json";
+export const MAX_PUBLIC_ARTIFACT_BYTES = 100_000_000;
 export const RELEASE_CLOUDFLARE_HEADERS = `/*
   Content-Security-Policy: default-src 'self'; script-src 'self'; worker-src 'self'; style-src 'self'; img-src 'none'; font-src 'none'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
@@ -156,6 +157,16 @@ export function contentHashedAssetName(name: string, extension: "js" | "css", by
   return `${name}.${sha256Bytes(bytes).slice(0, 16)}.${extension}`;
 }
 
+export function publicArtifactSizeFailure(
+  files: readonly Pick<ReleaseFileEntry, "bytes">[],
+  maxBytes = MAX_PUBLIC_ARTIFACT_BYTES,
+): string | null {
+  const totalBytes = files.reduce((sum, file) => sum + file.bytes, 0);
+  return totalBytes > maxBytes
+    ? `artifact is ${totalBytes} bytes, exceeding the ${maxBytes}-byte limit`
+    : null;
+}
+
 export async function writeReleaseManifest(
   artifactRoot: string,
   metadata: ReleaseMetadata,
@@ -194,6 +205,9 @@ export async function auditReleaseArtifact(artifactRoot: string): Promise<Releas
     return [] as ReleaseFileEntry[];
   });
   const paths = new Set(files.map((file) => file.path));
+  const totalBytes = files.reduce((sum, file) => sum + file.bytes, 0);
+  const sizeFailure = publicArtifactSizeFailure(files);
+  if (sizeFailure) failures.push(sizeFailure);
 
   for (const required of ["index.html", "_headers", RELEASE_MANIFEST_FILENAME]) {
     if (!paths.has(required)) failures.push(`missing required file: ${required}`);
@@ -330,7 +344,7 @@ export async function auditReleaseArtifact(artifactRoot: string): Promise<Releas
     manifest,
     manifestSha256: sha256Bytes(manifestBytes),
     files,
-    totalBytes: files.reduce((sum, file) => sum + file.bytes, 0),
+    totalBytes,
   };
 }
 

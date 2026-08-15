@@ -303,8 +303,6 @@ impl ReplayState {
                         Some(min + index as i64),
                     )
                 }
-            } else if used_hexagram {
-                (ReplayDecisionProvider::Hexagram, None, Some(max))
             } else if !self.random_fallback_tape.is_empty() {
                 let fallback = self.random_fallback_tape.remove(0);
                 if fallback < min || fallback > max {

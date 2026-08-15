@@ -586,18 +586,6 @@ impl ReplayState {
             }
         }
 
-        let great_return = self
-            .dream_mirage_value(actor_side, DreamMirageValue::DreamGreatReturnPill)
-            .max(0);
-        if great_return > 0 {
-            if self.actor(actor_side).core.max_hp < self.actor(target_side).core.max_hp {
-                self.modify_actor_max_hp(actor_side, great_return);
-            }
-            if self.actor(actor_side).core.hp < self.actor(target_side).core.hp {
-                self.modify_actor_hp(actor_side, great_return, false, false);
-            }
-        }
-
         let turn_defense = self
             .dream_mirage_value(actor_side, DreamMirageValue::TurnStartDefense)
             .max(0);
@@ -632,6 +620,24 @@ impl ReplayState {
                 DreamMirageValue::TemporaryWaterDouble,
                 -doubles,
             );
+        }
+    }
+
+    /// BattleCharacter.OnTurnStarted IL_1448-15a3: 梦•大还丹在回合开始
+    /// 常规治疗后、内伤结算前比较双方当前生命与上限。
+    pub(super) fn apply_dream_great_return_pill_at_turn_start(&mut self, actor_side: PlayerSide) {
+        let target_side = opponent_side(actor_side);
+        let great_return = self
+            .dream_mirage_value(actor_side, DreamMirageValue::DreamGreatReturnPill)
+            .max(0);
+        if great_return <= 0 {
+            return;
+        }
+        if self.actor(actor_side).core.max_hp < self.actor(target_side).core.max_hp {
+            self.modify_actor_max_hp(actor_side, great_return);
+        }
+        if self.actor(actor_side).core.hp < self.actor(target_side).core.hp {
+            self.modify_actor_hp(actor_side, great_return, false, false);
         }
     }
 

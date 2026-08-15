@@ -373,6 +373,11 @@ impl ReplayState {
                         self.modify_actor_hp(actor_side, recovery * multiplier, false, false);
                     }
                 }
+                TurnStartPhase::DreamGreatReturnPill => {
+                    // 原版 OnTurnStarted IL_1448：梦•大还丹在常规治疗后、
+                    // 内伤 IL_1a4c 前比较双方生命/上限。
+                    self.apply_dream_great_return_pill_at_turn_start(actor_side);
+                }
                 TurnStartPhase::TurnStartChanceHooks => {
                     // 原版 OnTurnStarted：吞天赤眼兽吸血（IL_0a8a）在内伤 tick
                     // （IL_1a4c）之前。满血开局时吸血被 maxHp 封顶浪费，再被内伤

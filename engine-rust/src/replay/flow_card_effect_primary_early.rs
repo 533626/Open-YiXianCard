@@ -26,12 +26,16 @@ impl ReplayState {
             }
             12 => {
                 self.apply_configured_anima(actor_side, card);
-                let rear_move_succeeded = self.check_rear_move(actor_side, was_used_before_effect);
-                if card_rarity(card) != 0 {
+                if card_rarity(card) == 0 {
+                    let _ = self.check_rear_move(actor_side, was_used_before_effect);
+                } else {
+                    // Card_12: upgraded ranks pay HP before CheckHouZhao.
+                    // The check can grant max HP and arm 雁栖 healing, so moving
+                    // it ahead of the loss wastes that recovery at full HP.
                     self.modify_actor_hp(actor_side, -other_param(card, 1).max(0), false, false);
-                }
-                if rear_move_succeeded {
-                    self.modify_actor_hp(actor_side, other_param(card, 0).max(0), false, false);
+                    if self.check_rear_move(actor_side, was_used_before_effect) {
+                        self.modify_actor_hp(actor_side, other_param(card, 0).max(0), false, false);
+                    }
                 }
                 Some(false)
             }
