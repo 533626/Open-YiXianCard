@@ -1267,9 +1267,19 @@ impl ReplayState {
         let before = self.actor(actor_side).core.physique;
         let limit = self.actor(actor_side).core.physique_limit;
         self.actor_mut(actor_side).core.physique += amount;
-        self.modify_actor_max_hp(actor_side, amount);
         let after = self.actor(actor_side).core.physique;
         let actual_delta = after - before;
+        self.record_mutation_receipt(
+            actor_side,
+            super::ReplayMutationKind::Resource,
+            "核心",
+            "physique",
+            "体魄",
+            before,
+            after,
+            actual_delta,
+        );
+        self.modify_actor_max_hp(actor_side, amount);
         let excess = if actual_delta > 0 {
             actual_delta.min((after - limit).max(0))
         } else {
@@ -1296,7 +1306,16 @@ impl ReplayState {
             self.modify_actor_hp(actor_side, healing, false, false);
         }
         if actual_delta > 0 {
+            let gain_count_before = self.actor(actor_side).turn.battle_physique_gain_count;
             self.actor_mut(actor_side).turn.battle_physique_gain_count += actual_delta;
+            self.record_counter_transition(
+                actor_side,
+                "回合",
+                "battlePhysiqueGainCount",
+                "本场体魄增加次数",
+                gain_count_before,
+                self.actor(actor_side).turn.battle_physique_gain_count,
+            );
             if self.actor(actor_side).identity.talents.contains(&184) {
                 self.gain_defense(actor_side, actual_delta.min(5));
             }
@@ -1326,6 +1345,16 @@ impl ReplayState {
         let actual_delta = after - before;
         if actual_delta < 0 {
             self.actor_mut(actor_side).core.physique = after;
+            self.record_mutation_receipt(
+                actor_side,
+                super::ReplayMutationKind::Resource,
+                "核心",
+                "physique",
+                "体魄",
+                before,
+                after,
+                actual_delta,
+            );
             self.modify_actor_max_hp(actor_side, actual_delta);
         }
         actual_delta

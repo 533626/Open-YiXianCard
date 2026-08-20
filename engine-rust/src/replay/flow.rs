@@ -292,7 +292,16 @@ impl ReplayState {
                     self.apply_turn_start_buff_decrements(actor_side);
                 }
                 TurnStartPhase::ResetFateTurnFlags => {
+                    let dismantle_before = self.actor(actor_side).fate.dismantle_move;
                     self.actor_mut(actor_side).fate.dismantle_move = 0;
+                    self.record_counter_transition(
+                        actor_side,
+                        "仙命",
+                        "dismantleMove",
+                        "拆招",
+                        dismantle_before,
+                        self.actor(actor_side).fate.dismantle_move,
+                    );
                     self.actor_mut(actor_side).fate.chan_xin_ju_ling_triggered = 0;
                     self.actor_mut(actor_side).fate.hot_blood_to_qi_triggered = 0;
                     self.actor_mut(actor_side)
@@ -354,7 +363,16 @@ impl ReplayState {
                         .max(0);
                     if mystic_heart > 0 {
                         self.add_actor_negative_status(actor_side, 100, mystic_heart);
+                        let recovery_before = self.actor(actor_side).status.recovery;
                         self.actor_mut(actor_side).status.recovery += mystic_heart;
+                        self.record_counter_transition(
+                            actor_side,
+                            "状态",
+                            "recovery",
+                            "恢复",
+                            recovery_before,
+                            self.actor(actor_side).status.recovery,
+                        );
                     }
                 }
                 TurnStartPhase::TurnStartHealing => {

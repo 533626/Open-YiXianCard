@@ -265,7 +265,16 @@ impl ReplayState {
             15 => {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
                 self.apply_configured_anima(actor_side, card);
+                let recovery_before = self.actor(actor_side).status.recovery;
                 self.actor_mut(actor_side).status.recovery += other_param(card, 0).max(0);
+                self.record_counter_transition(
+                    actor_side,
+                    "状态",
+                    "recovery",
+                    "恢复",
+                    recovery_before,
+                    self.actor(actor_side).status.recovery,
+                );
                 let convert_limit = other_param(card, 1).max(0);
                 if has_cloud_chain(self.actor(actor_side))
                     && !self.actor(actor_side).identity.talents.contains(&222)
@@ -273,8 +282,17 @@ impl ReplayState {
                     let converted =
                         convert_limit.min(self.actor(actor_side).status.recovery.max(0));
                     if converted > 0 {
+                        let recovery_before = self.actor(actor_side).status.recovery;
                         self.actor_mut(actor_side).status.recovery =
                             (self.actor(actor_side).status.recovery - converted).max(0);
+                        self.record_counter_transition(
+                            actor_side,
+                            "状态",
+                            "recovery",
+                            "恢复",
+                            recovery_before,
+                            self.actor(actor_side).status.recovery,
+                        );
                         self.gain_attack_bonus(actor_side, converted);
                     }
                 }

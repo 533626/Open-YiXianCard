@@ -432,6 +432,30 @@ mod tests {
     }
 
     #[test]
+    fn physique_mutation_is_receipted_in_main_effect() {
+        let mut fixture = invocation_fixture(&[205], &[0], Vec::new());
+        fixture.players.p1.cards[0].anima = Some(0);
+        fixture.players.p1.cards[0].physique = Some(2);
+        fixture.players.p1.cards[0].other_params = vec![100, 0];
+
+        let trace = trace_replay_fixture_hooks(&fixture).expect("hook trace");
+        let main = trace
+            .steps
+            .iter()
+            .find(|step| {
+                step.category == ReplayHookCategory::MainEffect && step.card_id == Some(205)
+            })
+            .expect("physique card MainEffect step");
+        let physique = main
+            .p1_changes
+            .iter()
+            .find(|change| change.key == "physique")
+            .expect("MainEffect physique mutation");
+        assert_eq!((physique.before, physique.after), (0, 2));
+        assert_eq!(physique.card_id, Some(205));
+    }
+
+    #[test]
     fn gourd_source_and_entangle_block_are_receipted_in_action_again() {
         // 天髓葫芦 (132) grants two gourd uses. 土灵印 (7_000_011)
         // activates Earth before action-again resolution, making

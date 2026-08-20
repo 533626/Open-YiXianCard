@@ -123,7 +123,16 @@ impl ReplayState {
                 // 崩拳•返玄
                 self.modify_actor_hp(actor_side, other_param(card, 0).max(0), false, false);
                 self.add_actor_negative_status(actor_side, 100, other_param(card, 1).max(0));
+                let recovery_before = self.actor(actor_side).status.recovery;
                 self.actor_mut(actor_side).status.recovery += other_param(card, 1).max(0);
+                self.record_counter_transition(
+                    actor_side,
+                    "状态",
+                    "recovery",
+                    "恢复",
+                    recovery_before,
+                    self.actor(actor_side).status.recovery,
+                );
                 self.actor_mut(actor_side).beng.beng_quan_return_profound += 1;
                 Some(false)
             }
@@ -853,7 +862,16 @@ impl ReplayState {
                     self.modify_actor_max_hp(actor_side, hp_gain);
                     self.modify_actor_hp(actor_side, hp_gain, false, false);
                 }
+                let recovery_before = self.actor(actor_side).status.recovery;
                 self.actor_mut(actor_side).status.recovery += other_param(card, 1).max(0);
+                self.record_counter_transition(
+                    actor_side,
+                    "状态",
+                    "recovery",
+                    "恢复",
+                    recovery_before,
+                    self.actor(actor_side).status.recovery,
+                );
                 Some(false)
             }
             99_000_207 => {

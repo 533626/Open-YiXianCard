@@ -49,7 +49,16 @@ impl ReplayState {
             }
             298 => {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
+                let recovery_before = self.actor(actor_side).status.recovery;
                 self.actor_mut(actor_side).status.recovery += other_param(card, 0).max(0);
+                self.record_counter_transition(
+                    actor_side,
+                    "状态",
+                    "recovery",
+                    "恢复",
+                    recovery_before,
+                    self.actor(actor_side).status.recovery,
+                );
                 let hp_gain =
                     other_param(card, 1).max(0) + self.actor(actor_side).status.recovery.max(0);
                 self.modify_actor_max_hp(actor_side, hp_gain);

@@ -368,7 +368,17 @@ impl ReplayState {
             }
             221 => {
                 self.apply_configured_defense(actor_side, card);
+                let before = self.actor(actor_side).fate.dismantle_move;
                 self.actor_mut(actor_side).fate.dismantle_move += 1;
+                let after = self.actor(actor_side).fate.dismantle_move;
+                self.record_counter_transition(
+                    actor_side,
+                    "仙命",
+                    "dismantleMove",
+                    "拆招",
+                    before,
+                    after,
+                );
                 self.actor_mut(actor_side).fate.dismantle_move_reflect =
                     other_param(card, 1).max(0);
                 Some(false)

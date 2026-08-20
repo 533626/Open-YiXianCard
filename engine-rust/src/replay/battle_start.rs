@@ -897,7 +897,16 @@ impl ReplayState {
                 continue;
             };
             self.add_actor_negative_status(actor_side, 100, internal_injury);
+            let recovery_before = self.actor(actor_side).status.recovery;
             self.actor_mut(actor_side).status.recovery += recovery;
+            self.record_counter_transition(
+                actor_side,
+                "状态",
+                "recovery",
+                "恢复",
+                recovery_before,
+                self.actor(actor_side).status.recovery,
+            );
         }
     }
 
