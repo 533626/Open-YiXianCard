@@ -34,3 +34,5 @@ private-companion/
 open-yixiancard-private-backup-*/
 .tmp-hf-work/
 .tmp-hf-stash-*
+.rotation/
+**/.corpus-index.json
