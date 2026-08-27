@@ -5,7 +5,7 @@ import {
   readdir,
   writeFile,
 } from "node:fs/promises";
-import { join, relative, resolve, sep } from "node:path";
+import { basename, join, relative, resolve, sep } from "node:path";
 
 export const RELEASE_PRODUCT = "Open-YiXianCard";
 export const RELEASE_SCHEMA_VERSION = 2;
@@ -283,7 +283,7 @@ export async function auditReleaseArtifact(artifactRoot: string): Promise<Releas
     const asset = files.find((file) =>
       file.path.startsWith(`assets/${name}.`) && file.path.endsWith(`.${extension}`)
     );
-    if (asset && !html.includes(`/${asset.path}`)) {
+    if (asset && !html.includes(`/${asset.path}`) && !html.includes(`./${asset.path}`)) {
       failures.push(`index.html does not reference ${asset.path}`);
     }
   }
@@ -301,9 +301,9 @@ export async function auditReleaseArtifact(artifactRoot: string): Promise<Releas
     const mainJavaScript = await readFile(join(root, ...mainAsset.path.split("/")), "utf8")
       .catch(() => "");
     const workerReferences = [
-      ...mainJavaScript.matchAll(/\/assets\/workbench-worker\.[A-Za-z0-9._-]+\.js/g),
-    ].map((match) => match[0]);
-    const expectedWorkerReference = `/${workerAsset.path}`;
+      ...mainJavaScript.matchAll(/(?:\.\/|\/)?assets\/workbench-worker\.[A-Za-z0-9._-]+\.js/g),
+    ].map((match) => match[0].replace(/^\.\//, "").replace(/^\//, ""));
+    const expectedWorkerReference = workerAsset.path;
     if (workerReferences.length === 0) {
       failures.push("main.js does not reference the hashed workbench worker");
     } else if (workerReferences.some((reference) => reference !== expectedWorkerReference)) {
@@ -316,9 +316,9 @@ export async function auditReleaseArtifact(artifactRoot: string): Promise<Releas
       "utf8",
     ).catch(() => "");
     const wasmReferences = [
-      ...workerJavaScript.matchAll(/\/assets\/yixian-engine\.[A-Za-z0-9._-]+\.wasm/g),
-    ].map((match) => match[0]);
-    const expectedWasmReference = `/${wasmAsset.path}`;
+      ...workerJavaScript.matchAll(/(?:\.\/|\/)?(?:assets\/)?yixian-engine\.[A-Za-z0-9._-]+\.wasm/g),
+    ].map((match) => match[0].replace(/^\.\//, "").replace(/^\//, "").replace(/^assets\//, ""));
+    const expectedWasmReference = basename(wasmAsset.path);
     if (wasmReferences.length === 0) {
       failures.push("workbench worker does not reference the hashed Rust/WASM engine");
     } else if (wasmReferences.some((reference) => reference !== expectedWasmReference)) {
@@ -470,7 +470,7 @@ const NETWORK_API_IDENTIFIER = /\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|
 function hasForbiddenNetworkApi(source: string, path: string): boolean {
   let executable = executableJavaScript(source);
   if (/^assets\/workbench-worker\.[a-f0-9]{16}\.js$/u.test(path)) {
-    const hasPinnedWasmUrl = /["']\/assets\/yixian-engine\.[a-f0-9]{16}\.wasm["']/u
+    const hasPinnedWasmUrl = /["'](?:\.\/|\/)?(?:assets\/)?yixian-engine\.[a-f0-9]{16}\.wasm["']/u
       .test(source);
     const fetchCount = executable.match(/\bfetch\b/gu)?.length ?? 0;
     if (hasPinnedWasmUrl && fetchCount === 1) {

@@ -534,10 +534,10 @@ describe("production site build", () => {
       expect(bundle).not.toContain("cq55h00/round-15");
       expect(bundle).not.toContain("e63lwvs/round-16");
     }
-    expect(worker).toMatch(/fetch\(["']\/assets\/yixian-engine\.[a-f0-9]{16}\.wasm["']\)/);
+    expect(worker).toMatch(/fetch\(["'](?:\.\/|\/)?(?:assets\/)?yixian-engine\.[a-f0-9]{16}\.wasm["']\)/);
     expect(javascript).toContain("选择弈仙牌文件夹");
     expect(javascript).toContain("选择 .bin");
-    expect(javascript).toContain(`/${workerPath}`);
+    expect(javascript).toMatch(new RegExp(`(?:\\./|/)?${workerPath}`));
     expect(javascript).not.toContain("open-yixiancard/workbench-worker");
     expect(worker).toContain("open-yixiancard/workbench-worker");
     for (const handlerMarker of ["simulation-failed", "solver-failed", "replay-decode-failed"]) {

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "type": "open-yixiancard-public-export",
-  "sourceCommit": "f6adff0a208425a13a10cc6a7cd0a367d5862527",
-  "sourceTree": "121907ce9335bd702341c25bd0a97af08e27a795",
+  "sourceCommit": "5ff82a69168f31e3eab03fe1fa50cfd252c2f727",
+  "sourceTree": "5db35c07e6956cf1b27a4483127f820903db546b",
   "policySha256": "57af68d20a4e2e872eaa1f7ac66733b86fde736b634d18e44eaa7b572272fb0b",
   "files": [
     {
@@ -908,14 +908,14 @@
     {
       "path": "scripts/__tests__/release-artifact.test.ts",
       "mode": "100644",
-      "bytes": 32591,
-      "sha256": "afffd3ce849c194b7812c999f744dc19b09029e293b8d90ca91c8935024c53c5"
+      "bytes": 32626,
+      "sha256": "9a1dc3da15d2757e0bb9055a723e11b1f638a0ffcaf91d5edbf96ffb8b5a690d"
     },
     {
       "path": "scripts/build-site.ts",
       "mode": "100644",
-      "bytes": 17739,
-      "sha256": "e042f73e6ae22c198544fb969ce433e48b44a8726c97e42e3966973247436d28"
+      "bytes": 17743,
+      "sha256": "bfe7057767d82fa42c86862262c2a10c856efa958b97b18445724e87a3bc98d7"
     },
     {
       "path": "scripts/build-ui.ts",
@@ -986,8 +986,8 @@
     {
       "path": "scripts/release-artifact.ts",
       "mode": "100644",
-      "bytes": 20950,
-      "sha256": "ec7cf14b261445329d00e8721e7a1e0ad486bebd3063ebf29df27845f5de2290"
+      "bytes": 21140,
+      "sha256": "5d1b5741cf46fb6ec923a93b495e322b4348faf8f8733c2b7b170cd6ff59f7e8"
     },
     {
       "path": "shared/contracts.ts",
@@ -1914,5 +1914,5 @@
       "sha256": "638113cf4444d1592ac2c6eea62bf819275ab6d51dde403881a2413d68dfd2a8"
     }
   ],
-  "treeDigest": "25ce3dad9a5c18ffecb7b105496c138c7bb422aafa47a7a348c2bf670c74e9a9"
+  "treeDigest": "074f4484e792b1bea186e9e3cb6170f2cbad0993442ab52f98107053db9594ac"
 }

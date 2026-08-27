@@ -141,7 +141,7 @@ async function buildProductionJavascript(
     outdir: join(outdir, "worker"),
     expectedOutputName: "workbench-worker.js",
     define: {
-      __OPEN_YIXIAN_ENGINE_WASM_URL__: JSON.stringify(`/assets/${wasmName}`),
+      __OPEN_YIXIAN_ENGINE_WASM_URL__: JSON.stringify(`./${wasmName}`),
     },
   });
   const workerName = contentHashedAssetName("workbench-worker", "js", worker);
@@ -151,7 +151,7 @@ async function buildProductionJavascript(
     expectedOutputName: "main.js",
     define: {
       __OPEN_YIXIAN_REPOSITORY_FIXTURES__: "false",
-      __OPEN_YIXIAN_WORKBENCH_WORKER_URL__: JSON.stringify(`/assets/${workerName}`),
+      __OPEN_YIXIAN_WORKBENCH_WORKER_URL__: JSON.stringify(`./assets/${workerName}`),
     },
     plugins: [zeroFixtureProductionBoundary()],
   });
@@ -295,15 +295,15 @@ function productionIndexHtml(
     html = replaceExactly(
       html,
       new RegExp(`/src/ui/styles/${name}\\.css(?:\\?[^"']*)?`, "g"),
-      `/assets/${assetName}`,
+      `./assets/${assetName}`,
       `${name}.css reference`,
     );
   }
   html = replaceExactly(
     html,
     /\/public\/build\/main\.js(?:\?[^"']*)?/g,
-    `/assets/${javascriptName}`,
-    "main.js reference",
+    `./assets/${javascriptName}`,
+    "main.js script reference",
   );
   html = replaceMetaContent(
     html,
