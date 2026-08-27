@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
   "type": "open-yixiancard-public-export",
-  "sourceCommit": "ce830361b71857d208b37110cee5c48e10417fc3",
-  "sourceTree": "f0aee94039c84f0eee949546aa64b9d5a3895e05",
-  "policySha256": "e7662f5ba3333a9dde2bfe0553e0d103d6e332e9c293b201eef14b61e8f32ea7",
+  "sourceCommit": "a1ae7cd4605501801cd6c352ecfdda4a38b3f0c4",
+  "sourceTree": "0c8e67ad639b7b9b9e62776c70eb8a425e4f495c",
+  "policySha256": "57af68d20a4e2e872eaa1f7ac66733b86fde736b634d18e44eaa7b572272fb0b",
   "files": [
     {
       "path": ".agents/skills/battle-rule-development/SKILL.md",
@@ -22,6 +22,12 @@
       "mode": "100644",
       "bytes": 280,
       "sha256": "21ad83127acc59de1ee0b420707a267eacdef0cb7501a10894965750765f4793"
+    },
+    {
+      "path": ".github/workflows/deploy-pages.yml",
+      "mode": "100644",
+      "bytes": 1062,
+      "sha256": "45f9c503217e7f78dac409aec06d8ac09d40e55ab56102c025f998ecd30efb73"
     },
     {
       "path": ".github/workflows/site.yml",
@@ -1908,5 +1914,5 @@
       "sha256": "638113cf4444d1592ac2c6eea62bf819275ab6d51dde403881a2413d68dfd2a8"
     }
   ],
-  "treeDigest": "00e90512205b0dbfc0f82983b2b9f91430b3e15cecd432dafe2d6f19593d814f"
+  "treeDigest": "02b27dc0c020a89073f469297c0cd4913049cf4a08bac67d288ebb482a94ce73"
 }
