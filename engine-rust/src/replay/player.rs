@@ -572,6 +572,7 @@ impl ReplayPlayer {
                 lose_hp_times_count: 0,
                 actual_damage_carry: 0,
                 wounded_count_carry: 0,
+                dan_ka_gong_ji_ji_shu: 0,
                 ji_lu_zong_ji_shang_zhi: 0,
                 spirit_turtle_footwork: 0,
                 spirit_turtle_footwork_triggered: 0,

@@ -703,12 +703,14 @@ impl ReplayState {
                 self.activate_element(actor_side, super::Element::Wood);
             }
             // FateStrategy 151（FateStrategyFunctions.cs:445-451）：OnBattleStart
-            // 内先发辟邪（IsSwitchActive 时）再 +5 生命。原版天赋 switch
-            // （OnBattleStarted，含冥心烙印 150 系开局内伤）先于
-            // FateStrategyFunctions.OnBattleStart；辟邪必须晚于冥心烙印的内伤，
-            // 否则会吞掉该开局内伤，导致首回合内伤 tick 缺失、玄灵愈体类
-            // 加血被多算（oracle 锚点：mirror-32299000 097e95c9e752e416/round-09
-            // cp0 p1.hp 88 vs 90，351=2 内伤 tick 发生在 turn1 起始）。
+            // 内先发辟邪（IsSwitchActive 时 otherParams[0]）再
+            // ModifyHp(otherParams[1])。24811621 otherParams=[2,9]
+            // （24705509 为 [2,5]）。原版天赋 switch（OnBattleStarted，含冥心
+            // 烙印 150 系开局内伤）先于 FateStrategyFunctions.OnBattleStart；
+            // 辟邪必须晚于冥心烙印的内伤，否则会吞掉该开局内伤，导致首回合
+            // 内伤 tick 缺失、玄灵愈体类加血被多算（oracle 锚点：
+            // mirror-32299000 097e95c9e752e416/round-09 cp0 p1.hp 88 vs 90，
+            // 351=2 内伤 tick 发生在 turn1 起始）。
             // 注：冥心烙印本身已在天赋段（fate 326 之前）执行。
             if player_fixture.fate_strategies.contains(&151) {
                 if player_fixture
@@ -720,7 +722,7 @@ impl ReplayState {
                 {
                     self.actor_mut(actor_side).fate.exorcism += 2;
                 }
-                self.modify_actor_hp(actor_side, 5, false, false);
+                self.modify_actor_hp(actor_side, 9, false, false);
             }
             if player_fixture.talents.contains(&199) {
                 self.apply_talent_199_bottle_elements(actor_side, player_fixture);

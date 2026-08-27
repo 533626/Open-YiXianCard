@@ -515,6 +515,7 @@ impl ReplayState {
             self.apply_dream_mirage_adjacent_after_card_hooks(actor_side, slot);
         }
         self.clear_active_effect_attacks();
+        self.actor_mut(actor_side).turn.dan_ka_gong_ji_ji_shu = 0;
     }
 
     /// CardActionBase.OnAfterExecuted's unconditional cleanup block. These

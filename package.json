@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "test": "bun test",
-    "test:ts": "bun test engine-ts/__tests__",
+    "test:ts": "bun --preload=./scripts/ts-frozen-mock-preload.ts test engine-ts/__tests__",
     "generate:original-build-profiles": "bun battle-evaluator/scripts/build-original-build-profiles.ts",
     "generate:public-snapshot": "bun scripts/build-public-shared-snapshot.ts",
     "diff:engines": "bun scripts/diff-engine-events.ts",

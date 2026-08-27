@@ -225,7 +225,9 @@ impl ReplayState {
         actor_side: PlayerSide,
         slot: usize,
     ) {
-        if self.active_effect_attacks() <= 0 {
+        if self.active_effect_attacks() <= 0
+            && self.actor(actor_side).turn.dan_ka_gong_ji_ji_shu <= 0
+        {
             return;
         }
         if self

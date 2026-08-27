@@ -71,7 +71,7 @@
       "label": "完成态结算",
       "location": {
         "path": "src/replay/flow.rs",
-        "line": 1303,
+        "line": 1321,
         "function": "complete_card_effect_repetition"
       }
     }

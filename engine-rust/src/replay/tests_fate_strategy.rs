@@ -603,3 +603,66 @@ fn fate_strategy_340_grants_max_hp_at_battle_start_before_yan_qi_heal() {
     assert_eq!(state.p1.core.defense, 1);
     assert_eq!(state.p1.fate.yan_qi, 0);
 }
+
+#[test]
+fn fate_strategy_428_palm_card_retains_momentum_on_attack() {
+    // 24963639 BattleCharacter.cs:11579/:11702:
+    // HasFateStrategy(428) && m_CurrentUsingCard.name.Contains("掌") 时，
+    // 攻击计算气势不递减（-0 而不是 -1）。
+    let mut palm_card = basic_attack();
+    palm_card.name = "迎风掌".to_string();
+    let mut non_palm_card = basic_attack();
+    non_palm_card.name = "连环拳".to_string();
+
+    // 1. Fate 428 + 掌牌：气势不递减
+    let mut p1 = player();
+    p1.fate_strategies = vec![428];
+    p1.cards = vec![palm_card.clone(); DECK_SIZE];
+    let mut state = ReplayState::test_from_fixture(&fixture(p1, player()));
+    state.modify_momentum(PlayerSide::P1, 3);
+    assert_eq!(state.p1.beng.momentum, 3);
+    state.execute_actor_turn();
+    assert_eq!(state.p1.beng.momentum, 3, "palm card under fate 428 should retain momentum");
+
+    // 2. Fate 428 + 非掌牌：气势正常消耗 1 点
+    let mut p1_non_palm = player();
+    p1_non_palm.fate_strategies = vec![428];
+    p1_non_palm.cards = vec![non_palm_card.clone(); DECK_SIZE];
+    let mut state_non_palm = ReplayState::test_from_fixture(&fixture(p1_non_palm, player()));
+    state_non_palm.modify_momentum(PlayerSide::P1, 3);
+    state_non_palm.execute_actor_turn();
+    assert_eq!(state_non_palm.p1.beng.momentum, 2, "non-palm card under fate 428 should consume 1 momentum");
+
+    // 3. 无 Fate 428 + 掌牌：气势正常消耗 1 点
+    let mut p1_no_fate = player();
+    p1_no_fate.cards = vec![palm_card; DECK_SIZE];
+    let mut state_no_fate = ReplayState::test_from_fixture(&fixture(p1_no_fate, player()));
+    state_no_fate.modify_momentum(PlayerSide::P1, 3);
+    state_no_fate.execute_actor_turn();
+    assert_eq!(state_no_fate.p1.beng.momentum, 2, "palm card without fate 428 should consume 1 momentum");
+}
+
+#[test]
+fn card_10000092_ling_kong_fei_sao_uses_half_anima_attack() {
+    // 24963639 Card_10000092.cs:
+    // attack = card.attack + anima / 2 (整除 2).
+    let mut card = original_card_definition_by_id(10_000_092).unwrap_or_else(|| {
+        let mut c = basic_attack();
+        c.id = 10_000_092;
+        c.base_id = Some(10_000_092);
+        c.attack = Some(8);
+        c.other_params = vec![1, 2, 3, 1];
+        c
+    });
+    card.attack = Some(8);
+    card.other_params = vec![1, 2, 3, 1];
+
+    let mut p1 = player();
+    p1.cards = vec![card.clone(); DECK_SIZE];
+    let mut state = ReplayState::test_from_fixture(&fixture(p1, player()));
+    state.p1.core.anima = 5; // 5 anima -> 5 / 2 = 2 bonus attack -> total attack 8 + 2 = 10
+    state.execute_actor_turn();
+
+    // p2 takes 10 damage: 100 - 10 = 90
+    assert_eq!(state.p2.core.hp, 90);
+}

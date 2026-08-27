@@ -217,6 +217,7 @@ impl ReplayState {
             || next_attack_shatter_defense;
         self.actor_mut(actor_side).turn.attack_segments_performed += 1;
         self.add_active_effect_attacks(1);
+        self.actor_mut(actor_side).turn.dan_ka_gong_ji_ji_shu += 1;
         self.actor_mut(actor_side).turn.turn_attack_segments += 1;
         if mark_consumed_beng_quan_chuo {
             self.actor_mut(actor_side).beng.consumed_beng_quan_chuo = beng_quan_chuo_bonus;
@@ -395,7 +396,11 @@ impl ReplayState {
         if momentum > 0 && !dream_mirage_attack.replaces_percent_momentum {
             let momentum_multiplier = self.actor(actor_side).beng.momentum_multiplier.max(1);
             factor_percent += momentum * 10 * momentum_multiplier;
-            self.modify_momentum(actor_side, -1);
+            let retain_momentum = self.actor(actor_side).identity.fate_strategies.contains(&428)
+                && self.active_effect_name().contains('掌');
+            if !retain_momentum {
+                self.modify_momentum(actor_side, -1);
+            }
         }
         // 梦•枯木逢春家族（base 4000087）：原版 CalculateAttack 在百分比
         // 倍率之前对「当前累计攻击值」整体翻倍（含星力/加攻等平值，

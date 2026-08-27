@@ -1019,6 +1019,7 @@ struct ReplayTurnState {
     // 也计入，玫刺(7000027) 等卡在自身攻击后读到的值 = 残留 + 本卡。
     actual_damage_carry: i64,
     wounded_count_carry: i64,
+    dan_ka_gong_ji_ji_shu: i64,
     ji_lu_zong_ji_shang_zhi: i64,
     spirit_turtle_footwork: i64,
     spirit_turtle_footwork_triggered: i64,

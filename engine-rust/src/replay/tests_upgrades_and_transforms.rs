@@ -428,3 +428,67 @@ fn temporary_cloud_hooks_run_but_beng_mindset_and_virtual_chain_stay_distinct() 
     assert_eq!(state.p1.beng.momentum, 0);
     assert_eq!(state.p1.core.hp, 30);
 }
+
+#[test]
+fn generating_interaction_upgrade_respects_no_upgrade_cards() {
+    let dream_fire = original_card_definition_by_id(7_020_083)
+        .expect("missing original 梦•火灵瞬燃 3档");
+    let fixture = minimal_fixture(
+        filler_cards(dream_fire.clone()),
+        filler_cards(basic_attack_test_card()),
+        FixtureExpected {
+            winner_side: PlayerSide::P1,
+            actor_turn_count: 1,
+            hp_delta_p1_minus_p2: 0,
+            final_hp: None,
+        },
+    );
+    let mut state = ReplayState::test_from_fixture(&fixture);
+    state.p1.fate.generating_interaction_upgrade = 1;
+    state.p1.elements.last_element = Some(Element::Wood);
+
+    state.test_execute_one_card(PlayerSide::P1);
+    assert_eq!(
+        state.p1.deck.slots[0].card.id, dream_fire.id,
+        "noUpgrade cards cannot be upgraded by generating interaction"
+    );
+}
+
+#[test]
+fn dan_ka_gong_ji_ji_shu_persists_across_turn_end_attack_and_triggers_heaven_cycle_sword_formation() {
+    let non_attack_card = original_card_definition_by_id(7_000_061)
+        .expect("missing original 木灵•暗香");
+    let fixture = minimal_fixture(
+        filler_cards(non_attack_card),
+        filler_cards(basic_attack_test_card()),
+        FixtureExpected {
+            winner_side: PlayerSide::P1,
+            actor_turn_count: 1,
+            hp_delta_p1_minus_p2: 0,
+            final_hp: None,
+        },
+    );
+    let mut state = ReplayState::test_from_fixture(&fixture);
+    state.p1.formations.heaven_cycle_sword_formation = 1;
+    state.p1.formations.heaven_cycle_sword_formation_damage = 5;
+    // Simulate turn-end attack (e.g. Fate 137 water momentum attack setting dan_ka_gong_ji_ji_shu)
+    state.p1.turn.dan_ka_gong_ji_ji_shu = 1;
+
+    let initial_p2_hp = state.p2.core.hp;
+    state.test_execute_one_card(PlayerSide::P1);
+
+    assert_eq!(
+        state.p1.formations.heaven_cycle_sword_formation, 0,
+        "heaven cycle sword formation should be triggered by dan_ka_gong_ji_ji_shu carry"
+    );
+    assert_eq!(
+        state.p2.core.hp,
+        initial_p2_hp - 5,
+        "p2 should take 5 damage from heaven cycle sword formation"
+    );
+    assert_eq!(
+        state.p1.turn.dan_ka_gong_ji_ji_shu, 0,
+        "dan_ka_gong_ji_ji_shu should be cleared after card after-hooks"
+    );
+}
+

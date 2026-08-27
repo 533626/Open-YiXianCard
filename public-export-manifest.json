@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
   "type": "open-yixiancard-public-export",
-  "sourceCommit": "372229444784661f05c82f78882909ed1468ff29",
-  "sourceTree": "ee312d7e1b9bebfa89f30eb960ed427e2e1df60d",
-  "policySha256": "3a92ee93811bf13b270acc843cacfc4db8a149962d563350eb722b9329c98231",
+  "sourceCommit": "ce830361b71857d208b37110cee5c48e10417fc3",
+  "sourceTree": "f0aee94039c84f0eee949546aa64b9d5a3895e05",
+  "policySha256": "e7662f5ba3333a9dde2bfe0553e0d103d6e332e9c293b201eef14b61e8f32ea7",
   "files": [
     {
       "path": ".agents/skills/battle-rule-development/SKILL.md",
@@ -63,7 +63,7 @@
       "path": "docs/AGENT_CONTEXT.md",
       "mode": "100644",
       "bytes": 3134,
-      "sha256": "bf7f0b72abe1954d64cd043b20ce362ec3090bebf5a3eaeb8dd3559f6d892df1"
+      "sha256": "ea606a29aa5886557dfc82b19908d7ce5640dc8d3a784293e4a0c47848aac669"
     },
     {
       "path": "docs/CROSS_LINE_RUNBOOK.md",
@@ -183,7 +183,7 @@
       "path": "engine-rust/data/rule-handler-dependencies.json",
       "mode": "100644",
       "bytes": 186590,
-      "sha256": "1da56febe775d8d24861a74d804d6cfbf818838fb6b9e5aba3d1b4ea06f5b5cd"
+      "sha256": "66607b1716b39ced41303209446f03b4ae930109981b4e07ea946ceb8752230a"
     },
     {
       "path": "engine-rust/scripts/generate-card-effect-catalog.ts",
@@ -236,8 +236,8 @@
     {
       "path": "engine-rust/src/replay.rs",
       "mode": "100644",
-      "bytes": 52583,
-      "sha256": "f50974b3fb92f101cee1e470fe0c916240f6d80899635a027c900809306a4a2f"
+      "bytes": 52615,
+      "sha256": "cabb2d13b46ddfa0061bdbf14e9bf15793efd665bcdd88aebf7d302686145046"
     },
     {
       "path": "engine-rust/src/replay/action_again.rs",
@@ -248,8 +248,8 @@
     {
       "path": "engine-rust/src/replay/battle_start.rs",
       "mode": "100644",
-      "bytes": 51209,
-      "sha256": "cabb6b44dceb63e4e6f9e455121b1528cf68d19ab83285e30f2c37379e42cb4d"
+      "bytes": 51325,
+      "sha256": "78351cb5ab64a3d6a3cd4084fb724ae44b4b844d8f9093988fa6e5b0887de15a"
     },
     {
       "path": "engine-rust/src/replay/body.rs",
@@ -386,14 +386,14 @@
     {
       "path": "engine-rust/src/replay/combat_core.rs",
       "mode": "100644",
-      "bytes": 35643,
-      "sha256": "e99a821e09ce1af8c2bb634ea0a565c4af8214938071979f7144683b539c43b7"
+      "bytes": 35922,
+      "sha256": "8ec9828a901dcf0a10152f377153e47cd5f0a245252d7a4023e348eb39ab71ea"
     },
     {
       "path": "engine-rust/src/replay/combat.rs",
       "mode": "100644",
-      "bytes": 42986,
-      "sha256": "15dedf073f11159126c2a86a415f3eec6e73bd9edd42118904add02551900278"
+      "bytes": 42962,
+      "sha256": "c6bc1ebc08c3073c477a701f534c68040a6ccd16f3674fca838a6a74cf51610b"
     },
     {
       "path": "engine-rust/src/replay/decisions.rs",
@@ -410,8 +410,8 @@
     {
       "path": "engine-rust/src/replay/dream_mirage_hooks.rs",
       "mode": "100644",
-      "bytes": 36569,
-      "sha256": "2d20cc67bc320467600809b771dc0031b7042db6746baca309362144dc19be85"
+      "bytes": 36780,
+      "sha256": "fd536320ffbad8f4aca45f4055ee61451e655864e75b38e1d0b744ea274815ce"
     },
     {
       "path": "engine-rust/src/replay/effect_invocation.rs",
@@ -452,8 +452,8 @@
     {
       "path": "engine-rust/src/replay/fate_strategy.rs",
       "mode": "100644",
-      "bytes": 18641,
-      "sha256": "690c5c7707ae1868e81a530e6c066460a58996b4d75095b932045519b87153a4"
+      "bytes": 18615,
+      "sha256": "e2de80408cafc59c99cf8ffb5abc096bc86ceffa175c231048588af0dcef18fe"
     },
     {
       "path": "engine-rust/src/replay/flow_card_effect_fallback.rs",
@@ -482,8 +482,8 @@
     {
       "path": "engine-rust/src/replay/flow_card_effect.rs",
       "mode": "100644",
-      "bytes": 30900,
-      "sha256": "cda710b2e159549d5755d2cc817106b59ce7ead9bb1a95025cc1421528c458ab"
+      "bytes": 30967,
+      "sha256": "b9d686c68e262ac7dbbc6d31047449292bbae42df54fecf7b1be3efa3a639922"
     },
     {
       "path": "engine-rust/src/replay/flow_initialization.rs",
@@ -506,14 +506,14 @@
     {
       "path": "engine-rust/src/replay/flow.rs",
       "mode": "100644",
-      "bytes": 72332,
-      "sha256": "52039b6f3ba150ac7ec3752f1caa9d119d713ddeaeada6616d02f9678f52d780"
+      "bytes": 72457,
+      "sha256": "d72667ae702135b5868f3b5eefb039fe52ac7b995e479fe95e811e56ad32375e"
     },
     {
       "path": "engine-rust/src/replay/formations.rs",
       "mode": "100644",
-      "bytes": 22704,
-      "sha256": "b90d0fff4bfbedd8f0f2b13d7deda400f5ba7c19347c2f8b698cb561cd0d34af"
+      "bytes": 22782,
+      "sha256": "3b55a0257d42ca017517b62b963c10d27fb7eecdaab2db5c65e46334120cc5eb"
     },
     {
       "path": "engine-rust/src/replay/hexagram_cards.rs",
@@ -554,8 +554,8 @@
     {
       "path": "engine-rust/src/replay/player.rs",
       "mode": "100644",
-      "bytes": 58900,
-      "sha256": "d0968bd613a5973a6fc5113ad45878ff9175026ac428b0bb541ef169211d6924"
+      "bytes": 58942,
+      "sha256": "db47f028e2890597f48fc22a4d07f61b867b5681772a17957d3164cf39e44854"
     },
     {
       "path": "engine-rust/src/replay/resources.rs",
@@ -620,8 +620,8 @@
     {
       "path": "engine-rust/src/replay/tests_build_2026_08_extreme.rs",
       "mode": "100644",
-      "bytes": 24482,
-      "sha256": "472f2230884813e71eaf3ede90c7005750810924a2294f35d570f20899bd2299"
+      "bytes": 24500,
+      "sha256": "5898993a32cd11ba46034b31e829d91bd19de0a8bec665b7282516b3e3cf208c"
     },
     {
       "path": "engine-rust/src/replay/tests_build_2026_08_talents.rs",
@@ -632,8 +632,8 @@
     {
       "path": "engine-rust/src/replay/tests_build_2026_08.rs",
       "mode": "100644",
-      "bytes": 44614,
-      "sha256": "6dc53b6cb9f2b768bce42cee33168bea5dfb166fb52db03034f7beb4489e790f"
+      "bytes": 44632,
+      "sha256": "1192357edbce88dc55627a40f21c19b0fda6fe00a9b3d94fc9a8e52be91ee5b5"
     },
     {
       "path": "engine-rust/src/replay/tests_card_execution_lifecycle.rs",
@@ -686,8 +686,8 @@
     {
       "path": "engine-rust/src/replay/tests_fate_strategy.rs",
       "mode": "100644",
-      "bytes": 21794,
-      "sha256": "228f0e778105192d6da21c3771870b1f01b9cad79a587671e78fdb1d99cd90e1"
+      "bytes": 24483,
+      "sha256": "262caa24453bbd49b0298982dcd72e7ac6d8dfae540d12e9bb883bf971bd0c9f"
     },
     {
       "path": "engine-rust/src/replay/tests_hold.rs",
@@ -758,8 +758,8 @@
     {
       "path": "engine-rust/src/replay/tests_upgrades_and_transforms.rs",
       "mode": "100644",
-      "bytes": 16156,
-      "sha256": "1c9d1b2b93b18ceea25f1006cc0eed8574f4a5330390fffd78a087c8dd6d3931"
+      "bytes": 18462,
+      "sha256": "15e20b69d94cc212d58487fcfcb26db316714c8b96668b43166ceea3842726aa"
     },
     {
       "path": "engine-rust/src/replay/tests.rs",
@@ -884,14 +884,14 @@
     {
       "path": "package.json",
       "mode": "100644",
-      "bytes": 9891,
-      "sha256": "318672dc6479d75e1601e8402424d6b68934b46887a70bba328dcf7dcc9ff799"
+      "bytes": 9937,
+      "sha256": "dd8c75442de136c4a79234e885336cf63c8173eb8ba4b5a9d702317bd2b55560"
     },
     {
       "path": "README.md",
       "mode": "100644",
       "bytes": 2050,
-      "sha256": "7d625271a965d6097584fda04e621425a4e854822ed9553bf3fb61a9a3c128c8"
+      "sha256": "0e46b44fa3892b9e68401b42b83f32300a932b73a34361ce8d3f06b3510e31ea"
     },
     {
       "path": "scripts/__tests__/doc-open-item.test.ts",
@@ -1011,7 +1011,7 @@
       "path": "shared/data/card-archive.json",
       "mode": "100644",
       "bytes": 714020,
-      "sha256": "54253abceacfd342b5a8862e3419c03e3f21ab0030663d11e29e418f6f2f6bd9"
+      "sha256": "3fcb5727953f40d506ae37712a5fd766b248f24f513ca01b3a136a40924db9a1"
     },
     {
       "path": "shared/data/character-talent-audit.json",
@@ -1052,14 +1052,14 @@
     {
       "path": "shared/data/original-build-profiles.json",
       "mode": "100644",
-      "bytes": 6038,
-      "sha256": "8c527c1c6f63d18f93d5ecbd85f95829195d4f8297f6a207a9c1d8ba58942b7a"
+      "bytes": 6409,
+      "sha256": "059d08cfbf64437fb97d805cb4f73770ae6840dd9d1cdcbd3aa80b3c32a7b5dd"
     },
     {
       "path": "shared/data/original-card-configs.ts",
       "mode": "100644",
-      "bytes": 931884,
-      "sha256": "f25863576a5eaff1267fbc89a7a9801a89e74fdff026492f130270ca83bb8523"
+      "bytes": 931885,
+      "sha256": "76ab7b95ad80326b931fbb59403ffd04151c76774aa06f868487420dd80becf9"
     },
     {
       "path": "shared/data/talent-archive.json",
@@ -1908,5 +1908,5 @@
       "sha256": "638113cf4444d1592ac2c6eea62bf819275ab6d51dde403881a2413d68dfd2a8"
     }
   ],
-  "treeDigest": "4c86f4a603badae74c8ba25d4022793afe85e05f74a253b8f21eb3175519c35f"
+  "treeDigest": "00e90512205b0dbfc0f82983b2b9f91430b3e15cecd432dafe2d6f19593d814f"
 }

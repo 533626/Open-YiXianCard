@@ -354,7 +354,7 @@ impl ReplayState {
             }
             10_000_092 => {
                 let attack = card.attack.unwrap_or(0)
-                    + self.actor(actor_side).core.anima * other_param(card, 0).max(0);
+                    + self.actor(actor_side).core.anima / 2;
                 if attack > 0 {
                     self.apply_attack(actor_side, attack, slot);
                     attacked = true;

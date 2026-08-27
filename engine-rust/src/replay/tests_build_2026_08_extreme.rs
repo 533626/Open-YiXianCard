@@ -167,14 +167,14 @@ fn extreme_forge_bone_grants_duan_gu_charges_and_agility() {
 #[test]
 fn extreme_night_ghost_howl_config_matches_build_24610558() {
     let base = original_card_definition_by_id(10000101).expect("missing 极•夜鬼啸");
-    assert_eq!(base.attack, Some(16));
+    assert_eq!(base.attack, Some(18));
     assert_eq!(base.anima, Some(-1), "费用 1 灵气");
     assert_eq!(base.other_params, vec![1]);
     let rare = original_card_definition_by_id(10010101).unwrap();
-    assert_eq!(rare.attack, Some(18));
+    assert_eq!(rare.attack, Some(22));
     assert_eq!(rare.other_params, vec![2]);
     let epic = original_card_definition_by_id(10020101).unwrap();
-    assert_eq!(epic.attack, Some(20));
+    assert_eq!(epic.attack, Some(26));
     assert_eq!(epic.other_params, vec![3]);
 }
 
@@ -187,12 +187,12 @@ fn extreme_night_ghost_howl_attacks_ignoring_defense_and_weakens_both_sides() {
     let howl = original_card_definition_by_id(10000101).expect("missing 极•夜鬼啸");
     let mut battle = fixture(deck(howl.clone()), deck(basic_attack()));
     battle.players.p1.initial_anima = 2; // 满足 1 灵气费用
-    battle.players.p2.initial_defense = 20; // 防御足够吸收普通 16 攻
+    battle.players.p2.initial_defense = 20; // 防御足够吸收普通 18 攻
     let mut state = ReplayState::test_from_fixture(&battle);
 
     state.test_apply_card_effect(PlayerSide::P1, &howl, 0);
 
-    assert_eq!(state.p2.core.hp, 30 - 16); // 无视防御全量命中
+    assert_eq!(state.p2.core.hp, 30 - 18); // 无视防御全量命中
     assert_eq!(state.p2.core.defense, 20); // 防御未被消耗
     assert_eq!(state.p1.status.weakness, 1); // 双方虚弱+1
     assert_eq!(state.p2.status.weakness, 1);
@@ -319,7 +319,7 @@ fn yin_fu_jue_zhen_fate_405_grants_opponent_anima_on_weakness() {
 #[test]
 fn extreme_five_elements_spirit_strike_config_matches_build_24610558() {
     let base = original_card_definition_by_id(7000107).expect("missing 极•五行灵击");
-    assert_eq!(base.attack, Some(12));
+    assert_eq!(base.attack, Some(15));
     assert_eq!(base.anima, Some(-5));
     assert_eq!(base.other_params, vec![2]);
     assert_eq!(
@@ -339,13 +339,13 @@ fn extreme_five_elements_spirit_strike_config_matches_build_24610558() {
 #[test]
 fn extreme_five_elements_spirit_strike_scales_with_remaining_anima() {
     // Card_7000107.cs: Attack(dst, attack + anima * otherParams[0], attackCount)。
-    // 24705509 起 attack=12（24666769 为 8）。
+    // 24811621 起 attack=15（24705509 为 12，24666769 为 8）。
     let strike = original_card_definition_by_id(7000107).expect("missing 极•五行灵击");
     let mut battle = fixture(deck(strike.clone()), deck(basic_attack()));
     battle.players.p1.initial_anima = 10;
     let mut state = ReplayState::test_from_fixture(&battle);
     state.test_apply_card_effect(PlayerSide::P1, &strike, 0);
-    assert_eq!(state.p2.core.hp, 30 - (12 + 10 * 2));
+    assert_eq!(state.p2.core.hp, 30 - (15 + 10 * 2));
 }
 
 #[test]

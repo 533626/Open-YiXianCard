@@ -864,14 +864,14 @@ fn extreme_frenzy_sword_first_form_adds_kuang_jian_count_per_use() {
 #[test]
 fn extreme_ling_xi_sword_formation_config_matches_build_24610558() {
     let base = original_card_definition_by_id(1000100).expect("missing 极•灵犀剑阵");
-    assert_eq!(base.defense, Some(4));
+    assert_eq!(base.defense, Some(6));
     assert_eq!(base.other_params, vec![8]);
     assert_eq!(base.action_again, Some(true));
     let rare = original_card_definition_by_id(1010100).unwrap();
-    assert_eq!(rare.defense, Some(8));
+    assert_eq!(rare.defense, Some(11));
     assert_eq!(rare.other_params, vec![12]);
     let epic = original_card_definition_by_id(1020100).unwrap();
-    assert_eq!(epic.defense, Some(12));
+    assert_eq!(epic.defense, Some(16));
     assert_eq!(epic.other_params, vec![16]);
 }
 
@@ -879,7 +879,7 @@ fn extreme_ling_xi_sword_formation_config_matches_build_24610558() {
 fn extreme_ling_xi_sword_formation_converts_capped_sword_intent_to_anima() {
     // Card_1000100.cs: def>0 → ModifyDef(def)；num3 = min(剑意, otherParams[0])，
     // 先 ModifyBuffValue(JianYi, -num3) 再 ModifyAnima(num3)。
-    // 24705509 起 def=4（24666769 为 2）。
+    // 24811621 起 def=6（24705509 为 4，24666769 为 2）。
     let formation = original_card_definition_by_id(1000100).expect("missing 极•灵犀剑阵");
     let mut battle = fixture(deck(formation.clone()), deck(basic_attack()));
     battle.players.p1.initial_anima = 1; // 满足费用
@@ -888,7 +888,7 @@ fn extreme_ling_xi_sword_formation_converts_capped_sword_intent_to_anima() {
 
     state.test_apply_card_effect(PlayerSide::P1, &formation, 0);
 
-    assert_eq!(state.p1.core.defense, 4); // 防+4
+    assert_eq!(state.p1.core.defense, 6); // 防+6
     assert_eq!(state.p1.core.anima, 6); // 灵气 1 + 剑意 5
     assert_eq!(state.p1.sword.sword_intent, 0);
 

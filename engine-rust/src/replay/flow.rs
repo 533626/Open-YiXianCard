@@ -817,11 +817,11 @@ impl ReplayState {
             ),
         );
         self.clear_next_card_anima_cost_reduction(actor_side);
-        // CardActionBase.CheckAnima（build 24646245）：fate 412（慕虎专属，
-        // FateStrategyConfig otherParams[0]=3）把名字含「木灵」的牌的灵气
-        // 消耗改为支付等量生命（isCost），与 resonance 43 同款分支
-        // （CardActionBase.cs:5053-5058）。转换在冥想之后、剑气之前，
-        // 转换后 num=0 不再触发剑气/星力/灵气不足。
+        // CardActionBase.CheckAnima：fate 412（慕虎专属）把名字含「木灵」
+        // 的牌的灵气消耗改为支付 otherParams[0] 倍生命（isCost），与
+        // resonance 43 同款分支（CardActionBase.cs:5108-5114）。24811621
+        // otherParams=[2]（此前为 [3]）。转换在冥想之后、剑气之前，转换后
+        // num=0 不再触发剑气/星力/灵气不足。
         let mut wood_spirit_hp_cost = 0;
         if anima_cost > 0
             && self
@@ -831,7 +831,7 @@ impl ReplayState {
                 .contains(&412)
             && drawn.card.name.contains("木灵")
         {
-            wood_spirit_hp_cost = anima_cost * 3;
+            wood_spirit_hp_cost = anima_cost * 2;
             anima_cost = 0;
         }
         let anima_before = self.actor(actor_side).core.anima;
@@ -1407,6 +1407,9 @@ impl ReplayState {
             current_element,
             self.actor(actor_side).identity.talents.contains(&137),
         ) {
+            return drawn;
+        }
+        if !super::original_config::can_upgrade_original_battle_deck_card(drawn.card.id) {
             return drawn;
         }
         let upgraded_id = drawn.card.id + 10_000;

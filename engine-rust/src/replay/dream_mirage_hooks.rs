@@ -51,7 +51,11 @@ impl ReplayState {
         let multiplier = self.actor(actor_side).beng.momentum_multiplier.max(1);
         let mut flat_bonus = self.actor(actor_side).beng.momentum.max(0) * multiplier;
         if self.actor(actor_side).beng.momentum > 0 {
-            self.modify_momentum(actor_side, -1);
+            let retain_momentum = self.actor(actor_side).identity.fate_strategies.contains(&428)
+                && self.active_effect_name().contains('掌');
+            if !retain_momentum {
+                self.modify_momentum(actor_side, -1);
+            }
         }
         // BattleCharacter.CalculateAttack HasCardInDeck(10000084) 平值分支
         // （BattleCharacter.cs:11583-11584）：玄心斩魄（buff XuanXinZhanPo →
