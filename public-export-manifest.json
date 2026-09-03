@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "type": "open-yixiancard-public-export",
-  "sourceCommit": "5ff82a69168f31e3eab03fe1fa50cfd252c2f727",
-  "sourceTree": "5db35c07e6956cf1b27a4483127f820903db546b",
+  "sourceCommit": "aeb9a72b6c190453dfec2a92830770be8e6a25ef",
+  "sourceTree": "7033b609932903e11dd5ad85ae12c6f1e955a621",
   "policySha256": "57af68d20a4e2e872eaa1f7ac66733b86fde736b634d18e44eaa7b572272fb0b",
   "files": [
     {
@@ -69,7 +69,7 @@
       "path": "docs/AGENT_CONTEXT.md",
       "mode": "100644",
       "bytes": 3134,
-      "sha256": "ea606a29aa5886557dfc82b19908d7ce5640dc8d3a784293e4a0c47848aac669"
+      "sha256": "ced150ce748c7d61ec679334aa351c644c497a3a3990352d6eee843f6953e462"
     },
     {
       "path": "docs/CROSS_LINE_RUNBOOK.md",
@@ -188,8 +188,8 @@
     {
       "path": "engine-rust/data/rule-handler-dependencies.json",
       "mode": "100644",
-      "bytes": 186590,
-      "sha256": "66607b1716b39ced41303209446f03b4ae930109981b4e07ea946ceb8752230a"
+      "bytes": 186615,
+      "sha256": "4bf0cbddc0154fd5da22fa7d6415d8c0c84e4c88eefe9d59f8525a1e593e4a52"
     },
     {
       "path": "engine-rust/scripts/generate-card-effect-catalog.ts",
@@ -434,8 +434,8 @@
     {
       "path": "engine-rust/src/replay/elements.rs",
       "mode": "100644",
-      "bytes": 34097,
-      "sha256": "3985f47d80f2d73a47f1176cfe12f020efff745fd9c169bdbda3684a7895c09f"
+      "bytes": 34666,
+      "sha256": "c58e4237ab02b01165bfeebd5793f537bc226d35a7313e36bfc23ebd765fe938"
     },
     {
       "path": "engine-rust/src/replay/engine_contract.rs",
@@ -458,8 +458,8 @@
     {
       "path": "engine-rust/src/replay/fate_strategy.rs",
       "mode": "100644",
-      "bytes": 18615,
-      "sha256": "e2de80408cafc59c99cf8ffb5abc096bc86ceffa175c231048588af0dcef18fe"
+      "bytes": 20284,
+      "sha256": "032c8aeaa98c65ffece444b35df8556227d670a4a789c0116393a10459c8d4cf"
     },
     {
       "path": "engine-rust/src/replay/flow_card_effect_fallback.rs",
@@ -548,14 +548,14 @@
     {
       "path": "engine-rust/src/replay/original_build_profile.rs",
       "mode": "100644",
-      "bytes": 11779,
-      "sha256": "070c2e0d98c9bcc33a03551896b0a7a9d66954612af5c785aabbf8a71be92144"
+      "bytes": 12200,
+      "sha256": "3738a12bb815049d85570d03fccac69e74658ab0d7c39267c6dde5adf34ff807"
     },
     {
       "path": "engine-rust/src/replay/original_config.rs",
       "mode": "100644",
-      "bytes": 15710,
-      "sha256": "acd2d56c92aeccdd6b48122412654b2c90c818b068365a130b7ac8a41c09d813"
+      "bytes": 17341,
+      "sha256": "87431f88a4443dc4ee1b2bf402a12088afab652d14ad920fc748df6071c3b65c"
     },
     {
       "path": "engine-rust/src/replay/player.rs",
@@ -632,8 +632,8 @@
     {
       "path": "engine-rust/src/replay/tests_build_2026_08_talents.rs",
       "mode": "100644",
-      "bytes": 23692,
-      "sha256": "b176d2eedb3b74fa4a4217f66066957b88972fc101bd7ae8d1e6a543a53d7712"
+      "bytes": 23719,
+      "sha256": "c50a84288a644c5c230cdfba37006ef7409c25ffa48ffebf37525cb14f70c7ce"
     },
     {
       "path": "engine-rust/src/replay/tests_build_2026_08.rs",
@@ -692,8 +692,8 @@
     {
       "path": "engine-rust/src/replay/tests_fate_strategy.rs",
       "mode": "100644",
-      "bytes": 24483,
-      "sha256": "262caa24453bbd49b0298982dcd72e7ac6d8dfae540d12e9bb883bf971bd0c9f"
+      "bytes": 28899,
+      "sha256": "506adea6ea088963ecd6a62d82edf4b5cce9f7dcfe3dcb8c70c23c5c4d0a37cd"
     },
     {
       "path": "engine-rust/src/replay/tests_hold.rs",
@@ -897,7 +897,7 @@
       "path": "README.md",
       "mode": "100644",
       "bytes": 2050,
-      "sha256": "0e46b44fa3892b9e68401b42b83f32300a932b73a34361ce8d3f06b3510e31ea"
+      "sha256": "452b8711c3fa8b390300599bafcaf7dc06a1544679fdff5944beed9fa62bcc81"
     },
     {
       "path": "scripts/__tests__/doc-open-item.test.ts",
@@ -1058,8 +1058,8 @@
     {
       "path": "shared/data/original-build-profiles.json",
       "mode": "100644",
-      "bytes": 6409,
-      "sha256": "059d08cfbf64437fb97d805cb4f73770ae6840dd9d1cdcbd3aa80b3c32a7b5dd"
+      "bytes": 6780,
+      "sha256": "54d890d10c1bb9fc4eafcb522a92060f8bb0c6e287f1552116659cb506cddff0"
     },
     {
       "path": "shared/data/original-card-configs.ts",
@@ -1914,5 +1914,5 @@
       "sha256": "638113cf4444d1592ac2c6eea62bf819275ab6d51dde403881a2413d68dfd2a8"
     }
   ],
-  "treeDigest": "074f4484e792b1bea186e9e3cb6170f2cbad0993442ab52f98107053db9594ac"
+  "treeDigest": "5f3d370fe51e4c7203ac87f9dc9b0173b8b53a1a0953b659f8207ebfeb101313"
 }

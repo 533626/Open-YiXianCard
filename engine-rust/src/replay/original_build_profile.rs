@@ -61,6 +61,16 @@ impl OriginalBuildProfile {
             .get(capability.contract_key())
             .expect("engine capability is present in validated contract")
     }
+
+    /// 对局录制 build 的数值形式，用于按 build 生效的数值门控（如弯弓射虎）。
+    pub(super) fn steam_build_number(self) -> u64 {
+        original_build_profiles()
+            .expect("validated original-build profile contract")
+            .profiles[self.profile_index]
+            .steam_build
+            .parse()
+            .expect("original-build profile steamBuild is numeric")
+    }
 }
 
 pub(super) fn resolve_original_build_profile(

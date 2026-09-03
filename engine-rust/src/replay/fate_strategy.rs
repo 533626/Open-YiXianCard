@@ -85,6 +85,33 @@ impl ReplayState {
         }
     }
 
+    /// 弯弓射虎先机回血量（Card_4000097.cs 读 otherParams[0]），按对局
+    /// steamBuild 选参：≥BOW_SHOOT_TIGER_PARAMS_SINCE_BUILD 用新值
+    /// （12/20/28），否则用旧值（16/24/32，catalog/夹具值）。一刀切新值
+    /// 曾翻转 284 个旧 exact，故不得直接读 catalog 新值。otherParams[1]/[2]
+    /// 与 attack 三档未变，走 card 值。oracle 锚点：yiwen-20260903-63bcb796
+    /// f4eu5d4/round-12 cp26（25093011 对局 4010097 +20：maxHp 97→117、
+    /// hp 46→66）与旧 build 同逻辑对局（+24）。
+    /// 阈值教训：external/hf-latest-32728000 同标 24963639 的 85 个对局
+    /// 对新旧值需求相反——阈值对照实验（全量 admission，基线
+    /// .rotation/24963639-to-25093011/screen-full-once.receipt）：阈值
+    /// u64::MAX（全旧值）时 82 个 exact、7 个（4 yiwen-20260903 + 3 同批
+    /// 镜像）mismatch；阈值 24963639 时反过来。同一标签无法同时满足，
+    /// 该镜像批标签为批次级、不可信（provenance=third-party-mirror），
+    /// 故阈值保守取 25093011（oracle 背书），82 个留待收口重标真实 build。
+    fn bow_shoot_tiger_first_move_gain(&self, card: &CardDefinition) -> i64 {
+        if self.original_build_profile.steam_build_number()
+            >= super::original_config::BOW_SHOOT_TIGER_PARAMS_SINCE_BUILD
+        {
+            if let Some(params) =
+                super::original_config::bow_shoot_tiger_current_other_params(card.id)
+            {
+                return params[0].max(0);
+            }
+        }
+        other_param(card, 0).max(0)
+    }
+
     fn apply_fate_strategy_main_card_effect(
         &mut self,
         actor_side: PlayerSide,
@@ -303,7 +330,7 @@ impl ReplayState {
             }
             4_000_097 => {
                 if !was_used_before_effect {
-                    let gain = other_param(card, 0).max(0);
+                    let gain = self.bow_shoot_tiger_first_move_gain(card);
                     if gain > 0 {
                         self.modify_actor_max_hp(actor_side, gain);
                         self.modify_actor_hp(actor_side, gain, false, false);

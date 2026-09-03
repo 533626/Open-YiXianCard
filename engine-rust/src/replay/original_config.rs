@@ -84,6 +84,15 @@ pub(super) fn original_card_definition(card_id: i64) -> Option<CardDefinition> {
     catalog().cards.get(&card_id).cloned()
 }
 
+/// 弯弓射虎三档在 effective-since-build 起的新 otherParams（见 catalog
+/// 加载处的版本说明）。调用方按对局 steamBuild 选参，不得直接覆盖 catalog。
+pub(super) fn bow_shoot_tiger_current_other_params(card_id: i64) -> Option<[i64; 3]> {
+    BOW_SHOOT_TIGER_CURRENT_OTHER_PARAMS
+        .iter()
+        .find(|(id, _)| *id == card_id)
+        .map(|(_, value)| *value)
+}
+
 /// 客户端 CardConfig.rarity 语义（无 rarity 字段 = 0）。大量隐藏牌/梦牌
 /// （如 7020089 梦•火灵聚炎、7040089）配置里没有 rarity 字段，与 id 档位
 /// 推断不一致；凡原版读 cardConfig.rarity 的钳制/选档逻辑必须走配置值。
@@ -258,6 +267,23 @@ fn merge_card_with_original(card: &CardDefinition, original: &CardDefinition) ->
     }
 }
 
+/// 弯弓射虎三档 otherParams 的 effective-since-build。客户端解码数据上
+/// 该下调（4000097 [16,4,10]→[12,4,10]、4010097 [24,4,10]→[20,4,10]、
+/// 4020097 [32,4,10]→[28,4,10]）落在 24811621→24963639 区间，但取保守阈值
+/// 25093011：external/hf-latest-32728000 镜像批同标 24963639 的 85 个对局
+/// 对新旧值需求相反（82 个要旧值、3 个要新值，阈值实验证明见
+/// fate_strategy.rs 弯弓射虎分支注释），标签无法区分，只能按 oracle 背书
+/// 的 25093011（含 yiwen-20260903 302 全 exact）生效新值；其余一律旧值。
+/// 待 orchestrator 把 82 个镜像对局重标回真实录制 build 后，可将本阈值
+/// 下调到 24_963_639（单行）。shared 快照重生成到新值后删除本表及门控。
+pub(super) const BOW_SHOOT_TIGER_PARAMS_SINCE_BUILD: u64 = 25_093_011;
+
+const BOW_SHOOT_TIGER_CURRENT_OTHER_PARAMS: &[(i64, [i64; 3])] = &[
+    (4_000_097, [12, 4, 10]),
+    (4_010_097, [20, 4, 10]),
+    (4_020_097, [28, 4, 10]),
+];
+
 fn load_original_card_catalog() -> OriginalCardCatalog {
     let source = include_str!("../../../shared/data/original-card-configs.ts");
     let marker = "JSON.parse(\"";
@@ -289,6 +315,8 @@ fn load_original_card_catalog() -> OriginalCardCatalog {
         (6010004, 21),
         (6020004, 26),
     ];
+    // 弯弓射虎新 otherParams 见模块级 BOW_SHOOT_TIGER_CURRENT_OTHER_PARAMS
+    //（只存新值、不直接覆盖 catalog，调用方按对局 steamBuild 选参）。
     let mut cards = HashMap::new();
     let mut meta = HashMap::new();
     let mut anima_desc_card_ids = HashSet::new();

@@ -1,5 +1,5 @@
 use super::*;
-use crate::fixture::{BattleFixture, FixtureExpected, FixturePlayer, FixturePlayers};
+use crate::fixture::{BattleFixture, FixtureExpected, FixturePlayer, FixturePlayers, FixtureSource};
 use crate::model::{CardDefinition, PlayerSide, DECK_SIZE};
 
 fn basic_attack() -> CardDefinition {
@@ -665,4 +665,94 @@ fn card_10000092_ling_kong_fei_sao_uses_half_anima_attack() {
 
     // p2 takes 10 damage: 100 - 10 = 90
     assert_eq!(state.p2.core.hp, 90);
+}
+
+#[test]
+fn card_4000097_bent_bow_heal_amount_follows_fixture_build() {
+    // build 24963639 CardConfig：弯弓射虎 otherParams[0] 下调 4：
+    // 4000097 [16,4,10]→[12,4,10]、4010097 [24,4,10]→[20,4,10]、
+    // 4020097 [32,4,10]→[28,4,10]。Card_4000097.cs 先机
+    // ModifyMaxHp/ModifyHp(otherParams[0])；后招 attack + AddHpCount/otherParams[1]。
+    // shared 快照仍是旧值：catalog 保持旧值断言是故意的，shared 重生成到
+    // ≥24963639 时本断言失败即提醒删除门控表。一刀切新值曾翻转 284 个旧 exact。
+    for (card_id, legacy_gain) in [(4_000_097, 16), (4_010_097, 24), (4_020_097, 32)] {
+        let card = original_card_definition_by_id(card_id)
+            .unwrap_or_else(|| panic!("missing original card {card_id}"));
+        assert_eq!(card.attack, Some(8), "card {card_id}");
+        assert_eq!(card.other_params, vec![legacy_gain, 4, 10], "card {card_id}");
+    }
+
+    // 新 build（25093011）：4010097 首次打出（先机生效、后招不成立），
+    // 46/97 → maxHp 117、hp 66、本场累计回血 +20，对方不受击。
+    // oracle 锚点：yiwen-20260903-63bcb796 f4eu5d4/round-12 cp26。
+    let card = original_card_definition_by_id(4_010_097).expect("missing 弯弓射虎 4010097");
+    let mut new_fixture = {
+        let mut p1 = player();
+        p1.cards = vec![card.clone(); DECK_SIZE];
+        fixture(p1, player())
+    };
+    new_fixture.source = Some(FixtureSource {
+        steam_build: Some("25093011".to_string()),
+        ..FixtureSource::default()
+    });
+    let mut state = ReplayState::test_from_fixture(&new_fixture);
+    state.p1.core.max_hp = 97;
+    state.p1.core.hp = 46;
+    state.test_apply_card_effect(PlayerSide::P1, &card, 0);
+    assert_eq!(state.p1.core.max_hp, 117);
+    assert_eq!(state.p1.core.hp, 66);
+    assert_eq!(state.p1.hp_mutation.add_hp_count, 20);
+    assert_eq!(state.p2.core.hp, 100);
+
+    // 旧 build（24811621）：同样首差点回 +24（maxHp 121、hp 70、累计 +24），
+    // 当时旧值正确，门控必须保留此档。注意 24963639 标签刻意不断言：
+    // external/hf-latest-32728000 同标签对局新旧值需求相反（镜像批次标签
+    // 不可信），门控阈值保守取 25093011，见分支注释。
+    let mut old_fixture = {
+        let mut p1 = player();
+        p1.cards = vec![card.clone(); DECK_SIZE];
+        fixture(p1, player())
+    };
+    old_fixture.source = Some(FixtureSource {
+        steam_build: Some("24811621".to_string()),
+        ..FixtureSource::default()
+    });
+    let mut old_state = ReplayState::test_from_fixture(&old_fixture);
+    old_state.p1.core.max_hp = 97;
+    old_state.p1.core.hp = 46;
+    old_state.test_apply_card_effect(PlayerSide::P1, &card, 0);
+    assert_eq!(old_state.p1.core.max_hp, 121);
+    assert_eq!(old_state.p1.core.hp, 70);
+    assert_eq!(old_state.p1.hp_mutation.add_hp_count, 24);
+    assert_eq!(old_state.p2.core.hp, 100);
+}
+
+#[test]
+fn fate_strategy_128_water_spirit_card_grants_sharpness() {
+    // build 25093011 FateStrategyFunctions.cs 新增（金灵分支之后、320 分支之前）：
+    // HasFateStrategy(128) && cardConfig.name.Contains("水灵")
+    //   → ModifyBuffValue(BuffType.FengRui, 1)。
+    let mut water_card = basic_attack();
+    water_card.name = "水灵•春雨".to_string();
+
+    let mut p1 = player();
+    p1.fate_strategies = vec![128];
+    let mut state = ReplayState::test_from_fixture(&fixture(p1, player()));
+    state.apply_selected_card_hooks(PlayerSide::P1, &water_card, 0);
+    assert_eq!(state.p1.sword.sharpness, 1);
+
+    // 对照：无 Fate 128 时水灵牌不加锋锐。
+    let mut state_no_fate = ReplayState::test_from_fixture(&fixture(player(), player()));
+    state_no_fate.apply_selected_card_hooks(PlayerSide::P1, &water_card, 0);
+    assert_eq!(state_no_fate.p1.sword.sharpness, 0);
+
+    // 对照：持 Fate 128 打金灵牌不加锋锐，旧行为（+1 灵气）保持。
+    let mut gold_card = basic_attack();
+    gold_card.name = "金灵•铁骨".to_string();
+    let mut p1_gold = player();
+    p1_gold.fate_strategies = vec![128];
+    let mut state_gold = ReplayState::test_from_fixture(&fixture(p1_gold, player()));
+    state_gold.apply_selected_card_hooks(PlayerSide::P1, &gold_card, 0);
+    assert_eq!(state_gold.p1.sword.sharpness, 0);
+    assert_eq!(state_gold.p1.core.anima, 1);
 }

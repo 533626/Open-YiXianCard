@@ -386,8 +386,9 @@ fn five_elements_cycle_dream_card_temp_execution_unclamped_7020089_anchor() {
     state.test_apply_card_effect(PlayerSide::P1, &cycle, 1);
 
     assert_eq!(state.p1.core.anima, 3); // 整卡 anima，非钳制 7000089 的 1
-    assert_eq!(state.p2.core.hp, 30 - (2 + 3 * 1)); // 2 + anima×1 = 5
-    assert_eq!(state.p2.core.max_hp, 30 - (2 + 3 * 1));
+    let anima = 1;
+    assert_eq!(state.p2.core.hp, 30 - (2 + 3 * anima)); // 2 + anima×1 = 5
+    assert_eq!(state.p2.core.max_hp, 30 - (2 + 3 * anima));
 }
 
 #[test]

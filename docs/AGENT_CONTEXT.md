@@ -2,7 +2,7 @@
 
 本文件是给 coding agent 的最小入口。需要更多背景时再跳到对应报告。
 
-当前公开证据目标为 Steam build 24963639；canonical Rust/UI public checks are fixture-free。回放 corpus、准入/oracle metadata、Analysis 与 TUI 保留在私有开发用 `main`，但不进入公开导出。
+当前公开证据目标为 Steam build 25093011；canonical Rust/UI public checks are fixture-free。回放 corpus、准入/oracle metadata、Analysis 与 TUI 保留在私有开发用 `main`，但不进入公开导出。
 
 ## 当前路线
 
