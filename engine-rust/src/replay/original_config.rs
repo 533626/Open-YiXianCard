@@ -273,10 +273,25 @@ fn merge_card_with_original(card: &CardDefinition, original: &CardDefinition) ->
 /// 25093011：external/hf-latest-32728000 镜像批同标 24963639 的 85 个对局
 /// 对新旧值需求相反（82 个要旧值、3 个要新值，阈值实验证明见
 /// fate_strategy.rs 弯弓射虎分支注释），标签无法区分，只能按 oracle 背书
-/// 的 25093011（含 yiwen-20260903 302 全 exact）生效新值；其余一律旧值。
+/// 的 25093011（新 yiwen 批 302 全 exact）生效新值；其余一律旧值。
 /// 待 orchestrator 把 82 个镜像对局重标回真实录制 build 后，可将本阈值
 /// 下调到 24_963_639（单行）。shared 快照重生成到新值后删除本表及门控。
 pub(super) const BOW_SHOOT_TIGER_PARAMS_SINCE_BUILD: u64 = 25_093_011;
+
+/// 凌空飞扫（10000092/10010092/10020092）攻击公式的 effective-since-build。
+/// Card_10000092.cs OnExecuted 在 24811621→24963639 由
+/// `attack + anima * otherParams[0]` 改为 `attack + anima / 2`（同 build
+/// CardConfig hpCost 6→2，随 fixture 内嵌值自动生效，无需门控）。
+/// 镜像语料中标注 ≥24963639 且含本卡的 619 个 fixture 内嵌 hpCost 均为 2
+/// （新客户端指纹），阈值取 24_963_639 与镜像标签零冲突。
+pub(super) const LING_KONG_FEI_SAO_FORMULA_SINCE_BUILD: u64 = 24_963_639;
+
+/// FateStrategy 128 水灵→锋锐分支的 effective-since-build。
+/// FateStrategyFunctions.cs 的 `HasFateStrategy(128) && name.Contains("水灵")`
+/// hunk 在 24963639→25093011 才引入；旧 build 客户端不存在该分支，旧录制
+/// （如 candidates eswiq48）不得加锋锐。HF retained 普查 fate128=0，
+/// 门控对镜像层零影响。
+pub(super) const FATE_128_WATER_SPIRIT_SHARPNESS_SINCE_BUILD: u64 = 25_093_011;
 
 const BOW_SHOOT_TIGER_CURRENT_OTHER_PARAMS: &[(i64, [i64; 3])] = &[
     (4_000_097, [12, 4, 10]),

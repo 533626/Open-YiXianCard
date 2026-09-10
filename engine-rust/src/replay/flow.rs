@@ -167,12 +167,8 @@ impl ReplayState {
         };
         self.apply_turn_start_phases(actor_side);
         self.completed_checkpoint_count += 1;
-        // The TurnStart checkpoint timing is rule semantics, not just a
-        // collection choice. Parity snapshots AFTER the turn-start hooks to
-        // match the original client's post-injury/heal checkpoint; the
-        // event/detailed streams snapshot BEFORE them (raw_turn_start_event_index
-        // above) to expose the pre-hook frame. Only the parity stream feeds
-        // exact comparison, so the two are intentionally not interchangeable.
+        // Parity snapshots AFTER turn-start hooks (original post-injury/heal checkpoint);
+        // event/detailed streams snapshot BEFORE them. Only parity feeds exact comparison.
         if self.observation.mode.is_parity() {
             self.record_event(super::ReplayEventKind::TurnStart, actor_side, None, None);
         }
@@ -206,14 +202,7 @@ impl ReplayState {
         }
         let completed_turn = self.death_winner().is_none();
         if !completed_turn && self.termination_cause.is_none() {
-            // 出牌阶段致死，但没走到 finish_card_transaction 里的分类点——例如
-            // preflight 阶段的牌前效果直接打死人，卡牌本身没有完整结算，循环靠
-            // `continue_acting == false` 退出。此时 TurnStartLethal 已经判过、
-            // TurnEndLethal 又被 completed_turn 挡住，死因会留空，最终在
-            // run_replay_fixture_with_observation 里炸成 "replay has no termination
-            // cause"（2026-07-25 实测 4000005:7 self-play seed 1：actor_turn=54、
-            // p1_hp=0、winner=P2，胜负和血量都已正确，缺的只是死因标签）。
-            // 这里只补分类，不改任何战斗结果。
+            // Preflight牌前效果致死时无完整结算分类点，只补死因标签，不改战斗结果。
             self.termination_cause = Some(super::ReplayTerminationCause::CardLethal);
         }
         if completed_turn {

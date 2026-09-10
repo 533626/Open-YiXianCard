@@ -722,7 +722,17 @@ impl ReplayState {
                 {
                     self.actor_mut(actor_side).fate.exorcism += 2;
                 }
-                self.modify_actor_hp(actor_side, 9, false, false);
+                // FateStrategyConfig(151).otherParams[1]：24811621 起 5→9
+                // （≤24610558 均为 5）。旧 build 硬编码 9 曾使 candidates
+                // emz5odc（24371489 录制）开局多回 4 点漂移。
+                let opening_heal = if self.original_build_profile.steam_build_number()
+                    >= 24_811_621
+                {
+                    9
+                } else {
+                    5
+                };
+                self.modify_actor_hp(actor_side, opening_heal, false, false);
             }
             if player_fixture.talents.contains(&199) {
                 self.apply_talent_199_bottle_elements(actor_side, player_fixture);

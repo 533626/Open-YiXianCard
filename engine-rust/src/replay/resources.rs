@@ -403,7 +403,18 @@ impl ReplayState {
             }
         };
         let before = *field;
-        *field = (*field + delta).max(0);
+        // 原版 BattleCharacter.AddMengEJieSkipPos：MengEJie 是位掩码 buff，
+        // 同一格重复 Add 必须幂等（buffValue |= 1 << grid）。通用 += 会在
+        // 重复 Add 时进位（8 + 8 = 16），把跳过位搬到错误的格。
+        // oracle 锚点：hf-latest-33065000 f2a0644b9355511f/round-11——
+        // P1 T5 命运轮回跳过 10369 梦•厄劫缠身再次触发开局，原版 mask
+        // 保持 0x8（P2 T6 跳过 7000027 打出 7000022），引擎算成 0x10
+        // 导致 P2 T6 打出 7000027，终局 hpDelta -17 vs 原版 -14。
+        if value == DreamMirageValue::CalamitySkipMask && delta > 0 {
+            *field |= delta;
+        } else {
+            *field = (*field + delta).max(0);
+        }
         *field - before
     }
 

@@ -89,13 +89,13 @@ impl ReplayState {
     /// steamBuild 选参：≥BOW_SHOOT_TIGER_PARAMS_SINCE_BUILD 用新值
     /// （12/20/28），否则用旧值（16/24/32，catalog/夹具值）。一刀切新值
     /// 曾翻转 284 个旧 exact，故不得直接读 catalog 新值。otherParams[1]/[2]
-    /// 与 attack 三档未变，走 card 值。oracle 锚点：yiwen-20260903-63bcb796
-    /// f4eu5d4/round-12 cp26（25093011 对局 4010097 +20：maxHp 97→117、
-    /// hp 46→66）与旧 build 同逻辑对局（+24）。
+    /// 与 attack 三档未变，走 card 值。oracle 锚点：25093011 真实对局
+    /// 4010097 +20（maxHp 97→117、hp 46→66），与旧 build 同逻辑对局（+24）；
+    /// 取样批次与逐案收据见私有 rotation 记录。
     /// 阈值教训：external/hf-latest-32728000 同标 24963639 的 85 个对局
     /// 对新旧值需求相反——阈值对照实验（全量 admission，基线
     /// .rotation/24963639-to-25093011/screen-full-once.receipt）：阈值
-    /// u64::MAX（全旧值）时 82 个 exact、7 个（4 yiwen-20260903 + 3 同批
+    /// u64::MAX（全旧值）时 82 个 exact、7 个（4 个新 yiwen 批 + 3 个同批
     /// 镜像）mismatch；阈值 24963639 时反过来。同一标签无法同时满足，
     /// 该镜像批标签为批次级、不可信（provenance=third-party-mirror），
     /// 故阈值保守取 25093011（oracle 背书），82 个留待收口重标真实 build。
@@ -380,8 +380,16 @@ impl ReplayState {
                 }
             }
             10_000_092 => {
-                let attack = card.attack.unwrap_or(0)
-                    + self.actor(actor_side).core.anima / 2;
+                // Card_10000092.cs：24963639 起攻击改为 attack + anima / 2；
+                // 旧 build 为 attack + anima * otherParams[0]，阈值见 original_config。
+                let anima = self.actor(actor_side).core.anima;
+                let attack = if self.original_build_profile.steam_build_number()
+                    >= super::original_config::LING_KONG_FEI_SAO_FORMULA_SINCE_BUILD
+                {
+                    card.attack.unwrap_or(0) + anima / 2
+                } else {
+                    card.attack.unwrap_or(0) + anima * other_param(card, 0).max(0)
+                };
                 if attack > 0 {
                     self.apply_attack(actor_side, attack, slot);
                     attacked = true;

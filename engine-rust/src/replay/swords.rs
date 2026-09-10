@@ -370,7 +370,10 @@ impl ReplayState {
                 let mindset_gain = other_param(card, 0).max(0);
                 self.actor_mut(actor_side).fate.spirit_gathering_mindset += mindset_gain;
                 if mindset_gain == 1 {
-                    self.actor_mut(actor_side).fate.half_anima += 1;
+                    // Card_1000034.cs `SetBuffValue(BanDianLingQi, 1)`: the
+                    // odd-stack tiebreak flag is idempotent, so a re-execution
+                    // (回响阵纹 echo) must not accumulate it.
+                    self.actor_mut(actor_side).fate.half_anima = 1;
                 }
             }
             1_000_036 => {

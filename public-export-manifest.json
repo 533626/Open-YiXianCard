@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
   "type": "open-yixiancard-public-export",
-  "sourceCommit": "aeb9a72b6c190453dfec2a92830770be8e6a25ef",
-  "sourceTree": "7033b609932903e11dd5ad85ae12c6f1e955a621",
-  "policySha256": "57af68d20a4e2e872eaa1f7ac66733b86fde736b634d18e44eaa7b572272fb0b",
+  "sourceCommit": "1bd35e41931e697858c274fbaebff24289b1c10a",
+  "sourceTree": "897fe36e1b620e9ac5e1e19dd1de1128fb0e2658",
+  "policySha256": "f0e69ba2c9cd3c23be96226fb76c943e0f002d86667b7ecc2e8516a5e5a2dc07",
   "files": [
     {
       "path": ".agents/skills/battle-rule-development/SKILL.md",
@@ -38,8 +38,8 @@
     {
       "path": ".gitignore",
       "mode": "100644",
-      "bytes": 954,
-      "sha256": "0ffe5239e0cc58e87d8d6349351543912baba410ee1393cf6bbc4e83f75b1f12"
+      "bytes": 973,
+      "sha256": "4f8f85bafd7d37f54685aa28d2c167643311919ae4e2e5b5d58140f8c39086b0"
     },
     {
       "path": ".prettierignore",
@@ -69,7 +69,7 @@
       "path": "docs/AGENT_CONTEXT.md",
       "mode": "100644",
       "bytes": 3134,
-      "sha256": "ced150ce748c7d61ec679334aa351c644c497a3a3990352d6eee843f6953e462"
+      "sha256": "3cb67f075866f8edc7c36d672e1e947895f9e09346d59297e57cab7b901d7b8c"
     },
     {
       "path": "docs/CROSS_LINE_RUNBOOK.md",
@@ -98,8 +98,8 @@
     {
       "path": "docs/PRODUCT_ARCHITECTURE.md",
       "mode": "100644",
-      "bytes": 16994,
-      "sha256": "ec570f71512708ad0a97944de58d57b5e81e633f045f1d32f8792cb39ec5a698"
+      "bytes": 17123,
+      "sha256": "69d1859c7b55328e46fbfcc9b849b1159b3f79c4ad303c23564814a660c6ed09"
     },
     {
       "path": "docs/PUBLIC_BOUNDARY.md",
@@ -122,8 +122,8 @@
     {
       "path": "docs/README.md",
       "mode": "100644",
-      "bytes": 4203,
-      "sha256": "d705d17705c2643d218b5033bdf1fa6202d7fdf99d9dc0266f741698b1921200"
+      "bytes": 4241,
+      "sha256": "a080fd744381aebd75d7b74eaa58d9e7b3eae7ef9b96c42b34260144f5199f4e"
     },
     {
       "path": "docs/ROTATION_RUNBOOK.md",
@@ -189,7 +189,7 @@
       "path": "engine-rust/data/rule-handler-dependencies.json",
       "mode": "100644",
       "bytes": 186615,
-      "sha256": "4bf0cbddc0154fd5da22fa7d6415d8c0c84e4c88eefe9d59f8525a1e593e4a52"
+      "sha256": "df4486e29f81b1118677cd95dffe6ea3c64682715c742fabe69dd02feb42cff1"
     },
     {
       "path": "engine-rust/scripts/generate-card-effect-catalog.ts",
@@ -242,8 +242,8 @@
     {
       "path": "engine-rust/src/replay.rs",
       "mode": "100644",
-      "bytes": 52615,
-      "sha256": "cabb2d13b46ddfa0061bdbf14e9bf15793efd665bcdd88aebf7d302686145046"
+      "bytes": 52075,
+      "sha256": "a602f086673624737dbbc9f11256c476ed28ec913a973fae2051d883b3afc380"
     },
     {
       "path": "engine-rust/src/replay/action_again.rs",
@@ -254,8 +254,8 @@
     {
       "path": "engine-rust/src/replay/battle_start.rs",
       "mode": "100644",
-      "bytes": 51325,
-      "sha256": "78351cb5ab64a3d6a3cd4084fb724ae44b4b844d8f9093988fa6e5b0887de15a"
+      "bytes": 51805,
+      "sha256": "2bb8613bd6496679b7a4f3d2f2b4c3a4aa4308aa967880e67ebd8f8beeaaa56a"
     },
     {
       "path": "engine-rust/src/replay/body.rs",
@@ -434,8 +434,8 @@
     {
       "path": "engine-rust/src/replay/elements.rs",
       "mode": "100644",
-      "bytes": 34666,
-      "sha256": "c58e4237ab02b01165bfeebd5793f537bc226d35a7313e36bfc23ebd765fe938"
+      "bytes": 34981,
+      "sha256": "a886e0425ce507dcf487ebf1096e32b1c570c19448be2a6f5645dfae1e44073e"
     },
     {
       "path": "engine-rust/src/replay/engine_contract.rs",
@@ -458,8 +458,8 @@
     {
       "path": "engine-rust/src/replay/fate_strategy.rs",
       "mode": "100644",
-      "bytes": 20284,
-      "sha256": "032c8aeaa98c65ffece444b35df8556227d670a4a789c0116393a10459c8d4cf"
+      "bytes": 20802,
+      "sha256": "ffca3769b7ab48fa2b3b20a0016aae4a3fee1ab601fda6af7e26be3af3578aab"
     },
     {
       "path": "engine-rust/src/replay/flow_card_effect_fallback.rs",
@@ -512,8 +512,8 @@
     {
       "path": "engine-rust/src/replay/flow.rs",
       "mode": "100644",
-      "bytes": 72457,
-      "sha256": "d72667ae702135b5868f3b5eefb039fe52ac7b995e479fe95e811e56ad32375e"
+      "bytes": 71570,
+      "sha256": "d86e5c8705de554a02baa40a74d3193d70f0b8104db30849453c9f927d93d8b7"
     },
     {
       "path": "engine-rust/src/replay/formations.rs",
@@ -554,8 +554,8 @@
     {
       "path": "engine-rust/src/replay/original_config.rs",
       "mode": "100644",
-      "bytes": 17341,
-      "sha256": "87431f88a4443dc4ee1b2bf402a12088afab652d14ad920fc748df6071c3b65c"
+      "bytes": 18343,
+      "sha256": "2363b0f7fb8a2efffcec1b145b967f7469c80992363ecf12e6cb9f1d68cb9822"
     },
     {
       "path": "engine-rust/src/replay/player.rs",
@@ -566,8 +566,8 @@
     {
       "path": "engine-rust/src/replay/resources.rs",
       "mode": "100644",
-      "bytes": 62750,
-      "sha256": "3f7fae956d9b0f58708957ae2e426370ac589135b5e54a0ce8717f5c3d40767d"
+      "bytes": 63471,
+      "sha256": "3cc628708ccd40f73332b50a450c64d8dfe1c239ffc8f3c5544075ea51074eea"
     },
     {
       "path": "engine-rust/src/replay/snapshot.rs",
@@ -584,8 +584,8 @@
     {
       "path": "engine-rust/src/replay/swords.rs",
       "mode": "100644",
-      "bytes": 27795,
-      "sha256": "0b743b555d1173b0aa5835b52b169fbc2af88b4ba36913b012faeb3796bfc3df"
+      "bytes": 28018,
+      "sha256": "081a5a57242719971c8578e36074eb3788a603e551c8762d67ab1701fd41ff49"
     },
     {
       "path": "engine-rust/src/replay/test_support.rs",
@@ -642,6 +642,12 @@
       "sha256": "1192357edbce88dc55627a40f21c19b0fda6fe00a9b3d94fc9a8e52be91ee5b5"
     },
     {
+      "path": "engine-rust/src/replay/tests_calamity_skip_mask.rs",
+      "mode": "100644",
+      "bytes": 4306,
+      "sha256": "f4a5072c39c18eafb014c44c1febc0682951cd054e4a8c60a6620a821fd8ac86"
+    },
+    {
       "path": "engine-rust/src/replay/tests_card_execution_lifecycle.rs",
       "mode": "100644",
       "bytes": 31812,
@@ -692,8 +698,8 @@
     {
       "path": "engine-rust/src/replay/tests_fate_strategy.rs",
       "mode": "100644",
-      "bytes": 28899,
-      "sha256": "506adea6ea088963ecd6a62d82edf4b5cce9f7dcfe3dcb8c70c23c5c4d0a37cd"
+      "bytes": 31595,
+      "sha256": "5a303e16931eb11c231d8c68db2bc31b4ec518180ca85ee367193992d2743be4"
     },
     {
       "path": "engine-rust/src/replay/tests_hold.rs",
@@ -890,14 +896,14 @@
     {
       "path": "package.json",
       "mode": "100644",
-      "bytes": 9937,
-      "sha256": "dd8c75442de136c4a79234e885336cf63c8173eb8ba4b5a9d702317bd2b55560"
+      "bytes": 10021,
+      "sha256": "b229c7f26deb545485b597aa4c3dcc02eb8a2de8a9feea60f48926323670e5d6"
     },
     {
       "path": "README.md",
       "mode": "100644",
       "bytes": 2050,
-      "sha256": "452b8711c3fa8b390300599bafcaf7dc06a1544679fdff5944beed9fa62bcc81"
+      "sha256": "74b6954252fa1f4d1746754fdfc2c33c1276d017a4eacb0868e272dd876c6378"
     },
     {
       "path": "scripts/__tests__/doc-open-item.test.ts",
@@ -932,8 +938,8 @@
     {
       "path": "scripts/check-doc-drift.ts",
       "mode": "100644",
-      "bytes": 7264,
-      "sha256": "7874ab97697f8bd0db0b7a82508648cfc93f34af0e3d1e2499933272c8a1e892"
+      "bytes": 9069,
+      "sha256": "c292bed6f72d60e1536531a5ee885e116b16b65d332562e2237b36d25606f3a6"
     },
     {
       "path": "scripts/check-public-release-policy.ts",
@@ -1058,8 +1064,8 @@
     {
       "path": "shared/data/original-build-profiles.json",
       "mode": "100644",
-      "bytes": 6780,
-      "sha256": "54d890d10c1bb9fc4eafcb522a92060f8bb0c6e287f1552116659cb506cddff0"
+      "bytes": 7522,
+      "sha256": "bec37026ccaf867e55ecad08d32076f62a7f6e69aeb68e81f698920c71acdcd2"
     },
     {
       "path": "shared/data/original-card-configs.ts",
@@ -1112,8 +1118,8 @@
     {
       "path": "src/ui/__tests__/battle-view-layout.test.ts",
       "mode": "100644",
-      "bytes": 33101,
-      "sha256": "a17d7a422d5c53bcb53b7edbfb44f78c217c0a69e1d390dccd3466dc1e995ab4"
+      "bytes": 33425,
+      "sha256": "773fa0b813d29065c28eb07ead742220250081285d4e82af30fc354aeba6357a"
     },
     {
       "path": "src/ui/__tests__/card-picker.test.ts",
@@ -1394,8 +1400,8 @@
     {
       "path": "src/ui/generated/battle-event-labels.json",
       "mode": "100644",
-      "bytes": 110840,
-      "sha256": "5e1950ecfc9f8b5993f1f21f0b0c6b72a5cb84a1862289997984b05e6dd91bea"
+      "bytes": 113606,
+      "sha256": "00b3b60e153d0897ac6e1bcf9e8ec899bbb9a80ec1013f5c4e331366826923a7"
     },
     {
       "path": "src/ui/generated/battle-event-labels.ts",
@@ -1686,6 +1692,12 @@
       "sha256": "87eeb33f83b7a7c14e604792dd64523455c26aa4dba545d659bd7e45a6515d94"
     },
     {
+      "path": "src/ui/scripts/check-replay-event-labels.ts",
+      "mode": "100644",
+      "bytes": 7008,
+      "sha256": "76965332bcd8976755e155b19ffbf70081345b4d75362d4b6783416919395add"
+    },
+    {
       "path": "src/ui/scripts/lib/headless-page.ts",
       "mode": "100644",
       "bytes": 7614,
@@ -1914,5 +1926,5 @@
       "sha256": "638113cf4444d1592ac2c6eea62bf819275ab6d51dde403881a2413d68dfd2a8"
     }
   ],
-  "treeDigest": "5f3d370fe51e4c7203ac87f9dc9b0173b8b53a1a0953b659f8207ebfeb101313"
+  "treeDigest": "705c47571897741edd4a22edacd12c8ba221f5160d58f5abd878c818981e4be1"
 }

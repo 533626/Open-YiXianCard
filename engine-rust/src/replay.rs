@@ -88,6 +88,8 @@ mod tests_build_2026_08;
 #[cfg(all(test, feature = "private-fixtures"))]
 mod tests_build_2026_08_rotation_fixtures;
 #[cfg(test)]
+mod tests_calamity_skip_mask;
+#[cfg(test)]
 mod tests_card19_fate387;
 #[cfg(test)]
 mod tests_card_execution_lifecycle;
@@ -289,14 +291,10 @@ pub struct ReplayPlayerSnapshot {
     pub external_injury: i64,
     pub lost_mind: i64,
     pub action_again_count: i64,
-    /// 李㵘锻玄架势：互斥的拳/棍模式标记。detail_entries 一直有这两项，
-    /// snapshot 必须同口径暴露，否则右侧钩子链与左侧状态条对同一字段
-    /// 一边显示一边缺失。
+    /// 李㵘锻玄架势：互斥拳/棍标记，与 detail_entries 同口径暴露。
     pub quan_stance: i64,
     pub gun_stance: i64,
-    /// 全量暴露缺口（档 1a/1b）：原版 RefreshBuff 会显示、左侧状态条此前缺失的
-    /// 字段，逐一与 detail_entries 同口径（见 build_display_gap_report.py 锚定表）。
-    /// 每项锚定 archive 枚举名（BuffConfig 分类显示类）与 BuffType ID：
+    /// 档 1a/1b 缺口：与 detail_entries 同口径，锚定见 build_display_gap_report.py。
     /// 剑系
     pub metal_ring: i64, // KunWuJinHuan(273) 锟铻金环 Neutral
     pub sword_energy: i64,                // JianQi(625) 剑气 Positive
@@ -417,12 +415,8 @@ struct ReplayPlayer {
     prevention: ReplayPreventionState,
 }
 
-/// Cumulative HP loss this player never took because guard or defense absorbed it.
-///
-/// This is derived telemetry, not battle state: the original client does not report
-/// it, so it must stay out of the 29-field oracle parity snapshot
-/// (`ORIGINAL_ORACLE_PROTOCOL_SNAPSHOT_FIELDS`) and travels beside the event stream
-/// instead. Nothing in the rules reads it back; removing it cannot change an outcome.
+/// Derived telemetry, not battle state: excluded from the 29-field oracle parity
+/// snapshot (`ORIGINAL_ORACLE_PROTOCOL_SNAPSHOT_FIELDS`); rules never read it back.
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, serde::Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ReplayPreventionState {

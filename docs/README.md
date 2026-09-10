@@ -1,7 +1,7 @@
 # Open-YiXianCard 文档入口
 
 Open-YiXianCard 是证据驱动的单场战斗模拟与浏览器展示项目。公开工程由原版研究、共享评估契约、
-Rust canonical 规则核、跟随 Rust 移植的 TS 兼容档案和浏览器 UI 组成。Analysis、回放 corpus 与
+Rust canonical 规则核、已冻结的 TS 只读兼容档案（2026-08-09 冻结，不接收移植）和浏览器 UI 组成。Analysis、回放 corpus 与
 ratatui TUI 是私有 engineering companion，不属于公开构建面；边界与可逆提取路径见
 [`docs/PUBLIC_BOUNDARY.md`](PUBLIC_BOUNDARY.md)。网站发布与 Cloudflare 部署不在本次变更内。
 

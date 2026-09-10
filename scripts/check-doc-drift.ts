@@ -1,12 +1,16 @@
 import { Glob } from "bun";
+import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
-import { join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { findUnanchoredOpenItems } from "./lib/doc-open-item";
 
 const repoRoot = join(import.meta.dir, "..");
 const failures: string[] = [];
 
 const read = (path: string) => readFile(join(repoRoot, path), "utf8");
+const pkg = JSON.parse(await read("package.json")) as { scripts?: Record<string, string> };
+const registeredScripts = new Set(Object.keys(pkg.scripts ?? {}));
+
 const manifest = JSON.parse(
   await read("research/original-game/EVIDENCE_MANIFEST.json"),
 ) as { steamBuild?: string };
@@ -90,6 +94,9 @@ try {
 const bannedTerms: Array<{ wrong: string; right: string; note: string }> = [
   { wrong: "万幻破魔掌", right: "万玄破魔掌", note: "card 82 原文名" },
   { wrong: "体质", right: "体魄", note: "physique 原版属性名，localization 仅剧情文案用前者" },
+  { wrong: "跟随 Rust 移植", right: "已冻结 TS 兼容档案", note: "engine-ts 于 2026-08-09 冻结，只保留只读兼容档案" },
+  { wrong: "Scheme A", right: "统一 main 导出投影", note: "两仓物理拆分方案已被统一 main 导出投影替代" },
+  { wrong: "deck-archive.html", right: "report-ga-workbench", note: "独立 deck-archive.html 已并入 report-ga-workbench" },
 ];
 
 const excludedDocPaths = [
@@ -101,6 +108,9 @@ const excludedDocPaths = [
   /(?:^|\/)dist\//,
 ];
 const cardMentionPattern = /\bcard[ _:-]?(\d{1,8})\s*[（(]([^（）()\n]{1,32})[）)]/gi;
+const bunRunPattern = /`bun run ([a-zA-Z0-9_:-]+)/g;
+const linkPattern = /\[([^\]]+)\]\(([^)]+)\)/g;
+
 const livingDocs = new Glob("**/*.md");
 for await (const docPath of livingDocs.scan({ cwd: repoRoot })) {
   if (excludedDocPaths.some((pattern) => pattern.test(docPath))) continue;
@@ -119,6 +129,28 @@ for await (const docPath of livingDocs.scan({ cwd: repoRoot })) {
       failures.push(`${docPath} 引用 card ${cardId}（${label}），CardConfig 无此 id`);
     } else if (!label.includes(expected)) {
       failures.push(`${docPath} 把 card ${cardId} 写成「${label}」，原文名是「${expected}」`);
+    }
+  }
+  // 命令有效性检查：markdown 中反引号包含的 bun run 命令必须在 package.json 显式声明
+  for (const m of content.matchAll(bunRunPattern)) {
+    const scriptName = m[1];
+    if (!registeredScripts.has(scriptName)) {
+      failures.push(
+        `${docPath} 引用了未在 package.json 注册的 script \`bun run ${scriptName}\`；私有分析脚本请写直接路径 \`bun analysis/scripts/...\`，或在 package.json 显式注册`,
+      );
+    }
+  }
+  // 本地链接有效性检查：防失效相对路径与类似 [0](3) 的未转义方括号代码
+  for (const m of content.matchAll(linkPattern)) {
+    const [, text, target] = m;
+    if (/^(?:https?:\/\/|mailto:|#)/.test(target)) continue;
+    const cleanTarget = target.split("#")[0].split("?")[0];
+    if (!cleanTarget) continue;
+    const resolved = resolve(dirname(join(repoRoot, docPath)), cleanTarget);
+    if (!existsSync(resolved)) {
+      failures.push(
+        `${docPath} 存在失效的本地链接 [${text}](${target})（目标路径不存在，或误写了代码括号）`,
+      );
     }
   }
   // 开放状态标记必须带可验证锚点：留作待办/TODO/未修/尚未* 等没写命令或路径，

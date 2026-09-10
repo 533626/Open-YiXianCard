@@ -301,6 +301,16 @@ describe("UI 战斗视图布局契约", () => {
       sourceKind: "fate-strategy",
       sourceId: 135,
     });
+    expect(battleEventLabels.fateStrategyLabels["360"]).toEqual({
+      label: "极•狂剑一式",
+      sourceKind: "fate-strategy",
+      sourceId: 360,
+    });
+    expect(battleEventLabels.fateStrategyLabels["275"]).toEqual({
+      label: "狂剑道韵",
+      sourceKind: "fate-strategy",
+      sourceId: 275,
+    });
     expect(battleEventLabels.sourceTokenLabels.sixYaoFormation).toEqual({
       label: "六爻绝阵",
       sourceKind: "card",

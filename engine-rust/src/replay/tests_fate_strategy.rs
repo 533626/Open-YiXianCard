@@ -665,6 +665,24 @@ fn card_10000092_ling_kong_fei_sao_uses_half_anima_attack() {
 
     // p2 takes 10 damage: 100 - 10 = 90
     assert_eq!(state.p2.core.hp, 90);
+
+    // 旧 build（24610558）：Card_10000092.cs OnExecuted 为
+    // attack + anima * otherParams[0]（整乘，8 + 5*1 = 13），阈值见
+    // original_config::LING_KONG_FEI_SAO_FORMULA_SINCE_BUILD。candidates 层
+    // 23 个旧录制对局即因该公式未门控而漂移。
+    let mut old_fixture = {
+        let mut p1_old = player();
+        p1_old.cards = vec![card; DECK_SIZE];
+        fixture(p1_old, player())
+    };
+    old_fixture.source = Some(FixtureSource {
+        steam_build: Some("24610558".to_string()),
+        ..FixtureSource::default()
+    });
+    let mut old_state = ReplayState::test_from_fixture(&old_fixture);
+    old_state.p1.core.anima = 5;
+    old_state.execute_actor_turn();
+    assert_eq!(old_state.p2.core.hp, 87);
 }
 
 #[test]
@@ -728,6 +746,24 @@ fn card_4000097_bent_bow_heal_amount_follows_fixture_build() {
 }
 
 #[test]
+fn card_1000034_spirit_gathering_tiebreak_flag_is_idempotent_under_echo() {
+    // yiwen-20260904-13f20d3d f4ktynk oracle 锚点（rust-kernel-mismatch）：
+    // Card_1000034.cs 用 `SetBuffValue(BanDianLingQi, 1)`——奇数 mind stance
+    // 的补整标志是幂等置位。回响阵纹（8000012）在同一回合以临时牌重复执行
+    // 聚灵心法时不得累加；旧 `+= 1` 会在下一个奇数回合多 +1 灵气
+    // （f4ktynk/round-16 p1.anima 首差、round-17 暗鸦灵剑 defense+4 同根因）。
+    // BattleCharacter.cs 回合开始侧对奇数 num7 做旗置 ±1 后整除，与
+    // half_anima∈{0,1} 恰好互补，故只需锁登记侧幂等。
+    let mindset = original_card_definition_by_id(1_000_034).expect("missing 聚灵心法 1000034");
+    assert_eq!(mindset.other_params, vec![1], "只有 otherParams[0]==1 的档位置旗");
+    let mut state = ReplayState::test_from_fixture(&fixture(player(), player()));
+    state.test_apply_card_effect(PlayerSide::P1, &mindset, 0);
+    state.test_apply_card_effect(PlayerSide::P1, &mindset, 0);
+    assert_eq!(state.p1.fate.spirit_gathering_mindset, 2, "重复执行仍累加 stance 层数");
+    assert_eq!(state.p1.fate.half_anima, 1, "BanDianLingQi 是 Set 语义，不随重复执行累加");
+}
+
+#[test]
 fn fate_strategy_128_water_spirit_card_grants_sharpness() {
     // build 25093011 FateStrategyFunctions.cs 新增（金灵分支之后、320 分支之前）：
     // HasFateStrategy(128) && cardConfig.name.Contains("水灵")
@@ -740,6 +776,21 @@ fn fate_strategy_128_water_spirit_card_grants_sharpness() {
     let mut state = ReplayState::test_from_fixture(&fixture(p1, player()));
     state.apply_selected_card_hooks(PlayerSide::P1, &water_card, 0);
     assert_eq!(state.p1.sword.sharpness, 1);
+
+    // 旧 build（24963639）：锋锐 hunk 在 24963639→25093011 才引入，
+    // 旧录制不得加锋锐（candidates eswiq48 即此类漂移）。
+    let mut old_fixture = {
+        let mut p1_old = player();
+        p1_old.fate_strategies = vec![128];
+        fixture(p1_old, player())
+    };
+    old_fixture.source = Some(FixtureSource {
+        steam_build: Some("24963639".to_string()),
+        ..FixtureSource::default()
+    });
+    let mut old_state = ReplayState::test_from_fixture(&old_fixture);
+    old_state.apply_selected_card_hooks(PlayerSide::P1, &water_card, 0);
+    assert_eq!(old_state.p1.sword.sharpness, 0);
 
     // 对照：无 Fate 128 时水灵牌不加锋锐。
     let mut state_no_fate = ReplayState::test_from_fixture(&fixture(player(), player()));

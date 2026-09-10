@@ -71,7 +71,7 @@
       "label": "完成态结算",
       "location": {
         "path": "src/replay/flow.rs",
-        "line": 1321,
+        "line": 1310,
         "function": "complete_card_effect_repetition"
       }
     }
@@ -192,7 +192,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -280,7 +280,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -797,7 +797,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -2684,7 +2684,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5379,7 +5379,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5390,7 +5390,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5401,7 +5401,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5412,7 +5412,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5423,7 +5423,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5434,7 +5434,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5456,7 +5456,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5467,7 +5467,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5478,7 +5478,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5489,7 +5489,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5500,7 +5500,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5544,7 +5544,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5555,7 +5555,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5566,7 +5566,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5599,7 +5599,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5610,7 +5610,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5621,7 +5621,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5654,7 +5654,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5665,7 +5665,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5676,7 +5676,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5687,7 +5687,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5698,7 +5698,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5764,7 +5764,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5995,7 +5995,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6006,7 +6006,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6100,7 +6100,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6480,7 +6480,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 529,
+          "line": 532,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }

@@ -4380,6 +4380,31 @@
       "sourceKind": "fate-strategy",
       "sourceId": 274
     },
+    "275": {
+      "label": "狂剑道韵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 275
+    },
+    "278": {
+      "label": "剑意道韵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 278
+    },
+    "282": {
+      "label": "土灵道韵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 282
+    },
+    "284": {
+      "label": "水灵道韵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 284
+    },
+    "288": {
+      "label": "生机道韵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 288
+    },
     "296": {
       "label": "影枭兔",
       "sourceKind": "fate-strategy",
@@ -4659,6 +4684,106 @@
       "label": "天衍-休养生息",
       "sourceKind": "fate-strategy",
       "sourceId": 353
+    },
+    "354": {
+      "label": "天衍化身",
+      "sourceKind": "fate-strategy",
+      "sourceId": 354
+    },
+    "355": {
+      "label": "探索未知",
+      "sourceKind": "fate-strategy",
+      "sourceId": 355
+    },
+    "356": {
+      "label": "百宝箱",
+      "sourceKind": "fate-strategy",
+      "sourceId": 356
+    },
+    "360": {
+      "label": "极•狂剑一式",
+      "sourceKind": "fate-strategy",
+      "sourceId": 360
+    },
+    "362": {
+      "label": "极•六爻绝阵",
+      "sourceKind": "fate-strategy",
+      "sourceId": 362
+    },
+    "365": {
+      "label": "极•五行灵击",
+      "sourceKind": "fate-strategy",
+      "sourceId": 365
+    },
+    "370": {
+      "label": "云剑•猫影",
+      "sourceKind": "fate-strategy",
+      "sourceId": 370
+    },
+    "381": {
+      "label": "飞火流霞",
+      "sourceKind": "fate-strategy",
+      "sourceId": 381
+    },
+    "385": {
+      "label": "极•云剑猫爪",
+      "sourceKind": "fate-strategy",
+      "sourceId": 385
+    },
+    "386": {
+      "label": "喵喵喵？",
+      "sourceKind": "fate-strategy",
+      "sourceId": 386
+    },
+    "390": {
+      "label": "悟剑演练",
+      "sourceKind": "fate-strategy",
+      "sourceId": 390
+    },
+    "392": {
+      "label": "秋去春来",
+      "sourceKind": "fate-strategy",
+      "sourceId": 392
+    },
+    "394": {
+      "label": "天衍-雪羽清风",
+      "sourceKind": "fate-strategy",
+      "sourceId": 394
+    },
+    "400": {
+      "label": "远虑",
+      "sourceKind": "fate-strategy",
+      "sourceId": 400
+    },
+    "406": {
+      "label": "五行转化",
+      "sourceKind": "fate-strategy",
+      "sourceId": 406
+    },
+    "420": {
+      "label": "精打细算",
+      "sourceKind": "fate-strategy",
+      "sourceId": 420
+    },
+    "424": {
+      "label": "月魂爪",
+      "sourceKind": "fate-strategy",
+      "sourceId": 424
+    },
+    "427": {
+      "label": "迅身掌",
+      "sourceKind": "fate-strategy",
+      "sourceId": 427
+    },
+    "430": {
+      "label": "截拳式",
+      "sourceKind": "fate-strategy",
+      "sourceId": 430
+    },
+    "433": {
+      "label": "天衍变数",
+      "sourceKind": "fate-strategy",
+      "sourceId": 433
     }
   },
   "sourceTokenLabels": {

@@ -30,6 +30,7 @@
     "test:record-export": "cd research/original-game && python3 -m unittest test_ingest_mirror_records.py",
     "records:mirror-census": "python3 research/original-game/extract_mirror_deck_census.py",
     "oracle:mirror:run": "bun battle-evaluator/scripts/run-mirror-oracle.ts",
+    "oracle:diagnosis:run": "bun battle-evaluator/scripts/run-diagnosis-oracle.ts",
     "records:yiwen": "bun battle-evaluator/scripts/import-yiwen-record-oracle.ts",
     "records:yiwen-oracle": "bun battle-evaluator/scripts/import-yiwen-record-oracle.ts --oracle all",
     "records:yiwen:admit": "bun battle-evaluator/scripts/import-yiwen-record-oracle.ts --admit",

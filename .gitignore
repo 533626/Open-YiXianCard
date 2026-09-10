@@ -7,6 +7,8 @@ node_modules/
 *.html.bak
 *.swp
 .ruff_cache/
+__pycache__/
+*.pyc
 coverage/
 .zed/
 public/build/

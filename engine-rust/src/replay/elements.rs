@@ -292,12 +292,15 @@ impl ReplayState {
         // build 25093011: FateStrategyFunctions.cs 新增 HasFateStrategy(128)
         // && name.Contains("水灵") → ModifyBuffValue(FengRui, 1)，位于金灵分支之后、
         // 320 云剑分支之前，顺序无关的独立 if。锋锐走 gain_sharpness 共享结算
-        // （与金灵→gain_anima 对称）。
-        if self
-            .actor(actor_side)
-            .identity
-            .fate_strategies
-            .contains(&128)
+        // （与金灵→gain_anima 对称）。该 hunk 在 24963639→25093011 才引入，
+        // 旧 build 录制不存在此分支，按 fixture build 门控（阈值见 original_config）。
+        if self.original_build_profile.steam_build_number()
+            >= super::original_config::FATE_128_WATER_SPIRIT_SHARPNESS_SINCE_BUILD
+            && self
+                .actor(actor_side)
+                .identity
+                .fate_strategies
+                .contains(&128)
             && card.name.contains("水灵")
         {
             self.gain_sharpness(actor_side, 1);
