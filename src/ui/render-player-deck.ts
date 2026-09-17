@@ -12,24 +12,6 @@ import { renderCardFace } from "./render-card-face";
 import { escapeAttribute, escapeHtml } from "./view-utils";
 import type { AppState, BattleFrame, CardOption, PlayerConfig, PlayerView, Side } from "./types";
 
-export function renderDeckToolbar(state: AppState, side: Side): string {
-  const slot = state.activeSide === side ? state.selectedSlot : 0;
-  const canShiftLeft = slot > 0;
-  const canShiftRight = slot < 7;
-  return `
-    <div class="deck-toolbar" aria-label="卡组微调">
-      <span class="deck-toolbar-label">卡组</span>
-      <div class="deck-toolbar-actions">
-        <button type="button" class="deck-tool" data-action="shift-deck-slot" data-side="${side}" data-slot="${slot}" data-delta="-1" title="与左侧卡槽交换" ${canShiftLeft ? "" : "disabled"}>◀</button>
-        <button type="button" class="deck-tool" data-action="shift-deck-slot" data-side="${side}" data-slot="${slot}" data-delta="1" title="与右侧卡槽交换" ${canShiftRight ? "" : "disabled"}>▶</button>
-        <button type="button" class="deck-tool" data-action="clear-slot" data-side="${side}" data-slot="${slot}" title="清空当前格">清格</button>
-        <button type="button" class="deck-tool" data-action="clear-deck" data-side="${side}" title="清空全部卡槽">清空</button>
-      </div>
-      <span class="deck-toolbar-hint">第 ${slot + 1} 格 · 拖中间交换 / 拖边缘插入 · 右键清格</span>
-    </div>
-  `;
-}
-
 export function renderPlayerDeck(options: {
   readonly state: AppState;
   readonly side: Side;

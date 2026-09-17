@@ -5,7 +5,6 @@ import fateStrategyArchive from "../../../shared/data/fate-strategy-archive.json
 import talentArchive from "../../../shared/data/talent-archive.json";
 import { ORIGINAL_CARD_CONFIGS } from "../../../shared/data/original-card-configs";
 import {
-  normalizeBaseId,
   type OriginalCardConfig,
 } from "../domain";
 import type { CardOption } from "../types";
@@ -108,7 +107,3 @@ export const talentArchiveById = new Map(talentArchiveRows.map((row) => [row.id,
 
 export const fateStrategyRows = (fateStrategyArchive as { strategies: FateStrategyArchiveRow[] })
   .strategies.filter((strategy) => strategy.category !== "DaoYun");
-
-export function normalizedOriginalBaseId(cardId: number): number {
-  return normalizeBaseId(cardId);
-}

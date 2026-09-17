@@ -190,17 +190,11 @@ function renderTargetCharts(
       <div class="target-grid" aria-label="分面对比">
         ${doneBuilds.map((build, index) => `
           <div class="target-grid-cell">
-            <div class="target-grid-head ${BUILD_LINE_CLASSES[index % BUILD_LINE_CLASSES.length] ?? "build-line-1"}">
+            <div class="target-grid-head ${buildLineClass(index)}">
               <span>${escapeHtml(build.name)}</span>
               <b>${statusText(build)}</b>
             </div>
-            ${renderDamageStepChart(build.result!.steps, cardPalette(cardIdsOfSteps(build.result!.steps)), {
-              label: build.name,
-              threshold: target.damageThreshold,
-              displayRounds: target.displayRounds,
-              selectedStep: target.expandedStepBuildId === build.id ? target.expandedStep ?? undefined : undefined,
-              buildId: build.id,
-            })}
+            ${stepChartFor(build, target)}
           </div>
         `).join("")}
       </div>
@@ -208,15 +202,7 @@ function renderTargetCharts(
   }
   // overlay：累计折线叠加 + 聚焦构筑的阶梯曲线。
   const overlay = renderCumulativeOverlay(doneBuilds, target.damageThreshold, target.displayRounds);
-  const stacked = active?.result
-    ? renderDamageStepChart(active.result.steps, cardPalette(cardIdsOfSteps(active.result.steps)), {
-      label: active.name,
-      threshold: target.damageThreshold,
-      displayRounds: target.displayRounds,
-      selectedStep: target.expandedStepBuildId === active.id ? target.expandedStep ?? undefined : undefined,
-      buildId: active.id,
-    })
-    : "";
+  const stacked = active?.result ? stepChartFor(active, target) : "";
   return `
     <div class="target-overlay" aria-label="叠加对比">
       ${overlay}
@@ -225,6 +211,25 @@ function renderTargetCharts(
   `;
 }
 
+function buildLineClass(index: number): string {
+  return BUILD_LINE_CLASSES[index % BUILD_LINE_CLASSES.length] ?? "build-line-1";
+}
+
+/** Shared linear y-scale for the 100×64 chart viewBox. */
+function makeYScale(maxY: number): (value: number) => number {
+  const span = CHART_H - CHART_PAD_TOP - CHART_PAD_BOTTOM;
+  return (value: number): number => CHART_PAD_TOP + span * (1 - value / maxY);
+}
+
+function stepChartFor(build: TargetBuild, target: NonNullable<AppState["target"]>): string {
+  return renderDamageStepChart(build.result!.steps, cardPalette(cardIdsOfSteps(build.result!.steps)), {
+    label: build.name,
+    threshold: target.damageThreshold,
+    displayRounds: target.displayRounds,
+    selectedStep: target.expandedStepBuildId === build.id ? target.expandedStep ?? undefined : undefined,
+    buildId: build.id,
+  });
+}
 /** 步骤序列里的卡牌 id 列表（图例调色板用）。 */
 function cardIdsOfSteps(steps: readonly TargetDamageStep[]): readonly (number | null)[] {
   return steps.map((step) => step.cardId);
@@ -246,8 +251,7 @@ export function renderCumulativeOverlay(
   );
   const maxY = Math.max(threshold, ...cumulativeTotals, 1);
   const slot = CHART_W / roundCount;
-  const yFor = (value: number): number =>
-    CHART_PAD_TOP + (CHART_H - CHART_PAD_TOP - CHART_PAD_BOTTOM) * (1 - value / maxY);
+  const yFor = makeYScale(maxY);
   return `
     <div class="stacked-chart cumulative-overlay">
       ${renderChartHead("累计伤害对比", `阈值 ${threshold}`)}
@@ -255,7 +259,7 @@ export function renderCumulativeOverlay(
         <svg class="stacked-chart-svg" viewBox="0 0 ${CHART_W} ${CHART_H}" preserveAspectRatio="none" role="img" aria-label="累计伤害对比">
           <line class="threshold-line" x1="0" y1="${yFor(threshold)}" x2="${CHART_W}" y2="${yFor(threshold)}"></line>
           ${builds.map((build, index) => {
-            const colorClass = BUILD_LINE_CLASSES[index % BUILD_LINE_CLASSES.length] ?? "build-line-1";
+            const colorClass = buildLineClass(index);
             let cumulative = 0;
             const points: string[] = [`0,${yFor(0)}`];
             for (const turn of build.result!.perTurn) {
@@ -291,7 +295,7 @@ export function renderCumulativeOverlay(
         ${builds.map((build, index) => `
           <button
             type="button"
-            class="build-legend-item ${BUILD_LINE_CLASSES[index % BUILD_LINE_CLASSES.length] ?? "build-line-1"}"
+            class="build-legend-item ${buildLineClass(index)}"
             data-action="select-target-build"
             data-build-id="${escapeAttribute(build.id)}"
             title="点击切换聚焦构筑"
@@ -322,8 +326,7 @@ export function renderStackedDamageChart(
   const maxY = Math.max(options.threshold ?? 0, ...totals, cumulativeTotal, 1);
   const slot = CHART_W / roundCount;
   const barWidth = Math.max(1.4, slot * 0.66);
-  const yFor = (value: number): number =>
-    CHART_PAD_TOP + (CHART_H - CHART_PAD_TOP - CHART_PAD_BOTTOM) * (1 - value / maxY);
+  const yFor = makeYScale(maxY);
   const label = options.label ? `${options.label} · ` : "";
   const totalDamage = perTurn.reduce((sum, turn) => sum + turn.total, 0);
   // 累计趋势线：从 0 起逐回合累计，直线延伸到配置终点回合（含缺失回合的
@@ -546,8 +549,7 @@ export function renderDamageStepChart(
   const xFor = (index: number): number => stepX[index] ?? padX;
   const xForRound = (round: number): number => padX + (round - 1) * slotW + slotW * 0.5;
   const plotRight = padX + plotW;
-  const yFor = (value: number): number =>
-    CHART_PAD_TOP + (CHART_H - CHART_PAD_TOP - CHART_PAD_BOTTOM) * (1 - value / maxY);
+  const yFor = makeYScale(maxY);
   const label = options.label ? `${options.label} · ` : "";
 
   // 阶梯：每步先竖直上升到累计值，再水平平台到下一步。上升段按卡色填充。

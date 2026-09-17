@@ -5,45 +5,21 @@ use super::player::{
     ORIGINAL_HP_MUTATION_RUNTIME_BUFF_NAMES,
 };
 use super::*;
-use crate::fixture::{BattleFixture, FixtureExpected, FixturePlayer, FixturePlayers};
+use crate::fixture::{BattleFixture, FixturePlayer};
 use crate::model::{CardDefinition, OriginalEnumValue, PlayerSide, DECK_SIZE};
 
 mod combat_cards;
 
 fn card(id: i64, base_id: i64, name: &str) -> CardDefinition {
-    CardDefinition {
-        id,
-        base_id: Some(base_id),
-        name: name.to_string(),
-        card_type: None,
-        attack: None,
-        random_attack: None,
-        random_defense: None,
-        attack_count: None,
-        defense: None,
-        damage: None,
-        anima: None,
-        hp_cost: None,
-        action_again: None,
-        physique: None,
-        sword_intent: None,
-        hexagram: None,
-        rarity: None,
-        career_name: None,
-        other_params: vec![],
-    }
+    super::test_support::test_card(id, base_id, name)
 }
 
 fn basic_attack() -> CardDefinition {
-    let mut attack = card(0, 0, "普通攻击");
-    attack.attack = Some(3);
-    attack
+    super::test_support::basic_attack_card()
 }
 
 fn deck(active: CardDefinition) -> Vec<CardDefinition> {
-    let mut cards = vec![active];
-    cards.resize_with(DECK_SIZE, basic_attack);
-    cards
+    super::test_support::resize_deck(vec![active], basic_attack())
 }
 
 fn deck_with_cards(mut cards: Vec<CardDefinition>) -> Vec<CardDefinition> {
@@ -52,57 +28,11 @@ fn deck_with_cards(mut cards: Vec<CardDefinition>) -> Vec<CardDefinition> {
 }
 
 fn player(cards: Vec<CardDefinition>) -> FixturePlayer {
-    FixturePlayer {
-        level: 1,
-        base_max_hp: 30,
-        extra_max_hp: None,
-        battle_start_hp: None,
-        character_id: None,
-        talents: Vec::new(),
-        fate_strategies: Vec::new(),
-        fate_strategy_temp_datas: Default::default(),
-        active_slot_count: 1,
-        initial_defense: 0,
-        initial_anima: 0,
-        initial_guard: 0,
-        initial_momentum: 0,
-        initial_momentum_limit: None,
-        initial_agility: 0,
-        initial_battle_buffs: Default::default(),
-        permanent_buff_temp_datas: Default::default(),
-        talent_resonance_id: None,
-        used_ke_yin_cards: Vec::new(),
-        talent_temp_datas: Default::default(),
-        talent_card_params: Default::default(),
-        last_round_used_card_base_ids: Vec::new(),
-        last_round_life: None,
-        last_round_exp: 0,
-        hand_cards: Vec::new(),
-        cards,
-    }
+    super::test_support::make_player(cards, 1, 30, None, 1, None)
 }
 
 fn fixture(p1_cards: Vec<CardDefinition>, p2_cards: Vec<CardDefinition>) -> BattleFixture {
-    BattleFixture {
-        schema_version: 1,
-        source: None,
-        first_player_side: PlayerSide::P1,
-        decision_tape: Vec::new(),
-        random_fallback_tape: Vec::new(),
-        expected: FixtureExpected {
-            winner_side: PlayerSide::P1,
-            actor_turn_count: 1,
-            hp_delta_p1_minus_p2: 0,
-            final_hp: None,
-        },
-        max_actor_turns: Some(1),
-        historical_card_overrides: Vec::new(),
-        catalog_cards: Vec::new(),
-        players: FixturePlayers {
-            p1: player(p1_cards),
-            p2: player(p2_cards),
-        },
-    }
+    super::test_support::default_fixture(player(p1_cards), player(p2_cards))
 }
 
 #[test]
@@ -321,7 +251,7 @@ fn hp_mutation_receipt_separates_request_resolution_application_and_ledger() {
             resolved: 7,
             applied: 1,
             ledger: 7,
-            prevention: None,
+            prevention: None
         }
     );
     assert_eq!(state.p1.core.hp, 30);
@@ -338,7 +268,7 @@ fn hp_mutation_receipt_separates_request_resolution_application_and_ledger() {
             resolved: 0,
             applied: 0,
             ledger: 0,
-            prevention: Some(HpMutationPrevention::Guard),
+            prevention: Some(HpMutationPrevention::Guard)
         }
     );
     assert_eq!(state.p1.core.guard, 0);
@@ -408,7 +338,7 @@ fn lost_mind_rewrites_healing_before_adaptation_and_ledger_projection() {
             resolved: 2,
             applied: 2,
             ledger: 2,
-            prevention: None,
+            prevention: None
         }
     );
     assert_eq!(state.p1.core.hp, 7);
@@ -434,7 +364,7 @@ fn resolved_overheal_consumes_wild_ferry_before_after_hp_hooks() {
             resolved: 5,
             applied: 0,
             ledger: 5,
-            prevention: None,
+            prevention: None
         }
     );
     assert_eq!(state.p1.fate.wild_ferry_seal, 0);
@@ -572,7 +502,7 @@ fn hp_cost_runs_resonance_50_healing_before_fate_149_physique() {
             resolved: -5,
             applied: -5,
             ledger: -5,
-            prevention: None,
+            prevention: None
         }
     );
     assert_eq!(state.p1.core.hp, 7);
@@ -599,7 +529,7 @@ fn nested_yan_qi_heal_projects_each_receipt_once() {
             resolved: 5,
             applied: 5,
             ledger: 5,
-            prevention: None,
+            prevention: None
         }
     );
     assert_eq!(state.p1.core.hp, 35);

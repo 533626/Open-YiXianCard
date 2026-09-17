@@ -73,11 +73,6 @@ export function playedSlotsForCurrentTurn(state: AppState, side: Side): readonly
   return [...slots].sort((left, right) => left - right);
 }
 
-/** @deprecated Use renderPlayerPanel */
-export function renderSetupPlayerPanel(state: AppState, side: Side): string {
-  return renderPlayerPanel(state, side);
-}
-
 function battleFrame(state: AppState): BattleFrame | null {
   if (!state.result) return null;
   return state.result.frames[state.frameIndex] ?? state.result.frames[0] ?? null;

@@ -113,13 +113,6 @@ export interface TalentOption {
   readonly archiveLabel?: string;
 }
 
-export interface TalentGroup {
-  readonly id: string;
-  readonly label: string;
-  readonly options: readonly TalentOption[];
-  readonly open: boolean;
-}
-
 export interface TalentSlotOption extends TalentOption {
   readonly locked: boolean;
   readonly label: string;

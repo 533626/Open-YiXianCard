@@ -1007,9 +1007,15 @@ impl ReplayState {
                     // 在 T11 被误打出）。
                     if original_config_rarity(target_card.id) >= 1 && target_card.id != 19 {
                         let lower_id = target_card.id - 10_000;
-                        if let Some(lowered) =
+                        if let Some(mut lowered) =
                             super::original_config::original_card_definition(lower_id)
                         {
+                            if let Some(hp_cost) = super::original_config::ling_kong_fei_sao_hp_cost(
+                                lowered.id,
+                                self.original_build_profile.steam_build_number(),
+                            ) {
+                                lowered.hp_cost = Some(hp_cost);
+                            }
                             self.actor_mut(target_side).deck.slots[trigger_grid].card = lowered;
                         }
                     } else {

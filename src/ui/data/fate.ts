@@ -77,12 +77,6 @@ export function fateStrategySummary(option: FateStrategyOption): string {
   ].filter(Boolean).join(" · ");
 }
 
-export function fateStrategyPickerColumn(option: FateStrategyOption): "common" | "sect" | "exclusive" {
-  if (option.archiveKey === "fate-strategy:common") return "common";
-  if (option.archiveKey.includes(":exclusive:")) return "exclusive";
-  return "sect";
-}
-
 const FATE_STRATEGY_SUMMARIES: Readonly<Record<number, string>> = {
   27: "有手牌时开局增加当前生命与生命上限",
   32: "每次使用普攻令对方失去加攻与护体",

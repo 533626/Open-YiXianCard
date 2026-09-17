@@ -129,6 +129,229 @@ export type ActionContext = {
 };
 
 const SOLVER_VALUE_SCORING = { scoreProfile: "value-v0" as const };
+type ActionCall = {
+  readonly target: HTMLElement;
+  readonly context: ActionContext;
+  readonly side: Side | undefined;
+  readonly slot: number | null;
+  readonly event: Event;
+};
+
+/**
+ * Action dispatch table. A handler returns `"terminal"` when it already
+ * rendered or ran its own follow-up (the old early-`return` branches);
+ * anything else falls through to the shared footer (deck-editing cleanup +
+ * target-mirror resync + render) at the end of handleAction.
+ */
+type ActionHandler = (call: ActionCall) => "terminal" | void;
+
+const CLOSE_PICKER_ACTIONS = new Set([
+  "close-card-picker",
+  "close-talent-picker",
+  "close-fate-picker",
+  "close-career-picker",
+  "close-character-picker",
+]);
+
+function withTargetBuildId(target: HTMLElement, apply: (buildId: string) => void): void {
+  const buildId = target.dataset.buildId;
+  if (buildId) apply(buildId);
+}
+
+const ACTION_HANDLERS: Record<string, ActionHandler> = {
+  run: ({ context }) => {
+    void context.runBattle();
+    return "terminal";
+  },
+  "diagnose-decks": ({ context }) => {
+    void scheduleDeckDiagnostics(context);
+    return "terminal";
+  },
+  "cancel-battle": ({ context }) => {
+    context.cancelBattle?.();
+    return "terminal";
+  },
+  reset: ({ context }) => {
+    context.resetBattle();
+    return "terminal";
+  },
+  "toggle-fixture-import": ({ context }) => { context.state.fixtureImportOpen = !context.state.fixtureImportOpen; },
+  "set-replay-import-tab": ({ target, context }) => {
+    const tab = target.dataset.importTab as ReplayImportTab | undefined;
+    if (tab === "code" || tab === "computer" || tab === "package") {
+      context.state.replayImportTab = tab;
+    }
+  },
+  "import-local-replay-round": ({ target, context }) => {
+    const candidateId = target.dataset.replayCandidateId;
+    const candidate = context.state.replayImportCandidates
+      ?.find((item) => item.id === candidateId);
+    if (candidate) {
+      applyImportedReplay(context.state, candidate.fixture, { origin: "local" });
+      // 导入会整体替换 config.players.p1：打靶模式下必须重新挂镜像。
+      resyncTargetMirror(context.state);
+    }
+    context.render();
+    return "terminal";
+  },
+  "import-fixture": ({ context }) => {
+    void importFixture(context, false);
+    return "terminal";
+  },
+  "import-fixture-and-run": ({ context }) => {
+    void importFixture(context, true);
+    return "terminal";
+  },
+  "quick-fixture": ({ target, context }) => {
+    const fixtureId = target.dataset.fixtureId;
+    if (fixtureId) void importFixtureById(context, fixtureId, true);
+    return "terminal";
+  },
+  "set-solver-task": ({ target, context }) => setSolverTask(target, context.state),
+  "set-solver-method": ({ target, context }) => setSolverMethod(target, context.state),
+  "solve-active": ({ context }) => {
+    void scheduleSolver(context);
+    return "terminal";
+  },
+  "cancel-solver": ({ context }) => {
+    cancelSolver(context);
+    return "terminal";
+  },
+  "apply-solver-best": ({ context }) => {
+    applySolverBest(context.state);
+    invalidateComputedResults(context.state);
+  },
+  "apply-solver-row": ({ target, context }) => {
+    applySolverRow(target, context.state);
+    invalidateComputedResults(context.state);
+  },
+  "apply-solver-baseline": ({ context }) => {
+    applySolverBaseline(context.state);
+    invalidateComputedResults(context.state);
+  },
+  "set-first": ({ context, side }) => { if (side) context.state.config.firstPlayerSide = side; },
+  "switch-workbench-mode": ({ target, context }) => {
+    const mode = target.dataset.mode;
+    if (mode === "duel" || mode === "target") switchWorkbenchMode(context.state, mode);
+  },
+  "select-target-build": ({ target, context }) => withTargetBuildId(target, (id) => selectTargetBuild(context.state, id)),
+  "add-target-build": ({ context }) => addTargetBuild(context.state),
+  "remove-target-build": ({ target, context }) => withTargetBuildId(target, (id) => removeTargetBuild(context.state, id)),
+  "duplicate-target-build": ({ target, context }) => withTargetBuildId(target, (id) => duplicateTargetBuild(context.state, id)),
+  "rename-target-build": ({ target, context }) => withTargetBuildId(target, (id) =>
+    renameTargetBuild(context.state, id, (target as HTMLInputElement).value)),
+  "run-target-practice": ({ target, context }) => withTargetBuildId(target, (id) =>
+    void context.runTargetPractice?.(id)),
+  "cancel-target-practice": ({ context }) => context.cancelTargetPractice?.(),
+  "set-target-compare-mode": ({ target, context }) => {
+    const mode = target.dataset.mode;
+    if (mode === "overlay" || mode === "grid") setTargetCompareMode(context.state, mode);
+  },
+  "toggle-target-step": ({ target, context }) => {
+    if (!context.state.target) return;
+    const step = Number(target.dataset.step);
+    const buildId = target.dataset.buildId ?? activeTargetBuild(context.state)?.id ?? null;
+    if (!Number.isInteger(step) || step < 0 || !buildId) return;
+    const targetState = context.state.target;
+    if (!targetState.builds.some((build) => build.id === buildId)) return "terminal";
+    if (targetState.activeBuildId !== buildId) selectTargetBuild(context.state, buildId);
+    const sameSelection = targetState.expandedStepBuildId === buildId && targetState.expandedStep === step;
+    targetState.expandedStep = sameSelection ? null : step;
+    targetState.expandedStepBuildId = sameSelection ? null : buildId;
+  },
+  "select-build": ({ target, context, side }) => { if (side) selectBuild(target as HTMLSelectElement, context.state, side); },
+  "save-build": ({ context, side }) => { if (side) saveCurrentBuild(context.state, side); },
+  "load-build": ({ context, side }) => { if (side) loadSelectedBuild(context.state, side); },
+  "delete-build": ({ context, side }) => { if (side) deleteSelectedBuild(context.state, side); },
+  "toggle-build-archive": ({ context, side, target, event }) => {
+    if (!side) return;
+    event.stopPropagation();
+    const root = document.getElementById("app");
+    const wrap = target.closest(".build-archive-wrap");
+    const wasOpen = wrap?.classList.contains("open") ?? false;
+    root?.querySelectorAll(".build-archive-wrap.open").forEach((element) => element.classList.remove("open"));
+    if (!wasOpen) wrap?.classList.add("open");
+    return "terminal";
+  },
+  "pick-saved-build": ({ target, context, side }) => {
+    if (!side) return;
+    const buildId = target.dataset.buildId;
+    const build = buildId
+      ? context.state.savedBuilds.find((entry) => entry.id === buildId)
+      : undefined;
+    if (build) {
+      context.state.saveDraftNames[side] = build.name;
+      context.state.selectedBuildIds[side] = build.id;
+      loadSelectedBuild(context.state, side);
+    }
+  },
+  "set-picker-mode": ({ target, context }) => setPickerMode(target, context.state),
+  "select-slot": ({ context, side, slot }) => { if (side && slot !== null) selectSlot(context.state, side, slot); },
+  "set-card-picker-scope": ({ target, context }) => {
+    const scope = target.dataset.scope;
+    if (scope === "common" || scope === "season" || scope === "special") {
+      context.state.cardPickerScope = scope;
+    }
+  },
+  "select-talent-slot": ({ context, side, slot }) => {
+    if (side && slot !== null && slot > 0) selectTalentSlot(context.state, side, slot);
+  },
+  "open-fate-picker": ({ context, side }) => { if (side) openFatePicker(context.state, side); },
+  "open-character-picker": ({ context, side }) => { if (side) openCharacterPicker(context.state, side); },
+  "pick-character": ({ target, context }) => pickCharacter(target, context.state),
+  "pick-career": ({ target, context }) => pickCareer(target, context.state),
+  "pick-dual-career": ({ target, context }) => pickDualCareer(target, context.state),
+  "clear-slot": ({ context, side, slot }) => { if (side && slot !== null) clearSlot(context.state, side, slot); },
+  "clear-deck": ({ context, side }) => { if (side) clearDeck(context.state, side); },
+  "adjust-jifangsheng-rank": ({ target, context, side }) => { if (side) adjustJiFangshengRank(target, context.state, side); },
+  "shift-deck-slot": ({ target, context, side, slot }) => {
+    if (!(side && slot !== null)) return;
+    const delta = Number(target.dataset.delta) === 1 ? 1 : -1;
+    shiftDeckSlot(context.state, side, slot, delta);
+    context.state.activeSide = side;
+    context.state.selectedSlot = slot + delta;
+  },
+  "reset-card-picker": ({ context }) => {
+    resetCardFilters(context.state);
+    context.state.pickerMode = "card";
+  },
+  "pick-card": ({ target, context }) => pickCard(target, context.state),
+  "pick-talent": ({ target, context }) => pickTalent(target, context.state),
+  "toggle-fate-strategy": ({ target, context, side }) => toggleFateStrategy(target, context.state, side),
+  "clear-fate-strategies": ({ context, side }) => { if (side) clearFateStrategies(context.state, side); },
+  "clear-talent-slot": ({ context, side, slot }) => { if (side && slot !== null && slot > 0) clearTalentSlot(context.state, side, slot); },
+  "apply-character-talents": ({ context, side }) => { if (side) applyCharacterTalents(context.state, side); },
+  "reset-player": ({ context, side }) => { if (side) resetPlayer(context.state, side); },
+  "jump-frame": ({ target, context }) => { if (context.state.result) jumpFrame(target, context.state); },
+  "select-battle-module": ({ target, context }) => {
+    const module = battleModuleFromValue(target.dataset.module);
+    if (module) context.state.battleModule = module;
+  },
+  "select-trajectory-metric": ({ target, context }) => {
+    const metric = target.dataset.metric;
+    // 曲线选项卡的 生命/伤害 分段开关：动作名显式说明它既切到曲线模块又选口径，
+    // 不再在共享 handler 里隐式副作用地切换 battleModule。
+    if (metric === "life" || metric === "damage") {
+      context.state.battleModule = "trajectory";
+      context.state.flowMetric = metric;
+    }
+  },
+  "toggle-auto": ({ context }) => context.toggleAuto(),
+  "show-setup": ({ context }) => {
+    context.stopAuto();
+    context.state.view = "setup";
+  },
+  "show-battle": ({ context }) => { if (context.state.result) context.state.view = "battle"; },
+};
+
+for (const action of CLOSE_PICKER_ACTIONS) {
+  ACTION_HANDLERS[action] = ({ context }) => {
+    context.state.pickerMode = "none";
+    // 构筑弹窗全部收回即立即调度自动推演，不等下一次渲染周期。
+    context.maybeScheduleAutoBattle?.();
+  };
+}
+
 export function handleAction(event: Event, context: ActionContext): void {
   const target = event.currentTarget as HTMLElement;
   const action = target.dataset.action;
@@ -149,209 +372,10 @@ export function handleAction(event: Event, context: ActionContext): void {
     invalidateComputedResults(context.state);
   }
 
-  if (action === "run") {
-    void context.runBattle();
-    return;
-  }
-  if (action === "diagnose-decks") {
-    void scheduleDeckDiagnostics(context);
-    return;
-  }
-  if (action === "cancel-battle") {
-    context.cancelBattle?.();
-    return;
-  }
-  if (action === "reset") return context.resetBattle();
-  if (action === "toggle-fixture-import") {
-    context.state.fixtureImportOpen = !context.state.fixtureImportOpen;
-  }
-  if (action === "set-replay-import-tab") {
-    const tab = target.dataset.importTab as ReplayImportTab | undefined;
-    if (tab === "code" || tab === "computer" || tab === "package") {
-      context.state.replayImportTab = tab;
-    }
-  }
-  if (action === "import-local-replay-round") {
-    const candidateId = target.dataset.replayCandidateId;
-    const candidate = context.state.replayImportCandidates
-      ?.find((item) => item.id === candidateId);
-    if (candidate) {
-      applyImportedReplay(context.state, candidate.fixture, { origin: "local" });
-      // 导入会整体替换 config.players.p1：打靶模式下必须重新挂镜像。
-      resyncTargetMirror(context.state);
-    }
-    context.render();
-    return;
-  }
-  if (action === "import-fixture") {
-    void importFixture(context, false);
-    return;
-  }
-  if (action === "import-fixture-and-run") {
-    void importFixture(context, true);
-    return;
-  }
-  if (action === "quick-fixture") {
-    const fixtureId = target.dataset.fixtureId;
-    if (fixtureId) void importFixtureById(context, fixtureId, true);
-    return;
-  }
-  if (action === "set-solver-task") setSolverTask(target, context.state);
-  if (action === "set-solver-method") setSolverMethod(target, context.state);
-  if (action === "solve-active") {
-    void scheduleSolver(context);
-    return;
-  }
-  if (action === "cancel-solver") {
-    cancelSolver(context);
-    return;
-  }
-  if (action === "apply-solver-best") {
-    applySolverBest(context.state);
-    invalidateComputedResults(context.state);
-  }
-  if (action === "apply-solver-row") {
-    applySolverRow(target, context.state);
-    invalidateComputedResults(context.state);
-  }
-  if (action === "apply-solver-baseline") {
-    applySolverBaseline(context.state);
-    invalidateComputedResults(context.state);
-  }
+  const handler = Object.hasOwn(ACTION_HANDLERS, action) ? ACTION_HANDLERS[action] : undefined;
+  const outcome = handler?.({ target, context, side, slot, event });
+  if (outcome === "terminal") return;
 
-  if (action === "set-first" && side) context.state.config.firstPlayerSide = side;
-  if (action === "switch-workbench-mode") {
-    const mode = target.dataset.mode;
-    if (mode === "duel" || mode === "target") switchWorkbenchMode(context.state, mode);
-  }
-  if (action === "select-target-build") {
-    const buildId = target.dataset.buildId;
-    if (buildId) selectTargetBuild(context.state, buildId);
-  }
-  if (action === "add-target-build") addTargetBuild(context.state);
-  if (action === "remove-target-build") {
-    const buildId = target.dataset.buildId;
-    if (buildId) removeTargetBuild(context.state, buildId);
-  }
-  if (action === "duplicate-target-build") {
-    const buildId = target.dataset.buildId;
-    if (buildId) duplicateTargetBuild(context.state, buildId);
-  }
-  if (action === "rename-target-build") {
-    const buildId = target.dataset.buildId;
-    if (buildId) renameTargetBuild(context.state, buildId, (target as HTMLInputElement).value);
-  }
-  if (action === "run-target-practice") {
-    const buildId = target.dataset.buildId;
-    if (buildId) void context.runTargetPractice?.(buildId);
-  }
-  if (action === "cancel-target-practice") context.cancelTargetPractice?.();
-  if (action === "set-target-compare-mode") {
-    const mode = target.dataset.mode;
-    if (mode === "overlay" || mode === "grid") setTargetCompareMode(context.state, mode);
-  }
-  if (action === "toggle-target-step" && context.state.target) {
-    const step = Number(target.dataset.step);
-    const buildId = target.dataset.buildId ?? activeTargetBuild(context.state)?.id ?? null;
-    if (Number.isInteger(step) && step >= 0 && buildId) {
-      const targetState = context.state.target;
-      if (!targetState.builds.some((build) => build.id === buildId)) return;
-      if (targetState.activeBuildId !== buildId) selectTargetBuild(context.state, buildId);
-      const sameSelection = targetState.expandedStepBuildId === buildId && targetState.expandedStep === step;
-      targetState.expandedStep = sameSelection ? null : step;
-      targetState.expandedStepBuildId = sameSelection ? null : buildId;
-    }
-  }
-  if (action === "select-build" && side) selectBuild(target as HTMLSelectElement, context.state, side);
-  if (action === "save-build" && side) saveCurrentBuild(context.state, side);
-  if (action === "load-build" && side) loadSelectedBuild(context.state, side);
-  if (action === "delete-build" && side) deleteSelectedBuild(context.state, side);
-  if (action === "toggle-build-archive" && side) {
-    event.stopPropagation();
-    const root = document.getElementById("app");
-    const wrap = target.closest(".build-archive-wrap");
-    const wasOpen = wrap?.classList.contains("open") ?? false;
-    root?.querySelectorAll(".build-archive-wrap.open").forEach((element) => element.classList.remove("open"));
-    if (!wasOpen) wrap?.classList.add("open");
-    return;
-  }
-  if (action === "pick-saved-build" && side) {
-    const buildId = target.dataset.buildId;
-    const build = buildId
-      ? context.state.savedBuilds.find((entry) => entry.id === buildId)
-      : undefined;
-    if (build) {
-      context.state.saveDraftNames[side] = build.name;
-      context.state.selectedBuildIds[side] = build.id;
-      loadSelectedBuild(context.state, side);
-    }
-  }
-  if (action === "set-picker-mode") setPickerMode(target, context.state);
-  if (
-    action === "close-card-picker" ||
-    action === "close-talent-picker" ||
-    action === "close-fate-picker" ||
-    action === "close-career-picker" ||
-    action === "close-character-picker"
-  ) {
-    context.state.pickerMode = "none";
-    // 构筑弹窗全部收回即立即调度自动推演，不等下一次渲染周期。
-    context.maybeScheduleAutoBattle?.();
-  }
-
-  if (action === "select-slot" && side && slot !== null) selectSlot(context.state, side, slot);
-  if (action === "set-card-picker-scope") {
-    const scope = target.dataset.scope;
-    if (scope === "common" || scope === "season" || scope === "special") {
-      context.state.cardPickerScope = scope;
-    }
-  }
-  if (action === "select-talent-slot" && side && slot !== null && slot > 0) selectTalentSlot(context.state, side, slot);
-  if (action === "open-fate-picker" && side) openFatePicker(context.state, side);
-  if (action === "open-character-picker" && side) openCharacterPicker(context.state, side);
-  if (action === "pick-character") pickCharacter(target, context.state);
-  if (action === "pick-career") pickCareer(target, context.state);
-  if (action === "pick-dual-career") pickDualCareer(target, context.state);
-  if (action === "clear-slot" && side && slot !== null) clearSlot(context.state, side, slot);
-  if (action === "clear-deck" && side) clearDeck(context.state, side);
-  if (action === "adjust-jifangsheng-rank" && side) adjustJiFangshengRank(target, context.state, side);
-  if (action === "shift-deck-slot" && side && slot !== null) {
-    const delta = Number(target.dataset.delta) === 1 ? 1 : -1;
-    shiftDeckSlot(context.state, side, slot, delta);
-    context.state.activeSide = side;
-    context.state.selectedSlot = slot + delta;
-  }
-  if (action === "reset-card-picker") {
-    resetCardFilters(context.state);
-    context.state.pickerMode = "card";
-  }
-  if (action === "pick-card") pickCard(target, context.state);
-  if (action === "pick-talent") pickTalent(target, context.state);
-  if (action === "toggle-fate-strategy") toggleFateStrategy(target, context.state, side);
-  if (action === "clear-fate-strategies" && side) clearFateStrategies(context.state, side);
-  if (action === "clear-talent-slot" && side && slot !== null && slot > 0) clearTalentSlot(context.state, side, slot);
-  if (action === "apply-character-talents" && side) applyCharacterTalents(context.state, side);
-  if (action === "reset-player" && side) resetPlayer(context.state, side);
-  if (action === "jump-frame" && context.state.result) jumpFrame(target, context.state);
-  if (action === "select-battle-module") {
-    const module = battleModuleFromValue(target.dataset.module);
-    if (module) context.state.battleModule = module;
-  }
-  if (action === "select-trajectory-metric") {
-    const metric = target.dataset.metric;
-    // 曲线选项卡的 生命/伤害 分段开关：动作名显式说明它既切到曲线模块又选口径，
-    // 不再在共享 handler 里隐式副作用地切换 battleModule。
-    if (metric === "life" || metric === "damage") {
-      context.state.battleModule = "trajectory";
-      context.state.flowMetric = metric;
-    }
-  }
-  if (action === "toggle-auto") context.toggleAuto();
-  if (action === "show-setup") {
-    context.stopAuto();
-    context.state.view = "setup";
-  }
-  if (action === "show-battle" && context.state.result) context.state.view = "battle";
   if (isDeckEditingAction(action)) {
     clearBuildSelection(context.state, side ?? context.state.activeSide);
   }

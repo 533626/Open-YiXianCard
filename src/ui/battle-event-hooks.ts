@@ -50,32 +50,6 @@ const NEGATIVE_STATUS_NAMES = new Set([
 /** Explicit source-key registry. Unknown keys are audited, never guessed. */
 export const unmappedSourceKeys = new Set<string>();
 
-export function hookCategoryForEvent(event: RuleEvent): HookCategory {
-  if (event.type === "phase") {
-    if (event.name.startsWith("actionAgain")) return HOOK_CATEGORIES.again;
-    return HOOK_CATEGORIES.turn;
-  }
-  if (event.type === "checkpoint") return HOOK_CATEGORIES.check;
-  if (event.type === "queue") return HOOK_CATEGORIES.queue;
-  if (event.type === "damage" || event.type === "guard") {
-    return hookCategoryForSource(eventSource(event), event);
-  }
-  if (event.type === "buff" && isNegativeStatus(event.name)) {
-    return HOOK_CATEGORIES.status;
-  }
-  if (event.type === "card") {
-    if (event.name === "cardSelected" || event.name === "animaShortage") {
-      return HOOK_CATEGORIES.select;
-    }
-    if (event.name === "temporaryUpgrade") return HOOK_CATEGORIES.queue;
-    if (event.name === "effectBefore" || event.name === "effectAfter") {
-      return HOOK_CATEGORIES.main;
-    }
-    if (event.name === "cardCompleted") return HOOK_CATEGORIES.after;
-  }
-  return hookCategoryForSource(eventSource(event), event);
-}
-
 export function eventSource(event: RuleEvent): string | null {
   const source = event.detail?.source;
   return typeof source === "string" ? source : null;

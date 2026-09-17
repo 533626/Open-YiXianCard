@@ -150,9 +150,13 @@ impl BattleFixture {
                     player.cards.len()
                 )));
             }
-            if player.cards.len() != DECK_SIZE {
+            // 低格轮次（R1–R5，activeSlotCount < 8）的夹具允许短数组：
+            // 战斗只走 queue（0..active_slot_count），超出的槽位从不入列，
+            // 上面的 active_slot_count <= cards.len() 已是充分下界；补齐到
+            // DECK_SIZE 的旧要求只是格式惯性（此前 119 blocked 全因此被拒判）。
+            if player.cards.len() > DECK_SIZE {
                 return Err(EngineError::InvalidFixture(format!(
-                    "{side} has {} cards, expected {DECK_SIZE}",
+                    "{side} has {} cards, expected at most {DECK_SIZE}",
                     player.cards.len()
                 )));
             }
@@ -345,4 +349,64 @@ pub fn candidate_fixture_path(root: &Path, case_id: &str) -> std::path::PathBuf 
         }
     }
     candidates_path
+}
+
+#[cfg(test)]
+mod validate_tests {
+    use super::*;
+
+    fn fixture_json(
+        p1_cards: usize,
+        p1_active: usize,
+        p2_cards: usize,
+        p2_active: usize,
+    ) -> String {
+        let cards = |n: usize| {
+            (0..n)
+                .map(|i| format!(r#"{{"id":{},"name":"c{}"}}"#, 1_000_001 + i as i64, i))
+                .collect::<Vec<_>>()
+                .join(",")
+        };
+        format!(
+            r#"{{"schemaVersion":1,"firstPlayerSide":"p1",
+                "expected":{{"winnerSide":"p1","actorTurnCount":1,"hpDeltaP1MinusP2":0}},
+                "players":{{"p1":{{"level":1,"baseMaxHp":100,"activeSlotCount":{},"cards":[{}]}},
+                            "p2":{{"level":1,"baseMaxHp":100,"activeSlotCount":{},"cards":[{}]}}}}}}"#,
+            p1_active,
+            cards(p1_cards),
+            p2_active,
+            cards(p2_cards)
+        )
+    }
+
+    fn validate_cards(
+        p1_cards: usize,
+        p1_active: usize,
+        p2_cards: usize,
+        p2_active: usize,
+    ) -> bool {
+        let fixture: BattleFixture =
+            serde_json::from_str(&fixture_json(p1_cards, p1_active, p2_cards, p2_active))
+                .expect("test fixture must deserialize");
+        fixture.validate().is_ok()
+    }
+
+    #[test]
+    fn short_deck_matching_active_slots_is_valid() {
+        // V42 前低格轮次（R1–R5）因此被拒判 119 场：短数组＋一致的 activeSlotCount 必须放行。
+        assert!(validate_cards(3, 3, 3, 3));
+        assert!(validate_cards(5, 5, 4, 4));
+        assert!(validate_cards(8, 8, 8, 8));
+    }
+
+    #[test]
+    fn active_slots_beyond_cards_is_rejected() {
+        assert!(!validate_cards(3, 4, 3, 3));
+        assert!(!validate_cards(8, 8, 2, 3));
+    }
+
+    #[test]
+    fn more_than_deck_size_is_rejected() {
+        assert!(!validate_cards(9, 8, 8, 8));
+    }
 }

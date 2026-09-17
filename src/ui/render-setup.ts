@@ -5,14 +5,6 @@ import { renderDeckDiagnosticPanel } from "./render-deck-diagnostics";
 import type { AppState } from "./types";
 import { escapeAttribute } from "./view-utils";
 
-export function renderSetupPage(state: AppState): string {
-  return `
-    <main class="layout setup-layout">
-      ${renderSetupPane(state)}
-    </main>
-  `;
-}
-
 export function renderSetupPickers(state: AppState): string {
   return `
     ${renderCardPopup(state)}

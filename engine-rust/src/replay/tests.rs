@@ -1,44 +1,18 @@
 use super::cards_dream_mirage::DreamMirageValue;
 use super::cards_mirage_ronghui::MirageRonghuiValue;
 use super::*;
-use crate::fixture::{BattleFixture, FixtureExpected, FixturePlayer, FixturePlayers};
+use crate::fixture::{BattleFixture, FixtureExpected, FixturePlayers};
 use crate::model::{CardDefinition, PlayerSide, DECK_SIZE};
 
 pub(super) fn filler_cards(active: CardDefinition) -> Vec<CardDefinition> {
-    let mut cards = vec![active];
-    while cards.len() < DECK_SIZE {
-        cards.push(basic_attack_test_card());
-    }
-    cards
+    super::test_support::basic_deck(active)
 }
 pub(super) fn basic_attack_test_card() -> CardDefinition {
-    let mut card = test_card(0, 0, "普通攻击");
-    card.attack = Some(3);
-    card
+    super::test_support::basic_attack_card()
 }
 
 pub(super) fn test_card(id: i64, base_id: i64, name: &str) -> CardDefinition {
-    CardDefinition {
-        id,
-        base_id: Some(base_id),
-        name: name.to_string(),
-        card_type: None,
-        attack: None,
-        random_attack: None,
-        random_defense: None,
-        attack_count: None,
-        defense: None,
-        damage: None,
-        anima: None,
-        hp_cost: None,
-        action_again: None,
-        physique: None,
-        sword_intent: None,
-        hexagram: None,
-        rarity: None,
-        career_name: None,
-        other_params: vec![],
-    }
+    super::test_support::test_card(id, base_id, name)
 }
 
 #[test]
@@ -463,62 +437,8 @@ pub(super) fn minimal_fixture(
         historical_card_overrides: Vec::new(),
         catalog_cards: Vec::new(),
         players: FixturePlayers {
-            p1: FixturePlayer {
-                level: 1,
-                base_max_hp: 30,
-                extra_max_hp: None,
-                battle_start_hp: None,
-                character_id: None,
-                talents: Vec::new(),
-                fate_strategies: Vec::new(),
-                fate_strategy_temp_datas: Default::default(),
-                active_slot_count: 1,
-                initial_defense: 0,
-                initial_anima: 0,
-                initial_guard: 0,
-                initial_momentum: 0,
-                initial_momentum_limit: None,
-                initial_agility: 0,
-                initial_battle_buffs: Default::default(),
-                permanent_buff_temp_datas: Default::default(),
-                talent_resonance_id: None,
-                used_ke_yin_cards: Vec::new(),
-                talent_temp_datas: Default::default(),
-                talent_card_params: Default::default(),
-                last_round_used_card_base_ids: Vec::new(),
-                last_round_life: None,
-                last_round_exp: 0,
-                hand_cards: Vec::new(),
-                cards: p1_cards,
-            },
-            p2: FixturePlayer {
-                level: 1,
-                base_max_hp: 30,
-                extra_max_hp: None,
-                battle_start_hp: None,
-                character_id: None,
-                talents: Vec::new(),
-                fate_strategies: Vec::new(),
-                fate_strategy_temp_datas: Default::default(),
-                active_slot_count: 1,
-                initial_defense: 0,
-                initial_anima: 0,
-                initial_guard: 0,
-                initial_momentum: 0,
-                initial_momentum_limit: None,
-                initial_agility: 0,
-                initial_battle_buffs: Default::default(),
-                permanent_buff_temp_datas: Default::default(),
-                talent_resonance_id: None,
-                used_ke_yin_cards: Vec::new(),
-                talent_temp_datas: Default::default(),
-                talent_card_params: Default::default(),
-                last_round_used_card_base_ids: Vec::new(),
-                last_round_life: None,
-                last_round_exp: 0,
-                hand_cards: Vec::new(),
-                cards: p2_cards,
-            },
+            p1: super::test_support::make_player(p1_cards, 1, 30, None, 1, None),
+            p2: super::test_support::make_player(p2_cards, 1, 30, None, 1, None),
         },
     }
 }

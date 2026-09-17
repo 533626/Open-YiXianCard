@@ -3,10 +3,12 @@ use crate::fixture::{BattleFixture, FixtureExpected, FixturePlayer, FixturePlaye
 use crate::model::{CardDefinition, PlayerSide, DECK_SIZE};
 
 fn original_card(id: i64) -> CardDefinition {
-    original_card_definition_by_id(id).unwrap_or_else(|| panic!("missing original card {id}"))
+    super::test_support::original_card(id)
 }
 
 fn player(cards: Vec<CardDefinition>, initial_anima: i64) -> FixturePlayer {
+    // Custom `initial_anima` passthrough (callers pass 3 vs 0): intentionally
+    // not routed through `make_player`, which fixes zero initials.
     FixturePlayer {
         level: 5,
         base_max_hp: 100,

@@ -28,6 +28,7 @@
     "records:cultivation-audit": "python3 research/original-game/audit_cultivation_records.py",
     "records:mirror": "python3 research/original-game/ingest_mirror_records.py",
     "test:record-export": "cd research/original-game && python3 -m unittest test_ingest_mirror_records.py",
+    "test:runtime-trace-plugin": "bash research/original-game/runtime-trace-plugin/build.sh",
     "records:mirror-census": "python3 research/original-game/extract_mirror_deck_census.py",
     "oracle:mirror:run": "bun battle-evaluator/scripts/run-mirror-oracle.ts",
     "oracle:diagnosis:run": "bun battle-evaluator/scripts/run-diagnosis-oracle.ts",

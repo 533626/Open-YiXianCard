@@ -1,54 +1,5 @@
 import { battleEventBuffLabels } from "./generated/battle-event-labels";
 
-export function selectField(label: string, id: string, value: string, options: readonly [string, string][]): string {
-  return `
-    <label class="field">
-      <span>${label}</span>
-      <select id="${id}">
-        ${options.map(([optionValue, optionLabel]) => `
-          <option value="${escapeAttribute(optionValue)}" ${value === optionValue ? "selected" : ""}>${escapeHtml(optionLabel)}</option>
-        `).join("")}
-      </select>
-    </label>
-  `;
-}
-
-export function textField(label: string, id: string, value: string): string {
-  return `
-    <label class="field">
-      <span>${label}</span>
-      <input id="${id}" value="${escapeAttribute(value)}" />
-    </label>
-  `;
-}
-
-export function numberField(label: string, id: string, value: number, min: number, max: number): string {
-  return `
-    <label class="field">
-      <span>${label}</span>
-      <input type="number" id="${id}" value="${value}" min="${min}" max="${max}" />
-    </label>
-  `;
-}
-
-export function nullableNumberField(label: string, id: string, value: number | null): string {
-  return `
-    <label class="field">
-      <span>${label}</span>
-      <input type="number" id="${id}" value="${value ?? ""}" />
-    </label>
-  `;
-}
-
-export function textareaField(label: string, id: string, value: string): string {
-  return `
-    <label class="field textarea">
-      <span>${label}</span>
-      <textarea id="${id}" spellcheck="false">${escapeHtml(value)}</textarea>
-    </label>
-  `;
-}
-
 export function stat(label: string, value: string | number): string {
   return `<div><span>${label}</span><b>${escapeHtml(String(value))}</b></div>`;
 }
@@ -269,10 +220,6 @@ export function visibleErrorMessage(error: unknown): string {
     .replace(/\bnull\b/g, "空值");
 }
 
-export function formatNumberList(values: readonly number[]): string {
-  return values.join(", ");
-}
-
 export function escapeHtml(value: string): string {
   return value
     .replaceAll("&", "&amp;")
@@ -283,8 +230,4 @@ export function escapeHtml(value: string): string {
 
 export function escapeAttribute(value: string): string {
   return escapeHtml(value).replaceAll("'", "&#39;");
-}
-
-export function domId(value: string | number): string {
-  return String(value).replaceAll(/[^a-zA-Z0-9_-]/g, "-");
 }

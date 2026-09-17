@@ -1,36 +1,3 @@
-.deck-toolbar {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 6px;
-  align-items: center;
-  padding: 2px 0;
-}
-
-.deck-toolbar-label {
-  color: var(--muted);
-  font-size: var(--fs-2xs);
-  font-weight: 700;
-}
-
-.deck-toolbar-actions {
-  display: inline-flex;
-  gap: 3px;
-  flex-wrap: wrap;
-}
-
-.deck-tool {
-  min-height: 20px;
-  padding: 0 7px;
-  font-size: var(--fs-2xs);
-  font-weight: 700;
-}
-
-.deck-toolbar-hint {
-  color: var(--muted);
-  font-size: var(--fs-2xs);
-  white-space: nowrap;
-}
-
 .player-deck {
   min-height: 0;
   display: grid;

@@ -3,51 +3,22 @@ use super::*;
 use crate::fixture::{
     BattleFixture, FixtureExpected, FixturePlayer, FixturePlayers, FixtureSource,
 };
-use crate::model::{CardDefinition, PlayerSide, DECK_SIZE};
-use std::collections::BTreeMap;
+use crate::model::{CardDefinition, PlayerSide};
 
 fn original_card(id: i64) -> CardDefinition {
-    original_card_definition_by_id(id).unwrap_or_else(|| panic!("missing original card {id}"))
+    super::test_support::original_card(id)
 }
 
 fn basic_attack() -> CardDefinition {
-    original_card(0)
+    super::test_support::original_card(0)
 }
 
-fn deck_with(mut cards: Vec<CardDefinition>) -> Vec<CardDefinition> {
-    cards.resize_with(DECK_SIZE, basic_attack);
-    cards
+fn deck_with(cards: Vec<CardDefinition>) -> Vec<CardDefinition> {
+    super::test_support::resize_deck(cards, basic_attack())
 }
 
 fn player(cards: Vec<CardDefinition>) -> FixturePlayer {
-    FixturePlayer {
-        level: 5,
-        base_max_hp: 100,
-        extra_max_hp: Some(0),
-        battle_start_hp: None,
-        character_id: None,
-        talents: Vec::new(),
-        fate_strategies: Vec::new(),
-        fate_strategy_temp_datas: Default::default(),
-        active_slot_count: 1,
-        initial_defense: 0,
-        initial_anima: 0,
-        initial_guard: 0,
-        initial_momentum: 0,
-        initial_momentum_limit: Some(6),
-        initial_agility: 0,
-        initial_battle_buffs: Default::default(),
-        permanent_buff_temp_datas: BTreeMap::new(),
-        talent_resonance_id: None,
-        used_ke_yin_cards: Vec::new(),
-        talent_temp_datas: BTreeMap::new(),
-        talent_card_params: BTreeMap::new(),
-        last_round_used_card_base_ids: Vec::new(),
-        last_round_life: None,
-        last_round_exp: 0,
-        hand_cards: Vec::new(),
-        cards,
-    }
+    super::test_support::make_player(cards, 5, 100, Some(0), 1, Some(6))
 }
 
 fn fixture(p1: FixturePlayer, p2: FixturePlayer) -> BattleFixture {

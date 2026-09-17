@@ -1,69 +1,21 @@
 use super::*;
-use crate::fixture::{BattleFixture, FixtureExpected, FixturePlayer, FixturePlayers};
-use crate::model::{CardDefinition, PlayerSide, DECK_SIZE};
-use std::collections::BTreeMap;
+use crate::fixture::{BattleFixture, FixturePlayer};
+use crate::model::CardDefinition;
 
 fn basic_attack() -> CardDefinition {
-    original_card_definition_by_id(0).expect("missing basic attack")
+    super::test_support::original_card(0)
 }
 
 fn deck() -> Vec<CardDefinition> {
-    let mut cards = vec![basic_attack()];
-    while cards.len() < DECK_SIZE {
-        cards.push(basic_attack());
-    }
-    cards
+    super::test_support::fill_deck(vec![basic_attack()], basic_attack())
 }
 
 fn player() -> FixturePlayer {
-    FixturePlayer {
-        level: 5,
-        base_max_hp: 50,
-        extra_max_hp: Some(0),
-        battle_start_hp: None,
-        character_id: None,
-        talents: Vec::new(),
-        fate_strategies: Vec::new(),
-        fate_strategy_temp_datas: Default::default(),
-        active_slot_count: 8,
-        initial_defense: 0,
-        initial_anima: 0,
-        initial_guard: 0,
-        initial_momentum: 0,
-        initial_momentum_limit: Some(6),
-        initial_agility: 0,
-        initial_battle_buffs: Default::default(),
-        permanent_buff_temp_datas: BTreeMap::new(),
-        talent_resonance_id: None,
-        used_ke_yin_cards: Vec::new(),
-        talent_temp_datas: BTreeMap::new(),
-        talent_card_params: BTreeMap::new(),
-        last_round_used_card_base_ids: Vec::new(),
-        last_round_life: None,
-        last_round_exp: 0,
-        hand_cards: Vec::new(),
-        cards: deck(),
-    }
+    super::test_support::make_player(deck(), 5, 50, Some(0), 8, Some(6))
 }
 
 fn fixture(p1: FixturePlayer, p2: FixturePlayer) -> BattleFixture {
-    BattleFixture {
-        schema_version: 1,
-        source: None,
-        first_player_side: PlayerSide::P1,
-        decision_tape: Vec::new(),
-        random_fallback_tape: Vec::new(),
-        expected: FixtureExpected {
-            winner_side: PlayerSide::P1,
-            actor_turn_count: 1,
-            hp_delta_p1_minus_p2: 0,
-            final_hp: None,
-        },
-        max_actor_turns: Some(1),
-        historical_card_overrides: Vec::new(),
-        catalog_cards: Vec::new(),
-        players: FixturePlayers { p1, p2 },
-    }
+    super::test_support::default_fixture(p1, p2)
 }
 
 #[test]

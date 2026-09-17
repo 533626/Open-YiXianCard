@@ -7,97 +7,27 @@
 // 4000101 极•螳螂捕蝉 / 10000100 极•锻骨 / 10000101 极•夜鬼啸（HF 语料
 // mirror-32219000-human-01 已出现，Card_*.cs 证据见各测试注释）。
 use super::*;
-use crate::fixture::{BattleFixture, FixtureExpected, FixturePlayer, FixturePlayers};
+use crate::fixture::{BattleFixture, FixturePlayer};
 use crate::model::{CardDefinition, PlayerSide, DECK_SIZE};
 
 fn card(id: i64, base_id: i64, name: &str) -> CardDefinition {
-    CardDefinition {
-        id,
-        base_id: Some(base_id),
-        name: name.to_string(),
-        card_type: None,
-        attack: None,
-        random_attack: None,
-        random_defense: None,
-        attack_count: None,
-        defense: None,
-        damage: None,
-        anima: None,
-        hp_cost: None,
-        action_again: None,
-        physique: None,
-        sword_intent: None,
-        hexagram: None,
-        rarity: None,
-        career_name: None,
-        other_params: vec![],
-    }
+    super::test_support::test_card(id, base_id, name)
 }
 
 fn basic_attack() -> CardDefinition {
-    let mut attack = card(0, 0, "普通攻击");
-    attack.attack = Some(3);
-    attack
+    super::test_support::basic_attack_card()
 }
 
 fn deck(active: CardDefinition) -> Vec<CardDefinition> {
-    let mut cards = vec![active];
-    cards.resize_with(DECK_SIZE, basic_attack);
-    cards
+    super::test_support::resize_deck(vec![active], basic_attack())
 }
 
 fn player(cards: Vec<CardDefinition>) -> FixturePlayer {
-    FixturePlayer {
-        level: 1,
-        base_max_hp: 30,
-        extra_max_hp: None,
-        battle_start_hp: None,
-        character_id: None,
-        talents: Vec::new(),
-        fate_strategies: Vec::new(),
-        fate_strategy_temp_datas: Default::default(),
-        active_slot_count: 1,
-        initial_defense: 0,
-        initial_anima: 0,
-        initial_guard: 0,
-        initial_momentum: 0,
-        initial_momentum_limit: None,
-        initial_agility: 0,
-        initial_battle_buffs: Default::default(),
-        permanent_buff_temp_datas: Default::default(),
-        talent_resonance_id: None,
-        used_ke_yin_cards: Vec::new(),
-        talent_temp_datas: Default::default(),
-        talent_card_params: Default::default(),
-        last_round_used_card_base_ids: Vec::new(),
-        last_round_life: None,
-        last_round_exp: 0,
-        hand_cards: Vec::new(),
-        cards,
-    }
+    super::test_support::make_player(cards, 1, 30, None, 1, None)
 }
 
 fn fixture(p1_cards: Vec<CardDefinition>, p2_cards: Vec<CardDefinition>) -> BattleFixture {
-    BattleFixture {
-        schema_version: 1,
-        source: None,
-        first_player_side: PlayerSide::P1,
-        decision_tape: Vec::new(),
-        random_fallback_tape: Vec::new(),
-        expected: FixtureExpected {
-            winner_side: PlayerSide::P1,
-            actor_turn_count: 1,
-            hp_delta_p1_minus_p2: 0,
-            final_hp: None,
-        },
-        max_actor_turns: Some(1),
-        historical_card_overrides: Vec::new(),
-        catalog_cards: Vec::new(),
-        players: FixturePlayers {
-            p1: player(p1_cards),
-            p2: player(p2_cards),
-        },
-    }
+    super::test_support::default_fixture(player(p1_cards), player(p2_cards))
 }
 
 #[test]

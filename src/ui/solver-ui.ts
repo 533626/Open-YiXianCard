@@ -108,10 +108,6 @@ export const SOLVER_PRESETS: Readonly<Record<SolverUiMode, {
   poolBeam: preset("pool", "heuristic"),
 };
 
-export function isSolverUiMode(value: string | undefined): value is SolverUiMode {
-  return value !== undefined && value in SOLVER_PRESETS;
-}
-
 export function solverModeLabel(mode: SolverUiMode): string {
   return SOLVER_PRESETS[mode].label;
 }

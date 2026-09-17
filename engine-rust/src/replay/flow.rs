@@ -83,60 +83,6 @@ fn repetition_context(prepared: &PreparedCardTransaction) -> EffectRepetitionCon
 }
 
 impl ReplayState {
-    fn turn_end_hook_pair(&self) -> super::ReplayTurnEndHookPair {
-        super::ReplayTurnEndHookPair {
-            p1: self.turn_end_hook_snapshot(PlayerSide::P1),
-            p2: self.turn_end_hook_snapshot(PlayerSide::P2),
-        }
-    }
-
-    fn turn_end_hook_snapshot(&self, side: PlayerSide) -> super::ReplayTurnEndHookSnapshot {
-        let actor = self.actor(side);
-        super::ReplayTurnEndHookSnapshot {
-            hp: actor.core.hp,
-            max_hp: actor.core.max_hp,
-            defense: actor.core.defense,
-            anima: actor.core.anima,
-            guard: actor.core.guard,
-            physique: actor.core.physique,
-            momentum: actor.beng.momentum,
-            water_momentum: actor.elements.water_momentum,
-            attack_bonus: actor.core.attack_bonus,
-            internal_injury: actor.status.internal_injury,
-            weakness: actor.status.weakness,
-            flaw: actor.status.flaw,
-            attack_reduction: actor.status.attack_reduction,
-            entangle: actor.status.entangle,
-            external_injury: actor.status.external_injury,
-            lose_hp_count: actor.turn.lose_hp_count,
-            lose_hp_times_count: actor.turn.lose_hp_times_count,
-        }
-    }
-
-    fn observe_turn_end_hook<R>(
-        &mut self,
-        actor_side: PlayerSide,
-        hook: &'static str,
-        apply: impl FnOnce(&mut Self) -> R,
-    ) -> R {
-        if !self.observation.mode.is_detailed() {
-            return apply(self);
-        }
-        let before = self.turn_end_hook_pair();
-        let result = apply(self);
-        let after = self.turn_end_hook_pair();
-        self.observation
-            .turn_end_hooks
-            .push(super::ReplayTurnEndHookReceipt {
-                turn: self.actor_turn,
-                actor: actor_side,
-                hook,
-                before,
-                after,
-            });
-        result
-    }
-
     /// Builds the initial state and executes the complete battle-start phase.
     /// Strictness must be selected before that phase because opening effects
     /// can consume decisions or require referenced card definitions.
@@ -887,11 +833,19 @@ impl ReplayState {
             self.spend_anima_unchecked(actor_side, anima_payment);
         }
 
-        let hp_cost = super::support::effective_hp_cost(&drawn.card, self.actor(actor_side))
+        let effective_hp_cost = super::original_config::ling_kong_fei_sao_hp_cost(
+            drawn.card.id,
+            self.original_build_profile.steam_build_number(),
+        )
+        .unwrap_or_else(|| super::support::effective_hp_cost(&drawn.card, self.actor(actor_side)))
             + wood_spirit_hp_cost;
-        let printed_hp_cost = drawn.card.hp_cost.unwrap_or(0).max(0);
-        if hp_cost > 0 {
-            self.pay_card_hp_cost(actor_side, hp_cost);
+        let printed_hp_cost = super::original_config::ling_kong_fei_sao_hp_cost(
+            drawn.card.id,
+            self.original_build_profile.steam_build_number(),
+        )
+        .unwrap_or_else(|| drawn.card.hp_cost.unwrap_or(0).max(0));
+        if effective_hp_cost > 0 {
+            self.pay_card_hp_cost(actor_side, effective_hp_cost);
         }
         self.apply_after_hp_cost_hooks(
             actor_side,

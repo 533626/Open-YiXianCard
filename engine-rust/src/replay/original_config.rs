@@ -278,13 +278,27 @@ fn merge_card_with_original(card: &CardDefinition, original: &CardDefinition) ->
 /// 下调到 24_963_639（单行）。shared 快照重生成到新值后删除本表及门控。
 pub(super) const BOW_SHOOT_TIGER_PARAMS_SINCE_BUILD: u64 = 25_093_011;
 
-/// 凌空飞扫（10000092/10010092/10020092）攻击公式的 effective-since-build。
+/// 凌空飞扫（10000092/10010092/10020092）攻击公式与 hpCost 的 effective-since-build。
 /// Card_10000092.cs OnExecuted 在 24811621→24963639 由
-/// `attack + anima * otherParams[0]` 改为 `attack + anima / 2`（同 build
-/// CardConfig hpCost 6→2，随 fixture 内嵌值自动生效，无需门控）。
-/// 镜像语料中标注 ≥24963639 且含本卡的 619 个 fixture 内嵌 hpCost 均为 2
-/// （新客户端指纹），阈值取 24_963_639 与镜像标签零冲突。
+/// `attack + anima * otherParams[0]` 改为 `attack + anima / 2`；同 build
+/// CardConfig hpCost 6→2。shared catalog 维持旧值 6；对局内降级（如 11000018
+/// 厄劫缠身 LevelDown）或未内嵌 hpCost 时按对局 steamBuild 选值。
+/// oracle 锚点：hf-latest-33206000 23c5ebf9a42aa475/round-13、
+/// ba8e4f7576eff336/round-13（厄劫缠身降级 10010092→10000092 后读 catalog
+/// 扣 6 点命元 vs 原版 2 点，终端 delta 62 vs 66）。
 pub(super) const LING_KONG_FEI_SAO_FORMULA_SINCE_BUILD: u64 = 24_963_639;
+
+pub(super) fn ling_kong_fei_sao_hp_cost(card_id: i64, steam_build: u64) -> Option<i64> {
+    if matches!(card_id, 10_000_092 | 10_010_092 | 10_020_092) {
+        if steam_build >= LING_KONG_FEI_SAO_FORMULA_SINCE_BUILD {
+            Some(2)
+        } else {
+            Some(6)
+        }
+    } else {
+        None
+    }
+}
 
 /// FateStrategy 128 水灵→锋锐分支的 effective-since-build。
 /// FateStrategyFunctions.cs 的 `HasFateStrategy(128) && name.Contains("水灵")`
@@ -292,6 +306,41 @@ pub(super) const LING_KONG_FEI_SAO_FORMULA_SINCE_BUILD: u64 = 24_963_639;
 /// （如 candidates eswiq48）不得加锋锐。HF retained 普查 fate128=0，
 /// 门控对镜像层零影响。
 pub(super) const FATE_128_WATER_SPIRIT_SHARPNESS_SINCE_BUILD: u64 = 25_093_011;
+
+/// 25099105→25206201 CardConfig 批量变更的 effective-since-build。同批
+/// 变更：八门金锁阵 otherParams[2] 8/12/16→10/15/20、天机•顺应/逆施
+/// anima 2/4/6→3/5/7、凶象 otherParams [1,3]/[2,4]/[3,5]→[2,3]/[3,4]/[4,5]。
+/// shared catalog 仍是旧值（教训：一刀切曾翻转 284 个旧 exact），调用方
+/// 按对局 steamBuild 选值。oracle 锚点：hf-latest-33206000
+/// ad0c5a4d17fd630e/round-14（顺应升阶档 anima original=5 vs 旧值 4）。
+pub(super) const CARD_CONFIG_25206201_SINCE_BUILD: u64 = 25_206_201;
+
+/// 天机•顺应/逆施当前 anima 三档（≥CARD_CONFIG_25206201_SINCE_BUILD）。
+const TIAN_JI_CURRENT_ANIMA: &[(i64, i64)] = &[
+    (11_000_019, 3),
+    (11_010_019, 5),
+    (11_020_019, 7),
+    (11_000_020, 3),
+    (11_010_020, 5),
+    (11_020_020, 7),
+];
+
+/// 八门金锁阵当前 direct damage 三档（otherParams[2]，8/12/16→10/15/20）。
+const BA_MEN_CURRENT_DAMAGE: &[(i64, i64)] = &[
+    (8_000_010, 10),
+    (8_010_010, 15),
+    (8_020_010, 20),
+];
+
+/// ≥CARD_CONFIG_25206201_SINCE_BUILD 的对局取该卡的新配置值；调用方在
+/// 旧 build 分支保持 catalog/夹具值。未收录的卡返回 None。
+pub(super) fn card_config_25206201_value(card_id: i64) -> Option<i64> {
+    TIAN_JI_CURRENT_ANIMA
+        .iter()
+        .chain(BA_MEN_CURRENT_DAMAGE.iter())
+        .find(|(id, _)| *id == card_id)
+        .map(|(_, value)| *value)
+}
 
 const BOW_SHOOT_TIGER_CURRENT_OTHER_PARAMS: &[(i64, [i64; 3])] = &[
     (4_000_097, [12, 4, 10]),

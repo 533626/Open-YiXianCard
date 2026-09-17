@@ -81,7 +81,7 @@ impl ReplayState {
                 .elements
                 .activated_elements
                 .is_empty(),
-            134 => self.is_element_activated(actor_side, Element::Wood),
+            134 => self.check_wu_xing(actor_side, Element::Wood),
             143 => self.check_wu_xing(actor_side, Element::Metal),
             214 => card_rarity(card) == 0 && actor.fate.rear_move_succeeded,
             294 => !actor.astrology.star_slots.contains(&slot),
@@ -110,22 +110,21 @@ impl ReplayState {
                         .is_some_and(|card| is_music_card(&card))
             }
             7_000_028 => {
-                self.is_element_activated(actor_side, Element::Wood)
+                self.check_wu_xing(actor_side, Element::Wood)
                     && actor.add_hp_count() >= other_param(card, 0)
             }
             7_000_105 => {
                 self.active_effect_wood_spirit_patrol_before_card()
                     && actor.add_hp_count() >= other_param(card, 0)
             }
-            7_000_034 => self.is_element_activated(actor_side, Element::Metal),
-            7_000_038 => self.is_element_activated(actor_side, Element::Fire),
-            7_000_043 => self.is_element_activated(actor_side, Element::Wood),
+            7_000_034 => self.check_wu_xing(actor_side, Element::Metal),
+            7_000_038 => self.check_wu_xing(actor_side, Element::Fire),
+            7_000_043 => self.check_wu_xing(actor_side, Element::Wood),
             // Card_7000096.cs（土灵•遁地）: cardConfig.actionAgain =
             // CheckWuXing(src, JiHuoTuLing) —— 完整 CheckWuXing 语义（激活 /
             // 上次使用的五行及相生链 / 龙马精神 / 卡组含 7030077|7040077
-            // 五行刺时恒真），不是仅看土灵激活。oracle 锚点：
-            // 6687c7e1ce03cb49/round-12 cp[2]（卡组含 7040077，土灵未激活
-            // 仍再次行动）。
+            // 五行刺时恒真），五行再次行动牌（134/143/7000028/7000034/7000038/7000043/7000096/7000105）
+            // 在原版均统一调用 CheckWuXing。
             7_000_096 => self.check_wu_xing(actor_side, Element::Earth),
             8_000_014 => actor.formations.array_echo_persistent_card > 0,
             _ => false,

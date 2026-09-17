@@ -11,64 +11,15 @@ fn filler_cards(active: CardDefinition) -> Vec<CardDefinition> {
 }
 
 fn basic_attack_test_card() -> CardDefinition {
-    let mut card = test_card(0, 0, "普通攻击");
-    card.attack = Some(3);
-    card
+    super::test_support::basic_attack_card()
 }
 
 fn test_card(id: i64, base_id: i64, name: &str) -> CardDefinition {
-    CardDefinition {
-        id,
-        base_id: Some(base_id),
-        name: name.to_string(),
-        card_type: None,
-        attack: None,
-        random_attack: None,
-        random_defense: None,
-        attack_count: None,
-        defense: None,
-        damage: None,
-        anima: None,
-        hp_cost: None,
-        action_again: None,
-        physique: None,
-        sword_intent: None,
-        hexagram: None,
-        rarity: None,
-        career_name: None,
-        other_params: vec![],
-    }
+    super::test_support::test_card(id, base_id, name)
 }
 
 fn fixture_player(cards: Vec<CardDefinition>) -> FixturePlayer {
-    FixturePlayer {
-        level: 1,
-        base_max_hp: 30,
-        extra_max_hp: None,
-        battle_start_hp: None,
-        character_id: None,
-        talents: Vec::new(),
-        fate_strategies: Vec::new(),
-        fate_strategy_temp_datas: Default::default(),
-        active_slot_count: 1,
-        initial_defense: 0,
-        initial_anima: 0,
-        initial_guard: 0,
-        initial_momentum: 0,
-        initial_momentum_limit: None,
-        initial_agility: 0,
-        initial_battle_buffs: Default::default(),
-        permanent_buff_temp_datas: Default::default(),
-        talent_resonance_id: None,
-        used_ke_yin_cards: Vec::new(),
-        talent_temp_datas: Default::default(),
-        talent_card_params: Default::default(),
-        last_round_used_card_base_ids: Vec::new(),
-        last_round_life: None,
-        last_round_exp: 0,
-        hand_cards: Vec::new(),
-        cards,
-    }
+    super::test_support::make_player(cards, 1, 30, None, 1, None)
 }
 
 fn hold_fixture(p1_card: CardDefinition, p2_card: CardDefinition) -> BattleFixture {
@@ -367,6 +318,39 @@ fn hold_echo_pattern_runs_selected_hooks_for_temporary_water_formation() {
     assert_eq!(state.p1.elements.water_formation, 3);
     assert!(!state.p1.deck.slots[0].used);
     assert!(state.p1.deck.slots[3].used);
+}
+
+#[test]
+fn hold_echo_eight_gates_uses_build_specific_damage_at_all_upgrade_levels() {
+    // Card_8000012 temporarily reloads the first sustain through CardFactory.
+    // CardConfig 25099105 -> 25206201 raises 八门金锁阵 damage 8/12/16 to 10/15/20.
+    for (build, damages) in [
+        ("25099105", [8, 12, 16]),
+        ("25206201", [10, 15, 20]),
+        ("25268934", [10, 15, 20]),
+    ] {
+        for (tier, damage) in damages.into_iter().enumerate() {
+            let first = original_card_definition_by_id(8_000_010).unwrap();
+            let echo = original_card_definition_by_id(8_000_012 + tier as i64 * 10_000).unwrap();
+            let mut fixture = hold_fixture(first, basic_attack_test_card());
+            fixture.source = Some(crate::fixture::FixtureSource {
+                steam_build: Some(build.to_string()),
+                ..crate::fixture::FixtureSource::default()
+            });
+            fixture.players.p1.active_slot_count = 2;
+            fixture.players.p1.cards[1] = echo;
+            let mut state = ReplayState::test_from_fixture(&fixture);
+            state.p1.deck.queue = vec![1];
+
+            state.test_execute_one_card(PlayerSide::P1);
+
+            assert_eq!(state.p2.core.hp, 30 - damage, "build={build}, tier={tier}");
+            assert_eq!(state.p1.formations.eight_gates_formation, 2 + tier as i64);
+            assert_eq!(state.p1.deck.slots[0].card.id, 8_000_010);
+            assert_eq!(state.p1.deck.slots[1].card.id, 8_000_012 + tier as i64 * 10_000);
+            assert!(!state.p1.deck.slots[0].used);
+        }
+    }
 }
 
 #[test]

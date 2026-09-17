@@ -4,38 +4,11 @@ use crate::fixture::{BattleFixture, FixtureExpected, FixturePlayer, FixturePlaye
 use crate::model::{CardDefinition, PlayerSide, DECK_SIZE};
 
 fn original_card(id: i64) -> CardDefinition {
-    original_card_definition_by_id(id).unwrap_or_else(|| panic!("missing original card {id}"))
+    super::test_support::original_card(id)
 }
 
 fn player(cards: Vec<CardDefinition>, active_slot_count: usize) -> FixturePlayer {
-    FixturePlayer {
-        level: 5,
-        base_max_hp: 100,
-        extra_max_hp: None,
-        battle_start_hp: None,
-        character_id: None,
-        talents: Vec::new(),
-        fate_strategies: Vec::new(),
-        fate_strategy_temp_datas: Default::default(),
-        active_slot_count,
-        initial_defense: 0,
-        initial_anima: 0,
-        initial_guard: 0,
-        initial_momentum: 0,
-        initial_momentum_limit: None,
-        initial_agility: 0,
-        initial_battle_buffs: Default::default(),
-        permanent_buff_temp_datas: Default::default(),
-        talent_resonance_id: None,
-        used_ke_yin_cards: Vec::new(),
-        talent_temp_datas: Default::default(),
-        talent_card_params: Default::default(),
-        last_round_used_card_base_ids: Vec::new(),
-        last_round_life: None,
-        last_round_exp: 0,
-        hand_cards: Vec::new(),
-        cards,
-    }
+    super::test_support::make_player(cards, 5, 100, None, active_slot_count, None)
 }
 
 fn fixture() -> BattleFixture {

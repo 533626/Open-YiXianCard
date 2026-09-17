@@ -1,89 +1,21 @@
 use super::*;
-use crate::fixture::{BattleFixture, FixtureExpected, FixturePlayer, FixturePlayers};
-use crate::model::{CardDefinition, PlayerSide, DECK_SIZE};
-use std::collections::BTreeMap;
+use crate::fixture::{BattleFixture, FixturePlayer};
+use crate::model::{CardDefinition, PlayerSide};
 
 fn basic_attack() -> CardDefinition {
-    CardDefinition {
-        id: 0,
-        base_id: Some(0),
-        name: "普通攻击".to_string(),
-        card_type: None,
-        attack: Some(3),
-        random_attack: None,
-        random_defense: None,
-        attack_count: None,
-        defense: None,
-        damage: None,
-        anima: None,
-        hp_cost: None,
-        action_again: None,
-        physique: None,
-        sword_intent: None,
-        hexagram: None,
-        rarity: None,
-        career_name: None,
-        other_params: Vec::new(),
-    }
+    super::test_support::basic_attack_card()
 }
 
 fn deck_with(card: CardDefinition) -> Vec<CardDefinition> {
-    let mut cards = vec![card];
-    while cards.len() < DECK_SIZE {
-        cards.push(basic_attack());
-    }
-    cards
+    super::test_support::fill_deck(vec![card], basic_attack())
 }
 
 fn player(cards: Vec<CardDefinition>) -> FixturePlayer {
-    FixturePlayer {
-        level: 5,
-        base_max_hp: 50,
-        extra_max_hp: Some(0),
-        battle_start_hp: None,
-        character_id: None,
-        talents: Vec::new(),
-        fate_strategies: Vec::new(),
-        fate_strategy_temp_datas: Default::default(),
-        active_slot_count: 8,
-        initial_defense: 0,
-        initial_anima: 0,
-        initial_guard: 0,
-        initial_momentum: 0,
-        initial_momentum_limit: Some(6),
-        initial_agility: 0,
-        initial_battle_buffs: Default::default(),
-        permanent_buff_temp_datas: BTreeMap::new(),
-        talent_resonance_id: None,
-        used_ke_yin_cards: Vec::new(),
-        talent_temp_datas: BTreeMap::new(),
-        talent_card_params: BTreeMap::new(),
-        last_round_used_card_base_ids: Vec::new(),
-        last_round_life: None,
-        last_round_exp: 0,
-        hand_cards: Vec::new(),
-        cards,
-    }
+    super::test_support::make_player(cards, 5, 50, Some(0), 8, Some(6))
 }
 
 fn fixture(p1: FixturePlayer, p2: FixturePlayer) -> BattleFixture {
-    BattleFixture {
-        schema_version: 1,
-        source: None,
-        first_player_side: PlayerSide::P1,
-        decision_tape: Vec::new(),
-        random_fallback_tape: Vec::new(),
-        expected: FixtureExpected {
-            winner_side: PlayerSide::P1,
-            actor_turn_count: 1,
-            hp_delta_p1_minus_p2: 0,
-            final_hp: None,
-        },
-        max_actor_turns: Some(1),
-        historical_card_overrides: Vec::new(),
-        catalog_cards: Vec::new(),
-        players: FixturePlayers { p1, p2 },
-    }
+    super::test_support::default_fixture(p1, p2)
 }
 
 #[test]
@@ -322,4 +254,56 @@ fn devouring_ancient_vine_drains_after_successful_action_again() {
     assert_eq!(state.p1.core.hp, 44);
     assert_eq!(state.p2.core.hp, 46);
     assert_eq!(state.test_snapshot(PlayerSide::P1).action_again_count, 1);
+}
+
+#[test]
+fn wuxing_cards_action_again_satisfied_by_check_wu_xing_and_dream_spike() {
+    // 原版 CardActionBase.CheckWuXing：卡组含 7030077/7040077（梦•五行刺）时恒真。
+    // Card_7000028.cs:63 cardConfig.actionAgain = CheckWuXing(src, BuffType.JiHuoMuLing) && AddHpCount >= otherParams[0]。
+    let patrol = original_card_definition_by_id(7_000_028).expect("missing wood patrol");
+    let dream_spike = original_card_definition_by_id(7_030_077).expect("missing dream spike");
+
+    // 1. 无木灵激活且卡组无五行刺：即使加过血也不触发再次行动
+    let mut state = ReplayState::test_from_fixture(&fixture(
+        player(vec![
+            patrol.clone(),
+            basic_attack(),
+            basic_attack(),
+            basic_attack(),
+            basic_attack(),
+            basic_attack(),
+            basic_attack(),
+            basic_attack(),
+        ]),
+        player(deck_with(basic_attack())),
+    ));
+    state.p1.core.anima = 2;
+    state.p1.hp_mutation.add_hp_count = 1;
+    assert!(!state.test_resolve_action_again(PlayerSide::P1, &patrol, 0));
+    assert!(!state.test_execute_one_card(PlayerSide::P1));
+
+    // 2. 卡组含 7030077 梦•五行刺，即使木灵未激活，CheckWuXing 恒真，加血满足即触发再次行动
+    let mut state_with_spike = ReplayState::test_from_fixture(&fixture(
+        player(vec![
+            patrol.clone(),
+            dream_spike,
+            basic_attack(),
+            basic_attack(),
+            basic_attack(),
+            basic_attack(),
+            basic_attack(),
+            basic_attack(),
+        ]),
+        player(deck_with(basic_attack())),
+    ));
+    state_with_spike.p1.core.anima = 2;
+    state_with_spike.p1.hp_mutation.add_hp_count = 1;
+    assert!(state_with_spike.test_resolve_action_again(PlayerSide::P1, &patrol, 0));
+    assert!(state_with_spike.test_execute_one_card(PlayerSide::P1));
+    assert_eq!(
+        state_with_spike
+            .test_snapshot(PlayerSide::P1)
+            .action_again_count,
+        1
+    );
 }

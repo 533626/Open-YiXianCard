@@ -30,98 +30,83 @@ impl ReplayState {
         *field = after;
         self.record_counter_transition(actor_side, group, key, label, before, after);
     }
+}
 
-    pub(super) fn modify_extra_actions(&mut self, actor_side: PlayerSide, delta: i64) {
-        self.modify_counter(
-            actor_side,
-            "回合",
-            "extraActions",
-            "再次行动",
-            |player| &mut player.turn.extra_actions,
-            delta,
-        );
-    }
+/// Declares a thin [`ReplayState::modify_counter`] wrapper. Each counter only
+/// varies the (group, key, label, field) tuple; the clamp/record template
+/// lives in `modify_counter` exactly once.
+macro_rules! counter_writer {
+    ($name:ident, $group:literal, $key:literal, $label:literal, $($field:ident).+) => {
+        pub(super) fn $name(&mut self, actor_side: PlayerSide, delta: i64) {
+            self.modify_counter(
+                actor_side,
+                $group,
+                $key,
+                $label,
+                |player| &mut player.$($field).+,
+                delta,
+            );
+        }
+    };
+}
 
-    pub(super) fn modify_next_attack_shatter_defense(
-        &mut self,
-        actor_side: PlayerSide,
-        delta: i64,
-    ) {
-        self.modify_counter(
-            actor_side,
-            "回合",
-            "nextAttackShatterDefense",
-            "下次攻击碎防",
-            |player| &mut player.turn.next_attack_shatter_defense,
-            delta,
-        );
-    }
-
-    pub(super) fn modify_five_elements_marrow_art(&mut self, actor_side: PlayerSide, delta: i64) {
-        self.modify_counter(
-            actor_side,
-            "五行",
-            "fiveElementsMarrowArt",
-            "五行髓",
-            |player| &mut player.elements.five_elements_marrow_art,
-            delta,
-        );
-    }
-
-    pub(super) fn modify_five_elements_gourd(&mut self, actor_side: PlayerSide, delta: i64) {
-        self.modify_counter(
-            actor_side,
-            "五行",
-            "fiveElementsGourd",
-            "五行玉瓶",
-            |player| &mut player.elements.five_elements_gourd,
-            delta,
-        );
-    }
-
-    pub(super) fn modify_paint_finishing_touch(&mut self, actor_side: PlayerSide, delta: i64) {
-        self.modify_counter(
-            actor_side,
-            "命运",
-            "paintFinishingTouch",
-            "画龙点睛",
-            |player| &mut player.fate.paint_finishing_touch,
-            delta,
-        );
-    }
-
-    pub(super) fn modify_star_chess_break(&mut self, actor_side: PlayerSide, delta: i64) {
-        self.modify_counter(
-            actor_side,
-            "七星",
-            "starChessBreak",
-            "星弈断",
-            |player| &mut player.astrology.star_chess_break,
-            delta,
-        );
-    }
-
-    pub(super) fn modify_frenzy_sword(&mut self, actor_side: PlayerSide, delta: i64) {
-        self.modify_counter(
-            actor_side,
-            "剑系",
-            "frenzySword",
-            "狂剑计数",
-            |player| &mut player.sword.frenzy_sword,
-            delta,
-        );
-    }
-
-    pub(super) fn modify_sword_formation_count(&mut self, actor_side: PlayerSide, delta: i64) {
-        self.modify_counter(
-            actor_side,
-            "剑系",
-            "swordFormationCount",
-            "剑阵计数",
-            |player| &mut player.sword.sword_formation_count,
-            delta,
-        );
-    }
+impl ReplayState {
+    counter_writer!(
+        modify_extra_actions,
+        "回合",
+        "extraActions",
+        "再次行动",
+        turn.extra_actions
+    );
+    counter_writer!(
+        modify_next_attack_shatter_defense,
+        "回合",
+        "nextAttackShatterDefense",
+        "下次攻击碎防",
+        turn.next_attack_shatter_defense
+    );
+    counter_writer!(
+        modify_five_elements_marrow_art,
+        "五行",
+        "fiveElementsMarrowArt",
+        "五行髓",
+        elements.five_elements_marrow_art
+    );
+    counter_writer!(
+        modify_five_elements_gourd,
+        "五行",
+        "fiveElementsGourd",
+        "五行玉瓶",
+        elements.five_elements_gourd
+    );
+    counter_writer!(
+        modify_paint_finishing_touch,
+        "命运",
+        "paintFinishingTouch",
+        "画龙点睛",
+        fate.paint_finishing_touch
+    );
+    counter_writer!(
+        modify_star_chess_break,
+        "七星",
+        "starChessBreak",
+        "星弈断",
+        astrology.star_chess_break
+    );
+    counter_writer!(
+        modify_frenzy_sword,
+        "剑系",
+        "frenzySword",
+        "狂剑计数",
+        sword.frenzy_sword
+    );
+    counter_writer!(
+        modify_sword_formation_count,
+        "剑系",
+        "swordFormationCount",
+        "剑阵计数",
+        sword.sword_formation_count
+    );
 
     pub(super) fn gain_cloud_chain(&mut self, actor_side: PlayerSide, amount: i64) {
         let amount = amount.max(0);

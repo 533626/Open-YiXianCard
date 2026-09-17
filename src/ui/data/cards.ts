@@ -1,5 +1,4 @@
 import {
-  BASIC_ATTACK,
   adaptOriginalCardConfig,
   adaptOriginalCardType,
   buildCardArchiveOptions,
@@ -24,7 +23,6 @@ import {
   coverageByBaseId,
   type UiOriginalCardConfig,
 } from "./source";
-import { cardTypeLabel } from "./constants";
 import { formatOriginalDetail } from "./text-format";
 
 const UI_DISABLED_CARD_BASE_IDS = new Set([11, 216, 217]);
@@ -232,16 +230,6 @@ function mergeLevelValues(values: readonly (number | undefined)[]): number | str
   return unique.length === 1 ? unique[0] : defined.join("/");
 }
 
-export function describeCard(card: CardOption): string {
-  if (card.baseId === 0) return card.name;
-  return [
-    card.name,
-    card.archiveLabel === "通用" ? "" : card.archiveLabel,
-    ...(card.realmLabel ? [card.realmLabel] : []),
-    card.type === "normal" ? "" : cardTypeLabel(card.type),
-  ].filter(Boolean).join(" · ");
-}
-
 function buildCardOptions(): readonly CardOption[] {
   const byBaseId = new Map<number, CardVariantOption[]>();
   for (const config of ORIGINAL_CARD_CONFIGS) {
@@ -339,8 +327,4 @@ function buildCardIndexOptions(): readonly CardOption[] {
 
 export function isCardDisabled(card: CardOption): boolean {
   return !card.implemented || UI_DISABLED_CARD_BASE_IDS.has(card.baseId);
-}
-
-export function basicAttackDefinition(): CardDefinition {
-  return BASIC_ATTACK;
 }

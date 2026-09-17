@@ -199,6 +199,55 @@ function syncSelectedBattleLogItem(): void {
   app.querySelector(".deck-slot.active")?.scrollIntoView({ block: "nearest" });
 }
 
+type DomBindType =
+  | "click"
+  | "change"
+  | "input"
+  | "contextmenu"
+  | "keydown"
+  | "compositionend"
+  | "dragover"
+  | "drop";
+
+function bindAll(
+  selector: string,
+  type: DomBindType,
+  listener: (event: Event, element: HTMLElement) => void,
+): void {
+  app.querySelectorAll<HTMLElement>(selector).forEach((element) => {
+    element.addEventListener(type, (event) => listener(event, element));
+  });
+}
+
+function bindFirst(selector: string, type: DomBindType, listener: (event: Event) => void): void {
+  app.querySelector<HTMLElement>(selector)?.addEventListener(type, listener);
+}
+
+function parseSideSlot(element: HTMLElement): { side: Side; slot: number | null } | null {
+  const side = element.dataset.side as Side | undefined;
+  if (!side) return null;
+  return { side, slot: element.dataset.slot === undefined ? null : Number(element.dataset.slot) };
+}
+
+/** Input + compositionend pair for IME-safe search fields. */
+function bindSearchInput(
+  input: HTMLInputElement,
+  set: (value: string) => void,
+  commit: (current: HTMLInputElement) => void,
+): void {
+  input.addEventListener("input", (event) => {
+    const current = event.target as HTMLInputElement;
+    set(current.value);
+    if ((event as InputEvent).isComposing) return;
+    commit(current);
+  });
+  input.addEventListener("compositionend", (event) => {
+    const current = event.target as HTMLInputElement;
+    set(current.value);
+    commit(current);
+  });
+}
+
 function bindEvents(): void {
   const actionContext = {
     state,
@@ -232,10 +281,9 @@ function bindEvents(): void {
       const action = element.dataset.action;
       if (action === "cycle-level" || action === "slot-level") {
         event.stopPropagation();
-        const side = element.dataset.side as Side | undefined;
-        const slot = element.dataset.slot === undefined ? null : Number(element.dataset.slot);
+        const parsed = parseSideSlot(element);
         handleAction(event, actionContext);
-        if (side && slot !== null) levelControl.patch(side, slot);
+        if (parsed && parsed.slot !== null) levelControl.patch(parsed.side, parsed.slot);
         levelControl.schedule();
         return;
       }
@@ -245,6 +293,15 @@ function bindEvents(): void {
     };
     if (element instanceof HTMLSelectElement) element.addEventListener("change", listener);
     else element.addEventListener("click", listener);
+    // 回车/空格直达：打靶步骤展开与构筑选择支持键盘操作。
+    element.addEventListener("keydown", (event) => {
+      const keyboardEvent = event as KeyboardEvent;
+      if (keyboardEvent.key !== "Enter" && keyboardEvent.key !== " ") return;
+      const action = element.dataset.action;
+      if (action !== "toggle-target-step" && action !== "select-target-build") return;
+      keyboardEvent.preventDefault();
+      element.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true }));
+    });
   });
 
   app.querySelectorAll<HTMLElement>(
@@ -252,12 +309,11 @@ function bindEvents(): void {
   ).forEach((element) => {
     element.addEventListener("contextmenu", (event) => {
       event.preventDefault();
-      const side = element.dataset.side as Side | undefined;
-      const slot = element.dataset.slot === undefined ? null : Number(element.dataset.slot);
-      if (!side || slot === null) return;
-      clearDeckSlot(state, side, slot);
-      state.activeSide = side;
-      state.selectedSlot = slot;
+      const parsed = parseSideSlot(element);
+      if (!parsed || parsed.slot === null) return;
+      clearDeckSlot(state, parsed.side, parsed.slot);
+      state.activeSide = parsed.side;
+      state.selectedSlot = parsed.slot;
       state.pickerMode = "none";
       render();
     });
@@ -267,9 +323,10 @@ function bindEvents(): void {
   app.querySelectorAll<HTMLElement>(".talent-slot[data-action='select-talent-slot']").forEach((element) => {
     element.addEventListener("contextmenu", (event) => {
       event.preventDefault();
-      const side = element.dataset.side as Side | undefined;
-      const slot = element.dataset.slot === undefined ? null : Number(element.dataset.slot);
-      if (!side || slot === null || slot <= 0) return;
+      const parsed = parseSideSlot(element);
+      if (!parsed || parsed.slot === null || parsed.slot <= 0) return;
+      const side = parsed.side;
+      const slot = parsed.slot;
       const player = state.config.players[side];
       const defaultTalent = characterBaseTalentSlots(player.characterId)[slot]?.id ?? 0;
       player.talents[slot] = defaultTalent;
@@ -282,92 +339,77 @@ function bindEvents(): void {
     });
   });
 
-  app.querySelectorAll<HTMLInputElement>("[data-element]").forEach((element) => {
-    element.addEventListener("change", (event) => handleElements(event, fieldContext));
-  });
-  app.querySelectorAll<HTMLInputElement>("[data-id-list]").forEach((element) => {
-    element.addEventListener("change", (event) => handleIdListCheckbox(event, fieldContext));
-  });
-  app.querySelectorAll<HTMLInputElement>("[data-buff]").forEach((element) => {
-    element.addEventListener("change", (event) => handleBuffInput(event, fieldContext));
-  });
-  app.querySelectorAll<HTMLInputElement>("[data-permanent-buff]").forEach((element) => {
-    element.addEventListener("change", (event) => handlePermanentBuffInput(event, fieldContext));
-  });
-  app.querySelectorAll<HTMLInputElement>("[data-save-name]").forEach((element) => {
-    element.addEventListener("input", (event) => handleSaveNameInput(event, fieldContext));
-  });
-  app.querySelectorAll<HTMLInputElement>("[data-build-archive]").forEach((element) => {
-    element.addEventListener("change", (event) => handleBuildArchivePick(event, fieldContext));
-  });
-  app.querySelectorAll<HTMLInputElement>("[data-target-build-name]").forEach((element) => {
-    element.addEventListener("change", (event) => handleAction(event, actionContext));
-  });
-  app.querySelector<HTMLInputElement>("[data-fixture-query]")?.addEventListener("input", (event) => {
+  const fieldBindings: { selector: string; type: "change" | "input"; handle: typeof handleElements }[] = [
+    { selector: "[data-element]", type: "change", handle: handleElements },
+    { selector: "[data-id-list]", type: "change", handle: handleIdListCheckbox },
+    { selector: "[data-buff]", type: "change", handle: handleBuffInput },
+    { selector: "[data-permanent-buff]", type: "change", handle: handlePermanentBuffInput },
+    { selector: "[data-save-name]", type: "input", handle: handleSaveNameInput },
+    { selector: "[data-build-archive]", type: "change", handle: handleBuildArchivePick },
+  ];
+  for (const binding of fieldBindings) {
+    bindAll(binding.selector, binding.type, (event) => binding.handle(event, fieldContext));
+  }
+  bindAll("[data-target-build-name]", "change", (event) => handleAction(event, actionContext));
+  bindFirst("[data-fixture-query]", "input", (event) => {
     const input = event.target as HTMLInputElement;
     state.fixtureImportQuery = input.value;
     state.fixtureImportId = input.value;
     renderFixtureSearch(app, render, input);
   });
-  app.querySelector<HTMLInputElement>("[data-fixture-query]")?.addEventListener("keydown", (event) => {
-    if (event.key !== "Enter") return;
+  bindFirst("[data-fixture-query]", "keydown", (event) => {
+    if ((event as KeyboardEvent).key !== "Enter") return;
     event.preventDefault();
     app.querySelector<HTMLButtonElement>("[data-action='import-fixture']")?.click();
   });
-  app.querySelector<HTMLInputElement>("[data-local-replay-file]")?.addEventListener("change", (event) => {
+  bindFirst("[data-local-replay-file]", "change", (event) => {
     void importLocalReplayFile(state, render, event.target as HTMLInputElement);
   });
-  app.querySelector<HTMLInputElement>("[data-original-replay-directory]")?.addEventListener("change", (event) => {
+  bindFirst("[data-original-replay-directory]", "change", (event) => {
     void scanOriginalReplayFiles(state, render, event.target as HTMLInputElement, true);
   });
-  app.querySelector<HTMLInputElement>("[data-original-replay-files]")?.addEventListener("change", (event) => {
+  bindFirst("[data-original-replay-files]", "change", (event) => {
     void scanOriginalReplayFiles(state, render, event.target as HTMLInputElement, false);
   });
-  app.querySelector<HTMLInputElement>("[data-replay-import-code]")?.addEventListener("input", (event) => {
+  bindFirst("[data-replay-import-code]", "input", (event) => {
     renderReplayCodeInput(app, state, render, event.target as HTMLInputElement);
   });
-  app.querySelector<HTMLElement>("[data-replay-dropzone]")?.addEventListener("dragover", (event) => {
+  bindFirst("[data-replay-dropzone]", "dragover", (event) => {
     event.preventDefault();
-    if (event.dataTransfer) event.dataTransfer.dropEffect = "copy";
+    const transfer = (event as DragEvent).dataTransfer;
+    if (transfer) transfer.dropEffect = "copy";
   });
-  app.querySelector<HTMLElement>("[data-replay-dropzone]")?.addEventListener("drop", (event) => {
+  bindFirst("[data-replay-dropzone]", "drop", (event) => {
     event.preventDefault();
-    void scanOriginalReplayFileList(state, render, event.dataTransfer?.files ?? null, false);
+    void scanOriginalReplayFileList(state, render, (event as DragEvent).dataTransfer?.files ?? null, false);
   });
-  app.querySelectorAll<HTMLElement>("[data-copy-replay-path]").forEach((button) => {
-    button.addEventListener("click", () =>
-      void copyReplayImportText(state, render, button.dataset.copyReplayPath ?? "", "缓存路径已复制"));
-  });
-  app.querySelector<HTMLElement>("[data-copy-agent-guide]")?.addEventListener("click", () => {
+  bindAll("[data-copy-replay-path]", "click", (_event, button) =>
+    void copyReplayImportText(state, render, button.dataset.copyReplayPath ?? "", "缓存路径已复制"),
+  );
+  bindFirst("[data-copy-agent-guide]", "click", () => {
     void copyReplayImportText(state, render, USER_AGENT_REPLAY_IMPORT_PROMPT, "AI 助手说明已复制，格式已保留");
   });
 
   const cardSearch = app.querySelector<HTMLInputElement>("#cardSearch");
-  cardSearch?.addEventListener("input", (event) => {
-    const input = event.target as HTMLInputElement;
-    state.cardSearch = input.value;
-    if ((event as InputEvent).isComposing) return;
-    renderCardSearch(app, render, input);
-  });
-  cardSearch?.addEventListener("compositionend", (event) => {
-    const input = event.target as HTMLInputElement;
-    state.cardSearch = input.value;
-    renderCardSearch(app, render, input);
-  });
+  if (cardSearch) {
+    bindSearchInput(
+      cardSearch,
+      (value) => {
+        state.cardSearch = value;
+      },
+      (current) => renderCardSearch(app, render, current),
+    );
+  }
   app.querySelectorAll<HTMLInputElement>(".picker-search:not(.card-picker-search)").forEach((input) => {
-    input.addEventListener("input", (event) => {
-      const current = event.target as HTMLInputElement;
-      state.pickerSearch = current.value;
-      if ((event as InputEvent).isComposing) return;
-      renderPickerSearch(app, render, current);
-    });
-    input.addEventListener("compositionend", (event) => {
-      const current = event.target as HTMLInputElement;
-      state.pickerSearch = current.value;
-      renderPickerSearch(app, render, current);
-    });
+    bindSearchInput(
+      input,
+      (value) => {
+        state.pickerSearch = value;
+      },
+      (current) => renderPickerSearch(app, render, current),
+    );
   });
-  app.querySelector("#frameRange")?.addEventListener("input", (event) => {
+  bindFirst("#frameRange", "input", (event) => {
     state.frameIndex = Number((event.target as HTMLInputElement).value);
     render();
   });
@@ -375,7 +417,7 @@ function bindEvents(): void {
   // change（松手/键盘提交）才写状态、作废结果并触发一次自动重算。range 的
   // change 事件在松开或键盘提交（回车/方向键松手）时触发，与 number input 的
   // 提交语义一致；Enter 后 blur 仍会再触发一次 change，值相同则无害。
-  app.querySelector<HTMLInputElement>("#battle-targetDisplayRounds")?.addEventListener("input", (event) => {
+  bindFirst("#battle-targetDisplayRounds", "input", (event) => {
     const input = event.target as HTMLInputElement;
     const readout = input.closest(".display-round-field")?.querySelector<HTMLElement>("[data-display-round-readout]");
     if (readout) {
@@ -384,19 +426,7 @@ function bindEvents(): void {
     }
     input.setAttribute("aria-valuetext", `${input.value} / ${GAME_TURN_LIMIT}`);
   });
-  app.querySelectorAll<HTMLElement>("[data-action]").forEach((element) => {
-    element.addEventListener("keydown", (event) => {
-      const keyboardEvent = event as KeyboardEvent;
-      if (keyboardEvent.key !== "Enter" && keyboardEvent.key !== " ") return;
-      const action = element.dataset.action;
-      if (action !== "toggle-target-step" && action !== "select-target-build") return;
-      keyboardEvent.preventDefault();
-      element.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true }));
-    });
-  });
-  app.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>("[id^='battle-'], [id^='player-']").forEach((element) => {
-    element.addEventListener("change", (event) => handleNamedField(event, fieldContext));
-  });
+  bindAll("[id^='battle-'], [id^='player-']", "change", (event) => handleNamedField(event, fieldContext));
   bindWheelNumberInputs(app);
 }
 

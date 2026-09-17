@@ -1,84 +1,21 @@
 use super::*;
-use crate::fixture::{BattleFixture, FixtureExpected, FixturePlayer, FixturePlayers, FixtureSource};
+use crate::fixture::{BattleFixture, FixturePlayer, FixtureSource};
 use crate::model::{CardDefinition, PlayerSide, DECK_SIZE};
 
 fn basic_attack() -> CardDefinition {
-    CardDefinition {
-        id: 0,
-        base_id: Some(0),
-        name: "普通攻击".to_string(),
-        card_type: None,
-        attack: Some(3),
-        random_attack: None,
-        random_defense: None,
-        attack_count: None,
-        defense: None,
-        damage: None,
-        anima: None,
-        hp_cost: None,
-        action_again: None,
-        physique: None,
-        sword_intent: None,
-        hexagram: None,
-        rarity: None,
-        career_name: None,
-        other_params: Vec::new(),
-    }
+    super::test_support::basic_attack_card()
 }
 
 fn deck() -> Vec<CardDefinition> {
-    vec![basic_attack(); DECK_SIZE]
+    super::test_support::fill_deck(vec![basic_attack()], basic_attack())
 }
 
 fn player() -> FixturePlayer {
-    FixturePlayer {
-        level: 1,
-        base_max_hp: 100,
-        extra_max_hp: None,
-        battle_start_hp: None,
-        character_id: None,
-        talents: Vec::new(),
-        fate_strategies: Vec::new(),
-        fate_strategy_temp_datas: Default::default(),
-        active_slot_count: 1,
-        initial_defense: 0,
-        initial_anima: 0,
-        initial_guard: 0,
-        initial_momentum: 0,
-        initial_momentum_limit: None,
-        initial_agility: 0,
-        initial_battle_buffs: Default::default(),
-        permanent_buff_temp_datas: Default::default(),
-        talent_resonance_id: None,
-        used_ke_yin_cards: Vec::new(),
-        talent_temp_datas: Default::default(),
-        talent_card_params: Default::default(),
-        last_round_used_card_base_ids: Vec::new(),
-        last_round_life: None,
-        last_round_exp: 0,
-        hand_cards: Vec::new(),
-        cards: deck(),
-    }
+    super::test_support::make_player(deck(), 1, 100, None, 1, None)
 }
 
 fn fixture(p1: FixturePlayer, p2: FixturePlayer) -> BattleFixture {
-    BattleFixture {
-        schema_version: 1,
-        source: None,
-        first_player_side: PlayerSide::P1,
-        decision_tape: Vec::new(),
-        random_fallback_tape: Vec::new(),
-        expected: FixtureExpected {
-            winner_side: PlayerSide::P1,
-            actor_turn_count: 1,
-            hp_delta_p1_minus_p2: 0,
-            final_hp: None,
-        },
-        max_actor_turns: Some(1),
-        historical_card_overrides: Vec::new(),
-        catalog_cards: Vec::new(),
-        players: FixturePlayers { p1, p2 },
-    }
+    super::test_support::default_fixture(p1, p2)
 }
 
 #[test]
@@ -622,7 +559,10 @@ fn fate_strategy_428_palm_card_retains_momentum_on_attack() {
     state.modify_momentum(PlayerSide::P1, 3);
     assert_eq!(state.p1.beng.momentum, 3);
     state.execute_actor_turn();
-    assert_eq!(state.p1.beng.momentum, 3, "palm card under fate 428 should retain momentum");
+    assert_eq!(
+        state.p1.beng.momentum, 3,
+        "palm card under fate 428 should retain momentum"
+    );
 
     // 2. Fate 428 + 非掌牌：气势正常消耗 1 点
     let mut p1_non_palm = player();
@@ -631,7 +571,10 @@ fn fate_strategy_428_palm_card_retains_momentum_on_attack() {
     let mut state_non_palm = ReplayState::test_from_fixture(&fixture(p1_non_palm, player()));
     state_non_palm.modify_momentum(PlayerSide::P1, 3);
     state_non_palm.execute_actor_turn();
-    assert_eq!(state_non_palm.p1.beng.momentum, 2, "non-palm card under fate 428 should consume 1 momentum");
+    assert_eq!(
+        state_non_palm.p1.beng.momentum, 2,
+        "non-palm card under fate 428 should consume 1 momentum"
+    );
 
     // 3. 无 Fate 428 + 掌牌：气势正常消耗 1 点
     let mut p1_no_fate = player();
@@ -639,7 +582,10 @@ fn fate_strategy_428_palm_card_retains_momentum_on_attack() {
     let mut state_no_fate = ReplayState::test_from_fixture(&fixture(p1_no_fate, player()));
     state_no_fate.modify_momentum(PlayerSide::P1, 3);
     state_no_fate.execute_actor_turn();
-    assert_eq!(state_no_fate.p1.beng.momentum, 2, "palm card without fate 428 should consume 1 momentum");
+    assert_eq!(
+        state_no_fate.p1.beng.momentum, 2,
+        "palm card without fate 428 should consume 1 momentum"
+    );
 }
 
 #[test]
@@ -686,6 +632,38 @@ fn card_10000092_ling_kong_fei_sao_uses_half_anima_attack() {
 }
 
 #[test]
+fn card_10000092_ling_kong_fei_sao_hp_cost_follows_build_and_level_down() {
+    // 24811621→24963639 CardConfig: 凌空飞扫 hpCost 6 -> 2.
+    // 现代 build (>=24963639): 无论是对局原牌还是厄劫缠身等对局内降级重查 catalog, hpCost 均为 2.
+    // 旧 build (<24963639): hpCost 为 6.
+    let card = original_card_definition_by_id(10_000_092).unwrap();
+    assert_eq!(card.hp_cost, Some(6)); // catalog 保持旧值 6
+
+    // 1. 现代 build 结算 hpCost = 2
+    let mut p1 = player();
+    p1.cards = vec![card.clone(); DECK_SIZE];
+    let mut state = ReplayState::test_from_fixture(&fixture(p1, player()));
+    state.p1.core.hp = 100;
+    state.execute_actor_turn();
+    assert_eq!(state.p1.core.hp, 98); // 100 - 2 = 98
+
+    // 2. 旧 build 结算 hpCost = 6
+    let mut old_fixture = {
+        let mut p1_old = player();
+        p1_old.cards = vec![card; DECK_SIZE];
+        fixture(p1_old, player())
+    };
+    old_fixture.source = Some(FixtureSource {
+        steam_build: Some("24610558".to_string()),
+        ..FixtureSource::default()
+    });
+    let mut old_state = ReplayState::test_from_fixture(&old_fixture);
+    old_state.p1.core.hp = 100;
+    old_state.execute_actor_turn();
+    assert_eq!(old_state.p1.core.hp, 94); // 100 - 6 = 94
+}
+
+#[test]
 fn card_4000097_bent_bow_heal_amount_follows_fixture_build() {
     // build 24963639 CardConfig：弯弓射虎 otherParams[0] 下调 4：
     // 4000097 [16,4,10]→[12,4,10]、4010097 [24,4,10]→[20,4,10]、
@@ -697,7 +675,11 @@ fn card_4000097_bent_bow_heal_amount_follows_fixture_build() {
         let card = original_card_definition_by_id(card_id)
             .unwrap_or_else(|| panic!("missing original card {card_id}"));
         assert_eq!(card.attack, Some(8), "card {card_id}");
-        assert_eq!(card.other_params, vec![legacy_gain, 4, 10], "card {card_id}");
+        assert_eq!(
+            card.other_params,
+            vec![legacy_gain, 4, 10],
+            "card {card_id}"
+        );
     }
 
     // 新 build（25093011）：4010097 首次打出（先机生效、后招不成立），
@@ -755,12 +737,22 @@ fn card_1000034_spirit_gathering_tiebreak_flag_is_idempotent_under_echo() {
     // BattleCharacter.cs 回合开始侧对奇数 num7 做旗置 ±1 后整除，与
     // half_anima∈{0,1} 恰好互补，故只需锁登记侧幂等。
     let mindset = original_card_definition_by_id(1_000_034).expect("missing 聚灵心法 1000034");
-    assert_eq!(mindset.other_params, vec![1], "只有 otherParams[0]==1 的档位置旗");
+    assert_eq!(
+        mindset.other_params,
+        vec![1],
+        "只有 otherParams[0]==1 的档位置旗"
+    );
     let mut state = ReplayState::test_from_fixture(&fixture(player(), player()));
     state.test_apply_card_effect(PlayerSide::P1, &mindset, 0);
     state.test_apply_card_effect(PlayerSide::P1, &mindset, 0);
-    assert_eq!(state.p1.fate.spirit_gathering_mindset, 2, "重复执行仍累加 stance 层数");
-    assert_eq!(state.p1.fate.half_anima, 1, "BanDianLingQi 是 Set 语义，不随重复执行累加");
+    assert_eq!(
+        state.p1.fate.spirit_gathering_mindset, 2,
+        "重复执行仍累加 stance 层数"
+    );
+    assert_eq!(
+        state.p1.fate.half_anima, 1,
+        "BanDianLingQi 是 Set 语义，不随重复执行累加"
+    );
 }
 
 #[test]

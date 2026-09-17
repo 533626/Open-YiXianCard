@@ -7,7 +7,6 @@ import {
 import { formatOriginalDetail } from "./text-format";
 import type {
   PlayerConfig,
-  TalentGroup,
   TalentOption,
   TalentSlotOption,
 } from "../types";
@@ -47,44 +46,6 @@ const TALENT_PICKER_BUCKETS = [
   { id: "sect", label: "门派" },
   { id: "common", label: "通用" },
 ] as const;
-
-export function talentGroupsForCharacter(characterId: number): readonly TalentGroup[] {
-  const character = characterInfo(characterId);
-  if (!character) return [];
-  const characterTalentIds = new Set(characterTalentRows
-    .filter((row) => row.characterId === characterId)
-    .map((row) => row.talentId));
-  const characterOptions = characterTalentRows
-    .filter((row) => row.characterId === characterId && characterTalentIds.has(row.talentId))
-    .map((row) => toTalentOption(row.talentId, row.name))
-    .filter((option, index, all) =>
-      all.findIndex((candidate) => candidate.id === option.id) === index,
-    );
-  const sectOptions = talentArchiveRows
-    .filter((talent) =>
-      talent.archiveKey === `sect:${character.sectName}` &&
-      talent.name.trim() !== "",
-    )
-    .map((talent) => toTalentOption(talent.id, talent.name))
-    .filter((option, index, all) =>
-      all.findIndex((candidate) => candidate.id === option.id) === index,
-    )
-    .sort((left, right) => left.id - right.id);
-  return [
-    {
-      id: `exclusive:${character.id}`,
-      label: `${character.name}仙命`,
-      options: characterOptions,
-      open: true,
-    },
-    {
-      id: `sect:${character.sectName}`,
-      label: `${character.sectName}通用仙命`,
-      options: sectOptions,
-      open: false,
-    },
-  ].filter((group) => group.options.length > 0);
-}
 
 export function characterBaseTalentSlots(characterId: number): readonly TalentSlotOption[] {
   const rows = characterTalentRows

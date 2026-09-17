@@ -20,6 +20,18 @@ import { battleFrame, simulationResult } from "./layout-test-helpers";
 import type { SavedPlayerConfig, TargetBuild, TargetPracticeState } from "../types";
 
 describe("main action Worker state", () => {
+  test("未知操作不能调用分发表原型上的方法", () => {
+    const context = actionContext(
+      baseState(),
+      fakeClient({ requestId: "unused", result: Promise.resolve(solverResult(0)) }),
+      () => {},
+    );
+    for (const action of ["__defineGetter__", "constructor", "toString", "unknown-action"]) {
+      expect(() => handleAction({
+        currentTarget: { dataset: { action } },
+      } as unknown as Event, context)).not.toThrow();
+    }
+  });
 
   test("战斗后修改牌级会防抖丢弃旧运行态卡组", () => {
     const state = baseState();
