@@ -127,7 +127,7 @@ fn extreme_water_spirit_spring_rain_reuses_spring_rain_and_action_again_config()
 fn endless_staff_stance_rewrites_stance_switch_to_momentum_limit_momentum_and_defense() {
     let mut shift_stance = card(222, 222, "合劲换式");
     shift_stance.attack = Some(5);
-    shift_stance.other_params = vec![2, 3];
+    shift_stance.other_params = vec![2, 3].into();
     let mut fixture = fixture(deck(shift_stance), deck(basic_attack()));
     fixture.players.p1.fate_strategies = vec![335];
 
@@ -169,7 +169,7 @@ fn spirit_pivot_sword_formation_reuses_card_window_sword_intent() {
     formation.attack = Some(1);
     formation.anima = Some(2);
     formation.defense = Some(2);
-    formation.other_params = vec![1, 1];
+    formation.other_params = vec![1, 1].into();
     let mut fixture = fixture(deck(formation), deck(basic_attack()));
     fixture.players.p1.initial_anima = 1;
     fixture.players.p1.initial_defense = 23;
@@ -318,6 +318,36 @@ fn revive_preserves_last_stand_intent_until_the_next_lethal_checkpoint() {
     assert_eq!(state.death_winner(), None);
     assert_eq!(state.p1.fate.last_stand_intent, 0);
     assert_eq!(state.p1.fate.last_stand_unyielding, 1);
+}
+
+#[test]
+fn lethal_attack_converts_last_stand_intent_at_the_hit() {
+    // BattleCharacter.ApplyDamage:11309 `hp > 0 || CanRevive() || CheckSiZhan()`：
+    // 致命攻击当下即转换，不等 DeathCheck（synthetic batch-029 treatment 见证）。
+    let mut state =
+        ReplayState::test_from_fixture(&fixture(deck(basic_attack()), deck(basic_attack())));
+    state.p2.core.hp = 5;
+    state.p2.fate.last_stand_intent = 1;
+
+    state.apply_attack_damage(PlayerSide::P1, 8, 0, 100, false, false);
+
+    assert_eq!(state.p2.core.hp, -3);
+    assert_eq!(state.p2.fate.last_stand_intent, 0);
+    assert_eq!(state.p2.fate.last_stand_unyielding, 1);
+}
+
+#[test]
+fn lethal_attack_defers_last_stand_while_a_revive_is_available() {
+    let mut state =
+        ReplayState::test_from_fixture(&fixture(deck(basic_attack()), deck(basic_attack())));
+    state.p2.core.hp = 5;
+    state.p2.fate.last_stand_intent = 1;
+    state.p2.fate.flame_soul_return = 1;
+
+    state.apply_attack_damage(PlayerSide::P1, 8, 0, 100, false, false);
+
+    assert_eq!(state.p2.fate.last_stand_intent, 1);
+    assert_eq!(state.p2.fate.last_stand_unyielding, 0);
 }
 
 #[test]
@@ -997,7 +1027,7 @@ fn immortal_egg_yolk_zongzi_consumes_per_selected_card_then_converts_at_max_rank
 #[test]
 fn card_324_max_hp_and_healing_both_enter_adaptation_kernels() {
     let mut vitality = card(324, 324, "幻生机绽放");
-    vitality.other_params = vec![10, 1];
+    vitality.other_params = vec![10, 1].into();
     let mut state =
         ReplayState::test_from_fixture(&fixture(deck(vitality.clone()), deck(basic_attack())));
     state.p1.turn.adaptation = 1;
@@ -1013,7 +1043,7 @@ fn card_324_max_hp_and_healing_both_enter_adaptation_kernels() {
 fn beng_quan_tu_shatter_expires_with_current_card() {
     let mut thrust = card(10_010_015, 10_000_015, "崩拳•突");
     thrust.attack = Some(10);
-    thrust.other_params = vec![1];
+    thrust.other_params = vec![1].into();
     let mut battle = fixture(deck(thrust), deck(basic_attack()));
     battle.players.p2.initial_defense = 30;
 
@@ -1086,7 +1116,7 @@ fn light_sword_attacks_before_anima_gain_hooks() {
 #[test]
 fn skipped_good_fortune_beginning_increases_max_hp_and_hp() {
     let mut good_fortune = card(11_010_005, 11_000_005, "吉运初显");
-    good_fortune.other_params = vec![3, 4];
+    good_fortune.other_params = vec![3, 4].into();
     let mut state =
         ReplayState::test_from_fixture(&fixture(deck(basic_attack()), deck(basic_attack())));
     state.apply_opening_effect_for_card(PlayerSide::P1, &good_fortune, 0);
@@ -1099,7 +1129,7 @@ fn skipped_good_fortune_beginning_increases_max_hp_and_hp() {
 #[test]
 fn active_good_fortune_beginning_initial_hp_counts_as_hp_gained() {
     let mut good_fortune = card(11_000_005, 11_000_005, "吉运初显");
-    good_fortune.other_params = vec![7, 4];
+    good_fortune.other_params = vec![7, 4].into();
     let mut battle = fixture(deck(good_fortune), deck(basic_attack()));
     battle.players.p1.talents = vec![64];
     let state = ReplayState::test_from_fixture(&battle);
@@ -1113,7 +1143,7 @@ fn active_good_fortune_beginning_initial_hp_counts_as_hp_gained() {
 #[test]
 fn good_fortune_keeps_fate_strategy_27_pre_opening_hp_order() {
     let mut good_fortune = card(11_000_005, 11_000_005, "吉运初显");
-    good_fortune.other_params = vec![7, 4];
+    good_fortune.other_params = vec![7, 4].into();
     let mut battle = fixture(deck(good_fortune), deck(basic_attack()));
     battle.players.p1.talents = vec![64];
     battle.players.p1.fate_strategies = vec![27];
@@ -1133,10 +1163,10 @@ fn ui_event_projects_live_momentum_limit_and_slot_lifecycle() {
     let mut awe = card(10_000_051, 10_000_051, "威震四方");
     awe.card_type = Some(OriginalEnumValue {
         value: CARD_TYPE_SUSTAIN,
-        name: "持续".to_string(),
+        name: "持续".to_string().into(),
     });
     awe.defense = Some(8);
-    awe.other_params = vec![3, 3];
+    awe.other_params = vec![3, 3].into();
     let run = run_replay_fixture_with_ui_events(&fixture(deck(awe), deck(basic_attack())))
         .expect("UI replay should run");
     let completed = run
@@ -1171,6 +1201,27 @@ fn ui_snapshot_projects_last_element_queue_and_runtime_card_identity() {
     assert_eq!(snapshot.slots[0].name, "木灵·芽");
     assert!(snapshot.slots[0].had_used);
     assert!(snapshot.slots[0].skipped);
+}
+
+#[test]
+fn detailed_card_completed_queue_excludes_the_in_flight_card() {
+    // 原版稳定 checkpoint 在在途卡重新入队之前采样（cardExecuteCompletedBeforeAwaitContinuation）。
+    let mut battle = fixture(deck(basic_attack()), deck(basic_attack()));
+    battle.players.p1.active_slot_count = 2;
+    let run = run_replay_fixture_with_detailed_events(&battle).expect("detailed replay");
+    let completed = run
+        .events
+        .iter()
+        .find(|detailed| {
+            detailed.event.kind == ReplayEventKind::CardCompleted
+                && detailed.event.actor == PlayerSide::P1
+        })
+        .expect("p1 card completed");
+    let slot = completed.event.slot.expect("completed slot");
+    let queue = &completed.p1_state.card_queue;
+    assert_eq!(queue.len(), 1);
+    assert!(queue.iter().all(|entry| entry.grid != slot));
+    assert_eq!(completed.p1_state.action_again_per_round, 1);
 }
 
 #[test]
@@ -1217,7 +1268,7 @@ fn detailed_hp_ledgers_distinguish_amounts_from_event_counts() {
 fn paint_finishing_touch_emits_a_temporary_upgrade_hook_step() {
     let mut paint = card(6_000_013, 6_000_013, "画龙点睛");
     paint.action_again = Some(true);
-    paint.other_params = vec![1];
+    paint.other_params = vec![1].into();
     let basic = original_card_definition_by_id(0).expect("missing basic attack");
     let mut battle = fixture(deck_with_cards(vec![paint, basic]), deck(basic_attack()));
     battle.players.p1.active_slot_count = 2;
@@ -1286,11 +1337,11 @@ fn star_pulling_triggers_chati_opening_before_blood_calamity() {
     // （6af5a266765a510c/round-09：Rust 曾漏算察体而多触发血光之灾）。
     let mut star_pulling = card(11_000_025, 11_000_025, "天星•牵引");
     star_pulling.anima = Some(2);
-    star_pulling.other_params = vec![2, 1];
+    star_pulling.other_params = vec![2, 1].into();
     let mut body_observation = card(11_000_022, 11_000_022, "察体");
-    body_observation.other_params = vec![5, 1];
+    body_observation.other_params = vec![5, 1].into();
     let mut blood_calamity = card(11_000_024, 11_000_024, "血光之灾");
-    blood_calamity.other_params = vec![1, 1];
+    blood_calamity.other_params = vec![1, 1].into();
     let basic = original_card_definition_by_id(0).expect("missing basic attack");
     let mut battle = fixture(
         deck_with_cards(vec![
@@ -1319,9 +1370,9 @@ fn calamity_entanglement_opening_targets_trigger_grid() {
     // （BattleCharacter.cs:11132-11148；318453a623bc43d5/round-12）。
     let mut star_pulling = card(11_000_025, 11_000_025, "天星•牵引");
     star_pulling.anima = Some(2);
-    star_pulling.other_params = vec![2, 1];
+    star_pulling.other_params = vec![2, 1].into();
     let mut calamity = card(11_000_018, 11_000_018, "厄劫缠身");
-    calamity.other_params = vec![4, 6];
+    calamity.other_params = vec![4, 6].into();
     let basic = original_card_definition_by_id(0).expect("missing basic attack");
     let upgraded_opponent = original_card_definition_by_id(10_000).expect("missing 10_000");
     let mut battle = fixture(

@@ -243,10 +243,10 @@ impl ReplayState {
     pub(super) fn apply_synthetic_full_scope_replica_transform(
         &mut self,
         actor_side: PlayerSide,
-        mut drawn: DrawnCard,
-    ) -> DrawnCard {
+        drawn: &mut DrawnCard,
+    ) {
         if normalized_base_id(&drawn.card) != FREE_AND_EASY_REPLICA {
-            return drawn;
+            return;
         }
         let target_side = opponent_side(actor_side);
         let Some(target_card) = self
@@ -256,7 +256,7 @@ impl ReplayState {
             .get(drawn.source_slot)
             .map(|slot| slot.card.clone())
         else {
-            return drawn;
+            return;
         };
         let copied = if normalized_base_id(&target_card) == 0 {
             original_card_definition(286 + target_card.id).unwrap_or(target_card)
@@ -272,7 +272,6 @@ impl ReplayState {
             slot.card = copied.clone();
         }
         drawn.card = copied;
-        drawn
     }
 
     pub(super) fn apply_synthetic_ding_feng_bo_activation_damage(

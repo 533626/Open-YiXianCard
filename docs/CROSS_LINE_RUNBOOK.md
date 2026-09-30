@@ -2,7 +2,7 @@
 
 # 五线工程收口流程
 
-本文固化公开 Rust engine、browser、evaluator、TS compatibility archive 与原版规则研究的日常收口流程。战斗执行已收敛为 Rust 单实现；Analysis、replay corpus、客户端 oracle 与 TUI 属于 private companion，不在公开流程中。
+本文固化公开 Rust engine、browser、evaluator 与原版规则研究的日常收口流程。战斗执行已收敛为 Rust 单实现；Analysis、replay corpus 与客户端 oracle 属于 private companion，不在公开流程中。
 
 ## 拓扑
 
@@ -10,17 +10,17 @@
 | --- | --- | --- |
 | 原版研究 | `research/original-game/` | 公开规则证据：反编译源码、配置与稳定索引 |
 | Battle Evaluator | `battle-evaluator/` | 中立 contracts、审查过的共享输入、公开 adapter |
-| TS Engine archive | `engine-ts/` | 只读兼容档案（2026-08-09 冻结，`check:ts:frozen` 锁指纹） |
+| TS Engine archive | `engine-ts/` | 已移出仓库（可从 git 历史取回），Rust 是唯一实现 |
 | browser UI | `src/ui/`、`index.html` | 适配与展示层，不复制规则 |
-| Rust Engine + WASM | `engine-rust/` | 唯一可变战斗实现与公开产品执行面 |
-| Private companion | 私有 checkout / 明确 extraction mapping | 回放语料、准入/oracle、Analysis 与 ratatui/crossterm TUI |
+| Rust Engine + WASM | `engine-rust/` | 唯一战斗实现与公开产品执行面 |
+| Private companion | 私有 checkout / 明确 extraction mapping | 回放语料、准入/oracle、Analysis |
 
 ## 不可协商项
 
 1. 新战斗牌必须同时具备原版 `Card_*` 或共享调用链证据、Rust 最小契约和 handler/catalog 接线。
 2. Solver / GA / Value 的读数不能反向修改战斗事实或放宽 exact 断言。
 3. UI 只通过 Rust 公开规则 API、WASM 和适配层消费事实，不直接复刻规则。
-4. Rust 是唯一 canonical engine；TS 已冻结为只读兼容档案，新规则不双写。
+4. Rust 是唯一战斗实现；`engine-ts/` 已移出仓库（可从 git 历史取回），新规则不双写。
 5. contracts/data 保持中立，不依赖 engine、Analysis 或私有证据控制面。
 
 ## 公开、无 fixture 的验证
@@ -39,8 +39,6 @@ bun run check:private-manifest
 bun run check:docs-drift
 bun run test:evaluator
 bun run check:evaluator
-bun run test:ts
-bun run check:ts:types
 bun run check:ui
 bun run check:rust:quick
 bun run check:rust:wasm
@@ -48,7 +46,7 @@ bun run test:release
 ```
 
 `bun run check` 是上述公共类型、Rust、架构和有意限定的 file-health scope 的聚合入口；CI
-quality job 使用相同的公共边界、文档、evaluator、TS、UI 和 Rust 命令。file-health 默认的全仓
+quality job 使用相同的公共边界、文档、evaluator、UI 和 Rust 命令。file-health 默认的全仓
 报告仍可作为维护报告运行，但现有超长文件不是 public check 的隐藏豁免：聚合门禁只指定已审查的
 公共 scope，并将其余维护债务留给独立报告。
 
@@ -59,14 +57,13 @@ quality job 使用相同的公共边界、文档、evaluator、TS、UI 和 Rust 
 | Rust native/WASM | `bun run check:rust:quick`、`bun run check:rust:wasm` |
 | Battle Evaluator contracts/data | `bun run check:evaluator`、`bun run test:evaluator` |
 | Browser UI | `bun run check:ui` |
-| TS compatibility archive | `bun run check:ts:types`、`bun run test:ts` |
 | Local static artifact | `bun run test:release && bun run build:site && bun run check:release` |
 | Public/private boundary | `bun run check:public-boundary && bun run check:private-manifest` |
 
 ## Private companion boundary
 
 公开 checkout 不生成或消费回放准入、原作客户端 oracle、镜像 corpus、Analysis/GA/solver/value
-报告或 TUI。需要这些材料时，先在私有 companion 中恢复 `PRIVATE_ENGINEERING_EXTRACTION.json`
+报告。需要这些材料时，先在私有 companion 中恢复 `PRIVATE_ENGINEERING_EXTRACTION.json`
 中的显式 source→destination mapping，再由私有流程运行 exact admission/oracle 门禁；公开流程不
 伪造、放宽或替代 `winner / actorTurn / hpDelta` 三元断言。映射集合除上述材料外还覆盖原版研究
 Python 工具链（`research/original-game/*.py`）与 build 权威输入
@@ -84,7 +81,7 @@ Python 工具链（`research/original-game/*.py`）与 build 权威输入
 
 `engine-rust/` 是唯一战斗语义实现；新规则只写一次 Rust 最小契约与实现。机制锚点按当前公开
 证据索引解析；没有可审查锚点时失败关闭，不回退私有或历史回放。Rust 未实现的能力不进入正式
-读数或候选基线，UI 不回退到 TS。
+读数或候选基线，UI 不做引擎回退。
 
 ## 收手标准
 

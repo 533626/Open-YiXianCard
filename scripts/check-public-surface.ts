@@ -6,11 +6,7 @@ const repoRoot = resolve(import.meta.dir, "..");
 const forbiddenRoots = [
   "analysis",
   "battle-evaluator",
-  "engine-ts",
   "research",
-  "engine-rust/src/bin/tui.rs",
-  "engine-rust/src/bin/tui_app",
-  "engine-rust/tui-builds",
   "engine-rust/tests/replay_slice_fail_closed.rs",
 ] as const;
 const requiredFiles = [
@@ -32,13 +28,6 @@ for (const path of requiredFiles) {
 if (failures.length === 0) {
   const catalog = await readFile(join(repoRoot, "src/ui/generated/fixture-index.json"), "utf8");
   if (catalog !== "[]\n") failures.push("public UI fixture catalog must be exactly []\\n");
-  const cargoManifest = await readFile(join(repoRoot, "engine-rust/Cargo.toml"), "utf8");
-  const cargoLock = await readFile(join(repoRoot, "engine-rust/Cargo.lock"), "utf8");
-  for (const dependency of ["ratatui", "crossterm"]) {
-    if (cargoManifest.includes(dependency) || cargoLock.includes(`name = "${dependency}"`)) {
-      failures.push(`private TUI dependency remains in public Rust package: ${dependency}`);
-    }
-  }
 }
 
 if (failures.length > 0) {

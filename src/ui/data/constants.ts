@@ -17,14 +17,6 @@ export const GROUP_NAMES: Readonly<Record<string, string>> = {
   MingLiShi: "命理师",
 };
 
-const CARD_TYPE_NAMES: Readonly<Record<string, string>> = {
-  normal: "普通",
-  sustain: "持续",
-  consume: "消耗",
-  refine: "炼化",
-  change: "置换",
-};
-
 export const ELEMENT_OPTIONS = ["metal", "water", "wood", "fire", "earth"] as const;
 export const ELEMENT_LABELS: Readonly<Record<(typeof ELEMENT_OPTIONS)[number], string>> = {
   metal: "金",
@@ -38,10 +30,6 @@ export const DEFAULT_GAME_ROUND = 16;
 
 export function groupLabel(group: string): string {
   return GROUP_NAMES[group] ?? group;
-}
-
-export function cardTypeLabel(type: string): string {
-  return CARD_TYPE_NAMES[type] ?? type;
 }
 
 export function sideLabel(side: Side): string {

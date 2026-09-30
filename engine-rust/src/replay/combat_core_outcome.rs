@@ -181,7 +181,21 @@ impl ReplayState {
         None
     }
 
-    fn check_last_stand(&mut self, side: PlayerSide) -> bool {
+    /// BattleCharacter.CanRevive:12583-12613。PanGuFu（裂穹开天斧）与
+    /// KeYinXuTianMing 属历史赛季，未建模。
+    pub(super) fn can_revive(&self, side: PlayerSide) -> bool {
+        let actor = self.actor(side);
+        if actor.core.hp > 0 || actor.chance.cannot_revive > 0 {
+            return false;
+        }
+        actor.fate.flame_soul_return > 0
+            || actor.fate.fire_phoenix_revive_hp > 0
+            || actor.mirage_ronghui.nine_heavens_revive > 0
+            || actor.fate.qi_xing_jie_ming > 0
+    }
+
+    /// BattleCharacter.CheckSiZhan:12616-12623。
+    pub(super) fn check_last_stand(&mut self, side: PlayerSide) -> bool {
         if self.actor(side).core.hp <= 0 && self.actor(side).fate.last_stand_intent > 0 {
             let actor = self.actor_mut(side);
             actor.fate.last_stand_unyielding += 1;

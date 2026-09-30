@@ -848,9 +848,9 @@ impl ReplayState {
             return;
         }
         // BattleCharacter.ModifyAnima：凡躯(204) 把加灵转成体魄；但得炁(208) 后
-        // 入战按灵炁奔涌走棍/拳分支，共鸣·得炁(137) 也会关闭此转换。镜像
-        // engine-ts resources.ts modifyAnima 的 `!includes(208) && resonance!=137`
-        // 排除，否则李㵘棍系(再次行动加灵)在 rust 后端会被凡躯把灵气清成 0 → 卡灵。
+        // 入战按灵炁奔涌走棍/拳分支，共鸣·得炁(137) 也会关闭此转换
+        // （`!talents.contains(208) && resonance != 137`），否则李㵘棍系(再次行动加灵)
+        // 会被凡躯把灵气清成 0 → 卡灵。
         let identity = &self.actor(actor_side).identity;
         if identity.talents.contains(&204)
             && !identity.talents.contains(&208)

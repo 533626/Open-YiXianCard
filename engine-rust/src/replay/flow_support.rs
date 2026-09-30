@@ -60,10 +60,10 @@ impl ReplayState {
     pub(super) fn apply_you_ming_xu_hun_quan_replacement(
         &mut self,
         actor_side: PlayerSide,
-        mut drawn: super::DrawnCard,
-    ) -> super::DrawnCard {
+        drawn: &mut super::DrawnCard,
+    ) {
         if self.actor(actor_side).chance.you_ming_xu_hun_quan <= 0 {
-            return drawn;
+            return;
         }
         // CardActionBase reads CardConfig.rarity here. Upgraded-looking ids
         // with an explicit/default rarity of zero still become base attack.
@@ -80,7 +80,6 @@ impl ReplayState {
         }
         self.actor_mut(actor_side).chance.you_ming_xu_hun_quan -= 1;
         drawn.card = replacement;
-        drawn
     }
 
     pub(super) fn spirit_formation_echo_card(
@@ -92,9 +91,6 @@ impl ReplayState {
             .actor(actor_side)
             .formations
             .spirit_formation_echo_triggered
-            || !self.original_build_has_capability(
-                super::original_build_profile::OriginalBuildCapability::SpiritFormationEchoUsesBaseCard,
-            )
             || !card.name.contains("灵阵")
         {
             return card.clone();

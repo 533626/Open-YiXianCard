@@ -1,0 +1,1024 @@
+{
+  "schemaVersion": 1,
+  "steamBuild": "25621897",
+  "strategies": [
+    {
+      "id": 1001,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 1002,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 1003,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 1004,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 1005,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 1006,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 1007,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 1008,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 2015,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 3001,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 3002,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 3003,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 3004,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 3005,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 3011,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 3012,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 3013,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 5001,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 5004,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 5005,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 5007,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 5008,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 5009,
+      "sources": [
+        "CardActionBase.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 5010,
+      "sources": [
+        "BattleExecuter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7002,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7005,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7010,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7011,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7012,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7017,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7021,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7022,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7024,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7026,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7028,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7031,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7032,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7035,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7036,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7037,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7038,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7042,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7048,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7049,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7050,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7051,
+      "sources": [
+        "CardActionBase.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7052,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7053,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7054,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7056,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7057,
+      "sources": [
+        "CardActionBase.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7058,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7059,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7060,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7061,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7062,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7063,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7064,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7065,
+      "sources": [
+        "BattleExecuter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7066,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7067,
+      "sources": [
+        "CardActionBase.cs",
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7068,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7069,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7071,
+      "sources": [
+        "CardActionBase.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7076,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7077,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7078,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7079,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7080,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7082,
+      "sources": [
+        "Card_7000073.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7083,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7084,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7085,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7087,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7088,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7089,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7090,
+      "sources": [
+        "CardActionBase.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7091,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7092,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7093,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7094,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7095,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7096,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7097,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7098,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7099,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7100,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7101,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7102,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7103,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7104,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7105,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7109,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7110,
+      "sources": [
+        "BattleExecuter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7111,
+      "sources": [
+        "BattleCharacter.cs",
+        "CardActionBase.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7112,
+      "sources": [
+        "BattleExecuter.cs",
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7113,
+      "sources": [
+        "CardActionBase.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7114,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7115,
+      "sources": [
+        "CardActionBase.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7116,
+      "sources": [
+        "BattleExecuter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7118,
+      "sources": [
+        "CardActionBase.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7120,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7121,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7122,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7123,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7127,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7128,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7129,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7130,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7132,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7133,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7134,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 7135,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 7136,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 11001,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 11002,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 11003,
+      "sources": [
+        "CardActionBase.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 11004,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 13001,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 13002,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 13003,
+      "sources": [
+        "CardActionBase.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 13004,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 13005,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 13006,
+      "sources": [
+        "CardActionBase.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 13007,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 13008,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 13009,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 13010,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 13011,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 13012,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 13013,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 13014,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 13015,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 13016,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 13017,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 13018,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 13019,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 15018,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 23045,
+      "sources": [
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 23058,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 23062,
+      "sources": [
+        "BattleCharacter.cs"
+      ]
+    },
+    {
+      "id": 23066,
+      "sources": [
+        "CardActionBase.cs",
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 23069,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 23079,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 23080,
+      "sources": [
+        "CardActionBase.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 26001,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
+      ]
+    }
+  ]
+}

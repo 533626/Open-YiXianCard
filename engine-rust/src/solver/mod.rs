@@ -19,7 +19,8 @@ pub use counterfactual::{
     CounterfactualElementResult, CounterfactualReport, COUNTERFACTUAL_SCHEMA_VERSION,
 };
 pub use exact_search::{
-    solve_deck, SolveDeckOptions, SolveDeckResult, SolverDeckResult, SolverMode, VisitOrder,
+    evaluate_exact_deck, solve_deck, SolveDeckOptions, SolveDeckResult, SolverDeckResult,
+    SolverMode, VisitOrder,
 };
 pub use rule_impact::{
     SolverRuleImpactCard, SolverRuleImpactCheckpoint, SolverRuleImpactContribution,

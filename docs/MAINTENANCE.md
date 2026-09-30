@@ -13,6 +13,10 @@
 | 生成报告 | 用脚本重建，不手写数量 |
 | 本地缓存、编译产物 | 不提交，阶段性回收 |
 | 原版证据缓存 | 保留 `current` 和当前 build；diff 冻结后删除旧 build |
+| 退役或冻结的实现 | 同时切断依赖方向（门禁禁止被引用），否则会继续充当判定、数据来源或回退路径 |
+
+冻结不等于退役：2026-08 冻结的 TS 引擎名义上「只读、不作证据」，实际仍是合成对局判定、黄金 diff、
+准入回退分析器、档案「已实现」状态与 TS 求解器的依赖，2026-09-24 移出时须逐条改接 Rust。
 
 单 agent 或并行施工时，按负责路径运行 scoped gate：
 
@@ -107,7 +111,7 @@ extracted 等除外）中 `card<id>（名）` 括注必须包含 `extracted/curr
 | 路径 | 角色 | 推荐处理 |
 | --- | --- | --- |
 | `engine-rust/target/debug/` | Rust debug/test 增量缓存 | Rust 开发中保留；里程碑后删除 |
-| `engine-rust/target/release/` | release 构建产物 | 保留公共 native engine/replay_slice；solver 与 TUI 二进制属于私有 companion，缓存子目录可删 |
+| `engine-rust/target/release/` | release 构建产物 | 保留公共 native engine/replay_slice；solver 二进制属于私有 companion，缓存子目录可删 |
 | `research/original-game/tools/` | dotnet / ilspy / venv 工具缓存 | 只在重新提取原版证据时需要 |
 | `research/original-game/inventory/` | Unity 资源盘点生成物 | 盘点后可删 |
 | `research/original-game/out/` | 解码回放中间 JSON | fixture 导出后可删 |

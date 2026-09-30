@@ -46,7 +46,7 @@ fn action_again_sources_consume_only_the_first_matching_priority() {
         let mut card = basic_attack();
         card.id = 7_000_040;
         card.base_id = Some(7_000_040);
-        card.name = "土灵•绝壁".to_string();
+        card.name = "土灵•绝壁".to_string().into();
         card.action_again = card_action_again.then_some(true);
         let mut state = ReplayState::test_from_fixture(&fixture(
             player(deck_with(card.clone())),
@@ -104,10 +104,10 @@ fn dynamic_card_action_again_is_frozen_before_after_card_attacks() {
     let mut swimming_dragon = basic_attack();
     swimming_dragon.id = 1_000_042;
     swimming_dragon.base_id = Some(1_000_042);
-    swimming_dragon.name = "云剑·游龙".to_string();
+    swimming_dragon.name = "云剑·游龙".to_string().into();
     swimming_dragon.attack = Some(1);
     swimming_dragon.attack_count = Some(1);
-    swimming_dragon.other_params = vec![0];
+    swimming_dragon.other_params = vec![0].into();
 
     let mut p2 = player(deck_with(basic_attack()));
     p2.initial_defense = 1;
@@ -126,15 +126,15 @@ fn dream_anima_infusion_forces_wounded_count_through_defense_for_action_again() 
     let mut swimming_dragon = basic_attack();
     swimming_dragon.id = 1_000_042;
     swimming_dragon.base_id = Some(1_000_042);
-    swimming_dragon.name = "云剑•游龙".to_string();
+    swimming_dragon.name = "云剑•游龙".to_string().into();
     swimming_dragon.attack = Some(1);
     swimming_dragon.attack_count = Some(1);
-    swimming_dragon.other_params = vec![0];
+    swimming_dragon.other_params = vec![0].into();
 
     let mut dream_anima_infusion = basic_attack();
     dream_anima_infusion.id = 1_040_067;
     dream_anima_infusion.base_id = Some(1_000_067);
-    dream_anima_infusion.name = "梦•灵气灌注".to_string();
+    dream_anima_infusion.name = "梦•灵气灌注".to_string().into();
     dream_anima_infusion.attack = None;
 
     let mut p1 = player(deck_with(swimming_dragon));
@@ -155,9 +155,9 @@ fn first_frenzy_sword_does_not_gain_action_again_from_its_completed_stack() {
     let mut frenzy_sword = basic_attack();
     frenzy_sword.id = 2;
     frenzy_sword.base_id = Some(2);
-    frenzy_sword.name = "狂剑•炎舞".to_string();
+    frenzy_sword.name = "狂剑•炎舞".to_string().into();
     frenzy_sword.attack = Some(4);
-    frenzy_sword.other_params = vec![2];
+    frenzy_sword.other_params = vec![2].into();
 
     let mut state = ReplayState::test_from_fixture(&fixture(
         player(deck_with(frenzy_sword)),
@@ -179,14 +179,14 @@ fn fate_381_classifies_wound_description_cards_as_frenzy_swords() {
     let mut wound_card = basic_attack();
     wound_card.id = 1000043;
     wound_card.base_id = Some(1000043);
-    wound_card.name = "飞灵闪影剑".to_string();
+    wound_card.name = "飞灵闪影剑".to_string().into();
     wound_card.attack = Some(1);
     wound_card.attack_count = Some(4);
 
     let mut frenzy_sword = basic_attack();
     frenzy_sword.id = 2;
     frenzy_sword.base_id = Some(2);
-    frenzy_sword.name = "狂剑•炎舞".to_string();
+    frenzy_sword.name = "狂剑•炎舞".to_string().into();
     frenzy_sword.attack = Some(2);
 
     let mut cards = deck_with(wound_card);
@@ -206,7 +206,7 @@ fn flash_wind_snapshots_cloud_chain_at_each_effect_entry() {
     let mut flash_wind = basic_attack();
     flash_wind.id = 1_000_039;
     flash_wind.base_id = Some(1_000_039);
-    flash_wind.name = "云剑•闪风".to_string();
+    flash_wind.name = "云剑•闪风".to_string().into();
     flash_wind.attack = Some(4);
 
     let mut ordinary = ReplayState::test_from_fixture(&fixture(

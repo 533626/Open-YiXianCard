@@ -88,6 +88,37 @@ impl ReplayState {
         // 必须在牌体执行前检查星位；例如天元心法会在牌体内把全槽变星，
         // 但原版不会因此把该张牌自身追认为星位牌。
         self.apply_xing_yuan_before_card_hook(actor_side, slot);
+        self.clear_actual_damage_before_execute(actor_side);
+    }
+
+    /// CardActionBase.OnBeforeExecuted 末尾（:3221-3222，刻印出牌前
+    /// 钩子之后、牌体之前）直接 RemoveBuff ActualDamage(302)/WoundedCount(303)：
+    /// 回合末攻击或执行前钩子留下的残留不再被本张牌读到，也不转入 644
+    /// （OnAfterExecuted 的 302→644 转移不变，见 `flush_actual_damage_carry`）。
+    fn clear_actual_damage_before_execute(&mut self, actor_side: PlayerSide) {
+        let damage_before = self.actor(actor_side).turn.actual_damage_carry;
+        let wounded_before = self.actor(actor_side).turn.wounded_count_carry;
+        {
+            let turn = &mut self.actor_mut(actor_side).turn;
+            turn.actual_damage_carry = 0;
+            turn.wounded_count_carry = 0;
+        }
+        self.record_counter_transition(
+            actor_side,
+            "回合",
+            "actualDamageCarry",
+            "实际伤害",
+            damage_before,
+            0,
+        );
+        self.record_counter_transition(
+            actor_side,
+            "回合",
+            "woundedCountCarry",
+            "击伤计数",
+            wounded_before,
+            0,
+        );
     }
 
     /// 惊雷破敌 FateStrategy 396（KeYinJingLei 574）：原版

@@ -7,7 +7,9 @@
 //   invocation 帧的回合末攻击（fate 137 凝水化刃，flow.rs 水势钩子）。
 // - 只有该攻击者自己出牌完成时（OnAfterExecuted，CardActionBase.cs:
 //   4743-4745）才把 302 转入 644(JiLuZongJiShangZhi) 并清零 302/303。
-// - 玫刺(7000027) 等家族卡在自身攻击后读 302：读到「残留 + 本卡」。
+// - OnBeforeExecuted 末尾（CardActionBase.cs:3221-3222）先清零 302/303（不转 644），
+//   回合末攻击等残留不会被下一张牌读到；玫刺(7000027) 等家族卡在自身攻击后读 302，
+//   读到的是本卡（执行前钩子之后）累计的实际伤害。
 // 引擎以 turn 级 actual_damage_carry / wounded_count_carry /
 // ji_lu_zong_ji_shang_zhi 表达，每次 effect invocation 完成时 flush。
 use super::*;
@@ -38,53 +40,6 @@ fn activate(state: &mut ReplayState, element: Element) {
     state.p1.elements.activated_elements.push(element);
 }
 
-// ---- 语义级：fate 137 回合末攻击残留 → 玫刺回血 ----
-
-#[test]
-fn meici_heal_reads_persistent_actual_damage_carry_with_fate_137_residue() {
-    // 8aff06dd0e089b1c/round-11 根因复现（语义级）：p1 带 fate 137 凝水化刃，
-    // 回合末自动攻击 水势 7 × 1.5 = 10 实际伤害 → 计入 p1 的 302 持久计数
-    //（无 invocation 帧路径，引擎此前静默丢弃）。玫刺在自身攻击后读到的 =
-    // 残留 10 + 本卡 3 = 13 → 回血 13/3 = 4；卡完成时 flush：carry=0、
-    // ji_lu_zong_ji_shang_zhi += 13。
-    let mut battle = fixture(
-        deck_with(vec![basic_attack()]),
-        deck_with(vec![basic_attack()]),
-    );
-    battle.players.p1.fate_strategies = vec![137];
-    battle.players.p2.initial_defense = 0;
-    let mut state = ReplayState::test_from_fixture(&battle);
-    state.p1.elements.water_momentum = 7; // (7+0)×1.5 = 10（floor）
-
-    // p1 回合：普通攻击 3（完成时 flush → carry 0）→ 回合末凝水化刃
-    // 水势 7 × 1.5 = 10（floor）→ carry = 10，p2 hp 30 → 17。
-    state.test_play_actor_turn();
-    assert_eq!(state.p1.turn.actual_damage_carry, 10);
-    assert_eq!(state.p2.core.hp, 17);
-    assert_eq!(state.p1.turn.ji_lu_zong_ji_shang_zhi, 3);
-
-    // p2 回合（普通攻击 3 → p1 27）：不触碰 p1 的 carry，残留跨回合存活。
-    state.test_advance_actor();
-    state.test_play_actor_turn();
-    assert_eq!(state.p1.turn.actual_damage_carry, 10);
-    assert_eq!(state.p1.core.hp, 27);
-
-    // p1 打玫刺：木灵已激活，本卡 4×3 段 vs p2 防御 9（防御逐段消耗）→
-    // 实际伤害 3；读值 = 残留 10 + 本卡 3 = 13 → 回血 13/3 = 4（41→45 语义）。
-    state.test_advance_actor();
-    state.p1.core.hp = 20; // 回血断言留出上限余量（maxHp 30）
-    state.p2.core.defense = 9;
-    activate(&mut state, Element::Wood);
-    let meici = original_card(7_000_027);
-    state.test_apply_card_effect(PlayerSide::P1, &meici, 0);
-
-    assert_eq!(state.p2.core.hp, 17 - 3);
-    assert_eq!(state.p1.core.hp, 24); // 20 + 4
-                                      // 卡完成时 flush：302 → 644（13）、303 清零、carry 清零。
-    assert_eq!(state.p1.turn.ji_lu_zong_ji_shang_zhi, 3 + 13);
-    assert_eq!(state.p1.turn.actual_damage_carry, 0);
-    assert_eq!(state.p1.turn.wounded_count_carry, 0);
-}
 
 #[test]
 fn meici_no_residue_heals_own_damage_only() {
@@ -127,7 +82,7 @@ fn wounded_count_carry_accumulates_per_wounding_attack_and_flushes() {
     assert_eq!(state.p1.turn.wounded_count_carry, 1);
 }
 
-// ---- 家族护栏：残留 > 0 时读值 = 残留 + 本卡 ----
+// ---- 家族护栏：读值取执行时 302 全量（直接预置 carry 验证读取口径） ----
 
 #[test]
 fn fen_hua_yin_413_reads_carry_with_residue() {
@@ -141,9 +96,9 @@ fn fen_hua_yin_413_reads_carry_with_residue() {
     state.p1.turn.actual_damage_carry = 2; // 残留（如回合末攻击）
     state.test_apply_card_effect(PlayerSide::P1, &card, 0);
 
-    // 本卡 6 实际伤害 → 读值 8 → 削减 8×3 = 24（无残留对照为 6×3 = 18）。
-    assert_eq!(state.p2.core.max_hp, 30 - 24);
-    assert_eq!(state.p1.turn.ji_lu_zong_ji_shang_zhi, 8);
+    // 本卡 7 实际伤害 → 读值 9 → 削减 9×3 = 27（无残留对照为 7×3 = 21）。
+    assert_eq!(state.p2.core.max_hp, 30 - 27);
+    assert_eq!(state.p1.turn.ji_lu_zong_ji_shang_zhi, 9);
     assert_eq!(state.p1.turn.actual_damage_carry, 0);
 }
 
@@ -304,4 +259,44 @@ fn di_sha_jian_1000030_reads_carry_with_residue() {
     // 本卡 8（击伤）→ 读值 10 → 防御 +10（无残留对照为 +8）。
     assert_eq!(state.p1.core.defense, 10);
     assert_eq!(state.p1.turn.ji_lu_zong_ji_shang_zhi, 10);
+}
+
+// ---- OnBeforeExecuted 末尾清零 302/303（不转 644） ----
+
+fn meici_state() -> ReplayState {
+    ReplayState::test_from_fixture(&fixture(
+        deck_with(vec![original_card(7_000_027)]),
+        deck_with(vec![basic_attack()]),
+    ))
+}
+
+#[test]
+fn before_execute_clears_residue_without_ledger() {
+    let mut state = meici_state();
+    state.p1.turn.actual_damage_carry = 10;
+    state.p1.turn.wounded_count_carry = 2;
+    state.p1.turn.ji_lu_zong_ji_shang_zhi = 3;
+    state.apply_before_execute_effect_hooks(PlayerSide::P1, &basic_attack(), 0, false);
+    assert_eq!(state.p1.turn.actual_damage_carry, 0);
+    assert_eq!(state.p1.turn.wounded_count_carry, 0);
+    // RemoveBuff 直接丢弃，不走 OnAfterExecuted 的 302→644 转移。
+    assert_eq!(state.p1.turn.ji_lu_zong_ji_shang_zhi, 3);
+}
+
+#[test]
+fn meici_heals_own_damage_only_when_residue_is_cleared() {
+    // 残留 10（如 fate 137 回合末攻击）在牌体前被清掉，玫刺只读本卡实际伤害 3 →
+    // 回血 3/3 = 1；完成时 644 只加本卡 3。
+    let mut state = meici_state();
+    state.p1.turn.actual_damage_carry = 10;
+    state.p1.core.hp = 20;
+    state.p2.core.defense = 9;
+    activate(&mut state, Element::Wood);
+    let meici = original_card(7_000_027);
+    state.apply_before_execute_effect_hooks(PlayerSide::P1, &meici, 0, false);
+    state.test_apply_card_effect(PlayerSide::P1, &meici, 0);
+    assert_eq!(state.p2.core.hp, 30 - 3);
+    assert_eq!(state.p1.core.hp, 21);
+    assert_eq!(state.p1.turn.ji_lu_zong_ji_shang_zhi, 3);
+    assert_eq!(state.p1.turn.actual_damage_carry, 0);
 }

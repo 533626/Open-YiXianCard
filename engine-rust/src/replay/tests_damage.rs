@@ -385,7 +385,7 @@ fn hidden_weapon_applies_injuries_before_damage_and_consumes_defense() {
         let mut card = original_card(card_id);
         card.card_type = Some(OriginalEnumValue {
             value: CARD_TYPE_CONSUME,
-            name: "Consume".to_string(),
+            name: "Consume".to_string().into(),
         });
         let mut p1 = player_with(deck_with(card));
         let mut p2 = player();

@@ -4,7 +4,7 @@
 
 > 来源：HF 最新语料 + 当前 Steam 客户端（build 24610558）采集的 mismatch 收口。
 > 12 个 raw mismatch → 8 个 server-client drift + 2 个真实引擎差距 → 引擎差距清零。
-> 每条教训都是实踩后写下的；完整锚点收据在私有 `research/original-game/DIAG_*` 与
+> 每条教训都是实踩后写下的；完整锚点收据在私有 `research/original-game/diagnostics/DIAG_*` 与
 > `battle-evaluator/generated/mirror-diagnosis/`，本文只写可复用的判定方法。
 
 ## 1. 反编译文本顺序 ≠ 执行顺序

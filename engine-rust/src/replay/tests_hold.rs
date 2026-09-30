@@ -119,7 +119,7 @@ fn hold_negative_status_gain_hooks_apply() {
 #[test]
 fn hold_falling_flower_internal_injury_consumes_star_erosion() {
     let mut card = test_card(4_000_021, 4_000_021, "落花有意");
-    card.other_params = vec![1];
+    card.other_params = vec![1].into();
     let mut fixture = hold_fixture(card, basic_attack_test_card());
     fixture.players.p1.talents = vec![103];
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -137,7 +137,7 @@ fn hold_falling_flower_internal_injury_consumes_star_erosion() {
 fn hold_mysterious_crystal_heart_mirror_grants_defense_and_guard() {
     let mut mirror = test_card(99_000_106, 99_000_106, "玄晶护心镜");
     mirror.defense = Some(20);
-    mirror.other_params = vec![2];
+    mirror.other_params = vec![2].into();
     let mut fixture = hold_fixture(mirror, basic_attack_test_card());
     fixture.players.p1.initial_anima = 3;
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -148,7 +148,7 @@ fn hold_mysterious_crystal_heart_mirror_grants_defense_and_guard() {
 #[test]
 fn hold_blood_calamity_opening_consumes_star_erosion() {
     let mut blood_calamity = test_card(11_010_024, 11_000_024, "血光之灾");
-    blood_calamity.other_params = vec![2, 1];
+    blood_calamity.other_params = vec![2, 1].into();
     let mut fixture = hold_fixture(basic_attack_test_card(), blood_calamity);
     fixture.players.p2.talents = vec![30_103];
     let state = ReplayState::test_from_fixture(&fixture);
@@ -179,7 +179,7 @@ fn hold_original_fallback_uses_random_attack_value() {
 fn hold_drunk_lie_leisure_grants_agility_and_basic_attack_stacks() {
     let mut drunk_lie = test_card(10_000_056, 10_000_056, "醉卧逍遥");
     drunk_lie.attack = Some(3);
-    drunk_lie.other_params = vec![10, 4];
+    drunk_lie.other_params = vec![10, 4].into();
     let mut state =
         ReplayState::test_from_fixture(&hold_fixture(drunk_lie, basic_attack_test_card()));
     let card = state.p1.deck.slots[0].card.clone();
@@ -321,35 +321,25 @@ fn hold_echo_pattern_runs_selected_hooks_for_temporary_water_formation() {
 }
 
 #[test]
-fn hold_echo_eight_gates_uses_build_specific_damage_at_all_upgrade_levels() {
-    // Card_8000012 temporarily reloads the first sustain through CardFactory.
-    // CardConfig 25099105 -> 25206201 raises 八门金锁阵 damage 8/12/16 to 10/15/20.
-    for (build, damages) in [
-        ("25099105", [8, 12, 16]),
-        ("25206201", [10, 15, 20]),
-        ("25268934", [10, 15, 20]),
-    ] {
-        for (tier, damage) in damages.into_iter().enumerate() {
-            let first = original_card_definition_by_id(8_000_010).unwrap();
-            let echo = original_card_definition_by_id(8_000_012 + tier as i64 * 10_000).unwrap();
-            let mut fixture = hold_fixture(first, basic_attack_test_card());
-            fixture.source = Some(crate::fixture::FixtureSource {
-                steam_build: Some(build.to_string()),
-                ..crate::fixture::FixtureSource::default()
-            });
-            fixture.players.p1.active_slot_count = 2;
-            fixture.players.p1.cards[1] = echo;
-            let mut state = ReplayState::test_from_fixture(&fixture);
-            state.p1.deck.queue = vec![1];
+fn hold_echo_eight_gates_damage_at_all_upgrade_levels() {
+    // Card_8000012 temporarily reloads the first sustain through CardFactory;
+    // 八门金锁阵 direct damage (otherParams[2]) is 10/15/20.
+    for (tier, damage) in [10, 15, 20].into_iter().enumerate() {
+        let first = original_card_definition_by_id(8_000_010).unwrap();
+        let echo = original_card_definition_by_id(8_000_012 + tier as i64 * 10_000).unwrap();
+        let mut fixture = hold_fixture(first, basic_attack_test_card());
+        fixture.players.p1.active_slot_count = 2;
+        fixture.players.p1.cards[1] = echo;
+        let mut state = ReplayState::test_from_fixture(&fixture);
+        state.p1.deck.queue = vec![1];
 
-            state.test_execute_one_card(PlayerSide::P1);
+        state.test_execute_one_card(PlayerSide::P1);
 
-            assert_eq!(state.p2.core.hp, 30 - damage, "build={build}, tier={tier}");
-            assert_eq!(state.p1.formations.eight_gates_formation, 2 + tier as i64);
-            assert_eq!(state.p1.deck.slots[0].card.id, 8_000_010);
-            assert_eq!(state.p1.deck.slots[1].card.id, 8_000_012 + tier as i64 * 10_000);
-            assert!(!state.p1.deck.slots[0].used);
-        }
+        assert_eq!(state.p2.core.hp, 30 - damage, "tier={tier}");
+        assert_eq!(state.p1.formations.eight_gates_formation, 2 + tier as i64);
+        assert_eq!(state.p1.deck.slots[0].card.id, 8_000_010);
+        assert_eq!(state.p1.deck.slots[1].card.id, 8_000_012 + tier as i64 * 10_000);
+        assert!(!state.p1.deck.slots[0].used);
     }
 }
 

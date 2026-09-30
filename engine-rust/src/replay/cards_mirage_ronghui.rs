@@ -37,6 +37,7 @@ pub(super) enum MirageRonghuiValue {
     MirageSharpnessConversionTurns,
     MirageHealingConversionTurns,
     MirageWaterDefenseCap,
+    MirageWaterDefenseUncapped,
     InternalInjuryExtraTriggers,
     OrdinarySwordActionAgainCards,
     InfinityPlate,
@@ -87,6 +88,7 @@ following exact interface and hooks:
     mirage_sharpness_conversion_turns
     mirage_healing_conversion_turns
     mirage_water_defense_cap
+    mirage_water_defense_uncapped
     internal_injury_extra_triggers
     ordinary_sword_action_again_cards
     infinity_plate
@@ -144,6 +146,7 @@ impl ReplayState {
                 state.mirage_healing_conversion_turns
             }
             MirageRonghuiValue::MirageWaterDefenseCap => state.mirage_water_defense_cap,
+            MirageRonghuiValue::MirageWaterDefenseUncapped => state.mirage_water_defense_uncapped,
             MirageRonghuiValue::InternalInjuryExtraTriggers => state.internal_injury_extra_triggers,
             MirageRonghuiValue::OrdinarySwordActionAgainCards => {
                 state.ordinary_sword_action_again_cards
@@ -191,6 +194,9 @@ impl ReplayState {
                 &mut state.mirage_healing_conversion_turns
             }
             MirageRonghuiValue::MirageWaterDefenseCap => &mut state.mirage_water_defense_cap,
+            MirageRonghuiValue::MirageWaterDefenseUncapped => {
+                &mut state.mirage_water_defense_uncapped
+            }
             MirageRonghuiValue::InternalInjuryExtraTriggers => {
                 &mut state.internal_injury_extra_triggers
             }
@@ -303,7 +309,7 @@ impl ReplayState {
             .deck
             .slots
             .get(next_grid)
-            .map(|slot_state| slot_state.card.name.clone())
+            .map(|slot_state| slot_state.card.name)
         else {
             return false;
         };
@@ -496,7 +502,10 @@ impl ReplayState {
         let cap = self.mirage_ronghui_value(actor_side, MirageRonghuiValue::MirageWaterDefenseCap);
         let water = self.actor(actor_side).elements.water_momentum.max(0);
         if cap > 0 && water > 0 {
-            self.gain_defense(actor_side, water.min(cap));
+            // BattleCharacter.OnTurnEnded (build 25621897)：持有 HuanTuLingZhenYiChuShangXian 时不截断。
+            let uncapped =
+                self.mirage_ronghui_value(actor_side, MirageRonghuiValue::MirageWaterDefenseUncapped) > 0;
+            self.gain_defense(actor_side, if uncapped { water } else { water.min(cap) });
         }
         for value in [
             MirageRonghuiValue::MirageInternalInjuryAmplifierTurns,
@@ -672,7 +681,7 @@ impl ReplayState {
                         .deck
                         .slots
                         .get(grid)
-                        .map(|slot_state| slot_state.card.name.clone())
+                        .map(|slot_state| slot_state.card.name)
                     else {
                         self.missing_decision("card:292:next card");
                         break;
@@ -722,6 +731,14 @@ impl ReplayState {
                     MirageRonghuiValue::MirageWaterDefenseCap,
                     other_param(card, 1).max(0),
                 );
+                // Card_317.cs (build 25621897)：3 级（rarity 2）写入 HuanTuLingZhenYiChuShangXian，取消回合末加防上限。
+                if card_rarity(card) == 2 {
+                    self.modify_mirage_ronghui_value(
+                        actor_side,
+                        MirageRonghuiValue::MirageWaterDefenseUncapped,
+                        1,
+                    );
+                }
                 Some(false)
             }
             318 => {
@@ -999,7 +1016,7 @@ impl ReplayState {
                         .deck
                         .slots
                         .get(grid)
-                        .map(|slot_state| slot_state.card.name.clone())
+                        .map(|slot_state| slot_state.card.name)
                     else {
                         self.missing_decision("card:153:next card");
                         break;

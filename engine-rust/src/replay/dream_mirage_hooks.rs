@@ -186,19 +186,23 @@ impl ReplayState {
         card: &CardDefinition,
         slot: usize,
     ) {
-        for adjacent in self.dream_mirage_adjacent_cards(actor_side, slot) {
+        for (adjacent_id, _, _) in self
+            .dream_mirage_adjacent_ids(actor_side, slot)
+            .into_iter()
+            .flatten()
+        {
             // 梦•浑天印被动在相邻牌使用时最先结算（原版
             // CheckAdjacentEffectsBeforeCard 的 foreach 内第一分支）。
-            if DREAM_HUN_TIAN_YIN_IDS.contains(&adjacent.id) {
+            if DREAM_HUN_TIAN_YIN_IDS.contains(&adjacent_id) {
                 self.activate_element_by_card(actor_side, card);
             }
-            if HIGH_DREAM_STAR_SHIFT_IDS.contains(&adjacent.id) {
+            if HIGH_DREAM_STAR_SHIFT_IDS.contains(&adjacent_id) {
                 self.modify_star_power(actor_side, 1);
-                if adjacent.id == 4_040_079 && card.name.contains("星弈") {
+                if adjacent_id == 4_040_079 && card.name.contains("星弈") {
                     self.modify_star_power(actor_side, 1);
                 }
             }
-            if DREAM_GUARANTEED_WOUND_ADJACENT_IDS.contains(&adjacent.id) {
+            if DREAM_GUARANTEED_WOUND_ADJACENT_IDS.contains(&adjacent_id) {
                 self.actor_mut(actor_side).turn.guaranteed_wound += 1;
             }
         }
@@ -443,12 +447,16 @@ impl ReplayState {
         slot: usize,
     ) {
         let target_side = opponent_side(actor_side);
-        for adjacent in self.dream_mirage_adjacent_cards(actor_side, slot) {
-            if normalized_base_id(&adjacent) != 1_000_069 {
+        for (adjacent_id, adjacent_base_id, adjacent_param0) in self
+            .dream_mirage_adjacent_ids(actor_side, slot)
+            .into_iter()
+            .flatten()
+        {
+            if adjacent_base_id != 1_000_069 {
                 continue;
             }
-            let value = adjacent.other_params.first().copied().unwrap_or(0).max(0);
-            if super::original_config::original_card_realm_level(adjacent.id).unwrap_or(0) >= 4 {
+            let value = adjacent_param0.unwrap_or(0).max(0);
+            if super::original_config::original_card_realm_level(adjacent_id).unwrap_or(0) >= 4 {
                 self.apply_attack(
                     actor_side,
                     value + self.actor(actor_side).core.anima.max(0),
@@ -815,24 +823,28 @@ impl ReplayState {
         }) || next_id.is_some_and(|id| HIGH_DREAM_BENG_TIAN_IDS.contains(&id))
     }
 
-    fn dream_mirage_adjacent_cards(
+    /// 相邻两格（前一格、后一格，顺序同原版 foreach）的 (牌 id, 规范 base id, otherParams[0])，出界的格跳过。
+    /// 两处相邻钩子只读这几项：先取快照再改状态（同原先整张克隆的语义），但不再每次出牌克隆两张
+    /// CardDefinition、分配一个 Vec（剖析里约 4%）。
+    fn dream_mirage_adjacent_ids(
         &self,
         actor_side: PlayerSide,
         slot: usize,
-    ) -> Vec<CardDefinition> {
+    ) -> [Option<(i64, i64, Option<i64>)>; 2] {
+        let slots = &self.actor(actor_side).deck.slots;
         [
             self.dream_mirage_runtime_previous_grid(actor_side, slot),
             self.dream_mirage_runtime_next_grid(actor_side, slot),
         ]
-        .into_iter()
-        .filter_map(|index| {
-            self.actor(actor_side)
-                .deck
-                .slots
-                .get(index)
-                .map(|entry| entry.card.clone())
+        .map(|index| {
+            slots.get(index).map(|entry| {
+                (
+                    entry.card.id,
+                    normalized_base_id(&entry.card),
+                    entry.card.other_params.first().copied(),
+                )
+            })
         })
-        .collect()
     }
 
     fn dream_mirage_runtime_active_slot_count(&self, actor_side: PlayerSide) -> usize {

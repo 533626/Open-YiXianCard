@@ -8,7 +8,7 @@ quarantine fixtures, raw or decoded replay files, original replay filenames or
 codes, and derived artifacts that could be linked back to a player or match.
 
 The current development repository contains private replay-derived fixtures so
-that exact TS/Rust regression gates can run. The repository must remain private
+that exact Rust regression gates can run. The repository must remain private
 while those files are tracked. It must not be made public, mirrored to a public
 Git host, or attached to a public source release. The private corpus is not
 licensed for distribution under the project MIT License.

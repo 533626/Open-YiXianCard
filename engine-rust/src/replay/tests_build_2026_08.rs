@@ -364,9 +364,9 @@ fn wan_shi_ru_yi_opening_reads_downgraded_deck_slot_params() {
     // 锚点：8f0ba353b4c1a831/round-14 首差（p1 辟邪 1 而非 2，杯弓蛇影
     // 内伤 2 只被挡 1 层）。
     let mut wan_shi_ru_yi = card(11_010_013, 11_000_013, "万事如意");
-    wan_shi_ru_yi.other_params = vec![6, 4, 2];
+    wan_shi_ru_yi.other_params = vec![6, 4, 2].into();
     let mut calamity = card(11_000_018, 11_000_018, "厄劫缠身");
-    calamity.other_params = vec![4, 6];
+    calamity.other_params = vec![4, 6].into();
     let mut battle = fixture(deck(wan_shi_ru_yi.clone()), deck(calamity));
     battle.first_player_side = PlayerSide::P2;
 
@@ -392,10 +392,10 @@ fn hard_branch_bamboo_sustain_divisor_survives_plain_variant() {
     // round-15 t3 结束 p1 100→96（p2 防 19，19/4=4）。
     let mut sustain = card(9_020_027, 9_000_027, "硬枝竹");
     sustain.defense = Some(8);
-    sustain.other_params = vec![1, 4];
+    sustain.other_params = vec![1, 4].into();
     let mut plain = card(9_010_027, 9_000_027, "硬枝竹");
     plain.defense = Some(6);
-    plain.other_params = vec![0];
+    plain.other_params = vec![0].into();
     let mut battle = fixture(deck(basic_attack()), vec![sustain, plain]);
     battle.players.p2.active_slot_count = 2;
     battle.max_actor_turns = Some(4);
@@ -427,9 +427,9 @@ fn calamity_opening_damage_reads_current_downgraded_slot_card() {
     // 锚点：hf-latest-32391000-03b604c4 d11b6adfe79418e2/round-17
     // cp0 p2.hp 96（107-11=96，而非 107-12=95）。
     let mut calamity_r2 = card(11_020_018, 11_000_018, "厄劫缠身");
-    calamity_r2.other_params = vec![6, 12];
+    calamity_r2.other_params = vec![6, 12].into();
     let mut calamity_base = card(11_000_018, 11_000_018, "厄劫缠身");
-    calamity_base.other_params = vec![4, 6];
+    calamity_base.other_params = vec![4, 6].into();
     let mut battle = fixture(deck(calamity_r2), deck(calamity_base));
     battle.first_player_side = PlayerSide::P2;
     let state = ReplayState::test_from_fixture(&battle);

@@ -390,7 +390,7 @@ mod tests {
         let mut random = test_card(4_000_068, 4_000_068, "落花有意");
         random.attack = Some(1);
         random.random_attack = Some(2);
-        random.other_params = vec![0];
+        random.other_params = vec![0].into();
         let fixture = minimal_fixture(
             filler_cards(random),
             filler_cards(basic_attack_test_card()),
@@ -446,7 +446,7 @@ mod tests {
         let mut card = test_card(9_000_016, 9_000_016, "未列举炼化牌");
         card.card_type = Some(OriginalEnumValue {
             value: 2,
-            name: "Refine".to_string(),
+            name: "Refine".to_string().into(),
         });
         card.attack = Some(99);
         card.anima = Some(99);

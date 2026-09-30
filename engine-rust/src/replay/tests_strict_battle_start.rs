@@ -1,5 +1,5 @@
 use super::*;
-use crate::fixture::{BattleFixture, FixturePlayer, FixtureSource};
+use crate::fixture::{BattleFixture, FixturePlayer};
 use crate::model::{CardDefinition, DECK_SIZE};
 use std::fs;
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -107,25 +107,6 @@ fn every_public_replay_surface_rejects_battle_start_missing_card_config() {
     assert_all_strict_replay_surfaces_reject(
         &missing_opening_config_fixture(),
         "card:389:opening replacement definition",
-    );
-}
-
-#[test]
-fn every_public_replay_surface_rejects_an_unknown_original_build() {
-    let retired_build = super::original_build_profile::latest_retired_steam_build()
-        .expect("profile contract retains an audited retired build as rejection sample");
-    let mut unknown = fixture(
-        player(full_deck(basic_attack(), basic_attack()), 1),
-        player(full_deck(basic_attack(), basic_attack()), 1),
-    );
-    unknown.source = Some(FixtureSource {
-        steam_build: Some(retired_build.to_string()),
-        ..FixtureSource::default()
-    });
-
-    assert_all_strict_replay_surfaces_reject(
-        &unknown,
-        &format!("unsupported original Steam build {retired_build}"),
     );
 }
 

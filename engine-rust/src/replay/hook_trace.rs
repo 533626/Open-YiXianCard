@@ -436,7 +436,7 @@ mod tests {
         let mut fixture = invocation_fixture(&[205], &[0], Vec::new());
         fixture.players.p1.cards[0].anima = Some(0);
         fixture.players.p1.cards[0].physique = Some(2);
-        fixture.players.p1.cards[0].other_params = vec![100, 0];
+        fixture.players.p1.cards[0].other_params = vec![100, 0].into();
 
         let trace = trace_replay_fixture_hooks(&fixture).expect("hook trace");
         let main = trace
@@ -516,6 +516,8 @@ mod tests {
             talent_resonance_id: None,
             fate_strategies: Vec::new(),
             fate_strategy_temp_datas: Default::default(),
+            xian_mo_strategies: Vec::new(),
+            xian_mo_temp_datas: Default::default(),
             active_slot_count: DECK_SIZE,
             initial_defense: 0,
             initial_anima: 10,

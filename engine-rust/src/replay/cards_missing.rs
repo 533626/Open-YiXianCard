@@ -216,7 +216,8 @@ impl ReplayState {
                 Some(attacked)
             }
             291 => {
-                // 幻•岿然不动
+                // 幻•岿然不动（Card_291.cs build 25621897：先加气势上限再加气势）
+                self.modify_momentum_limit(actor_side, other_param(card, 0).max(0));
                 self.modify_momentum(actor_side, other_param(card, 0).max(0));
                 self.apply_configured_defense(actor_side, card);
                 let defense = self.actor(actor_side).beng.momentum * other_param(card, 1).max(0);
@@ -633,6 +634,11 @@ impl ReplayState {
                     self.decision_tape.remove(0);
                     return Some(false);
                 }
+                // Card_6000007.cs:82 同落纸云烟用 GetNextParam()：空队列 catch 返回
+                // -1 → `nextParam != -1` 不成立，整张牌无效果（不回退默认状态）。
+                if self.decision_tape.is_empty() {
+                    return Some(false);
+                }
                 let selected = self
                     .consume_required_negative_status_decision()
                     .or_else(|| {
@@ -1007,15 +1013,9 @@ impl ReplayState {
                     // 在 T11 被误打出）。
                     if original_config_rarity(target_card.id) >= 1 && target_card.id != 19 {
                         let lower_id = target_card.id - 10_000;
-                        if let Some(mut lowered) =
+                        if let Some(lowered) =
                             super::original_config::original_card_definition(lower_id)
                         {
-                            if let Some(hp_cost) = super::original_config::ling_kong_fei_sao_hp_cost(
-                                lowered.id,
-                                self.original_build_profile.steam_build_number(),
-                            ) {
-                                lowered.hp_cost = Some(hp_cost);
-                            }
                             self.actor_mut(target_side).deck.slots[trigger_grid].card = lowered;
                         }
                     } else {

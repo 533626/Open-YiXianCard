@@ -19,6 +19,23 @@ fn fixture(p1: FixturePlayer, p2: FixturePlayer) -> BattleFixture {
 }
 
 #[test]
+fn missing_permanent_physique_limit_is_zero_and_gains_overflow() {
+    // BattleCharacter.cs:149-153 只在永久值 > 0 时写入 TiPoShangXian；缺失即 0，
+    // :10256 起的溢出判定对首点体魄就生效（golden f4ktomg/round-01 等 p 侧 10024=0）。
+    let mut p1 = player();
+    p1.permanent_buff_temp_datas.remove("10024");
+    let mut state = ReplayState::test_from_fixture(&fixture(p1, player()));
+    assert_eq!(state.p1.core.physique_limit, 0);
+    let hp_before = state.p1.core.hp;
+
+    state.apply_physique_amount(PlayerSide::P1, 2);
+
+    assert_eq!(state.p1.core.physique, 2);
+    assert_eq!(state.p1.core.max_hp, 52);
+    assert_eq!(state.p1.core.hp, hp_before + 2);
+}
+
+#[test]
 fn talent_183_start_physique_counts_as_battle_physique_gain() {
     let mut p1 = player();
     p1.talents = vec![183, 184];

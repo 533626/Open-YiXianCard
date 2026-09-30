@@ -31,7 +31,7 @@ fn lava_seal_opening_activates_fire_before_instant_burn_samples_action_again() {
 #[test]
 fn fortune_avoid_misfortune_skips_opening_effect_cards_like_spirit_detection() {
     let mut fortune = card(11_000_007, 11_000_007, "天运•避凶");
-    fortune.other_params = vec![2, 3, 2];
+    fortune.other_params = vec![2, 3, 2].into();
     let spirit_detection = card(11_010_009, 11_000_009, "探灵");
     let mut fixture = fixture(
         deck_with_cards(vec![fortune, spirit_detection]),
@@ -57,7 +57,7 @@ fn fortune_avoid_misfortune_skips_opening_effect_cards_like_spirit_detection() {
 #[test]
 fn qi_swallow_mountains_uses_max_hp_modifier_with_adaptation() {
     let mut qi_swallow = card(4_010_060, 4_000_060, "气吞山河");
-    qi_swallow.other_params = vec![16, 31];
+    qi_swallow.other_params = vec![16, 31].into();
     let mut state =
         ReplayState::test_from_fixture(&fixture(deck(qi_swallow.clone()), deck(basic_attack())));
     state.p1.turn.adaptation = 1;
@@ -70,7 +70,7 @@ fn qi_swallow_mountains_uses_max_hp_modifier_with_adaptation() {
 #[test]
 fn water_accepts_all_rivers_applies_adaptation_to_max_hp_and_healing() {
     let mut accepts_all_rivers = card(7_000_057, 7_000_057, "水灵•纳百川");
-    accepts_all_rivers.other_params = vec![3, 6];
+    accepts_all_rivers.other_params = vec![3, 6].into();
     let mut state = ReplayState::test_from_fixture(&fixture(
         deck(accepts_all_rivers.clone()),
         deck(basic_attack()),
@@ -88,7 +88,7 @@ fn water_accepts_all_rivers_applies_adaptation_to_max_hp_and_healing() {
 #[test]
 fn water_spirit_sea_dragon_roar_gains_momentum_and_stops_the_opponent() {
     let mut sea_dragon_roar = card(7_000_044, 7_000_044, "水灵•海龙啸");
-    sea_dragon_roar.other_params = vec![4];
+    sea_dragon_roar.other_params = vec![4].into();
     let mut state = ReplayState::test_from_fixture(&fixture(
         deck(sea_dragon_roar.clone()),
         deck(basic_attack()),
@@ -123,7 +123,7 @@ fn metal_spirit_returning_blade_refunded_sharpness_uses_metal_ring_bonus() {
     let mut returning_blade = card(7_000_099, 7_000_099, "金灵•回锋刃");
     returning_blade.attack = Some(6);
     returning_blade.attack_count = Some(2);
-    returning_blade.other_params = vec![60];
+    returning_blade.other_params = vec![60].into();
     let mut fixture = fixture(deck(returning_blade.clone()), deck(basic_attack()));
     fixture.players.p2.base_max_hp = 250;
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -144,7 +144,7 @@ fn metal_spirit_returning_blade_checks_wound_after_weakness_multiplier() {
     let mut one_segment = card(7_010_099, 7_000_099, "金灵•回锋刃");
     one_segment.attack = Some(6);
     one_segment.attack_count = Some(1);
-    one_segment.other_params = vec![60];
+    one_segment.other_params = vec![60].into();
     let mut first =
         ReplayState::test_from_fixture(&fixture(deck(one_segment.clone()), deck(basic_attack())));
     first.p1.status.weakness = 3;
@@ -320,7 +320,7 @@ fn graft_flowers_blocks_ordinary_wound_bonuses_but_not_forced_sharpness_selectio
 #[test]
 fn adjacent_dream_anima_infusion_forces_wound_then_clears_on_card_completion() {
     let mut infusion = card(1_020_067, 1_000_067, "梦•灵气灌注");
-    infusion.other_params = vec![10];
+    infusion.other_params = vec![10].into();
     let mut source = fixture(
         deck_with_cards(vec![basic_attack(), infusion, basic_attack()]),
         deck(basic_attack()),
@@ -344,7 +344,7 @@ fn mirage_qi_drawing_sword_executes_selected_temporary_card_then_reads_post_anim
     let mut drawing = card(262, 262, "幻•引气剑");
     drawing.attack = Some(3);
     drawing.attack_count = Some(1);
-    drawing.other_params = vec![1, 1];
+    drawing.other_params = vec![1, 1].into();
     let mut source = fixture(deck(drawing.clone()), deck(basic_attack()));
     source.decision_tape = vec![1_000_027];
     source.players.p1.talents = vec![67, 68];
@@ -366,7 +366,7 @@ fn mirage_qi_drawing_sword_executes_selected_temporary_card_then_reads_post_anim
 #[test]
 fn permanent_exorcism_grass_prevents_shura_roar_internal_injury() {
     let mut shura_roar = card(100_000_041, 10_000_041, "修罗吼");
-    shura_roar.other_params = vec![4, 2];
+    shura_roar.other_params = vec![4, 2].into();
     let mut fixture = fixture(deck(shura_roar), deck(basic_attack()));
     fixture
         .players
@@ -573,7 +573,7 @@ fn combined_sword_formation_counts_other_formations_and_312_frenzy_branch() {
     let mut combined = card(1_000_062, 1_000_062, "合势剑阵");
     combined.attack = Some(4);
     combined.defense = Some(4);
-    combined.other_params = vec![3, 3];
+    combined.other_params = vec![3, 3].into();
     let water_moon = card(1_000_041, 1_000_041, "水月剑阵");
     let hidden_frenzy = card(312, 312, "幻•狂剑盘龙");
     let frenzy = card(1_000_022, 1_000_022, "狂剑•一式");
@@ -599,11 +599,11 @@ fn mirage_beng_quan_entangle_applies_injury_before_attack_and_arms_follow_up() {
     entangle.attack = Some(3);
     entangle.attack_count = Some(2);
     entangle.hp_cost = Some(4);
-    entangle.other_params = vec![2];
+    entangle.other_params = vec![2].into();
     let mut meridian = card(10_010_024, 10_000_024, "崩拳•截脉");
     meridian.attack = Some(13);
     meridian.hp_cost = Some(4);
-    meridian.other_params = vec![1];
+    meridian.other_params = vec![1].into();
     let mut state = ReplayState::test_from_fixture(&fixture(
         deck_with_cards(vec![entangle, meridian]),
         deck(basic_attack()),
@@ -627,7 +627,7 @@ fn mirage_beng_quan_entangle_applies_injury_before_attack_and_arms_follow_up() {
 fn break_like_bamboo_routes_momentum_gain_through_overflow_defense() {
     let mut bamboo = card(10_010_033, 10_000_033, "势如破竹");
     bamboo.attack = Some(3);
-    bamboo.other_params = vec![1, 1, 3];
+    bamboo.other_params = vec![1, 1, 3].into();
     let mut state = ReplayState::test_from_fixture(&fixture(deck(bamboo), deck(basic_attack())));
     state.p1.core.anima = 1;
     state.p1.beng.momentum_limit = 1;
@@ -642,7 +642,7 @@ fn break_like_bamboo_routes_momentum_gain_through_overflow_defense() {
 fn mirage_cloud_probe_adds_body_chain_and_arms_cloud_sword_heart() {
     let mut probe = card(264, 264, "幻•云剑探云");
     probe.attack = Some(6);
-    probe.other_params = vec![3];
+    probe.other_params = vec![3].into();
     let mut state = ReplayState::test_from_fixture(&fixture(deck(probe), deck(basic_attack())));
 
     state.test_execute_one_card(PlayerSide::P1);
@@ -654,7 +654,7 @@ fn mirage_cloud_probe_adds_body_chain_and_arms_cloud_sword_heart() {
 #[test]
 fn talent_64_hp_change_defense_uses_the_adaptation_pipeline() {
     let mut divination = card(11_000_001, 11_000_001, "卜命");
-    divination.other_params = vec![10];
+    divination.other_params = vec![10].into();
     let mut battle = fixture(deck(divination), deck(basic_attack()));
     battle.players.p2.talents = vec![64];
     let mut state = ReplayState::test_from_fixture(&battle);
@@ -718,7 +718,7 @@ fn fate_strategy_164_doubles_turn_start_recovery_and_internal_injury_for_both_pl
 fn ordinary_star_gain_enters_the_shared_fan_hook() {
     let mut flying_star = card(4_000_024, 4_000_024, "飞星刺");
     flying_star.attack = Some(5);
-    flying_star.other_params = vec![2];
+    flying_star.other_params = vec![2].into();
     let source = fixture(deck(flying_star), deck(basic_attack()));
     let mut control = ReplayState::test_from_fixture(&source);
     control.test_execute_one_card(PlayerSide::P1);
@@ -765,7 +765,7 @@ fn ke_yin_29_redirects_star_gain_before_star_post_hooks() {
 fn card_170_spends_all_three_resources_through_their_semantic_kernels() {
     let mut card_170 = card(170, 170, "玄真破妄");
     card_170.attack = Some(1);
-    card_170.other_params = vec![1, 1, 1];
+    card_170.other_params = vec![1, 1, 1].into();
     let mut state = ReplayState::test_from_fixture(&fixture(deck(card_170), deck(basic_attack())));
     state.p1.beng.momentum = 2;
     state.p1.core.anima = 3;

@@ -49,7 +49,7 @@ pub(super) const ORIGINAL_AFTER_HP_MODIFY_PHASES: [AfterHpModifyPhase; 10] = [
     AfterHpModifyPhase::HpLossLedgers,
 ];
 
-#[allow(dead_code)]
+#[cfg(test)]
 pub(super) const HP_MUTATION_SCOPE_EXCLUSIONS: [(&str, &str); 2] = [
     (
         "JiLuZhanDouZuiGaoShengMing",
@@ -205,6 +205,7 @@ impl ReplayPlayer {
                     .get("199")
                     .cloned()
                     .unwrap_or_default(),
+                hand_card_count: fixture.hand_cards.len() as i64,
             },
             core: ReplayCoreVitals {
                 hp,
@@ -218,11 +219,13 @@ impl ReplayPlayer {
                 // keep it beside WaiShang so opening order remains observable.
                 attack_bonus: 0,
                 physique: initial_physique,
+                // BattleCharacter.cs:149-153 只在上场永久值 > 0 时 SetBuffValue(TiPoShangXian)；
+                // 缺失时 GetBuffValue 为 0，:10256 的溢出判定按 0 比较。
                 physique_limit: fixture
                     .permanent_buff_temp_datas
                     .get("10024")
                     .copied()
-                    .unwrap_or(5),
+                    .unwrap_or(0),
                 lost_max_hp_count: 0,
             },
             sword: ReplaySwordState {
@@ -230,8 +233,8 @@ impl ReplayPlayer {
                 sword_energy: 0,
                 // FateStrategy 333's metal activation + +2 sharpness now
                 // route through ReplayState::activate_element/gain_sharpness
-                // in battle_start.rs (post-construction), matching engine-ts
-                // activateElement's shared side-effect hooks.
+                // in battle_start.rs (post-construction) so the shared
+                // activate-element side-effect hooks run.
                 sharpness: 0,
                 metal_ring: 0,
                 cloud_chain: 0,
@@ -857,6 +860,42 @@ impl ReplayPlayer {
             self.deck.queue.push(source_slot);
         }
         None
+    }
+
+    /// `draw_next_card` 的只读快判：队首槽位不会被任何跳过机制跳过时，返回它的下标
+    /// （此时 `draw_next_card` 必然原样取出这张牌，且除出队外不改任何状态）。
+    /// 任何一条跳过机制可能生效就返回 None，由调用方走克隆 + draw_next_card 的原路径。
+    /// 条件与 `draw_next_card` 各分支一一对应；debug 构建里调用方会与原路径逐项对照。
+    pub(super) fn peek_unskipped_next_slot(
+        &self,
+        nameless_white_deer_skip_limit: i64,
+    ) -> Option<usize> {
+        let active_slot_count = self.deck.queue.len();
+        let &source_slot = self.deck.queue.first()?;
+        let slot = self.deck.slots.get(source_slot)?;
+        let base_id = normalized_base_id(&slot.card);
+        let simple =
+            !slot.skipped
+                && self.astrology.star_chess_break <= 0
+                && !(matches!(base_id, 350 | 9_000_015)
+                    && source_slot + 2 >= active_slot_count
+                    && !slot.used)
+                && (self.dream_mirage.calamity_skip_mask & (1_i64 << source_slot)) == 0
+                && !(base_id == 202 && source_slot + 1 >= active_slot_count)
+                && !(source_slot == 4 && self.identity.fate_strategies.contains(&398))
+                && !(self.fate.fate_cycle > 0
+                    && self.fate.fate_cycle_slots.iter().any(|&cycle_slot| {
+                        cycle_slot > 0 && cycle_slot == (source_slot + 1) as i64
+                    }))
+                && self.ronghui.star_chess_jump <= 0
+                && !(nameless_white_deer_skip_limit > 0
+                    && (source_slot as i64) < nameless_white_deer_skip_limit
+                    && slot
+                        .card
+                        .card_type
+                        .as_ref()
+                        .is_some_and(|card_type| card_type.value == super::CARD_TYPE_SUSTAIN));
+        simple.then_some(source_slot)
     }
 
     fn should_fate_cycle_skip(&mut self, source_slot: usize) -> bool {

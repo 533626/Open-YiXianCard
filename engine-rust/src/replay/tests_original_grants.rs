@@ -28,7 +28,7 @@ fn fixture(cards: Vec<CardDefinition>) -> BattleFixture {
 fn original_granted_curiosity_and_secret_cards_match_v2_contracts() {
     let mut flame = test_card(2, 2, "狂剑•炎舞");
     flame.attack = Some(2);
-    flame.other_params = vec![1];
+    flame.other_params = vec![1].into();
     let mut flame_state = ReplayState::test_from_fixture(&fixture(deck_with(flame)));
     flame_state.p1.sword.frenzy_sword = 1;
     assert!(flame_state.test_execute_one_card(PlayerSide::P1));
@@ -51,7 +51,7 @@ fn original_granted_curiosity_and_secret_cards_match_v2_contracts() {
     assert_eq!(vigorous_state.p1.elements.no_sharpness_for_attack, 0);
 
     let mut thunder = test_card(29, 29, "狂雷电闪");
-    thunder.other_params = vec![2];
+    thunder.other_params = vec![2].into();
     let other_thunder = test_card(28, 28, "五雷轰顶");
     let mut thunder_cards = deck_with(thunder);
     thunder_cards[1] = other_thunder;
@@ -64,7 +64,7 @@ fn original_granted_curiosity_and_secret_cards_match_v2_contracts() {
 
     let mut bronze_cat = test_card(37, 37, "青铜猫");
     bronze_cat.defense = Some(5);
-    bronze_cat.other_params = vec![2];
+    bronze_cat.other_params = vec![2].into();
     let mut cat_state = ReplayState::test_from_fixture(&fixture(deck_with(bronze_cat)));
     cat_state.p1.sword.sword_intent = 3;
     assert!(!cat_state.test_execute_one_card(PlayerSide::P1));
@@ -72,7 +72,7 @@ fn original_granted_curiosity_and_secret_cards_match_v2_contracts() {
 
     let mut earth_secret = test_card(7_000_070, 7_000_070, "土灵秘印");
     earth_secret.defense = Some(6);
-    earth_secret.other_params = vec![6];
+    earth_secret.other_params = vec![6].into();
     let mut earth_state = ReplayState::test_from_fixture(&fixture(deck_with(earth_secret)));
     assert!(!earth_state.test_execute_one_card(PlayerSide::P1));
     assert_eq!(earth_state.p1.core.defense, 6);
@@ -121,7 +121,7 @@ fn dream_thunder_hexagram_art_restores_low_loss_ledger_and_installs_high_hook() 
 fn cloud_sword_hidden_dragon_body_uses_preexisting_chain_and_talent_222() {
     let mut hidden_dragon = test_card(331, 331, "云剑•潜龙");
     hidden_dragon.attack = Some(7);
-    hidden_dragon.other_params = vec![1, 2];
+    hidden_dragon.other_params = vec![1, 2].into();
 
     let mut ordinary = ReplayState::test_from_fixture(&fixture(deck_with(hidden_dragon.clone())));
     assert_eq!(

@@ -183,12 +183,61 @@ struct CandidateEvaluationOptions<'a> {
     battle_seeds: Option<&'a [u32]>,
 }
 
+/// 求解器可用的工作线程数：默认 `available_parallelism()`；环境变量 `SOLVE_DECK_THREADS`（正整数）
+/// 可压低。多局并行的离线仿真里每局单线程最省 CPU（多线程定序每次评估的 CPU 约是单线程的 2.5 倍）；
+/// 各分块按顺序拼接，结果与线程数无关。
+#[cfg(not(target_arch = "wasm32"))]
+pub(super) fn solver_parallelism() -> usize {
+    use std::sync::OnceLock;
+    static THREADS: OnceLock<usize> = OnceLock::new();
+    *THREADS.get_or_init(|| {
+        std::env::var("SOLVE_DECK_THREADS")
+            .ok()
+            .and_then(|value| value.parse::<usize>().ok())
+            .filter(|&value| value > 0)
+            .unwrap_or_else(|| thread::available_parallelism().map(usize::from).unwrap_or(1))
+    })
+}
+
 pub fn solve_deck(
     fixture: &BattleFixture,
     options: SolveDeckOptions,
 ) -> EngineResult<SolveDeckResult> {
     let options = normalize_solve_deck_options(options)?;
     Ok(solve_deck_normalized(fixture, options))
+}
+
+/// 只评估指定阵型，不跑 fixture 原阵型的 baseline 战斗。
+///
+/// 结果与 `solve_deck(exact_deck_ids = deck_ids)` 的 `results[0].evaluation` 相同；`solve_deck` 在这条路径上
+/// 会先把原阵型完整打一场作 baseline，批量逐阵型评估（`solve_deck_batch`）用不到它，等于每个请求打两场。
+pub fn evaluate_exact_deck(
+    fixture: &BattleFixture,
+    side: PlayerSide,
+    deck_ids: &[i64],
+    score_profile: ScoreProfile,
+    battle_seeds: Option<Vec<u32>>,
+) -> EngineResult<SolverEvaluation> {
+    let mut seeds = battle_seeds;
+    if let Some(list) = seeds.as_mut() {
+        if list.is_empty() {
+            return Err(EngineError::InvalidFixture(
+                "battleSeeds must not be empty".to_string(),
+            ));
+        }
+        list.sort_unstable();
+        list.dedup();
+    }
+    let baseline_deck = fixture_deck_candidates(fixture, side);
+    let deck = complete_deck_ids(&baseline_deck, deck_ids);
+    Ok(evaluate_fixture_deck_across_battle_seeds(
+        fixture,
+        side,
+        &deck,
+        None,
+        score_profile,
+        seeds.as_deref(),
+    ))
 }
 
 fn normalize_solve_deck_options(mut options: SolveDeckOptions) -> EngineResult<SolveDeckOptions> {

@@ -13,7 +13,7 @@ fn talent_52_replaces_eighth_basic_attack_with_seven_stars_stabilize_soul() {
     let mut cards = filler_cards(CardDefinition {
         id: 0,
         base_id: Some(0),
-        name: "普通攻击".to_string(),
+        name: "普通攻击".to_string().into(),
         card_type: None,
         attack: Some(3),
         random_attack: None,
@@ -29,12 +29,12 @@ fn talent_52_replaces_eighth_basic_attack_with_seven_stars_stabilize_soul() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![],
+        other_params: vec![].into(),
     });
     cards[7] = CardDefinition {
         id: 0,
         base_id: Some(0),
-        name: "普通攻击".to_string(),
+        name: "普通攻击".to_string().into(),
         card_type: None,
         attack: Some(3),
         random_attack: None,
@@ -50,7 +50,7 @@ fn talent_52_replaces_eighth_basic_attack_with_seven_stars_stabilize_soul() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![],
+        other_params: vec![].into(),
     };
     let fixture = BattleFixture {
         schema_version: 1,
@@ -77,6 +77,8 @@ fn talent_52_replaces_eighth_basic_attack_with_seven_stars_stabilize_soul() {
                 talents: vec![52],
                 fate_strategies: Vec::new(),
                 fate_strategy_temp_datas: Default::default(),
+                xian_mo_strategies: Vec::new(),
+                xian_mo_temp_datas: Default::default(),
                 active_slot_count: 8,
                 initial_defense: 0,
                 initial_anima: 0,
@@ -105,6 +107,8 @@ fn talent_52_replaces_eighth_basic_attack_with_seven_stars_stabilize_soul() {
                 talents: Vec::new(),
                 fate_strategies: Vec::new(),
                 fate_strategy_temp_datas: Default::default(),
+                xian_mo_strategies: Vec::new(),
+                xian_mo_temp_datas: Default::default(),
                 active_slot_count: 8,
                 initial_defense: 0,
                 initial_anima: 0,
@@ -125,7 +129,7 @@ fn talent_52_replaces_eighth_basic_attack_with_seven_stars_stabilize_soul() {
                 cards: filler_cards(CardDefinition {
                     id: 0,
                     base_id: Some(0),
-                    name: "普通攻击".to_string(),
+                    name: "普通攻击".to_string().into(),
                     card_type: None,
                     attack: Some(3),
                     random_attack: None,
@@ -141,7 +145,7 @@ fn talent_52_replaces_eighth_basic_attack_with_seven_stars_stabilize_soul() {
                     hexagram: None,
                     rarity: None,
                     career_name: None,
-                    other_params: vec![],
+                    other_params: vec![].into(),
                 }),
             },
         },
@@ -163,10 +167,10 @@ fn wood_spirit_array_increases_max_hp_without_healing_current_hp() {
     let wood_array = CardDefinition {
         id: 7_010_036,
         base_id: Some(7_000_036),
-        name: "木灵阵".to_string(),
+        name: "木灵阵".to_string().into(),
         card_type: Some(crate::model::OriginalEnumValue {
             value: 3,
-            name: "Sustain".to_string(),
+            name: "Sustain".to_string().into(),
         }),
         attack: None,
         random_attack: None,
@@ -182,14 +186,14 @@ fn wood_spirit_array_increases_max_hp_without_healing_current_hp() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![15, 3],
+        other_params: vec![15, 3].into(),
     };
     let fixture = minimal_fixture(
         filler_cards(wood_array),
         filler_cards(CardDefinition {
             id: 0,
             base_id: Some(0),
-            name: "普通攻击".to_string(),
+            name: "普通攻击".to_string().into(),
             card_type: None,
             attack: Some(3),
             random_attack: None,
@@ -205,7 +209,7 @@ fn wood_spirit_array_increases_max_hp_without_healing_current_hp() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![],
+            other_params: vec![].into(),
         }),
         FixtureExpected {
             winner_side: PlayerSide::P1,
@@ -229,7 +233,7 @@ fn talent_198_upgrades_solitary_void_golden_book_without_adjacent_basics() {
     let mut cards = filler_cards(CardDefinition {
         id: 0,
         base_id: Some(0),
-        name: "普通攻击".to_string(),
+        name: "普通攻击".to_string().into(),
         card_type: None,
         attack: Some(3),
         random_attack: None,
@@ -245,12 +249,12 @@ fn talent_198_upgrades_solitary_void_golden_book_without_adjacent_basics() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![],
+        other_params: vec![].into(),
     });
     cards[0] = CardDefinition {
         id: 3020013,
         base_id: Some(3000013),
-        name: "千里神行符".to_string(),
+        name: "千里神行符".to_string().into(),
         card_type: None,
         attack: None,
         random_attack: None,
@@ -266,12 +270,12 @@ fn talent_198_upgrades_solitary_void_golden_book_without_adjacent_basics() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![],
+        other_params: vec![].into(),
     };
     cards[1] = CardDefinition {
         id: 215,
         base_id: Some(215),
-        name: "孤虚金书".to_string(),
+        name: "孤虚金书".to_string().into(),
         card_type: None,
         attack: None,
         random_attack: None,
@@ -287,12 +291,12 @@ fn talent_198_upgrades_solitary_void_golden_book_without_adjacent_basics() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![6],
+        other_params: vec![6].into(),
     };
     cards[2] = CardDefinition {
         id: 4010095,
         base_id: Some(4000095),
-        name: "灵蛇绕柱".to_string(),
+        name: "灵蛇绕柱".to_string().into(),
         card_type: None,
         attack: None,
         random_attack: None,
@@ -308,7 +312,7 @@ fn talent_198_upgrades_solitary_void_golden_book_without_adjacent_basics() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![2, 1, 5],
+        other_params: vec![2, 1, 5].into(),
     };
     let fixture = FixturePlayer {
         level: 5,
@@ -319,6 +323,8 @@ fn talent_198_upgrades_solitary_void_golden_book_without_adjacent_basics() {
         talents: vec![194, 196, 195, 198],
         fate_strategies: vec![],
         fate_strategy_temp_datas: Default::default(),
+        xian_mo_strategies: Vec::new(),
+        xian_mo_temp_datas: Default::default(),
         active_slot_count: 8,
         initial_defense: 0,
         initial_anima: 0,
@@ -355,7 +361,7 @@ fn talent_198_upgrades_solitary_void_golden_book_from_tier_one_without_overshoot
     let mut cards = filler_cards(CardDefinition {
         id: 0,
         base_id: Some(0),
-        name: "普通攻击".to_string(),
+        name: "普通攻击".to_string().into(),
         card_type: None,
         attack: Some(3),
         random_attack: None,
@@ -371,12 +377,12 @@ fn talent_198_upgrades_solitary_void_golden_book_from_tier_one_without_overshoot
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![],
+        other_params: vec![].into(),
     });
     cards[0] = CardDefinition {
         id: 3020013,
         base_id: Some(3000013),
-        name: "千里神行符".to_string(),
+        name: "千里神行符".to_string().into(),
         card_type: None,
         attack: None,
         random_attack: None,
@@ -392,12 +398,12 @@ fn talent_198_upgrades_solitary_void_golden_book_from_tier_one_without_overshoot
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![],
+        other_params: vec![].into(),
     };
     cards[1] = CardDefinition {
         id: 10_215,
         base_id: Some(215),
-        name: "孤虚金书".to_string(),
+        name: "孤虚金书".to_string().into(),
         card_type: None,
         attack: None,
         random_attack: None,
@@ -413,12 +419,12 @@ fn talent_198_upgrades_solitary_void_golden_book_from_tier_one_without_overshoot
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![6],
+        other_params: vec![6].into(),
     };
     cards[2] = CardDefinition {
         id: 4010095,
         base_id: Some(4000095),
-        name: "灵蛇绕柱".to_string(),
+        name: "灵蛇绕柱".to_string().into(),
         card_type: None,
         attack: None,
         random_attack: None,
@@ -434,7 +440,7 @@ fn talent_198_upgrades_solitary_void_golden_book_from_tier_one_without_overshoot
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![2, 1, 5],
+        other_params: vec![2, 1, 5].into(),
     };
     let fixture = FixturePlayer {
         level: 5,
@@ -445,6 +451,8 @@ fn talent_198_upgrades_solitary_void_golden_book_from_tier_one_without_overshoot
         talents: vec![194, 196, 195, 198],
         fate_strategies: vec![],
         fate_strategy_temp_datas: Default::default(),
+        xian_mo_strategies: Vec::new(),
+        xian_mo_temp_datas: Default::default(),
         active_slot_count: 8,
         initial_defense: 0,
         initial_anima: 0,
@@ -478,7 +486,7 @@ fn talent_125_checks_boundary_hp_instead_of_max_hp() {
     let mut cards = filler_cards(CardDefinition {
         id: 38,
         base_id: Some(38),
-        name: "锟铻金环".to_string(),
+        name: "锟铻金环".to_string().into(),
         card_type: None,
         attack: None,
         random_attack: None,
@@ -494,7 +502,7 @@ fn talent_125_checks_boundary_hp_instead_of_max_hp() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![2],
+        other_params: vec![2].into(),
     });
     let fixture = FixturePlayer {
         level: 5,
@@ -505,6 +513,8 @@ fn talent_125_checks_boundary_hp_instead_of_max_hp() {
         talents: vec![125],
         fate_strategies: vec![],
         fate_strategy_temp_datas: Default::default(),
+        xian_mo_strategies: Vec::new(),
+        xian_mo_temp_datas: Default::default(),
         active_slot_count: 8,
         initial_defense: 0,
         initial_anima: 0,
@@ -606,7 +616,7 @@ fn tiger_body_fixture(cards: Vec<CardDefinition>) -> FixturePlayer {
 fn chain_sword_formation_reuses_outer_slot_and_runs_temporary_on_play_hooks() {
     let mut swift_shadow = test_card(1_000_094, 1_000_094, "迅影飞剑");
     swift_shadow.attack = Some(4);
-    swift_shadow.other_params = vec![1];
+    swift_shadow.other_params = vec![1].into();
 
     let mut chain = test_card(1_000_064, 1_000_064, "连环剑阵");
     chain.defense = Some(1);
@@ -718,7 +728,7 @@ fn chain_sword_formation_replays_only_nearest_sword_formation_recursively() {
     let formation = CardDefinition {
         id: 1_000_092,
         base_id: Some(1_000_092),
-        name: "灵枢剑阵".to_string(),
+        name: "灵枢剑阵".to_string().into(),
         card_type: None,
         attack: Some(1),
         random_attack: None,
@@ -734,12 +744,12 @@ fn chain_sword_formation_replays_only_nearest_sword_formation_recursively() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![1, 1],
+        other_params: vec![1, 1].into(),
     };
     let first_chain = CardDefinition {
         id: 1_000_064,
         base_id: Some(1_000_064),
-        name: "连环剑阵".to_string(),
+        name: "连环剑阵".to_string().into(),
         card_type: None,
         attack: None,
         random_attack: None,
@@ -755,12 +765,12 @@ fn chain_sword_formation_replays_only_nearest_sword_formation_recursively() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![],
+        other_params: vec![].into(),
     };
     let second_chain = CardDefinition {
         id: 1_010_064,
         base_id: Some(1_000_064),
-        name: "连环剑阵".to_string(),
+        name: "连环剑阵".to_string().into(),
         card_type: None,
         attack: None,
         random_attack: None,
@@ -776,7 +786,7 @@ fn chain_sword_formation_replays_only_nearest_sword_formation_recursively() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![],
+        other_params: vec![].into(),
     };
     let mut cards = filler_cards(second_chain.clone());
     cards[0] = formation;
@@ -787,7 +797,7 @@ fn chain_sword_formation_replays_only_nearest_sword_formation_recursively() {
         filler_cards(CardDefinition {
             id: 0,
             base_id: Some(0),
-            name: "普通攻击".to_string(),
+            name: "普通攻击".to_string().into(),
             card_type: None,
             attack: Some(3),
             random_attack: None,
@@ -803,7 +813,7 @@ fn chain_sword_formation_replays_only_nearest_sword_formation_recursively() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![],
+            other_params: vec![].into(),
         }),
         FixtureExpected {
             winner_side: PlayerSide::P1,
@@ -825,10 +835,10 @@ fn impact_pattern_doubles_attack_when_array_echo_is_active() {
     let sustain = CardDefinition {
         id: 8_000_001,
         base_id: Some(8_000_001),
-        name: "引雷阵".to_string(),
+        name: "引雷阵".to_string().into(),
         card_type: Some(crate::model::OriginalEnumValue {
             value: 3,
-            name: "Sustain".to_string(),
+            name: "Sustain".to_string().into(),
         }),
         attack: None,
         random_attack: None,
@@ -844,12 +854,12 @@ fn impact_pattern_doubles_attack_when_array_echo_is_active() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![1, 1],
+        other_params: vec![1, 1].into(),
     };
     let impact = CardDefinition {
         id: 8_000_003,
         base_id: Some(8_000_003),
-        name: "冲击阵纹".to_string(),
+        name: "冲击阵纹".to_string().into(),
         card_type: None,
         attack: Some(4),
         random_attack: None,
@@ -865,7 +875,7 @@ fn impact_pattern_doubles_attack_when_array_echo_is_active() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![2],
+        other_params: vec![2].into(),
     };
     let mut cards = filler_cards(impact.clone());
     cards[0] = sustain;
@@ -875,7 +885,7 @@ fn impact_pattern_doubles_attack_when_array_echo_is_active() {
         filler_cards(CardDefinition {
             id: 0,
             base_id: Some(0),
-            name: "普通攻击".to_string(),
+            name: "普通攻击".to_string().into(),
             card_type: None,
             attack: Some(3),
             random_attack: None,
@@ -891,7 +901,7 @@ fn impact_pattern_doubles_attack_when_array_echo_is_active() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![],
+            other_params: vec![].into(),
         }),
         FixtureExpected {
             winner_side: PlayerSide::P1,
@@ -925,7 +935,7 @@ fn turn_start_illusory_tune_death_skips_card_play() {
         filler_cards(CardDefinition {
             id: 0,
             base_id: Some(0),
-            name: "普通攻击".to_string(),
+            name: "普通攻击".to_string().into(),
             card_type: None,
             attack: Some(3),
             random_attack: None,
@@ -941,12 +951,12 @@ fn turn_start_illusory_tune_death_skips_card_play() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![],
+            other_params: vec![].into(),
         }),
         filler_cards(CardDefinition {
             id: 0,
             base_id: Some(0),
-            name: "普通攻击".to_string(),
+            name: "普通攻击".to_string().into(),
             card_type: None,
             attack: Some(3),
             random_attack: None,
@@ -962,7 +972,7 @@ fn turn_start_illusory_tune_death_skips_card_play() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![],
+            other_params: vec![].into(),
         }),
         FixtureExpected {
             winner_side: PlayerSide::P1,

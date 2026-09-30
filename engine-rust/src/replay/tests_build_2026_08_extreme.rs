@@ -469,10 +469,11 @@ fn xun_shen_zhang_non_palm_card_grants_nothing() {
     let mut battle = fixture(deck(zhuan_shi.clone()), deck(basic_attack()));
     battle.players.p1.fate_strategies = vec![427];
     let mut state = ReplayState::test_from_fixture(&battle);
+    state.p1.beng.gun_stance = 1;
 
     state.test_apply_card_effect(PlayerSide::P1, &zhuan_shi, 0);
 
-    assert_eq!(state.p1.turn.agility, 8); // 非拳架势：只有转势自身的身法+8
+    assert_eq!(state.p1.turn.agility, 8); // 棍架势：只有转势自身的身法+8，迅身掌不加
 }
 
 // ---- FateStrategy 424 月魂爪（HF 415 簇 oracle 诊断修复）----

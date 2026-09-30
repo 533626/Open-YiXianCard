@@ -1,5 +1,8 @@
+use super::{
+    evaluate_exact_deck, solve_deck, ScoreProfile, SolveDeckOptions, SolverEvaluation, SolverMode,
+    VisitOrder,
+};
 use super::{explain_fixture_counterfactuals, CounterfactualElement};
-use super::{solve_deck, ScoreProfile, SolveDeckOptions, SolverEvaluation, SolverMode, VisitOrder};
 use crate::{
     engine_contract_fixture, original_card_definition_by_id, run_replay_fixture,
     run_replay_fixture_with_events, run_replay_fixture_with_parity_events, BattleFixture,
@@ -40,6 +43,59 @@ fn evaluate_value_deck_for_fixture(fixture: &BattleFixture) -> SolverEvaluation 
     .next()
     .expect("one exact result")
     .evaluation
+}
+
+#[test]
+fn evaluate_exact_deck_matches_solve_deck_exact_path() {
+    // solve_deck_batch 改走 evaluate_exact_deck（省掉 baseline 那一场）：结果必须与原路径逐字段相同
+    let fixture = generated_value_fixture();
+    let mut deck: Vec<i64> = fixture
+        .players
+        .p1
+        .cards
+        .iter()
+        .map(|card| card.id)
+        .collect();
+    deck.reverse();
+    for profile in [ScoreProfile::HpDelta, ScoreProfile::ValueV0] {
+        for seeds in [None, Some(vec![42_u32, 7, 42])] {
+            let via_solve = solve_deck(
+                &fixture,
+                SolveDeckOptions {
+                    side: PlayerSide::P1,
+                    mode: SolverMode::Order,
+                    visit_order: VisitOrder::Canonical,
+                    visit_seed: 0,
+                    top: 1,
+                    max_evaluations: 1,
+                    score_profile: profile,
+                    exact_deck_ids: Some(deck.clone()),
+                    battle_seeds: seeds.clone(),
+                    capture_rule_impact: false,
+                },
+            )
+            .expect("valid exact-deck solve options")
+            .results
+            .remove(0)
+            .evaluation;
+            let direct =
+                evaluate_exact_deck(&fixture, PlayerSide::P1, &deck, profile, seeds.clone())
+                    .expect("valid exact deck");
+            assert_eq!(
+                serde_json::to_value(&via_solve).unwrap(),
+                serde_json::to_value(&direct).unwrap(),
+                "profile {profile:?} seeds {seeds:?}"
+            );
+        }
+    }
+    assert!(evaluate_exact_deck(
+        &fixture,
+        PlayerSide::P1,
+        &deck,
+        ScoreProfile::HpDelta,
+        Some(vec![])
+    )
+    .is_err());
 }
 
 #[test]

@@ -21,3 +21,8 @@ thiserror = "2"
 
 [dev-dependencies]
 pretty_assertions = "1"
+
+[profile.release]
+# 整局仿真每局上百万场战斗、几乎全部 CPU 在引擎里：全程序 LTO + 单代码生成单元（不改语义，结果逐位不变）
+lto = "fat"
+codegen-units = 1

@@ -246,6 +246,12 @@ pub struct FixturePlayer {
     pub fate_strategies: Vec<i64>,
     #[serde(rename = "fateStrategyTempDatas", default)]
     pub fate_strategy_temp_datas: BTreeMap<String, i64>,
+    /// 仙魔策略（BattlePlayerLastRoundData.xianMoStrategies，build 25621897 起）。
+    #[serde(rename = "xianMoStrategies", default)]
+    pub xian_mo_strategies: Vec<i64>,
+    /// XianMoData.tempDatas：开关（IsSwitchActive 值为 0 才生效）与附魔格（GetFuMoGrid）。
+    #[serde(rename = "xianMoTempDatas", default)]
+    pub xian_mo_temp_datas: BTreeMap<String, i64>,
     #[serde(rename = "activeSlotCount", default = "default_active_slot_count")]
     pub active_slot_count: usize,
     #[serde(rename = "initialDefense", default)]
@@ -310,7 +316,7 @@ pub fn apply_historical_card_patch(
         card.physique = Some(physique);
     }
     if let Some(other_params) = &patch.other_params {
-        card.other_params = other_params.clone();
+        card.other_params = other_params.clone().into();
     }
     card
 }

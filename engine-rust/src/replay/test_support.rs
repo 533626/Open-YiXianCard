@@ -117,7 +117,7 @@ pub(crate) fn test_card(id: i64, base_id: i64, name: &str) -> CardDefinition {
     CardDefinition {
         id,
         base_id: Some(base_id),
-        name: name.to_string(),
+        name: name.to_string().into(),
         card_type: None,
         attack: None,
         random_attack: None,
@@ -133,7 +133,7 @@ pub(crate) fn test_card(id: i64, base_id: i64, name: &str) -> CardDefinition {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: Vec::new(),
+        other_params: Vec::new().into(),
     }
 }
 
@@ -213,6 +213,8 @@ pub(crate) fn make_player(
         talents: Vec::new(),
         fate_strategies: Vec::new(),
         fate_strategy_temp_datas: Default::default(),
+        xian_mo_strategies: Vec::new(),
+        xian_mo_temp_datas: Default::default(),
         active_slot_count,
         initial_defense: 0,
         initial_anima: 0,
@@ -221,7 +223,9 @@ pub(crate) fn make_player(
         initial_momentum_limit: momentum_limit,
         initial_agility: 0,
         initial_battle_buffs: Default::default(),
-        permanent_buff_temp_datas: Default::default(),
+        // 体魄上限（TiPoShangXian 10024）：真实 fixture 由上场永久值携带，缺失时原版为 0；
+        // 默认契约玩家按体修常见的 5 声明，体魄溢出类契约依赖这一上限。
+        permanent_buff_temp_datas: [("10024".to_string(), 5)].into_iter().collect(),
         talent_resonance_id: None,
         used_ke_yin_cards: Vec::new(),
         talent_temp_datas: Default::default(),

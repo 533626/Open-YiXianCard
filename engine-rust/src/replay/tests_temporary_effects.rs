@@ -137,8 +137,8 @@ fn gather_flame_adds_a_complete_execute_effect_lifecycle() {
     let mut fire = test_card(197, 197, "火灵•完整生命周期契约");
     fire.defense = Some(1);
     fire.hp_cost = Some(1);
-    fire.career_name = Some("QinShi".to_string());
-    fire.other_params = vec![2];
+    fire.career_name = Some("QinShi".to_string().into());
+    fire.other_params = vec![2].into();
     let mut fixture = minimal_fixture(
         filler_cards(fire),
         filler_cards(basic_attack_test_card()),
@@ -336,7 +336,7 @@ fn private_before_card_hooks_run_per_effect_and_not_on_cost_failure() {
         );
         fixture.players.p1.active_slot_count = 2;
         fixture.players.p1.initial_anima = initial_anima;
-        fixture.players.p1.cards[1].name = "土灵测试".to_string();
+        fixture.players.p1.cards[1].name = "土灵测试".to_string().into();
         fixture
     };
     let arm_hooks = |state: &mut ReplayState| {

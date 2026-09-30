@@ -34,7 +34,7 @@ fn add_hp_count_survives_turn_hp_gained_reset_for_lifetime_consumers() {
 #[test]
 fn turn_start_clears_stale_hp_gain_before_dynamic_action_again() {
     let mut card = test_card(152, 152, "炼神还虚");
-    card.other_params = vec![0, 0, 0];
+    card.other_params = vec![0, 0, 0].into();
     let fixture = minimal_fixture(
         filler_cards(card),
         filler_cards(basic_attack_test_card()),
@@ -126,7 +126,7 @@ fn rejuvenation_tune_opens_healing_cap_before_flower_maze_drain() {
 #[test]
 fn turn_end_consumes_turn_hp_gain_before_clearing_ledger() {
     let mut card = test_card(152, 152, "炼神还虚");
-    card.other_params = vec![3, 0, 0];
+    card.other_params = vec![3, 0, 0].into();
     let mut fixture = minimal_fixture(
         filler_cards(card),
         filler_cards(basic_attack_test_card()),
@@ -185,7 +185,7 @@ fn water_month_sword_formation_skips_turn_start_defense_decay() {
         filler_cards(CardDefinition {
             id: 0,
             base_id: Some(0),
-            name: "普通攻击".to_string(),
+            name: "普通攻击".to_string().into(),
             card_type: None,
             attack: Some(3),
             random_attack: None,
@@ -201,12 +201,12 @@ fn water_month_sword_formation_skips_turn_start_defense_decay() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![],
+            other_params: vec![].into(),
         }),
         filler_cards(CardDefinition {
             id: 0,
             base_id: Some(0),
-            name: "普通攻击".to_string(),
+            name: "普通攻击".to_string().into(),
             card_type: None,
             attack: Some(3),
             random_attack: None,
@@ -222,7 +222,7 @@ fn water_month_sword_formation_skips_turn_start_defense_decay() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![],
+            other_params: vec![].into(),
         }),
         FixtureExpected {
             winner_side: PlayerSide::P1,
@@ -248,7 +248,7 @@ fn talent_101_grants_peach_blossom_extra_action_without_generating_chain() {
     let peach = CardDefinition {
         id: 10_020,
         base_id: Some(20),
-        name: "木灵•桃花印".to_string(),
+        name: "木灵•桃花印".to_string().into(),
         card_type: None,
         attack: Some(2),
         random_attack: None,
@@ -264,7 +264,7 @@ fn talent_101_grants_peach_blossom_extra_action_without_generating_chain() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![],
+        other_params: vec![].into(),
     };
     let cards = filler_cards(peach.clone());
     let fixture = minimal_fixture(
@@ -272,7 +272,7 @@ fn talent_101_grants_peach_blossom_extra_action_without_generating_chain() {
         filler_cards(CardDefinition {
             id: 0,
             base_id: Some(0),
-            name: "普通攻击".to_string(),
+            name: "普通攻击".to_string().into(),
             card_type: None,
             attack: Some(3),
             random_attack: None,
@@ -288,7 +288,7 @@ fn talent_101_grants_peach_blossom_extra_action_without_generating_chain() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![],
+            other_params: vec![].into(),
         }),
         FixtureExpected {
             winner_side: PlayerSide::P1,
@@ -320,7 +320,7 @@ fn talent_101_blocks_peach_blossom_extra_action_without_water_spirit() {
     let peach = CardDefinition {
         id: 10_020,
         base_id: Some(20),
-        name: "木灵•桃花印".to_string(),
+        name: "木灵•桃花印".to_string().into(),
         card_type: None,
         attack: Some(2),
         random_attack: None,
@@ -336,7 +336,7 @@ fn talent_101_blocks_peach_blossom_extra_action_without_water_spirit() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![],
+        other_params: vec![].into(),
     };
     let cards = filler_cards(peach.clone());
     let fixture = minimal_fixture(
@@ -344,7 +344,7 @@ fn talent_101_blocks_peach_blossom_extra_action_without_water_spirit() {
         filler_cards(CardDefinition {
             id: 0,
             base_id: Some(0),
-            name: "普通攻击".to_string(),
+            name: "普通攻击".to_string().into(),
             card_type: None,
             attack: Some(3),
             random_attack: None,
@@ -360,7 +360,7 @@ fn talent_101_blocks_peach_blossom_extra_action_without_water_spirit() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![],
+            other_params: vec![].into(),
         }),
         FixtureExpected {
             winner_side: PlayerSide::P1,
@@ -415,7 +415,7 @@ fn spirit_snake_coils_pillar_grants_defense_and_action_again() {
     let snake = CardDefinition {
         id: 4_000_095,
         base_id: Some(4_000_095),
-        name: "灵蛇绕柱".to_string(),
+        name: "灵蛇绕柱".to_string().into(),
         card_type: None,
         attack: None,
         random_attack: None,
@@ -431,14 +431,14 @@ fn spirit_snake_coils_pillar_grants_defense_and_action_again() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![1, 1, 5, 5],
+        other_params: vec![1, 1, 5, 5].into(),
     };
     let fixture = minimal_fixture(
         filler_cards(snake),
         filler_cards(CardDefinition {
             id: 0,
             base_id: Some(0),
-            name: "普通攻击".to_string(),
+            name: "普通攻击".to_string().into(),
             card_type: None,
             attack: Some(3),
             random_attack: None,
@@ -454,7 +454,7 @@ fn spirit_snake_coils_pillar_grants_defense_and_action_again() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![],
+            other_params: vec![].into(),
         }),
         FixtureExpected {
             winner_side: PlayerSide::P1,
@@ -489,7 +489,7 @@ fn adaptation_boosts_positive_defense_gain() {
         filler_cards(CardDefinition {
             id: 0,
             base_id: Some(0),
-            name: "普通攻击".to_string(),
+            name: "普通攻击".to_string().into(),
             card_type: None,
             attack: Some(3),
             random_attack: None,
@@ -505,12 +505,12 @@ fn adaptation_boosts_positive_defense_gain() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![],
+            other_params: vec![].into(),
         }),
         filler_cards(CardDefinition {
             id: 0,
             base_id: Some(0),
-            name: "普通攻击".to_string(),
+            name: "普通攻击".to_string().into(),
             card_type: None,
             attack: Some(3),
             random_attack: None,
@@ -526,7 +526,7 @@ fn adaptation_boosts_positive_defense_gain() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![],
+            other_params: vec![].into(),
         }),
         FixtureExpected {
             winner_side: PlayerSide::P1,
@@ -549,7 +549,7 @@ fn star_chess_contest_applies_flaw_and_action_again_in_star_slot() {
     let contest = CardDefinition {
         id: 4_000_094,
         base_id: Some(4_000_094),
-        name: "星弈·劫争".to_string(),
+        name: "星弈·劫争".to_string().into(),
         card_type: None,
         attack: Some(1),
         random_attack: None,
@@ -565,14 +565,14 @@ fn star_chess_contest_applies_flaw_and_action_again_in_star_slot() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![1, 2],
+        other_params: vec![1, 2].into(),
     };
     let fixture = minimal_fixture(
         filler_cards(contest),
         filler_cards(CardDefinition {
             id: 0,
             base_id: Some(0),
-            name: "普通攻击".to_string(),
+            name: "普通攻击".to_string().into(),
             card_type: None,
             attack: Some(3),
             random_attack: None,
@@ -588,7 +588,7 @@ fn star_chess_contest_applies_flaw_and_action_again_in_star_slot() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![],
+            other_params: vec![].into(),
         }),
         FixtureExpected {
             winner_side: PlayerSide::P1,
@@ -626,7 +626,7 @@ fn immortal_binding_tune_blocks_action_again() {
         filler_cards(CardDefinition {
             id: 0,
             base_id: Some(0),
-            name: "普通攻击".to_string(),
+            name: "普通攻击".to_string().into(),
             card_type: None,
             attack: Some(3),
             random_attack: None,
@@ -642,12 +642,12 @@ fn immortal_binding_tune_blocks_action_again() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![],
+            other_params: vec![].into(),
         }),
         filler_cards(CardDefinition {
             id: 0,
             base_id: Some(0),
-            name: "普通攻击".to_string(),
+            name: "普通攻击".to_string().into(),
             card_type: None,
             attack: Some(3),
             random_attack: None,
@@ -663,7 +663,7 @@ fn immortal_binding_tune_blocks_action_again() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![],
+            other_params: vec![].into(),
         }),
         FixtureExpected {
             winner_side: PlayerSide::P1,
@@ -688,7 +688,7 @@ fn entangle_blocks_action_again_before_ling_qi_ben_yong_reward() {
         filler_cards(CardDefinition {
             id: 57,
             base_id: Some(57),
-            name: "滚石印".to_string(),
+            name: "滚石印".to_string().into(),
             card_type: None,
             attack: None,
             random_attack: None,
@@ -704,12 +704,12 @@ fn entangle_blocks_action_again_before_ling_qi_ben_yong_reward() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![2],
+            other_params: vec![2].into(),
         }),
         filler_cards(CardDefinition {
             id: 0,
             base_id: Some(0),
-            name: "普通攻击".to_string(),
+            name: "普通攻击".to_string().into(),
             card_type: None,
             attack: Some(3),
             random_attack: None,
@@ -725,7 +725,7 @@ fn entangle_blocks_action_again_before_ling_qi_ben_yong_reward() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![],
+            other_params: vec![].into(),
         }),
         FixtureExpected {
             winner_side: PlayerSide::P1,
@@ -763,7 +763,7 @@ fn eight_gates_formation_damages_actor_on_action_again() {
         filler_cards(CardDefinition {
             id: 57,
             base_id: Some(57),
-            name: "滚石印".to_string(),
+            name: "滚石印".to_string().into(),
             card_type: None,
             attack: None,
             random_attack: None,
@@ -779,12 +779,12 @@ fn eight_gates_formation_damages_actor_on_action_again() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![2],
+            other_params: vec![2].into(),
         }),
         filler_cards(CardDefinition {
             id: 0,
             base_id: Some(0),
-            name: "普通攻击".to_string(),
+            name: "普通攻击".to_string().into(),
             card_type: None,
             attack: Some(3),
             random_attack: None,
@@ -800,7 +800,7 @@ fn eight_gates_formation_damages_actor_on_action_again() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![],
+            other_params: vec![].into(),
         }),
         FixtureExpected {
             winner_side: PlayerSide::P1,
@@ -825,7 +825,7 @@ fn reflect_mindset_damages_attacker_when_attack_is_fully_absorbed() {
     let strike = CardDefinition {
         id: 0,
         base_id: Some(0),
-        name: "普通攻击".to_string(),
+        name: "普通攻击".to_string().into(),
         card_type: None,
         attack: Some(3),
         random_attack: None,
@@ -834,7 +834,7 @@ fn reflect_mindset_damages_attacker_when_attack_is_fully_absorbed() {
         defense: None,
         rarity: None,
         career_name: None,
-        other_params: vec![],
+        other_params: vec![].into(),
         damage: None,
         anima: None,
         hp_cost: None,
@@ -848,7 +848,7 @@ fn reflect_mindset_damages_attacker_when_attack_is_fully_absorbed() {
         filler_cards(CardDefinition {
             id: 0,
             base_id: Some(0),
-            name: "普通攻击".to_string(),
+            name: "普通攻击".to_string().into(),
             card_type: None,
             attack: Some(3),
             random_attack: None,
@@ -864,7 +864,7 @@ fn reflect_mindset_damages_attacker_when_attack_is_fully_absorbed() {
             hexagram: None,
             rarity: None,
             career_name: None,
-            other_params: vec![],
+            other_params: vec![].into(),
         }),
         FixtureExpected {
             winner_side: PlayerSide::P1,

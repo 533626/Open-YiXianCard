@@ -329,21 +329,6 @@ fn fate_335_locks_staff_and_rewrites_all_three_stance_switch_callers() {
 }
 
 #[test]
-fn historical_build_profiles_remain_audit_only_and_fail_closed_at_runtime() {
-    let retired = super::original_build_profile::latest_retired_steam_build()
-        .expect("profile contract retains an audited retired build");
-    let error = ReplayState::from_fixture(&li_fixture(vec![335], 222, retired), false)
-        .expect_err("historical Steam build must not enter the runtime");
-    assert!(matches!(
-        &error,
-        BattleError::UnsupportedBuild { turn: 0, .. }
-    ));
-    let message = error.to_string();
-    assert!(message.contains(&format!("unsupported original Steam build {retired}")));
-    assert!(message.contains("historical profile is incomplete"));
-}
-
-#[test]
 fn fate_379_grants_jian_qi_and_triggers_it_after_cloud_sword() {
     let mut active = ReplayState::test_from_fixture(&fixture_with_strategy(379, 1_000_039));
     assert_eq!(active.p1.sword.sword_energy, 1);

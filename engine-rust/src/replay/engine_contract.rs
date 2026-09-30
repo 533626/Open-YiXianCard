@@ -32,6 +32,8 @@ pub fn engine_contract_fixture() -> Result<BattleFixture> {
         talent_resonance_id: None,
         fate_strategies: Vec::new(),
         fate_strategy_temp_datas: Default::default(),
+        xian_mo_strategies: Vec::new(),
+        xian_mo_temp_datas: Default::default(),
         active_slot_count: 8,
         initial_defense: 0,
         initial_anima: 0,

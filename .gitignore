@@ -38,3 +38,8 @@ open-yixiancard-private-backup-*/
 .tmp-hf-stash-*
 .rotation/
 **/.corpus-index.json
+
+# Agent harness session transcripts, workflow run journals and generated scripts
+# (the Workflow tool writes them under .qoder/sessions/<session-id>/).
+.qoder/sessions/
+.venv-ml/

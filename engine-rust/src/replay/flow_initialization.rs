@@ -48,13 +48,12 @@ impl ReplayState {
     }
 
     fn build_pre_opening_state(fixture: &BattleFixture, strict: bool) -> Result<Self, BattleError> {
-        let original_build_profile = super::original_build_profile::resolve_original_build_profile(
-            fixture
-                .source
-                .as_ref()
-                .and_then(|source| source.steam_build.as_deref()),
-        )
-        .map_err(|message| BattleError::UnsupportedBuild { message, turn: 0 })?;
+        let xian_mo_error = super::xian_mo::unimplemented_xian_mo_strategy(fixture);
+        if strict {
+            if let Some(error) = xian_mo_error {
+                return Err(error);
+            }
+        }
         let p1 = super::ReplayPlayer::from_fixture(
             PlayerSide::P1,
             &fixture.players.p1,
@@ -70,7 +69,6 @@ impl ReplayState {
             p2,
             first_player: fixture.first_player_side,
             current_actor: fixture.first_player_side,
-            original_build_profile,
             actor_turn: 0,
             max_actor_turns: fixture
                 .max_actor_turns
@@ -97,7 +95,7 @@ impl ReplayState {
             effect_invocation_stack: Vec::new(),
             attribution_block: None,
             fail_on_missing_decision: strict,
-            evaluation_error: None,
+            evaluation_error: xian_mo_error,
             observation: super::ReplayObservationRuntime::default(),
             termination_cause: None,
             completed_checkpoint_count: 0,

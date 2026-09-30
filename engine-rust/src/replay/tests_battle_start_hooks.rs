@@ -44,7 +44,7 @@ fn talent_199_activates_bottle_element_for_wood_spirit_revival() {
     let revival = CardDefinition {
         id: 7_000_018,
         base_id: Some(7_000_018),
-        name: "木灵•复苏".to_string(),
+        name: "木灵•复苏".to_string().into(),
         card_type: None,
         attack: None,
         random_attack: None,
@@ -60,7 +60,7 @@ fn talent_199_activates_bottle_element_for_wood_spirit_revival() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![3, 1],
+        other_params: vec![3, 1].into(),
     };
     let mut fixture = minimal_fixture(
         filler_cards(crate::replay::support::basic_attack_card()),
@@ -133,10 +133,10 @@ fn wood_spirit_all_growth_grants_hp_and_turn_start_attack_bonus() {
     let card = CardDefinition {
         id: 10_134,
         base_id: Some(134),
-        name: "木灵•万物生".to_string(),
+        name: "木灵•万物生".to_string().into(),
         card_type: Some(crate::model::OriginalEnumValue {
             value: 3,
-            name: "Sustain".to_string(),
+            name: "Sustain".to_string().into(),
         }),
         attack: None,
         random_attack: None,
@@ -152,7 +152,7 @@ fn wood_spirit_all_growth_grants_hp_and_turn_start_attack_bonus() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![9, 1],
+        other_params: vec![9, 1].into(),
     };
     let mut fixture = minimal_fixture(
         filler_cards(card.clone()),

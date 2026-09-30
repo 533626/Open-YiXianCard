@@ -107,8 +107,7 @@ impl ReplayState {
                 let upgrade_times = other_param(card, 0).max(0);
                 // Card_8000012.cs walks the first battle-deck card id +10000 per
                 // level for otherParams[0] steps (noUpgrade-gated), then executes
-                // that id as a temporary card. See engine-ts echoPattern /
-                // upgradeEchoedSustainCardId (commit f508dba0).
+                // that id as a temporary card.
                 let upgraded_id = original_card_echo_upgrade_id(first_card.id, upgrade_times);
                 let echoed = original_card_definition(upgraded_id).unwrap_or(first_card);
                 if self.apply_temporary_card_effect(actor_side, &echoed, slot) {
@@ -226,17 +225,7 @@ impl ReplayState {
                 // 重查 catalog 生成，读到 stale 值。oracle 锚点：hf-latest-
                 // 33206000 ad0c5a4d17fd630e/round-14 checkpoint[2] p2.anima
                 // original=5 rust=4（11010019 catalog 旧值 4）。
-                if self.original_build_profile.steam_build_number()
-                    >= crate::replay::original_config::CARD_CONFIG_25206201_SINCE_BUILD
-                {
-                    let anima = crate::replay::original_config::card_config_25206201_value(card.id)
-                        .unwrap_or_else(|| card.anima.unwrap_or(0).max(0));
-                    if anima > 0 {
-                        self.gain_anima(actor_side, anima);
-                    }
-                } else {
-                    self.apply_configured_anima(actor_side, card);
-                }
+                self.apply_configured_anima(actor_side, card);
                 self.actor_mut(actor_side).turn.adaptation += other_param(card, 1).max(0);
                 Some(false)
             }

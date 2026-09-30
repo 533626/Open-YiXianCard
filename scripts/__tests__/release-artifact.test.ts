@@ -455,7 +455,7 @@ describe("production site build", () => {
     const prevVersionMatch = sourceIndexBefore.match(/\/public\/build\/main\.js\?v=(\d+)/);
     const prevVersion = prevVersionMatch ? Number(prevVersionMatch[1]) : 0;
     const publicProjection = !(await Bun.file(
-      join(REPO_ROOT, "engine-ts/FROZEN_ENGINE_SHA256"),
+      join(REPO_ROOT, "analysis/tsconfig.json"),
     ).exists());
     const expectedMainVersion = String(publicProjection ? prevVersion : prevVersion + 1);
     expect(result.mainVersion).toBe(expectedMainVersion);
@@ -621,10 +621,10 @@ describe("site workflow contract", () => {
     expect(workflow).toContain("run: bun run audit:boundaries");
     expect(workflow).toContain("run: bun run test:ui");
     expect(workflow).toContain("run: bun run smoke:ui");
-    expect(workflow).toContain("run: bun run report:file-health -- --paths README.md docs/AGENT_CONTEXT.md docs/CROSS_LINE_RUNBOOK.md docs/PRODUCT_ARCHITECTURE.md battle-evaluator/README.md battle-evaluator/contracts battle-evaluator/data battle-evaluator/diagnostics battle-evaluator/ts-adapter battle-evaluator/rust-adapter engine-ts/src engine-ts/scripts src/ui/scripts/lib/ui-audit-scenarios.ts index.html");
+    expect(workflow).toContain("run: bun run report:file-health -- --paths README.md docs/AGENT_CONTEXT.md docs/CROSS_LINE_RUNBOOK.md docs/PRODUCT_ARCHITECTURE.md battle-evaluator/README.md battle-evaluator/contracts battle-evaluator/data battle-evaluator/diagnostics battle-evaluator/catalog battle-evaluator/rust-adapter src/ui/scripts/lib/ui-audit-scenarios.ts index.html");
     expect(workflow).not.toContain("check:tui");
     expect(workflow).toContain("run: bun run check:rust:quick");
-    expect(workflow).toContain("run: bun run check:ts:types");
+    expect(workflow).not.toContain("check:ts:types");
     expect(workflow).toContain("run: bun run check:public-boundary");
     expect(workflow).toContain("no deployment");
     expect(workflow).not.toContain("run: bun run check:surfaces");

@@ -18,7 +18,7 @@ pub(super) fn test_card(id: i64, base_id: i64, name: &str) -> CardDefinition {
 #[test]
 fn other_param_or_defaults_only_when_the_index_is_missing() {
     let mut card = test_card(999, 999, "other-param contract");
-    card.other_params = vec![0, -3];
+    card.other_params = vec![0, -3].into();
 
     assert_eq!(support::other_param_or(&card, 0, 1), 0);
     assert_eq!(support::other_param_or(&card, 1, 1), -3);
@@ -392,7 +392,7 @@ fn surviving_last_turn_uses_max_turn_termination_cause() {
 #[test]
 fn forget_worries_reduces_every_negative_status_by_the_configured_amount() {
     let mut card = test_card(218, 218, "忘忧");
-    card.other_params = vec![0, 0, 2];
+    card.other_params = vec![0, 0, 2].into();
     let fixture = minimal_fixture(
         filler_cards(card),
         filler_cards(basic_attack_test_card()),
@@ -663,7 +663,7 @@ fn target_anima_loss_triggers_spirit_control_defense() {
         },
     );
     fixture.players.p1.cards[0].hexagram = Some(4);
-    fixture.players.p1.cards[0].other_params = vec![2, 1];
+    fixture.players.p1.cards[0].other_params = vec![2, 1].into();
     fixture.players.p2.initial_anima = 3;
 
     let mut state = ReplayState::test_from_fixture(&fixture);

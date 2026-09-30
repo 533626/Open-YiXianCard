@@ -74,7 +74,28 @@ impl ReplayState {
                 }
             }
             9 => {
-                let count = self.consume_optional_decision();
+                // 段数来自服务端 battleParams（replay 的 decisionTape）。评估 fixture 没有服务端队列时，
+                // 按牌面「{attack}攻×{attackCount}，每保留1张手牌追加1次攻击（最多追加 otherParams[0] 次）」推出
+                // attackCount + min(开局手牌数, otherParams[0])——语料 435 局持有者的回放：307 局队列只含该值，
+                // 其余 128 局队列含该值另夹其它牌的参数；live 练习局 33371977 R11 林小月手牌 3、基础 2 段，队列 [5]。
+                // 此前空队列取 0 段（整张不打伤害），对持有者的评估系统性偏乐观。
+                // 评估入口同样以 strict 启动（execute_replay_fixture），只认 !fail_on_missing_decision 时这条推导
+                // 永不生效：评估 fixture 以 syntheticDecisionFallbackSeed 标识（pop-deploy / solver variant），
+                // 有它就推导；无种子的真实回放照旧 fail closed。live g127 r9：林小月手牌 4、战报队列 [6]，
+                // 空队列 +65、队列 [6] −41（实际 −41）。
+                let derive = self.decision_tape.is_empty()
+                    && (!self.fail_on_missing_decision
+                        || self.synthetic_decision_fallback_seed.is_some());
+                let count = if derive {
+                    card.attack_count.unwrap_or(0).max(0)
+                        + self
+                            .actor(actor_side)
+                            .identity
+                            .hand_card_count
+                            .min(other_param(card, 0).max(0))
+                } else {
+                    self.consume_optional_decision()
+                };
                 let max_segments =
                     card.attack_count.unwrap_or(0).max(0) + other_param(card, 0).max(0);
                 let capped = if max_segments > 0 {

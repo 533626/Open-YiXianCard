@@ -5,7 +5,7 @@ fn plum_blossom_twice_grants_repeat_buff_from_mei_kai_er_du() {
     let card = CardDefinition {
         id: 4_000_041,
         base_id: Some(4_000_041),
-        name: "梅开二度".to_string(),
+        name: "梅开二度".to_string().into(),
         card_type: None,
         attack: None,
         random_attack: None,
@@ -21,7 +21,7 @@ fn plum_blossom_twice_grants_repeat_buff_from_mei_kai_er_du() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![2],
+        other_params: vec![2].into(),
     };
     let mut fixture = minimal_fixture(
         filler_cards(crate::replay::support::basic_attack_card()),
@@ -492,3 +492,189 @@ fn dan_ka_gong_ji_ji_shu_persists_across_turn_end_attack_and_triggers_heaven_cyc
     );
 }
 
+
+#[test]
+fn paint_finishing_touch_runs_before_frenzy_sword_upgrade_and_blocks_it() {
+    // CardActionBase.Execute：画龙点睛（IL_1421）先把 rarity=0 的狂剑•一式升到 1010022
+    // 并回写 cardConfig，之后的升级下次狂剑（IL_17ac）读到 rarity=1 不再触发——671 与
+    // 生命都不消耗。oracle：hf-latest-33331000 3dfe77e1e41cabd9/round-13。
+    let frenzy = original_card_definition_by_id(1_000_022).expect("狂剑•一式");
+    let fixture = minimal_fixture(
+        filler_cards(frenzy.clone()),
+        filler_cards(basic_attack_test_card()),
+        FixtureExpected {
+            winner_side: PlayerSide::P1,
+            actor_turn_count: 1,
+            hp_delta_p1_minus_p2: 0,
+            final_hp: None,
+        },
+    );
+    let mut state = ReplayState::test_from_fixture(&fixture);
+    state.p1.fate.paint_finishing_touch = 2;
+    state.p1.sword.upgrade_next_frenzy_sword = 1;
+    let hp_before = state.p1.core.hp;
+
+    state.test_execute_one_card(PlayerSide::P1);
+    assert_eq!(state.p1.deck.slots[0].card.id, 1_010_022);
+    assert_eq!(state.p1.fate.paint_finishing_touch, 1);
+    assert_eq!(state.p1.sword.upgrade_next_frenzy_sword, 1);
+    assert_eq!(state.p1.core.hp, hp_before);
+}
+
+fn metal_return_edge_state(with_dream_five_elements: bool) -> ReplayState {
+    let edge = original_card_definition_by_id(7_000_099).expect("金灵•回锋刃");
+    let fixture = minimal_fixture(
+        filler_cards(edge),
+        filler_cards(basic_attack_test_card()),
+        FixtureExpected {
+            winner_side: PlayerSide::P1,
+            actor_turn_count: 1,
+            hp_delta_p1_minus_p2: 0,
+            final_hp: None,
+        },
+    );
+    let mut state = ReplayState::test_from_fixture(&fixture);
+    // 原版 GetBattleDeckIdList 只含已解锁格，五行刺须在开放格内。
+    state.p1.deck.active_slot_count = 2;
+    if with_dream_five_elements {
+        state.p1.deck.slots[1].card =
+            original_card_definition_by_id(7_040_077).expect("梦•五行刺");
+    }
+    state.p1.sword.sharpness = 2;
+    state.p2.core.defense = 0;
+    state
+}
+
+#[test]
+fn metal_return_edge_uses_check_wu_xing_deck_override() {
+    // BattleCharacter.cs:10810 的回锋返还走 CardActionBase.CheckWuXing(JiHuoJinLing)，
+    // 其末尾「战斗牌组含 7030077/7040077 即视为激活」同样生效（CardActionBase.cs:5350-5362）。
+    // 6攻×2：每段消耗 2 锋锐后返还 ceil(2×60%)=2 → 伤害 (6+2)×2，锋锐剩 2。
+    // oracle：hf-latest-33334000 618dbaaf1fd47540/round-14。
+    let mut state = metal_return_edge_state(true);
+    let hp_before = state.p2.core.hp;
+    state.test_execute_one_card(PlayerSide::P1);
+    assert_eq!(hp_before - state.p2.core.hp, 16);
+    assert_eq!(state.p1.sword.sharpness, 2);
+
+    // 对照：无五行刺、未激活金灵 → 不返还，只有首段吃到锋锐。
+    let mut plain = metal_return_edge_state(false);
+    let hp_before = plain.p2.core.hp;
+    plain.test_execute_one_card(PlayerSide::P1);
+    assert_eq!(hp_before - plain.p2.core.hp, 14);
+    assert_eq!(plain.p1.sword.sharpness, 0);
+}
+
+#[test]
+fn earth_shake_halves_defense_only_with_earth_activated() {
+    // Card_7000046 土灵•撼地：减半对方灵气与防御都在 CheckWuXing(JiHuoTuLing) 分支内。
+    // oracle：hf-latest-33331000 ef6706d7e604abc7/round-07（未激活土灵，p2 防御 9−6=3，不再减半）。
+    let shake = original_card_definition_by_id(7_000_046).expect("土灵•撼地");
+    let run = |earth: bool| {
+        let fixture = minimal_fixture(
+            filler_cards(shake.clone()),
+            filler_cards(basic_attack_test_card()),
+            FixtureExpected {
+                winner_side: PlayerSide::P1,
+                actor_turn_count: 1,
+                hp_delta_p1_minus_p2: 0,
+                final_hp: None,
+            },
+        );
+        let mut state = ReplayState::test_from_fixture(&fixture);
+        state.p2.core.defense = 9;
+        state.p2.core.anima = 4;
+        if earth {
+            state.p1.elements.activated_earth = 1;
+        }
+        state.test_execute_one_card(PlayerSide::P1);
+        (state.p2.core.defense, state.p2.core.anima)
+    };
+    assert_eq!(run(false), (3, 4));
+    assert_eq!(run(true), (1, 2));
+}
+
+#[test]
+fn dream_counter_shock_reflects_after_frenzy_sword_lifesteal() {
+    // BattleCharacter.ApplyDamage：狂剑吸血（:10882）先于梦•反震心法扣攻击者生命（:11006）。
+    // 满血时吸血先溢出作废、再被反弹扣血；旧顺序（先反弹后吸血）会把血回满。
+    // oracle：hf-latest-33331000 67dd94826528fc59/round-17。
+    let frenzy = original_card_definition_by_id(1_000_022).expect("狂剑•一式");
+    let fixture = minimal_fixture(
+        filler_cards(frenzy),
+        filler_cards(basic_attack_test_card()),
+        FixtureExpected {
+            winner_side: PlayerSide::P1,
+            actor_turn_count: 1,
+            hp_delta_p1_minus_p2: 0,
+            final_hp: None,
+        },
+    );
+    let mut state = ReplayState::test_from_fixture(&fixture);
+    state.p1.sword.frenzy_sword_zero = 100;
+    state.p1.core.hp = state.p1.core.max_hp;
+    state.p2.core.defense = 0;
+    state.modify_dream_mirage_value(
+        PlayerSide::P2,
+        super::super::cards_dream_mirage::DreamMirageValue::DreamReflection,
+        1,
+    );
+    let max_hp = state.p1.core.max_hp;
+    state.test_execute_one_card(PlayerSide::P1);
+    assert!(state.p1.core.hp < max_hp, "反弹须在吸血之后结算，满血吸血溢出后仍应掉血");
+}
+
+#[test]
+fn stance_switch_cards_do_nothing_without_a_stance() {
+    // Card_222 转势 / Card_220：效果按拳、棍架势分支，SwitchJiaShi 在两者皆无时不加架势。
+    // oracle：hf-latest-33333000 bbcfba241c4acf94/round-13（幻羽鹦把转势复制给无架势方）。
+    for card_id in [10_222, 220] {
+        let card = original_card_definition_by_id(card_id).expect("stance switch card");
+        let fixture = minimal_fixture(
+            filler_cards(card),
+            filler_cards(basic_attack_test_card()),
+            FixtureExpected {
+                winner_side: PlayerSide::P1,
+                actor_turn_count: 1,
+                hp_delta_p1_minus_p2: 0,
+                final_hp: None,
+            },
+        );
+        let mut state = ReplayState::test_from_fixture(&fixture);
+        let hp_before = state.p2.core.hp;
+        state.test_execute_one_card(PlayerSide::P1);
+        assert_eq!(state.p1.turn.agility, 0, "card {card_id}");
+        assert_eq!(state.p1.beng.quan_stance, 0, "card {card_id}");
+        assert_eq!(state.p1.beng.gun_stance, 0, "card {card_id}");
+        assert_eq!(state.p2.core.hp, hp_before, "card {card_id}");
+    }
+}
+
+#[test]
+fn second_actor_opening_reads_deck_downgraded_by_first_actor() {
+    // BattleCharacter.TriggerOpening 读当前牌组：先手方厄劫缠身开局把次位方同格吉运初显
+    // 11010005 降为 11000005，次位方开局随后只加 4（而非 5）。
+    // oracle：hf-latest-33333000 6cda5802fa858719/round-18。
+    let curse = original_card_definition_by_id(11_010_018).expect("厄劫缠身");
+    let fortune = original_card_definition_by_id(11_010_005).expect("吉运初显");
+    let fixture = minimal_fixture(
+        filler_cards(curse),
+        filler_cards(fortune),
+        FixtureExpected {
+            winner_side: PlayerSide::P1,
+            actor_turn_count: 1,
+            hp_delta_p1_minus_p2: 0,
+            final_hp: None,
+        },
+    );
+    let base_max_hp = {
+        let mut plain = fixture.clone();
+        plain.players.p1.cards = filler_cards(basic_attack_test_card());
+        plain.players.p2.cards = filler_cards(basic_attack_test_card());
+        ReplayState::test_from_fixture(&plain).p2.core.max_hp
+    };
+    let state = ReplayState::test_from_fixture(&fixture);
+    assert_eq!(fixture.first_player_side, PlayerSide::P1);
+    assert_eq!(state.p2.deck.slots[0].card.id, 11_000_005);
+    assert_eq!(state.p2.core.max_hp, base_max_hp + 4);
+}

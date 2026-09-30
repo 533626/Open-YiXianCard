@@ -37,7 +37,7 @@ fn upgraded_abundant_momentum_grants_opening_momentum_and_limit() {
 fn deity_rear_move_response_gains_five_defense_hp_and_max_hp_on_first_check() {
     let mut flying_tread = test_card(12, 12, "飞鸿踏雪");
     flying_tread.anima = Some(3);
-    flying_tread.other_params = vec![0];
+    flying_tread.other_params = vec![0].into();
     let mut p1 = player(deck_with(flying_tread));
     p1.talents = vec![30_071]; // 后发制人
 
@@ -54,7 +54,7 @@ fn deity_rear_move_response_gains_five_defense_hp_and_max_hp_on_first_check() {
 fn rear_move_response_stacks_each_present_talent_rank() {
     let mut flying_tread = test_card(12, 12, "飞鸿踏雪");
     flying_tread.anima = Some(3);
-    flying_tread.other_params = vec![0];
+    flying_tread.other_params = vec![0].into();
     let mut p1 = player(deck_with(flying_tread));
     p1.talents = vec![64, 20_071, 30_071];
 
@@ -71,10 +71,10 @@ fn devouring_ancient_vine_drains_hp_and_sets_action_again_drain() {
     let mut devouring_vine = test_card(9_020_019, 9_000_019, "噬仙古藤");
     devouring_vine.card_type = Some(OriginalEnumValue {
         value: 3,
-        name: "Sustain".to_string(),
+        name: "Sustain".to_string().into(),
     });
     devouring_vine.anima = Some(-1);
-    devouring_vine.other_params = vec![10, 6];
+    devouring_vine.other_params = vec![10, 6].into();
     let mut p1 = player(deck_with(devouring_vine));
     p1.initial_anima = 1;
 

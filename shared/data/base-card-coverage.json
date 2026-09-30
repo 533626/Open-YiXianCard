@@ -15,7 +15,7 @@
     "registeredThroughFallbackCount": 17,
     "missingWithEffectClassCount": 0,
     "missingWithoutEffectClassCount": 0,
-    "registeredOutsideTargetCount": 441
+    "registeredOutsideTargetCount": 488
   },
   "groups": [
     {
@@ -672,7 +672,9 @@
     350,
     351,
     352,
-    353
+    353,
+    355,
+    364
   ],
   "recordOnlyCardBranches": [
     {
@@ -697,6 +699,7 @@
     }
   ],
   "registeredOutsideTarget": [
+    0,
     2,
     3,
     5,
@@ -942,7 +945,20 @@
     391,
     392,
     395,
+    401,
+    403,
+    407,
+    413,
+    415,
+    417,
+    418,
+    422,
+    423,
+    424,
+    425,
+    426,
     428,
+    429,
     1000047,
     1000048,
     1000049,
@@ -977,9 +993,18 @@
     1000085,
     1000086,
     1000087,
+    1000088,
+    1000089,
+    1000090,
+    1000091,
+    1000092,
+    1000094,
     1000095,
     1000096,
     1000097,
+    1000098,
+    1000099,
+    1000100,
     4000047,
     4000048,
     4000049,
@@ -1014,11 +1039,18 @@
     4000087,
     4000088,
     4000089,
+    4000090,
+    4000091,
+    4000092,
+    4000093,
     4000094,
+    4000095,
+    4000096,
+    4000097,
     4000098,
     4000099,
-    4010038,
-    4020038,
+    4000100,
+    4000101,
     7000008,
     7000041,
     7000044,
@@ -1059,10 +1091,19 @@
     7000090,
     7000091,
     7000093,
+    7000094,
+    7000095,
     7000096,
+    7000097,
+    7000098,
+    7000099,
+    7000100,
+    7000101,
     7000103,
     7000104,
     7000105,
+    7000107,
+    7000108,
     9000017,
     9000018,
     9000019,
@@ -1102,8 +1143,18 @@
     10000087,
     10000088,
     10000089,
+    10000090,
+    10000091,
+    10000092,
+    10000093,
+    10000094,
+    10000095,
+    10000096,
+    10000097,
     10000098,
     10000099,
+    10000100,
+    10000101,
     99000100,
     99000101,
     99000102,
@@ -1135,9 +1186,7 @@
     99000213,
     99000214,
     99000215,
-    99000216,
-    99010110,
-    99020110
+    99000216
   ],
   "cards": [
     {
@@ -1150,6 +1199,10 @@
       "effectClass": "Card_3000001",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1162,6 +1215,10 @@
       "effectClass": "Card_3000002",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1174,6 +1231,10 @@
       "effectClass": "Card_3000003",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1186,6 +1247,10 @@
       "effectClass": "Card_3000004",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1198,6 +1263,10 @@
       "effectClass": "Card_3000005",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1210,6 +1279,10 @@
       "effectClass": "Card_3000006",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1222,6 +1295,10 @@
       "effectClass": "Card_3000007",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1234,6 +1311,10 @@
       "effectClass": "Card_3000008",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1262,6 +1343,10 @@
       "effectClass": "Card_3000010",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1274,6 +1359,10 @@
       "effectClass": "Card_3000011",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1286,6 +1375,10 @@
       "effectClass": "Card_3000012",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1298,6 +1391,10 @@
       "effectClass": "Card_3000013",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1326,6 +1423,10 @@
       "effectClass": "Card_3000015",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1338,6 +1439,10 @@
       "effectClass": null,
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1363,6 +1468,10 @@
       "effectClass": "Card_6000003",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1375,6 +1484,10 @@
       "effectClass": null,
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1403,6 +1516,10 @@
       "effectClass": "Card_6000006",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1415,6 +1532,10 @@
       "effectClass": "Card_6000007",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1469,6 +1590,10 @@
       "effectClass": "Card_6000011",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1481,6 +1606,10 @@
       "effectClass": "Card_6000012",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1493,6 +1622,10 @@
       "effectClass": "Card_6000013",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1505,6 +1638,10 @@
       "effectClass": "Card_6000014",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1530,6 +1667,10 @@
       "effectClass": "Card_2000001",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1542,6 +1683,10 @@
       "effectClass": "Card_2000002",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1570,6 +1715,10 @@
       "effectClass": "Card_2000004",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1611,6 +1760,10 @@
       "effectClass": "Card_2000007",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1623,6 +1776,10 @@
       "effectClass": "Card_2000008",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1648,6 +1805,10 @@
       "effectClass": "Card_2000010",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1660,6 +1821,10 @@
       "effectClass": "Card_2000011",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1685,6 +1850,10 @@
       "effectClass": "Card_2000013",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1749,6 +1918,10 @@
       "effectClass": null,
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1774,6 +1947,10 @@
       "effectClass": "Card_9000005",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1825,6 +2002,10 @@
       "effectClass": "Card_9000009",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1850,6 +2031,10 @@
       "effectClass": "Card_9000011",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1875,6 +2060,10 @@
       "effectClass": "Card_9000013",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1900,6 +2089,10 @@
       "effectClass": null,
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1912,6 +2105,10 @@
       "effectClass": "Card_11000001",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1956,6 +2153,10 @@
       "effectClass": "Card_11000005",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1968,6 +2169,10 @@
       "effectClass": "Card_11000007",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -1992,6 +2197,10 @@
       "effectClass": "Card_11000009",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2004,6 +2213,10 @@
       "effectClass": "Card_11000011",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2016,6 +2229,10 @@
       "effectClass": "Card_11000012",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2028,6 +2245,10 @@
       "effectClass": "Card_11000013",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2040,6 +2261,10 @@
       "effectClass": "Card_11000014",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2052,6 +2277,10 @@
       "effectClass": "Card_11000018",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2092,6 +2321,10 @@
       "effectClass": "Card_11000021",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2120,6 +2353,10 @@
       "effectClass": "Card_11000023",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2132,6 +2369,10 @@
       "effectClass": "Card_11000024",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2144,6 +2385,10 @@
       "effectClass": "Card_11000025",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2184,6 +2429,10 @@
       "effectClass": "Card_5000002",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2196,6 +2445,10 @@
       "effectClass": "Card_5000003",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2208,6 +2461,10 @@
       "effectClass": "Card_5000004",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2220,6 +2477,10 @@
       "effectClass": "Card_5000005",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2232,6 +2493,10 @@
       "effectClass": "Card_5000006",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2244,6 +2509,10 @@
       "effectClass": "Card_5000007",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2256,6 +2525,10 @@
       "effectClass": "Card_5000008",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2268,6 +2541,10 @@
       "effectClass": "Card_5000009",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2280,6 +2557,10 @@
       "effectClass": "Card_5000010",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2292,6 +2573,10 @@
       "effectClass": "Card_5000011",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2320,6 +2605,10 @@
       "effectClass": "Card_5000013",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2332,6 +2621,10 @@
       "effectClass": "Card_5000014",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2344,6 +2637,10 @@
       "effectClass": "Card_5000015",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2356,6 +2653,10 @@
       "effectClass": "Card_8000001",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2368,6 +2669,10 @@
       "effectClass": "Card_8000002",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2396,6 +2701,10 @@
       "effectClass": "Card_8000004",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2408,6 +2717,10 @@
       "effectClass": "Card_8000005",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2420,6 +2733,10 @@
       "effectClass": "Card_8000006",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2432,6 +2749,10 @@
       "effectClass": "Card_8000007",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2444,6 +2765,10 @@
       "effectClass": "Card_8000008",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2456,6 +2781,10 @@
       "effectClass": "Card_8000009",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2468,6 +2797,10 @@
       "effectClass": "Card_8000010",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2480,6 +2813,10 @@
       "effectClass": "Card_8000011",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2508,6 +2845,10 @@
       "effectClass": "Card_8000013",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2520,6 +2861,10 @@
       "effectClass": "Card_8000014",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2532,6 +2877,10 @@
       "effectClass": "Card_8000016",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2544,6 +2893,10 @@
       "effectClass": "Card_10000001",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2556,6 +2909,10 @@
       "effectClass": "Card_10000002",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2584,6 +2941,10 @@
       "effectClass": "Card_10000004",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2596,6 +2957,10 @@
       "effectClass": "Card_10000005",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2624,6 +2989,10 @@
       "effectClass": "Card_10000007",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2636,6 +3005,10 @@
       "effectClass": "Card_10000008",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2648,6 +3021,10 @@
       "effectClass": "Card_10000009",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2660,6 +3037,10 @@
       "effectClass": "Card_10000010",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2688,6 +3069,10 @@
       "effectClass": "Card_10000012",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2700,6 +3085,10 @@
       "effectClass": "Card_10000013",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2712,6 +3101,10 @@
       "effectClass": "Card_10000014",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2724,6 +3117,10 @@
       "effectClass": "Card_10000015",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2768,6 +3165,10 @@
       "effectClass": "Card_10000018",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2780,6 +3181,10 @@
       "effectClass": "Card_10000019",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2792,6 +3197,10 @@
       "effectClass": "Card_10000020",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2820,6 +3229,10 @@
       "effectClass": "Card_10000022",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2832,6 +3245,10 @@
       "effectClass": "Card_10000023",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2844,6 +3261,10 @@
       "effectClass": "Card_10000024",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2856,6 +3277,10 @@
       "effectClass": "Card_10000025",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2868,6 +3293,10 @@
       "effectClass": "Card_10000026",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2880,6 +3309,10 @@
       "effectClass": "Card_10000027",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2892,6 +3325,10 @@
       "effectClass": "Card_10000028",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2904,6 +3341,10 @@
       "effectClass": "Card_10000029",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2916,6 +3357,10 @@
       "effectClass": "Card_10000030",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2928,6 +3373,10 @@
       "effectClass": "Card_10000031",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2940,6 +3389,10 @@
       "effectClass": "Card_10000032",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2952,6 +3405,10 @@
       "effectClass": "Card_10000033",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2980,6 +3437,10 @@
       "effectClass": "Card_10000035",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -2992,6 +3453,10 @@
       "effectClass": "Card_10000036",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3004,6 +3469,10 @@
       "effectClass": "Card_10000037",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3032,6 +3501,10 @@
       "effectClass": "Card_10000039",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3060,6 +3533,10 @@
       "effectClass": "Card_10000041",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3088,6 +3565,10 @@
       "effectClass": "Card_10000043",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3100,6 +3581,10 @@
       "effectClass": "Card_10000044",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3112,6 +3597,10 @@
       "effectClass": "Card_10000045",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3124,6 +3613,10 @@
       "effectClass": "Card_10000046",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3136,6 +3629,10 @@
       "effectClass": "Card_10000047",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3148,6 +3645,10 @@
       "effectClass": "Card_10000048",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3160,6 +3661,10 @@
       "effectClass": "Card_10000050",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3172,6 +3677,10 @@
       "effectClass": "Card_10000051",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3184,6 +3693,10 @@
       "effectClass": "Card_10000052",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3228,6 +3741,10 @@
       "effectClass": "Card_4000002",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3240,6 +3757,10 @@
       "effectClass": "Card_4000003",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3284,6 +3805,10 @@
       "effectClass": null,
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3376,6 +3901,10 @@
       "effectClass": "Card_4000014",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3420,6 +3949,10 @@
       "effectClass": "Card_4000017",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3432,6 +3965,10 @@
       "effectClass": "Card_4000018",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3444,6 +3981,10 @@
       "effectClass": "Card_4000019",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3456,6 +3997,10 @@
       "effectClass": "Card_4000020",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3468,6 +4013,10 @@
       "effectClass": "Card_4000021",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3480,6 +4029,10 @@
       "effectClass": "Card_4000022",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3508,6 +4061,10 @@
       "effectClass": "Card_4000024",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3520,6 +4077,10 @@
       "effectClass": "Card_4000025",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3548,6 +4109,10 @@
       "effectClass": "Card_4000027",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3608,6 +4173,10 @@
       "effectClass": "Card_4000031",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3668,6 +4237,10 @@
       "effectClass": "Card_4000035",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3696,6 +4269,10 @@
       "effectClass": "Card_4000037",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3724,6 +4301,10 @@
       "effectClass": "Card_4000039",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3784,6 +4365,10 @@
       "effectClass": "Card_4000043",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3812,6 +4397,10 @@
       "effectClass": "Card_4000045",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3824,6 +4413,10 @@
       "effectClass": "Card_4000046",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3836,6 +4429,10 @@
       "effectClass": "Card_4000059",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3848,6 +4445,10 @@
       "effectClass": "Card_4000060",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3860,6 +4461,10 @@
       "effectClass": "Card_4000061",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3888,6 +4493,10 @@
       "effectClass": "Card_4000063",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3900,6 +4509,10 @@
       "effectClass": "Card_4000066",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3928,6 +4541,10 @@
       "effectClass": "Card_4000068",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -3940,6 +4557,10 @@
       "effectClass": "Card_7000001",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4016,6 +4637,10 @@
       "effectClass": "Card_7000007",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4092,6 +4717,10 @@
       "effectClass": "Card_7000013",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4104,6 +4733,10 @@
       "effectClass": "Card_7000014",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4132,6 +4765,10 @@
       "effectClass": "Card_7000016",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4208,6 +4845,10 @@
       "effectClass": "Card_7000021",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4236,6 +4877,10 @@
       "effectClass": "Card_7000023",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4296,6 +4941,10 @@
       "effectClass": "Card_7000027",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4308,6 +4957,10 @@
       "effectClass": "Card_7000028",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4320,6 +4973,10 @@
       "effectClass": "Card_7000029",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4348,6 +5005,10 @@
       "effectClass": "Card_7000031",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4424,6 +5085,10 @@
       "effectClass": "Card_7000036",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4452,6 +5117,10 @@
       "effectClass": "Card_7000038",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4464,6 +5133,10 @@
       "effectClass": "Card_7000039",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4508,6 +5181,10 @@
       "effectClass": "Card_7000043",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4568,6 +5245,10 @@
       "effectClass": "Card_7000058",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4612,6 +5293,10 @@
       "effectClass": "Card_7000061",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4640,6 +5325,10 @@
       "effectClass": "Card_7000066",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4668,6 +5357,10 @@
       "effectClass": "Card_7000073",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4680,6 +5373,10 @@
       "effectClass": null,
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4692,6 +5389,10 @@
       "effectClass": "Card_1000002",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4720,6 +5421,10 @@
       "effectClass": null,
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4732,6 +5437,10 @@
       "effectClass": null,
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4760,6 +5469,10 @@
       "effectClass": "Card_1000007",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4772,6 +5485,10 @@
       "effectClass": "Card_1000008",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4800,6 +5517,10 @@
       "effectClass": null,
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4828,6 +5549,10 @@
       "effectClass": null,
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4840,6 +5565,10 @@
       "effectClass": null,
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4852,6 +5581,10 @@
       "effectClass": "Card_1000014",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4864,6 +5597,10 @@
       "effectClass": "Card_1000015",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4876,6 +5613,10 @@
       "effectClass": "Card_1000016",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4888,6 +5629,10 @@
       "effectClass": null,
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4900,6 +5645,10 @@
       "effectClass": "Card_1000018",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4912,6 +5661,10 @@
       "effectClass": "Card_1000019",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -4972,6 +5725,10 @@
       "effectClass": "Card_1000023",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5000,6 +5757,10 @@
       "effectClass": "Card_1000025",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5012,6 +5773,10 @@
       "effectClass": "Card_1000026",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5024,6 +5789,10 @@
       "effectClass": "Card_1000027",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5036,6 +5805,10 @@
       "effectClass": "Card_1000028",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5064,6 +5837,10 @@
       "effectClass": "Card_1000030",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5076,6 +5853,10 @@
       "effectClass": null,
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5088,6 +5869,10 @@
       "effectClass": "Card_1000032",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5116,6 +5901,10 @@
       "effectClass": "Card_1000034",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5128,6 +5917,10 @@
       "effectClass": "Card_1000035",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5140,6 +5933,10 @@
       "effectClass": "Card_1000036",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5152,6 +5949,10 @@
       "effectClass": null,
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5180,6 +5981,10 @@
       "effectClass": "Card_1000039",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5192,6 +5997,10 @@
       "effectClass": "Card_1000040",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5204,6 +6013,10 @@
       "effectClass": "Card_1000041",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5232,6 +6045,10 @@
       "effectClass": "Card_1000043",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5260,6 +6077,10 @@
       "effectClass": "Card_1000045",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5272,6 +6093,10 @@
       "effectClass": "Card_1000046",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5284,6 +6109,10 @@
       "effectClass": "Card_1000059",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5312,6 +6141,10 @@
       "effectClass": "Card_1000063",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5340,6 +6173,10 @@
       "effectClass": "Card_1000065",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     },
     {
@@ -5352,6 +6189,10 @@
       "effectClass": "Card_1000066",
       "registered": true,
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "original-replay",
+        "legality": "server-recorded"
+      },
       "simulationScope": "battle"
     }
   ]

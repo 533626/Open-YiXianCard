@@ -172,9 +172,11 @@ impl ReplayState {
                 Some(false)
             }
             22 => {
-                self.apply_configured_anima(actor_side, card);
+                // Card_22.cs (build 25621897)：星位 → 星力 → 灵气 → 生命及上限；
+                // 卦象由通用印刷效果在牌体之后发放，与原版末尾的 GuaXiang 同序。
                 self.add_following_star_slots(actor_side, slot, 1);
                 self.modify_star_power(actor_side, other_param(card, 0).max(0));
+                self.apply_configured_anima(actor_side, card);
                 let hp_gain = other_param(card, 1).max(0);
                 if hp_gain > 0 {
                     self.modify_actor_max_hp(actor_side, hp_gain);

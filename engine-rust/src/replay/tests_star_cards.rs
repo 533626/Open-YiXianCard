@@ -23,7 +23,7 @@ fn star_chess_twin_swallows_uses_star_slot_and_rear_move_bonus() {
     let card = CardDefinition {
         id: 20_053,
         base_id: Some(53),
-        name: "星弈·双飞燕".to_string(),
+        name: "星弈·双飞燕".to_string().into(),
         card_type: None,
         attack: Some(6),
         random_attack: None,
@@ -39,7 +39,7 @@ fn star_chess_twin_swallows_uses_star_slot_and_rear_move_bonus() {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![8],
+        other_params: vec![8].into(),
     };
     let mut state = ReplayState::test_from_fixture(&fixture(
         player(deck_with(card)),
@@ -59,7 +59,7 @@ fn fire_hexagram_lowers_current_hp_before_max_hp() {
     let card = CardDefinition {
         id: 4_000_034,
         base_id: Some(4_000_034),
-        name: "离卦".to_string(),
+        name: "离卦".to_string().into(),
         card_type: None,
         attack: None,
         random_attack: None,
@@ -75,7 +75,7 @@ fn fire_hexagram_lowers_current_hp_before_max_hp() {
         hexagram: Some(3),
         rarity: None,
         career_name: None,
-        other_params: vec![3],
+        other_params: vec![3].into(),
     };
     let mut state = ReplayState::test_from_fixture(&fixture(
         player(deck_with(card)),

@@ -6,6 +6,7 @@
 pub mod data;
 pub mod fixture;
 pub mod identity;
+pub(crate) mod id_hash;
 pub mod model;
 pub mod replay;
 pub mod solver;
@@ -26,7 +27,7 @@ pub use replay::{
     run_replay_fixture_with_ui_events, trace_replay_fixture_hooks, BattleError,
     ReplayAttackSegment, ReplayDecisionDomain, ReplayDecisionEvent, ReplayDecisionIntegerRange,
     ReplayDecisionKind, ReplayDecisionProvider, ReplayDetailEntry, ReplayDetailedEvent,
-    ReplayDetailedRun, ReplayDetailedStep, ReplayEvaluationRun, ReplayEvent, ReplayEventKind,
+    ReplayDetailedRun, ReplayDetailedSideState, ReplayQueuedCard, ReplayDetailedStep, ReplayEvaluationRun, ReplayEvent, ReplayEventKind,
     ReplayHookCategory, ReplayHookTrace, ReplayHookTraceChange, ReplayHookTraceStep,
     ReplayPlayerSnapshot, ReplayPreventionPair, ReplayPreventionState, ReplayRun, ReplaySummary,
     ReplayTerminationCause, ReplayTurnEndHookPair, ReplayTurnEndHookReceipt,

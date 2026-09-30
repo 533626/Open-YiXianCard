@@ -138,14 +138,7 @@ impl ReplayState {
                 // catalog otherParams[2]（8/12/16）。temporary 回响经
                 // CardFactory 按 ID 回读 stale catalog，故 direct damage
                 // 与升阶 anima 一样需按 build 选值。
-                let damage = if self.original_build_profile.steam_build_number()
-                    >= super::original_config::CARD_CONFIG_25206201_SINCE_BUILD
-                {
-                    super::original_config::card_config_25206201_value(card.id)
-                        .unwrap_or_else(|| other_param(card, 2).max(0))
-                } else {
-                    other_param(card, 2).max(0)
-                };
+                let damage = other_param(card, 2).max(0);
                 if damage > 0 {
                     self.apply_damage(actor_side, damage, false, false, false);
                 }

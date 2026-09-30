@@ -1,11 +1,12 @@
 {
   "schemaVersion": 2,
   "steamAppId": 1948800,
-  "projectTargetSteamBuild": "25343702",
+  "projectTargetSteamBuild": "25621897",
   "runtimeSupportedSteamBuilds": [
-    "25343702"
+    "25621897"
   ],
   "capabilities": {
+    "beforeExecuteClearsActualDamage": true,
     "dreamThunderRefundsHexagramLoss": true,
     "fate324GrantsCloudChain": true,
     "fate335GrantsMomentum": true,
@@ -17,6 +18,7 @@
     {
       "steamBuild": "24013612",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": false,
         "fate324GrantsCloudChain": false,
         "fate335GrantsMomentum": false,
@@ -28,6 +30,7 @@
     {
       "steamBuild": "24120316",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": false,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -39,6 +42,7 @@
     {
       "steamBuild": "24124964",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": false,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -50,6 +54,7 @@
     {
       "steamBuild": "24180265",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": true,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -61,6 +66,7 @@
     {
       "steamBuild": "24217566",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": true,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -72,6 +78,7 @@
     {
       "steamBuild": "24253909",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": true,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -83,6 +90,7 @@
     {
       "steamBuild": "24346968",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": true,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -94,6 +102,7 @@
     {
       "steamBuild": "24371489",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": true,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -105,6 +114,7 @@
     {
       "steamBuild": "24466094",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": true,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -116,6 +126,7 @@
     {
       "steamBuild": "24589371",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": true,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -127,6 +138,7 @@
     {
       "steamBuild": "24610558",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": true,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -138,6 +150,7 @@
     {
       "steamBuild": "24646245",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": true,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -149,6 +162,7 @@
     {
       "steamBuild": "24666769",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": true,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -160,6 +174,7 @@
     {
       "steamBuild": "24705509",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": true,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -171,6 +186,7 @@
     {
       "steamBuild": "24811621",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": true,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -182,6 +198,7 @@
     {
       "steamBuild": "24963639",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": true,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -193,6 +210,7 @@
     {
       "steamBuild": "25093011",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": true,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -204,6 +222,7 @@
     {
       "steamBuild": "25099105",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": true,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -215,6 +234,7 @@
     {
       "steamBuild": "25206201",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": true,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -226,6 +246,7 @@
     {
       "steamBuild": "25268934",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": false,
         "dreamThunderRefundsHexagramLoss": true,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,
@@ -237,6 +258,43 @@
     {
       "steamBuild": "25343702",
       "capabilities": {
+        "beforeExecuteClearsActualDamage": true,
+        "dreamThunderRefundsHexagramLoss": true,
+        "fate324GrantsCloudChain": true,
+        "fate335GrantsMomentum": true,
+        "hexagramLossDoesNotSpendCard422StarPower": true,
+        "lostHexagramLedgerAccumulatesPositiveLoss": true,
+        "spiritFormationEchoUsesBaseCard": true
+      }
+    },
+    {
+      "steamBuild": "25429424",
+      "capabilities": {
+        "beforeExecuteClearsActualDamage": true,
+        "dreamThunderRefundsHexagramLoss": true,
+        "fate324GrantsCloudChain": true,
+        "fate335GrantsMomentum": true,
+        "hexagramLossDoesNotSpendCard422StarPower": true,
+        "lostHexagramLedgerAccumulatesPositiveLoss": true,
+        "spiritFormationEchoUsesBaseCard": true
+      }
+    },
+    {
+      "steamBuild": "25497139",
+      "capabilities": {
+        "beforeExecuteClearsActualDamage": true,
+        "dreamThunderRefundsHexagramLoss": true,
+        "fate324GrantsCloudChain": true,
+        "fate335GrantsMomentum": true,
+        "hexagramLossDoesNotSpendCard422StarPower": true,
+        "lostHexagramLedgerAccumulatesPositiveLoss": true,
+        "spiritFormationEchoUsesBaseCard": true
+      }
+    },
+    {
+      "steamBuild": "25621897",
+      "capabilities": {
+        "beforeExecuteClearsActualDamage": true,
         "dreamThunderRefundsHexagramLoss": true,
         "fate324GrantsCloudChain": true,
         "fate335GrantsMomentum": true,

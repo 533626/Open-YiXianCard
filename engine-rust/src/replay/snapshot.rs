@@ -1,11 +1,11 @@
 //! Projects internal replay state into the observation surface.
 //!
 //! `snapshot` feeds every ReplayEvent and the parity comparison; `detail_entries`
-//! feeds the Detailed observation mode consumed by the UI and TUI. Neither may
+//! feeds the Detailed observation mode consumed by the UI. Neither may
 //! change battle state: they only read what the kernel already settled.
 
 use super::{
-    Element, ReplayDetailEntry, ReplayPlayer, ReplayPlayerSnapshot, ReplayUiCardSlotSnapshot,
+    Element, ReplayDetailEntry, ReplayDetailedSideState, ReplayPlayer, ReplayQueuedCard, ReplayPlayerSnapshot, ReplayUiCardSlotSnapshot,
     ReplayUiPlayerSnapshot,
 };
 
@@ -127,11 +127,28 @@ impl ReplayPlayer {
                     index,
                     card_id: slot.card.id,
                     base_id: slot.card.base_id.unwrap_or(slot.card.id),
-                    name: slot.card.name.clone(),
+                    name: slot.card.name.to_string(),
                     skipped: slot.skipped,
                     had_used: slot.used,
                 })
                 .collect(),
+        }
+    }
+
+    pub(super) fn detailed_side_state(&self) -> ReplayDetailedSideState {
+        let queued = |index: usize| {
+            self.deck.slots.get(index).map(|slot| ReplayQueuedCard {
+                id: slot.card.id,
+                grid: index,
+                skip: slot.skipped,
+                had_used: slot.used,
+            })
+        };
+        ReplayDetailedSideState {
+            action_again_per_round: self.dream_mirage.action_again_limit,
+            active_slot_count: self.deck.active_slot_count,
+            physical_deck: (0..self.deck.active_slot_count).filter_map(queued).collect(),
+            card_queue: self.deck.queue.iter().filter_map(|&index| queued(index)).collect(),
         }
     }
 
@@ -872,6 +889,20 @@ impl ReplayPlayer {
             "jiLuZongJiShangZhi",
             "累计总击伤",
             self.turn.ji_lu_zong_ji_shang_zhi,
+        );
+        push_nonzero(
+            &mut entries,
+            "命运",
+            "lastStandIntent",
+            "死战之志",
+            self.fate.last_stand_intent,
+        );
+        push_nonzero(
+            &mut entries,
+            "命运",
+            "lastStandUnyielding",
+            "死战不倒",
+            self.fate.last_stand_unyielding,
         );
         push_nonzero(
             &mut entries,

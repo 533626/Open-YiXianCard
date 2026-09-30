@@ -83,19 +83,20 @@ impl ReplayState {
                     if heal > 0 {
                         self.modify_actor_hp(actor_side, heal, false, false);
                     }
-                } else {
+                } else if self.actor(actor_side).beng.gun_stance > 0 {
+                    // Card_220.cs IL_0293：只有棍架势才攻击，无架势直接跳过。
                     let divisor = other_param(card, 2).max(1);
                     let bonus = self.actor(actor_side).core.physique / divisor;
                     attacked |= self.attack_by_config(actor_side, card, bonus, slot);
                 }
+                // CardActionBase.SwitchJiaShi：拳→棍、棍→拳；两者皆无时不加任何架势。
                 if self.has_locked_li_stance(actor_side) {
                     // 335/349 锁定架势：不切换，只结算命运策略效果。
                 } else if self.actor(actor_side).beng.quan_stance > 0 {
                     self.actor_mut(actor_side).beng.quan_stance -= 1;
                     self.actor_mut(actor_side).beng.gun_stance += 1;
-                } else {
-                    self.actor_mut(actor_side).beng.gun_stance =
-                        (self.actor(actor_side).beng.gun_stance - 1).max(0);
+                } else if self.actor(actor_side).beng.gun_stance > 0 {
+                    self.actor_mut(actor_side).beng.gun_stance -= 1;
                     self.actor_mut(actor_side).beng.quan_stance += 1;
                 }
                 // 429 强攻架势按切换后的最终架势发奖（拳→+1 气势，棍→+1 加攻）。

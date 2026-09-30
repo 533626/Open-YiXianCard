@@ -15,7 +15,7 @@
 
 use super::support::{is_frenzy_sword_for_actor, normalized_base_id};
 use super::ReplayState;
-use crate::model::{CardDefinition, PlayerSide};
+use crate::model::{CardDefinition, PlayerSide, SharedStr};
 use std::cell::RefCell;
 use std::rc::Rc;
 
@@ -72,8 +72,8 @@ impl TemporaryInvocationSpec {
 pub(super) struct EffectCardIdentity {
     pub(super) card_id: i64,
     pub(super) base_id: i64,
-    pub(super) name: String,
-    pub(super) segment_source: String,
+    pub(super) name: SharedStr,
+    pub(super) segment_source: SharedStr,
     pub(super) has_anima_desc: bool,
     pub(super) is_beng_quan: bool,
     pub(super) is_frenzy_sword: bool,
@@ -153,8 +153,8 @@ impl ReplayState {
         EffectCardIdentity {
             card_id: card.id,
             base_id,
-            name: card.name.clone(),
-            segment_source: format!("card:{base_id}"),
+            name: card.name,
+            segment_source: card_segment_source(base_id),
             has_anima_desc: super::original_config::original_card_desc_contains_anima(card),
             is_beng_quan,
             is_frenzy_sword: is_frenzy_sword_for_actor(self.actor(actor_side), card),
@@ -623,4 +623,18 @@ impl ReplayState {
     pub(super) fn active_effect_frame(&self) -> Option<&EffectInvocationFrame> {
         self.effect_invocation_stack.last()
     }
+}
+
+/// `card:{base_id}` 的驻留字符串（每次触发效果建 3 个身份，逐次 format! 是热点）。
+fn card_segment_source(base_id: i64) -> SharedStr {
+    use std::cell::RefCell;
+    thread_local! {
+        static CACHE: RefCell<crate::id_hash::IdMap<SharedStr>> = RefCell::default();
+    }
+    CACHE.with(|cache| {
+        *cache
+            .borrow_mut()
+            .entry(base_id)
+            .or_insert_with(|| SharedStr::from(format!("card:{base_id}")))
+    })
 }

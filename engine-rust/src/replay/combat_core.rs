@@ -535,9 +535,10 @@ impl ReplayState {
             ignore_defense,
             shatter_defense,
         );
-        if dream_mirage_reflection {
-            self.apply_dream_mirage_reflected_life_loss(actor_side, amount_without_sharpness);
-        }
+        // 梦•反震心法：反弹值在 CalculateAttack 按入伤算好（BattleCharacter.cs:11727-11733
+        // SetBuffValue MengFanZhenFanTan），扣攻击者生命要到 ApplyDamage :11006，
+        // 排在狂剑吸血（:10882）与反震心法（:10996）之后，见 apply_post_attack_buff_hooks。
+        let dream_reflection_incoming = dream_mirage_reflection.then_some(amount_without_sharpness);
         if attack_trace_enabled() {
             eprintln!(
                 "damage turn={} actor={:?} final={} target={:?} defenseBefore={} defenseAfter={} hpBefore={} hpAfter={} ignoreDefense={} shatterDefense={} factor={}",
@@ -615,16 +616,6 @@ impl ReplayState {
                 }
             }
         }
-        let dismantle_reflect = if self.actor(target_side).fate.dismantle_move > 0
-            && self.actor(target_side).beng.gun_stance > 0
-        {
-            self.actor(target_side).fate.dismantle_move_reflect
-        } else {
-            0
-        };
-        if dismantle_reflect > 0 {
-            self.apply_damage(target_side, dismantle_reflect, false, false, false);
-        }
         if had_shatter_formation {
             self.actor_mut(actor_side).formations.shatter_formation -= 1;
         }
@@ -639,7 +630,12 @@ impl ReplayState {
         // （:10960-10979）之后、反震心法（:10998-11005）之前；引擎侧反震
         // 在 apply_post_attack_buff_hooks 末尾结算，故此处先于该钩子链触发。
         self.apply_jie_quan_shi_after_attack(actor_side, target_side, hp_lost);
-        self.apply_post_attack_buff_hooks(actor_side, target_side, hp_lost);
+        self.apply_post_attack_buff_hooks(
+            actor_side,
+            target_side,
+            hp_lost,
+            dream_reflection_incoming,
+        );
         self.apply_ronghui_post_attack(actor_side, hp_lost, earth_fiend_active_before_attack);
         if self.observation.mode.is_detailed() {
             if let Some(event_index) = self.observation.current_card_event_index {
@@ -703,6 +699,7 @@ impl ReplayState {
         actor_side: PlayerSide,
         target_side: PlayerSide,
         hp_lost: i64,
+        dream_reflection_incoming: Option<i64>,
     ) {
         if self.actor(actor_side).turn.wood_spring_turns > 0 {
             self.modify_actor_max_hp(actor_side, 2);
@@ -735,6 +732,21 @@ impl ReplayState {
         let reflect = self.actor(target_side).fate.reflect_mindset.max(0);
         if reflect > 0 {
             self.apply_damage(target_side, reflect, false, false, false);
+        }
+        // ApplyDamage :11006 梦•反震心法 → :11013 拆招（ChaiZhao+棍架势）反伤，均在反震心法之后。
+        // oracle：hf-latest-33331000 67dd94826528fc59/round-17（满血时狂剑吸血先溢出、反弹后掉血）。
+        if let Some(incoming) = dream_reflection_incoming {
+            self.apply_dream_mirage_reflected_life_loss(actor_side, incoming);
+        }
+        let dismantle_reflect = if self.actor(target_side).fate.dismantle_move > 0
+            && self.actor(target_side).beng.gun_stance > 0
+        {
+            self.actor(target_side).fate.dismantle_move_reflect
+        } else {
+            0
+        };
+        if dismantle_reflect > 0 {
+            self.apply_damage(target_side, dismantle_reflect, false, false, false);
         }
         // BattleCharacter.ApplyDamage（build 24666769:10882-11033）：
         // 狂剑零式吸血、反震先结算，摘花飞叶与伤魂咒阵随后才施加内伤。

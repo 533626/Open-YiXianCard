@@ -2,14 +2,14 @@
 
 # Last Round Data Audit
 
-本页记录 TS Engine 真实回放 fixture 需要承载的原版 `lastRoundData.*`
-字段。本页最初扫描 Steam build `23798322` 的战斗入口、牌效果、角色战斗开始和
+本页记录真实回放 fixture 需要承载的原版 `lastRoundData.*` 字段（原 TS 引擎已移出仓库，Rust 是唯一实现）。
+本页最初扫描 Steam build `23798322` 的战斗入口、牌效果、角色战斗开始和
 天衍仙命共享函数；该历史反编译快照已按缓存策略删除。当前规则查询使用
 `research/original-game/extracted/current/decompiled/`，如需复核当时源码语义，必须重新获取对应的旧 Steam depot。
 
 ## 字段覆盖
 
-| 原版字段 | TS Engine fixture / state |
+| 原版字段 | 引擎 fixture / state |
 | --- | --- |
 | `lastRoundData.usedCards` | `lastRoundUsedCardBaseIds`，当前战斗牌组另由 `cards` 承载 |
 | `lastRoundData.handCards` | `handCards` / `handCardIds` |

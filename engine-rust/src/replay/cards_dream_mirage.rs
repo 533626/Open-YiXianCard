@@ -978,7 +978,7 @@ impl ReplayState {
                         .deck
                         .slots
                         .get(next)
-                        .map(|slot_state| slot_state.card.name.clone())
+                        .map(|slot_state| slot_state.card.name)
                     {
                         self.activate_dream_mirage_elements_from_name(actor_side, &name);
                     }
@@ -1359,11 +1359,8 @@ impl ReplayState {
                     grid = self.dream_mirage_next_grid(actor_side, grid);
                     self.add_dream_mirage_star_slot(actor_side, grid);
                 }
-                self.modify_dream_mirage_value(
-                    actor_side,
-                    DreamMirageValue::StarShift,
-                    other_param(card, 0).max(0),
-                );
+                // Card_269.cs (build 25621897)：持续标记固定 +1，otherParams[0] 只决定立即成为星位的格数。
+                self.modify_dream_mirage_value(actor_side, DreamMirageValue::StarShift, 1);
                 self.modify_dream_mirage_value(
                     actor_side,
                     DreamMirageValue::StarShiftAttack,
@@ -1377,7 +1374,7 @@ impl ReplayState {
                 self.modify_actor_hp(target_side, -amount, false, false);
                 self.modify_actor_max_hp(target_side, -amount);
                 let cost = other_param(card, 0).max(0);
-                if self.is_element_activated(actor_side, Element::Fire)
+                if self.check_wu_xing(actor_side, Element::Fire)
                     && self.actor(actor_side).core.anima >= cost
                 {
                     self.spend_anima_unchecked(actor_side, cost);
@@ -1405,7 +1402,7 @@ impl ReplayState {
                     .max(0)
                     .min(other_param(card, 1).max(0));
                 self.modify_actor_hp(actor_side, heal, false, false);
-                if self.is_element_activated(actor_side, Element::Wood)
+                if self.check_wu_xing(actor_side, Element::Wood)
                     && self.actor(actor_side).add_hp_count() > 0
                 {
                     self.gain_dream_mirage_attack_bonus(actor_side, other_param(card, 0).max(0));
@@ -1421,7 +1418,7 @@ impl ReplayState {
                     slot,
                 );
                 self.gain_sharpness(actor_side, other_param(card, 0).max(0));
-                if self.is_element_activated(actor_side, Element::Metal) {
+                if self.check_wu_xing(actor_side, Element::Metal) {
                     self.modify_dream_mirage_value(
                         actor_side,
                         DreamMirageValue::ReturnSharpness,

@@ -16,7 +16,7 @@ export const TALENT_OPTION_BY_ID = new Map(
   talentArchiveRows.map((row) => [row.id, toTalentOption(row.id, row.name)] as const),
 );
 
-/** 副职兼修仙命 ID，与 Rust TUI card_pool.rs DUAL_CAREER_TALENT_IDS 一致。 */
+/** 副职兼修仙命 ID（188 及其升阶）。 */
 export const DUAL_CAREER_TALENT_IDS: readonly number[] = [188, 10_188, 20_188, 30_188];
 
 /** 判断某仙命是否为副职兼修（允许选择第二个副职）。 */

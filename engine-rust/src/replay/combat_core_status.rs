@@ -259,7 +259,7 @@ impl ReplayState {
 
     /// Original SetBuffValue semantics: exact replacement, lower-clamped, and
     /// deliberately without ModifyBuffValue gain/loss hooks.
-    #[allow(dead_code)]
+    #[cfg(all(test, feature = "private-fixtures"))]
     pub(super) fn set_hexagram(&mut self, actor_side: PlayerSide, value: i64) -> i64 {
         let before = self.actor(actor_side).astrology.hexagram;
         let after = value.max(0);
@@ -562,7 +562,7 @@ impl ReplayState {
         self.consume_percent_roll_with_missing_policy(actor_side, false)
     }
 
-    pub(super) fn consume_optional_percent_roll_fail_closed(
+    pub(super) fn consume_optional_percent_roll(
         &mut self,
         actor_side: crate::model::PlayerSide,
     ) -> i64 {
@@ -585,8 +585,8 @@ impl ReplayState {
             // 不是失败。oracle 锚点：e0242566c4335718/round-16 cp[44]
             // （t38 弯弓射虎第 7 次取随机，队列已空 → -1 < 10 → 获得
             // ExActionAgain 并再次行动；引擎原先 fail-closed 返回 100
-            // 导致 actorTurn 偏差）。仅对 optional（fail-closed 命名
-            // 沿用历史）路径生效；strict 路径保持 100 并照常上报缺失。
+            // 导致 actorTurn 偏差）。仅对 optional 路径生效；strict 路径
+            // 保持 100 并照常上报缺失。
             PercentRollDecisionResolution::Missing if suppress_missing_error => return -1,
             PercentRollDecisionResolution::Missing => return 100,
             PercentRollDecisionResolution::Unscoped => {}

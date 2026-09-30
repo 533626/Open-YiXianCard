@@ -1,7 +1,7 @@
+use crate::id_hash::{IdMap, IdSet};
 use super::support::normalize_base_id;
 use crate::model::{CardDefinition, OriginalEnumValue};
 use serde::Deserialize;
-use std::collections::{HashMap, HashSet};
 use std::sync::OnceLock;
 
 #[derive(Debug, Deserialize)]
@@ -66,12 +66,12 @@ struct OriginalCardMeta {
 
 #[derive(Debug)]
 struct OriginalCardCatalog {
-    cards: HashMap<i64, CardDefinition>,
-    meta: HashMap<i64, OriginalCardMeta>,
-    anima_desc_card_ids: HashSet<i64>,
-    action_again_desc_card_ids: HashSet<i64>,
-    wounded_desc_card_ids: HashSet<i64>,
-    rear_move_desc_card_ids: HashSet<i64>,
+    cards: IdMap<CardDefinition>,
+    meta: IdMap<OriginalCardMeta>,
+    anima_desc_card_ids: IdSet,
+    action_again_desc_card_ids: IdSet,
+    wounded_desc_card_ids: IdSet,
+    rear_move_desc_card_ids: IdSet,
 }
 
 static ORIGINAL_CARD_CATALOG: OnceLock<OriginalCardCatalog> = OnceLock::new();
@@ -86,13 +86,6 @@ pub(super) fn original_card_definition(card_id: i64) -> Option<CardDefinition> {
 
 /// 弯弓射虎三档在 effective-since-build 起的新 otherParams（见 catalog
 /// 加载处的版本说明）。调用方按对局 steamBuild 选参，不得直接覆盖 catalog。
-pub(super) fn bow_shoot_tiger_current_other_params(card_id: i64) -> Option<[i64; 3]> {
-    BOW_SHOOT_TIGER_CURRENT_OTHER_PARAMS
-        .iter()
-        .find(|(id, _)| *id == card_id)
-        .map(|(_, value)| *value)
-}
-
 /// 客户端 CardConfig.rarity 语义（无 rarity 字段 = 0）。大量隐藏牌/梦牌
 /// （如 7020089 梦•火灵聚炎、7040089）配置里没有 rarity 字段，与 id 档位
 /// 推断不一致；凡原版读 cardConfig.rarity 的钳制/选档逻辑必须走配置值。
@@ -240,13 +233,13 @@ fn merge_card_with_original(card: &CardDefinition, original: &CardDefinition) ->
         id: original.id,
         base_id: original.base_id,
         name: if card.name.is_empty() || card.name.starts_with("card:") {
-            original.name.clone()
+            original.name
         } else {
-            card.name.clone()
+            card.name
         },
         card_type: card.card_type.clone().or(original.card_type.clone()),
         rarity: card.rarity.or(original.rarity),
-        career_name: card.career_name.clone().or(original.career_name.clone()),
+        career_name: card.career_name.or(original.career_name),
         attack: card.attack.or(original.attack),
         random_attack: card.random_attack.or(original.random_attack),
         random_defense: card.random_defense.or(original.random_defense),
@@ -266,87 +259,6 @@ fn merge_card_with_original(card: &CardDefinition, original: &CardDefinition) ->
         },
     }
 }
-
-/// 弯弓射虎三档 otherParams 的 effective-since-build。客户端解码数据上
-/// 该下调（4000097 [16,4,10]→[12,4,10]、4010097 [24,4,10]→[20,4,10]、
-/// 4020097 [32,4,10]→[28,4,10]）落在 24811621→24963639 区间，但取保守阈值
-/// 25093011：external/hf-latest-32728000 镜像批同标 24963639 的 85 个对局
-/// 对新旧值需求相反（82 个要旧值、3 个要新值，阈值实验证明见
-/// fate_strategy.rs 弯弓射虎分支注释），标签无法区分，只能按 oracle 背书
-/// 的 25093011（新 yiwen 批 302 全 exact）生效新值；其余一律旧值。
-/// 待 orchestrator 把 82 个镜像对局重标回真实录制 build 后，可将本阈值
-/// 下调到 24_963_639（单行）。shared 快照重生成到新值后删除本表及门控。
-pub(super) const BOW_SHOOT_TIGER_PARAMS_SINCE_BUILD: u64 = 25_093_011;
-
-/// 凌空飞扫（10000092/10010092/10020092）攻击公式与 hpCost 的 effective-since-build。
-/// Card_10000092.cs OnExecuted 在 24811621→24963639 由
-/// `attack + anima * otherParams[0]` 改为 `attack + anima / 2`；同 build
-/// CardConfig hpCost 6→2。shared catalog 维持旧值 6；对局内降级（如 11000018
-/// 厄劫缠身 LevelDown）或未内嵌 hpCost 时按对局 steamBuild 选值。
-/// oracle 锚点：hf-latest-33206000 23c5ebf9a42aa475/round-13、
-/// ba8e4f7576eff336/round-13（厄劫缠身降级 10010092→10000092 后读 catalog
-/// 扣 6 点命元 vs 原版 2 点，终端 delta 62 vs 66）。
-pub(super) const LING_KONG_FEI_SAO_FORMULA_SINCE_BUILD: u64 = 24_963_639;
-
-pub(super) fn ling_kong_fei_sao_hp_cost(card_id: i64, steam_build: u64) -> Option<i64> {
-    if matches!(card_id, 10_000_092 | 10_010_092 | 10_020_092) {
-        if steam_build >= LING_KONG_FEI_SAO_FORMULA_SINCE_BUILD {
-            Some(2)
-        } else {
-            Some(6)
-        }
-    } else {
-        None
-    }
-}
-
-/// FateStrategy 128 水灵→锋锐分支的 effective-since-build。
-/// FateStrategyFunctions.cs 的 `HasFateStrategy(128) && name.Contains("水灵")`
-/// hunk 在 24963639→25093011 才引入；旧 build 客户端不存在该分支，旧录制
-/// （如 candidates eswiq48）不得加锋锐。HF retained 普查 fate128=0，
-/// 门控对镜像层零影响。
-pub(super) const FATE_128_WATER_SPIRIT_SHARPNESS_SINCE_BUILD: u64 = 25_093_011;
-
-/// 25099105→25206201 CardConfig 批量变更的 effective-since-build。同批
-/// 变更：八门金锁阵 otherParams[2] 8/12/16→10/15/20、天机•顺应/逆施
-/// anima 2/4/6→3/5/7、凶象 otherParams [1,3]/[2,4]/[3,5]→[2,3]/[3,4]/[4,5]。
-/// shared catalog 仍是旧值（教训：一刀切曾翻转 284 个旧 exact），调用方
-/// 按对局 steamBuild 选值。oracle 锚点：hf-latest-33206000
-/// ad0c5a4d17fd630e/round-14（顺应升阶档 anima original=5 vs 旧值 4）。
-pub(super) const CARD_CONFIG_25206201_SINCE_BUILD: u64 = 25_206_201;
-
-/// 天机•顺应/逆施当前 anima 三档（≥CARD_CONFIG_25206201_SINCE_BUILD）。
-const TIAN_JI_CURRENT_ANIMA: &[(i64, i64)] = &[
-    (11_000_019, 3),
-    (11_010_019, 5),
-    (11_020_019, 7),
-    (11_000_020, 3),
-    (11_010_020, 5),
-    (11_020_020, 7),
-];
-
-/// 八门金锁阵当前 direct damage 三档（otherParams[2]，8/12/16→10/15/20）。
-const BA_MEN_CURRENT_DAMAGE: &[(i64, i64)] = &[
-    (8_000_010, 10),
-    (8_010_010, 15),
-    (8_020_010, 20),
-];
-
-/// ≥CARD_CONFIG_25206201_SINCE_BUILD 的对局取该卡的新配置值；调用方在
-/// 旧 build 分支保持 catalog/夹具值。未收录的卡返回 None。
-pub(super) fn card_config_25206201_value(card_id: i64) -> Option<i64> {
-    TIAN_JI_CURRENT_ANIMA
-        .iter()
-        .chain(BA_MEN_CURRENT_DAMAGE.iter())
-        .find(|(id, _)| *id == card_id)
-        .map(|(_, value)| *value)
-}
-
-const BOW_SHOOT_TIGER_CURRENT_OTHER_PARAMS: &[(i64, [i64; 3])] = &[
-    (4_000_097, [12, 4, 10]),
-    (4_010_097, [20, 4, 10]),
-    (4_020_097, [28, 4, 10]),
-];
 
 fn load_original_card_catalog() -> OriginalCardCatalog {
     let source = include_str!("../../../shared/data/original-card-configs.ts");
@@ -381,12 +293,12 @@ fn load_original_card_catalog() -> OriginalCardCatalog {
     ];
     // 弯弓射虎新 otherParams 见模块级 BOW_SHOOT_TIGER_CURRENT_OTHER_PARAMS
     //（只存新值、不直接覆盖 catalog，调用方按对局 steamBuild 选参）。
-    let mut cards = HashMap::new();
-    let mut meta = HashMap::new();
-    let mut anima_desc_card_ids = HashSet::new();
-    let mut action_again_desc_card_ids = HashSet::new();
-    let mut wounded_desc_card_ids = HashSet::new();
-    let mut rear_move_desc_card_ids = HashSet::new();
+    let mut cards = IdMap::default();
+    let mut meta = IdMap::default();
+    let mut anima_desc_card_ids = IdSet::default();
+    let mut action_again_desc_card_ids = IdSet::default();
+    let mut wounded_desc_card_ids = IdSet::default();
+    let mut rear_move_desc_card_ids = IdSet::default();
     for config in configs {
         let base_id = normalize_base_id(config.id);
         // 灵爪 FateStrategy 152（BattleCharacter.CalculateAttack
@@ -437,7 +349,7 @@ fn load_original_card_catalog() -> OriginalCardCatalog {
         let card = CardDefinition {
             id: config.id,
             base_id: Some(base_id),
-            name: config.name,
+            name: config.name.into(),
             card_type: config.card_type,
             rarity: config.rarity,
             career_name: config.career.map(|career| career.name),
@@ -453,13 +365,13 @@ fn load_original_card_catalog() -> OriginalCardCatalog {
             physique: config.physique,
             sword_intent: config.sword_intent,
             hexagram: config.hexagram,
-            other_params: config.other_params,
+            other_params: config.other_params.into(),
         };
         meta.insert(
             config.id,
             OriginalCardMeta {
                 hidden: config.hidden.unwrap_or(false),
-                subcategory_name: config.subcategory.map(|subcategory| subcategory.name),
+                subcategory_name: config.subcategory.map(|subcategory| subcategory.name).map(|value| value.to_string()),
                 rarity: config.rarity.unwrap_or(0),
                 realm_level: config.level.map(|level| level.value),
                 no_upgrade: config.no_upgrade.unwrap_or(false),

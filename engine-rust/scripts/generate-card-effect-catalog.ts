@@ -1,13 +1,11 @@
+// Rust card-effect catalog（data/card-effect-catalog.json）是 Rust 可执行卡牌的审计清单，
+// 由人随 Card_* handler 增删维护；Rust 单测按 handler 双向校验。本脚本只做规范化
+// （去重、归一化 base id、升序），--check 校验文件已是规范形。
 import { readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const engineRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
-const repoRoot = join(engineRoot, "..");
-const ledgerPath = join(
-  repoRoot,
-  "private-companion/ts-migration-ledger.json",
-);
 const outputPath = join(engineRoot, "data/card-effect-catalog.json");
 
 function normalizeBaseId(cardId: number): number {
@@ -15,36 +13,18 @@ function normalizeBaseId(cardId: number): number {
   return cardId - Math.trunc((cardId % 1_000_000) / 10_000) * 10_000;
 }
 
-interface MigrationLedger {
-  readonly registrations: {
-    readonly effectivePartitions: {
-      readonly formalIds: readonly number[];
-      readonly clientIds: readonly number[];
-      readonly replayIds: readonly number[];
-    };
-  };
+const current = await readFile(outputPath, "utf8");
+const parsed = JSON.parse(current) as { schemaVersion?: unknown; executableBaseIds?: unknown };
+if (
+  parsed.schemaVersion !== 1 ||
+  !Array.isArray(parsed.executableBaseIds) ||
+  parsed.executableBaseIds.length === 0 ||
+  !parsed.executableBaseIds.every((id) => Number.isInteger(id))
+) {
+  throw new Error("Rust card-effect catalog is malformed");
 }
-
-let executableBaseIds: number[];
-try {
-  const ledger = JSON.parse(await readFile(ledgerPath, "utf8")) as MigrationLedger;
-  const partitions = ledger.registrations.effectivePartitions;
-  executableBaseIds = [...new Set(
-    [...partitions.formalIds, ...partitions.clientIds, ...partitions.replayIds].map(normalizeBaseId),
-  )].sort((left, right) => left - right);
-} catch (error) {
-  // The migration ledger is replay-derived and private. In a public checkout,
-  // preserve the reviewed generated catalog and validate its shape instead of
-  // requiring a private report to regenerate it.
-  if (!process.argv.includes("--check")) {
-    throw new Error(`public card catalog generation requires private ledger or a reviewed catalog: ${String(error)}`);
-  }
-  const current = JSON.parse(await readFile(outputPath, "utf8")) as { executableBaseIds?: unknown };
-  if (!Array.isArray(current.executableBaseIds) || !current.executableBaseIds.every((id) => Number.isInteger(id))) {
-    throw new Error("public Rust card-effect catalog is malformed");
-  }
-  executableBaseIds = current.executableBaseIds as number[];
-}
+const executableBaseIds = [...new Set((parsed.executableBaseIds as number[]).map(normalizeBaseId))]
+  .sort((left, right) => left - right);
 
 const output = `${JSON.stringify(
   {
@@ -58,10 +38,9 @@ const output = `${JSON.stringify(
 )}\n`;
 
 if (process.argv.includes("--check")) {
-  const current = await readFile(outputPath, "utf8");
   if (current !== output) {
     throw new Error(
-      "Rust card-effect catalog is stale; run bun engine-rust/scripts/generate-card-effect-catalog.ts",
+      "Rust card-effect catalog is not normalized; run bun engine-rust/scripts/generate-card-effect-catalog.ts",
     );
   }
 } else {

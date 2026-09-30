@@ -436,13 +436,19 @@ impl ReplayState {
             if player_fixture.fate_strategies.contains(&336) {
                 self.actor_mut(actor_side).fate.feng_ling_zhan_yi += 5;
             }
+            // BattleCharacter.TriggerOpening 读当前战斗牌组（GetBattleDeckIdList()[grid]）：
+            // 先手方的开局降级（厄劫缠身）已写回次位方牌组，次位方开局须读降级后的牌。
+            // oracle：hf-latest-33333000 6cda5802fa858719/round-18（吉运初显 11010005→11000005）。
             let active_slot_count = player_fixture.active_slot_count;
-            for (slot_index, card) in player_fixture
-                .cards
+            let opening_cards: Vec<CardDefinition> = self
+                .actor(actor_side)
+                .deck
+                .slots
                 .iter()
                 .take(active_slot_count)
-                .enumerate()
-            {
+                .map(|slot| slot.card.clone())
+                .collect();
+            for (slot_index, card) in opening_cards.iter().enumerate() {
                 let base_id = normalized_base_id(card);
                 if !Self::card_has_opening_effect(base_id) {
                     continue;
@@ -722,17 +728,8 @@ impl ReplayState {
                 {
                     self.actor_mut(actor_side).fate.exorcism += 2;
                 }
-                // FateStrategyConfig(151).otherParams[1]：24811621 起 5→9
-                // （≤24610558 均为 5）。旧 build 硬编码 9 曾使 candidates
-                // emz5odc（24371489 录制）开局多回 4 点漂移。
-                let opening_heal = if self.original_build_profile.steam_build_number()
-                    >= 24_811_621
-                {
-                    9
-                } else {
-                    5
-                };
-                self.modify_actor_hp(actor_side, opening_heal, false, false);
+                // FateStrategyConfig(151).otherParams[1]（当前 build 为 9）。
+                self.modify_actor_hp(actor_side, 9, false, false);
             }
             if player_fixture.talents.contains(&199) {
                 self.apply_talent_199_bottle_elements(actor_side, player_fixture);

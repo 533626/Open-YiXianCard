@@ -798,6 +798,8 @@ impl ReplayState {
         self.apply_damage(actor_side, amount, false, false, false);
     }
 
+    /// 只含已激活列表与相生推导，是 `check_wu_xing` 的组成部分；卡牌效果的五行判定一律用
+    /// `check_wu_xing`（原版 CardActionBase.CheckWuXing，含龙马精神与牌组梦•五行刺覆盖）。
     pub(super) fn is_element_activated(
         &self,
         actor_side: PlayerSide,
@@ -828,7 +830,7 @@ impl ReplayState {
     }
 
     /// BattleCharacter.GetWuXingActiveNumber: sum of activated-element buff stacks.
-    /// Mirrors engine-ts `getWuXingActiveNumber` — not `activated_elements.len()`.
+    /// Counts stacks, not `activated_elements.len()`.
     pub(super) fn wu_xing_active_number(&self, actor_side: PlayerSide) -> i64 {
         let elements = &self.actor(actor_side).elements;
         elements.activated_metal
@@ -1077,6 +1079,19 @@ impl ReplayState {
             remaining = remaining * post_wound_multiplier_percent.max(0) / 100;
         }
         let hp_receipt = self.mutate_actor_hp(target, -remaining, false, false);
+        // BattleCharacter.ApplyDamage:11301-11309：非反伤、伤害 > 0 且未被护体挡下时求值
+        // `hp > 0 || CanRevive() || CheckSiZhan()`——致命一击当下即把死战之志转为死战不倒，
+        // 不等 DeathCheck。目前只接入攻击伤害（DamageType.Attack）；DamageType.Damage 与
+        // ReflectDamage 的调用点尚未逐一分类，仍由 DeathCheck 转换
+        // （research/original-game/BASE_BATTLE_RULES.md 七.7 待办）。
+        if apply_wound_bonus
+            && remaining > 0
+            && hp_receipt.prevention != Some(super::HpMutationPrevention::Guard)
+            && self.actor(target).core.hp <= 0
+            && !self.can_revive(target)
+        {
+            self.check_last_stand(target);
+        }
         if hp_receipt.prevention == Some(super::HpMutationPrevention::Guard) && defense_absorbed > 0
         {
             // Defense is still spent before guard in the original pipeline, but it

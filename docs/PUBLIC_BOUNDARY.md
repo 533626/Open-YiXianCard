@@ -6,7 +6,7 @@ The development repository is intentionally private and keeps the complete engin
 
 ## Public source surface
 
-The public surface is the canonical Rust battle engine and its WebAssembly/native build, the TypeScript compatibility archive (source/scripts type-check through `engine-ts/tsconfig.public.json`), neutral contracts and reviewed data (public type-check through `battle-evaluator/tsconfig.public.json`), stable rule-development documentation, and the browser UI. The development `main` may contain analysis, replay corpus, private tests, and terminal TUI, but the public projection must not require or contain them.
+The public surface is the canonical Rust battle engine and its WebAssembly/native build (engine-ts/ has been removed and is retrievable from git history), neutral contracts and reviewed data (public type-check through `battle-evaluator/tsconfig.public.json`), stable rule-development documentation, and the browser UI. The development `main` may contain analysis, replay corpus, and private tests, but the public projection must not require or contain them.
 
 The browser is local-only and fail-closed. It starts from a blank build or an explicitly selected local input. Production static artifacts contain zero repository fixtures and no fixture index; `scripts/public-bundle-boundary.ts` and the release audit enforce that boundary.
 
@@ -16,7 +16,6 @@ The following remain private engineering material on `main`:
 
 - `analysis/` and analysis-only reports/data;
 - private replay inputs, admission receipts, client-oracle material, mirror corpora, and derived evidence;
-- `engine-rust/src/bin/tui.rs`, `engine-rust/src/bin/tui_app/`, and `engine-rust/tui-builds/`;
 - the original-game research Python toolchain under `research/original-game/*.py` (client inventory/decode/decompile/index orchestration) and the build authority inputs `battle-evaluator/data/current-build.ts` / `original-build-profiles.json` — the reviewed data products they produce stay public, the toolchain itself is companion-only;
 - operational handoffs and analysis-specific reports removed from the public documentation index.
 

@@ -26,7 +26,7 @@ impl ReplayState {
                 self.apply_configured_defense(actor_side, card);
             }
             7_000_097 => {
-                if self.is_element_activated(actor_side, Element::Wood) {
+                if self.check_wu_xing(actor_side, Element::Wood) {
                     self.actor_mut(actor_side).turn.wood_spring_turns +=
                         other_param(card, 1).max(0);
                 }
@@ -42,7 +42,7 @@ impl ReplayState {
                 if max_hp_loss > 0 {
                     self.modify_actor_max_hp(actor_side, -max_hp_loss);
                 }
-                if self.is_element_activated(actor_side, Element::Fire) {
+                if self.check_wu_xing(actor_side, Element::Fire) {
                     let loss =
                         self.actor(actor_side).core.attack_bonus * other_param(card, 2).max(0);
                     if loss > 0 {
@@ -57,7 +57,7 @@ impl ReplayState {
                     .attack_count
                     .unwrap_or(if attack > 0 { 1 } else { 0 })
                     .max(0);
-                let return_percent = if self.is_element_activated(actor_side, Element::Metal) {
+                let return_percent = if self.check_wu_xing(actor_side, Element::Metal) {
                     other_param(card, 0).max(0)
                 } else {
                     0
@@ -87,7 +87,7 @@ impl ReplayState {
                     self.modify_actor_max_hp(actor_side, hp_gain);
                     self.modify_actor_hp(actor_side, hp_gain, false, false);
                 }
-                if self.is_element_activated(actor_side, Element::Water) {
+                if self.check_wu_xing(actor_side, Element::Water) {
                     let agility_cap = other_param(card, 2).max(0);
                     let agility_gain = ((self.actor(actor_side).elements.water_momentum
                         + self.actor(actor_side).core.anima)

@@ -108,7 +108,7 @@ fn test_buckets(cards: &[(i64, usize)]) -> Vec<CandidateBucket> {
             card: CardDefinition {
                 id: *id,
                 base_id: None,
-                name: format!("test-card-{id}"),
+                name: format!("test-card-{id}").into(),
                 card_type: None,
                 attack: Some((*id % 13) + 1),
                 random_attack: None,
@@ -124,7 +124,7 @@ fn test_buckets(cards: &[(i64, usize)]) -> Vec<CandidateBucket> {
                 hexagram: None,
                 rarity: None,
                 career_name: None,
-                other_params: Vec::new(),
+                other_params: Vec::new().into(),
             },
             count: *count,
         })

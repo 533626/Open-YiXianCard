@@ -94,14 +94,16 @@ try {
 const bannedTerms: Array<{ wrong: string; right: string; note: string }> = [
   { wrong: "万幻破魔掌", right: "万玄破魔掌", note: "card 82 原文名" },
   { wrong: "体质", right: "体魄", note: "physique 原版属性名，localization 仅剧情文案用前者" },
-  { wrong: "跟随 Rust 移植", right: "已冻结 TS 兼容档案", note: "engine-ts 于 2026-08-09 冻结，只保留只读兼容档案" },
+  { wrong: "已冻结 TS 兼容档案", right: "Rust 唯一实现", note: "engine-ts 已于 2026-09-24 移出仓库（git 历史可取回）" },
   { wrong: "Scheme A", right: "统一 main 导出投影", note: "两仓物理拆分方案已被统一 main 导出投影替代" },
   { wrong: "deck-archive.html", right: "report-ga-workbench", note: "独立 deck-archive.html 已并入 report-ga-workbench" },
 ];
 
 const excludedDocPaths = [
   /^docs\/archive\//,
-  /^research\/original-game\/(?:out|extracted|inventory|builds)\//,
+  /^research\/original-game\/(?:out|extracted|inventory|builds|diagnostics)\//,
+  // 换代规则差异是历史记录，保留当时的命令与说法。
+  /^research\/original-game\/BUILD_[^/]*_RULE_DELTA\.md$/,
   /^battle-evaluator\/(?:fixtures|generated|oracle)\//,
   /(?:^|\/)node_modules\//,
   /^engine-rust\/target\//,

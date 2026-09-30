@@ -1,8 +1,5 @@
 #[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
 pub enum BattleError {
-    #[error("{message}; turn={turn}")]
-    UnsupportedBuild { message: String, turn: i64 },
-
     #[error("card catalog error: card:{card_id} base:{base_id} {reason}; turn={turn}")]
     MissingRule {
         card_id: i64,

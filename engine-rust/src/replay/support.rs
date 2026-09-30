@@ -3,11 +3,13 @@ use super::original_config::{
 };
 use super::{Element, ReplayPlayer, BASIC_ATTACK_DAMAGE, BASIC_ATTACK_ID, PERMANENT_PHYSIQUE_KEY};
 use crate::fixture::FixturePlayer;
+use crate::id_hash::IdMap;
 use crate::model::{CardDefinition, PlayerSide};
 use std::collections::HashMap;
 use std::sync::OnceLock;
 
-static CARD_TRAITS_BY_BASE_ID: OnceLock<HashMap<String, Vec<String>>> = OnceLock::new();
+/// base id → 特征位掩码（位号见 `trait_bit`）。
+static CARD_TRAITS_BY_BASE_ID: OnceLock<IdMap<u16>> = OnceLock::new();
 
 const ELEMENT_NAME_TOKENS: [(&str, Element); 5] = [
     ("金灵", Element::Metal),
@@ -17,37 +19,90 @@ const ELEMENT_NAME_TOKENS: [(&str, Element); 5] = [
     ("土灵", Element::Earth),
 ];
 
-fn card_traits_by_base_id() -> &'static HashMap<String, Vec<String>> {
-    CARD_TRAITS_BY_BASE_ID.get_or_init(|| {
-        serde_json::from_str(include_str!("../../../shared/data/base-card-traits.json"))
-            .expect("base-card-traits.json parses")
+/// `shared/data/base-card-traits.json` 里的特征名 → 位号。JSON 出现未登记的名字时加载即 panic。
+#[inline(always)]                 // 调用点传字面量：内联后特征名比较在编译期折叠（同 model::name_token_bit）
+fn trait_bit(trait_name: &str) -> Option<u16> {
+    Some(match trait_name {
+        "bengQuan" => 0,
+        "cloudSword" => 1,
+        "element:earth" => 2,
+        "element:fire" => 3,
+        "element:metal" => 4,
+        "element:water" => 5,
+        "element:wood" => 6,
+        "rearMove" => 7,
+        "spiritSword" => 8,
+        _ => return None,
     })
 }
 
-pub(super) fn has_card_trait(card: &CardDefinition, trait_name: &str) -> bool {
-    card_traits_by_base_id()
-        .get(&normalized_base_id(card).to_string())
-        .is_some_and(|traits| traits.iter().any(|trait_value| trait_value == trait_name))
+// 键在加载时解析成 i64、特征压成位掩码：热路径（每次出牌数十次）不再为查表分配字符串，
+// 也不再逐个比较特征字符串。JSON 的键全是规范十进制整数（parse 失败即 panic），
+// 与旧的 `base_id.to_string()` 查法一一对应。
+fn card_traits_by_base_id() -> &'static IdMap<u16> {
+    CARD_TRAITS_BY_BASE_ID.get_or_init(|| {
+        let raw: HashMap<String, Vec<String>> =
+            serde_json::from_str(include_str!("../../../shared/data/base-card-traits.json"))
+                .expect("base-card-traits.json parses");
+        raw.into_iter()
+            .map(|(key, traits)| {
+                let id: i64 = key
+                    .parse()
+                    .expect("base-card-traits.json keys are integers");
+                assert_eq!(
+                    id.to_string(),
+                    key,
+                    "base-card-traits.json key is canonical"
+                );
+                let mask = traits.iter().fold(0_u16, |mask, name| {
+                    mask | 1
+                        << trait_bit(name).unwrap_or_else(|| {
+                            panic!("base-card-traits.json trait {name:?} missing from trait_bit")
+                        })
+                });
+                (id, mask)
+            })
+            .collect()
+    })
 }
 
-fn element_trait(card: &CardDefinition) -> Option<Element> {
-    if has_card_trait(card, "element:metal") {
-        return Some(Element::Metal);
-    }
-    if has_card_trait(card, "element:water") {
-        return Some(Element::Water);
-    }
-    if has_card_trait(card, "element:wood") {
-        return Some(Element::Wood);
-    }
-    if has_card_trait(card, "element:fire") {
-        return Some(Element::Fire);
-    }
-    if has_card_trait(card, "element:earth") {
-        return Some(Element::Earth);
-    }
-    None
+#[inline]
+fn base_id_trait_mask(base_id: i64) -> u16 {
+    card_traits_by_base_id().get(&base_id).copied().unwrap_or(0)
 }
+
+#[inline(always)]
+fn base_id_has_trait(base_id: i64, trait_name: &str) -> bool {
+    trait_bit(trait_name).is_some_and(|bit| base_id_trait_mask(base_id) & (1 << bit) != 0)
+}
+
+#[inline(always)]
+pub(super) fn has_card_trait(card: &CardDefinition, trait_name: &str) -> bool {
+    base_id_has_trait(normalized_base_id(card), trait_name)
+}
+
+/// 五行特征位，顺序同原来的逐项判定：金 → 水 → 木 → 火 → 土。位号与 `trait_bit` 一致
+/// （单测 `element_trait_bits_match_trait_bit` 锁定）；每次出牌要判多次，不再逐项查特征名。
+const ELEMENT_TRAIT_BITS: [(u16, Element); 5] = [
+    (1 << 4, Element::Metal),
+    (1 << 5, Element::Water),
+    (1 << 6, Element::Wood),
+    (1 << 3, Element::Fire),
+    (1 << 2, Element::Earth),
+];
+
+#[inline]
+fn element_trait_by_base_id(base_id: i64) -> Option<Element> {
+    let mask = base_id_trait_mask(base_id);
+    if mask == 0 {
+        return None;
+    }
+    ELEMENT_TRAIT_BITS
+        .iter()
+        .find(|(bit, _)| mask & bit != 0)
+        .map(|&(_, element)| element)
+}
+
 
 pub(super) fn has_cloud_chain(actor: &ReplayPlayer) -> bool {
     // Original BattleCharacter.HasBuff, BattleCharacter.cs:8306-8320: these virtual
@@ -308,9 +363,7 @@ pub(super) fn effective_hp_cost(card: &CardDefinition, actor: &ReplayPlayer) -> 
 }
 
 pub(super) fn is_beng_quan(base_id: i64) -> bool {
-    card_traits_by_base_id()
-        .get(&base_id.to_string())
-        .is_some_and(|traits| traits.iter().any(|trait_value| trait_value == "bengQuan"))
+    base_id_has_trait(base_id, "bengQuan")
 }
 
 pub(super) fn is_beng_quan_card(card: &CardDefinition) -> bool {
@@ -497,7 +550,8 @@ pub(super) fn is_fate_strategy_card(base_id: i64) -> bool {
 }
 
 pub(super) fn element_from_card(card: &CardDefinition) -> Option<Element> {
-    element_trait(card).or_else(|| card_element(normalized_base_id(card)))
+    let base_id = normalized_base_id(card);
+    element_trait_by_base_id(base_id).or_else(|| card_element(base_id))
 }
 
 pub(super) fn is_five_element_card(card: &CardDefinition) -> bool {
@@ -741,7 +795,7 @@ pub(super) fn seven_stars_stabilize_soul_card() -> CardDefinition {
     CardDefinition {
         id: 11,
         base_id: Some(11),
-        name: "七星定魂".to_string(),
+        name: "七星定魂".to_string().into(),
         card_type: None,
         attack: None,
         random_attack: None,
@@ -757,7 +811,7 @@ pub(super) fn seven_stars_stabilize_soul_card() -> CardDefinition {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![4],
+        other_params: vec![4].into(),
     }
 }
 
@@ -765,7 +819,7 @@ pub(super) fn basic_attack_card() -> CardDefinition {
     CardDefinition {
         id: BASIC_ATTACK_ID,
         base_id: Some(BASIC_ATTACK_ID),
-        name: "普通攻击".to_string(),
+        name: "普通攻击".to_string().into(),
         card_type: None,
         attack: Some(BASIC_ATTACK_DAMAGE),
         random_attack: None,
@@ -781,7 +835,7 @@ pub(super) fn basic_attack_card() -> CardDefinition {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: vec![],
+        other_params: Default::default(),
     }
 }
 
@@ -795,4 +849,17 @@ pub(super) fn div_ceil(value: i64, denominator: i64) -> i64 {
 
 pub(super) fn permanent_physique_key() -> &'static str {
     PERMANENT_PHYSIQUE_KEY
+}
+
+#[cfg(test)]
+mod element_trait_bit_tests {
+    use super::*;
+
+    #[test]
+    fn element_trait_bits_match_trait_bit() {
+        let names = ["element:metal", "element:water", "element:wood", "element:fire", "element:earth"];
+        for ((bit, _), name) in ELEMENT_TRAIT_BITS.iter().zip(names) {
+            assert_eq!(Some(*bit), trait_bit(name).map(|b| 1_u16 << b), "{name}");
+        }
+    }
 }

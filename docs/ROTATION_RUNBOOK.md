@@ -7,6 +7,24 @@
 > `BUILD_*-to-*_RULE_DELTA.md`；门禁与边界见 `AGENTS.md` / `docs/AGENT_CONTEXT.md`。
 > 流程教训来自 2026-08-07/08 的 24466094 → 24589371 → 24610558 两次实机换代。
 
+## 换代分级（2026-09-24 起）
+
+引擎还原度已稳定在 99.5% 以上，语料的角色从「钉住规则」转为**回归网**：
+
+- **不再每代采集回放**。`rotate:build` 的 screen 步骤按 build diff 输出
+  `collection: required / not required`：战斗配置表（cards、buffs、talents、fateStrategies 等）
+  与反编译源码都没变 → 只刷新指纹与派生数据（stage 步骤自动完成），无需采集；有变化 →
+  按 `battle-rule-development` 对改动点取证（首方回放、oracle 或合成 oracle 择一够用即可）。
+- **引擎只对齐最新 build，不做向后兼容**：不按 fixture 录制 build 分叉规则或数值
+  （无 build 门控、无 capability 分支，`shared/data/original-card-configs.ts` 随换代同步为
+  最新配置）。换代后与最新规则冲突的旧语料轮次按 replay withdrawal 撤回，其余旧语料继续当
+  回归网；已准入语料上 `winner` / `actorTurn` / `hpDelta` 仍须严格一致。分析与测试的 fixture 取
+  「不晚于当前 build 的最新已准入 build」（`resolveLatestAdmittedReplayBuild`），不要求
+  当前 build 必有语料。
+- **golden splice / full-state 基线按需**：只在排查 mismatch 时重采；已提交的基线按其采集
+  build 自洽校验。
+- **新增触发源**：练习模式实战校准里仿真与实战分歧时，同样回引擎取证。
+
 ## 0. 换代前置（先确认再动手）
 
 1. **先查 Steam appmanifest（`steamapps/appmanifest_1948800.acf`，安装目录以本机为准）**：
@@ -15,9 +33,9 @@
    24589371→24610558 就是启动 Steam 时被自动应用的）。提取/采集前必须确认两值一致，
    否则证据链中途跳 build、全部 fail-closed。
 2. 确认工具链就位：Steam 安装、`research/original-game/tools/{bin/ilspycmd,dotnet,venv}`。
-3. **私有 companion 与公开树一致性**：`extracted/current`、`EVIDENCE_MANIFEST.json`、
-   `original-build-profiles.json` 三处必须同一 build。私有树的 `extracted/current` 经常落后
-   （边界拆分后无人自动同步），导入含新卡的回放会直接 KeyError。
+3. **证据三处同 build**：`extracted/current`、`EVIDENCE_MANIFEST.json`、
+   `original-build-profiles.json` 必须同一 build；`extracted/current` 落后时导入含新卡的回放会
+   直接 KeyError。
 
 ## 0.5 单入口状态机（推荐）
 
@@ -66,7 +84,7 @@ bun run evidence:card-configs                                   # 卡配置（�
   无需新登记，profiles 只加 profile 行。源码变更时逐条核对正交性（方法级 diff），
   **非正交登记必须标注「待真实 reverify」**（先例：422 星力机制三处触发点改写）。
 - 同步 `docs/AGENT_CONTEXT.md` build 号（项目入口，push 前必查）。
-- 门禁：`check:original-build-profiles`、`test:evaluator`、`test:ts`、`check:rust:quick`、
+- 门禁：`check:original-build-profiles`、`test:evaluator`、`check:rust:quick`、
   `check:docs-drift`；测试里机械 build 号期望（original-build-flags 等）随轮换更新。
 
 ## 2. 规则影响评估（一次做透，别挤牙膏）
@@ -78,7 +96,10 @@ bun run evidence:card-configs                                   # 卡配置（�
 - 纪律：**反编译里存在分支 ≠ 实现理由**；判据只有「真实回放里出现过」。
   纯表现变更（皮肤 FX、相机）明确标注不实现。
 
-## 3. 验证闭环（push 前必须完整走一遍）
+## 3. 验证闭环（仅 `collection: required` 时）
+
+分级为 not required 时跳过本节，靠已准入语料的回归（`check:rust:quick` 等）即可。
+需要取证时只针对 diff 触及的机制，按下列手段由低到高择一够用，不必每代全部走完。
 
 rotate 的 `screen` 不是只写计划：带 `--corpus` 时会实际依次执行 affected、
 regression/drift anchors、full-once 三个 tier。三个 tier 都必须显式提供真实命令；仓库提供
@@ -105,7 +126,7 @@ binary SHA-256 写入 receipt。anchors 命令负责一方 exact 三字段门禁
 顺序按成本从低到高：
 
 1. **yiwen 首方导入 + screen**（需客户端）：最新弈闻记录 → fixture → 引擎 screen。
-   mismatch 用 `dump-aligned-checkpoints.ts` + oracle 首差定位 → 每根因一个 `fix(replay:)` 小提交。
+   mismatch 用 `dump-aligned-rust-full-state.ts` + oracle 首差定位 → 每根因一个 `fix(replay:)` 小提交。
 2. **oracle 事件级复核**：`oracle:mirror:run` / 首方 oracle，逐 checkpoint 对齐。
    教训：**崩拳动量公式假设曾被 oracle 证伪**（引擎与原版结构等价，真根因是缺失的
    fate 策略 427/429）。oracle 是唯一能证伪「凭数值猜规则」的工具，猜之前先采。
@@ -131,10 +152,10 @@ binary SHA-256 写入 receipt。anchors 命令负责一方 exact 三字段门禁
 
 - 主仓库 remote push 被禁用（历史含私有语料）。发布路径：
   `bun run export:public --target <Open-YiXianCard-public-final> --replace` → public-final
-  提交 → `git push origin main`。export 是 allowlist，自动剔除私有材料（analysis/corpus/TUI）。
-- **push 前检查清单**：门禁全绿（cargo / test:ts / evaluator / profiles / docs-drift /
+  提交 → `git push origin main`。export 是 allowlist，自动剔除私有材料（analysis/corpus）。
+- **push 前检查清单**：门禁全绿（cargo / evaluator / profiles / docs-drift /
   rust:quick）；`check:worktree` clean；`AGENT_CONTEXT.md` build 号正确；无 scratch/临时
-  文件；`tui.rs`/`tui_app`/ratatui 依赖只允许存在于私有树（公开树 Cargo.toml 不得引入）。
+  文件。
 - 禁止：force-push、改历史、放宽 exact 断言（`winner`/`actorTurn`/`hpDelta` 三字段同时匹配）。
 
 ## 5. 已知坑（2026-08-07/08 实踩，先查后跑）
@@ -144,7 +165,6 @@ binary SHA-256 写入 receipt。anchors 命令负责一方 exact 三字段门禁
 | 启动 Steam 应用待更新 | 客户端跳 build，全链 fail-closed | 前置查 appmanifest 两字段一致 |
 | 私有树 extracted/current 落后 | 含新卡回放导出 KeyError | 轮换时同步私有树 current |
 | 私有 freeze 链缺别名 | 准入卡在 prepare-current-build | 按 55bdef80^ 契约恢复 package.json 别名 |
-| TUI 源/依赖误入公开树 | 边界扫描红、公开 Cargo 膨胀 | TUI 只放私有树；公开 Cargo.toml 不引 ratatui |
 | 边界拆分后首次跑某门禁 | 工具链缺口首次暴露 | 先 `check:private-manifest` 对账再跑私有链 |
 | 子任务超时无可见进度 | 误判卡死 | 任务 ≤1h，等待期主动轮询汇报 |
 
@@ -156,7 +176,7 @@ drift、旧客户端残留或镜像字段损坏强行清零，也不因此改 Ru
 `winner`、`actorTurn`、`hpDelta` 三元仍必须同时匹配。
 
 `screen_hf_stream.py` 的 receipt 会按首个 deviation 的 kind/message 聚类，保留代表样本
-供 `dump-aligned-checkpoints.ts` 和原版 oracle 取证。对目录语料的 build-diff triage，首次
+供 `dump-aligned-rust-full-state.ts` 和原版 oracle 取证。对目录语料的 build-diff triage，首次
 使用 `--corpus <dir>` 会建立 `<dir>/.corpus-index.json`；之后复用 `--index <path>`，每次
 先用 fixture 路径/大小/mtime 重新计算廉价 metadata fingerprint，变更会自动拒绝旧 index
 并重建；`--refresh-index` 可强制重建，避免每次重新解析数十万 JSON。

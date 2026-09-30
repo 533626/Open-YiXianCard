@@ -59,24 +59,26 @@ impl ReplayState {
                 self.apply_fate_strategy_stance_switch(actor_side);
             }
             222 => {
-                let agility = other_param(card, 0).max(0)
-                    + if self.actor(actor_side).beng.quan_stance > 0 {
-                        other_param(card, 1).max(0)
-                    } else {
-                        0
-                    };
-                self.gain_agility(actor_side, agility);
-                if self.actor(actor_side).beng.gun_stance > 0 {
+                // Card_222.cs：拳 → 身法 otherParams[0]+[1]；棍 → 身法 otherParams[0] 并攻击；
+                // 两种架势都没有（如幻羽鹦复制给无架势方）时不加身法、不攻击。
+                // oracle：hf-latest-33333000 bbcfba241c4acf94/round-13。
+                if self.actor(actor_side).beng.quan_stance > 0 {
+                    self.gain_agility(
+                        actor_side,
+                        other_param(card, 0).max(0) + other_param(card, 1).max(0),
+                    );
+                } else if self.actor(actor_side).beng.gun_stance > 0 {
+                    self.gain_agility(actor_side, other_param(card, 0).max(0));
                     attacked |= self.attack_by_config(actor_side, card, 0, slot);
                 }
+                // CardActionBase.SwitchJiaShi：拳→棍、棍→拳；两者皆无时不加任何架势。
                 if self.has_locked_li_stance(actor_side) {
                     // 335/349 锁定架势：不切换，只结算命运策略效果。
                 } else if self.actor(actor_side).beng.quan_stance > 0 {
                     self.actor_mut(actor_side).beng.quan_stance -= 1;
                     self.actor_mut(actor_side).beng.gun_stance += 1;
-                } else {
-                    self.actor_mut(actor_side).beng.gun_stance =
-                        (self.actor(actor_side).beng.gun_stance - 1).max(0);
+                } else if self.actor(actor_side).beng.gun_stance > 0 {
+                    self.actor_mut(actor_side).beng.gun_stance -= 1;
                     self.actor_mut(actor_side).beng.quan_stance += 1;
                 }
                 // 429 强攻架势按切换后的最终架势发奖（拳→+1 气势，棍→+1 加攻）。
@@ -170,7 +172,7 @@ impl ReplayState {
                     + self.actor(actor_side).elements.water_momentum_gain_count)
                     * other_param(card, 0).max(0);
                 attacked |= self.attack_by_config(actor_side, card, bonus, slot);
-                if self.is_element_activated(actor_side, Element::Water) {
+                if self.check_wu_xing(actor_side, Element::Water) {
                     let divisor = other_param(card, 1).max(1);
                     let gain = self.actor(actor_side).turn.actual_damage_carry / divisor;
                     if gain > 0 {
@@ -591,11 +593,7 @@ impl ReplayState {
             .contains(&335)
         {
             self.modify_momentum_limit(actor_side, 1);
-            if self.original_build_has_capability(
-                super::original_build_profile::OriginalBuildCapability::Fate335GrantsMomentum,
-            ) {
-                self.modify_momentum(actor_side, 1);
-            }
+            self.modify_momentum(actor_side, 1);
             self.gain_defense(actor_side, 3);
             handled = true;
         }

@@ -17,7 +17,6 @@ engine-rust/
 
 # TypeScript 源码与测试（引入 Prettier 时禁止大规模重排既有源码；
 # 后续若需格式化，请先收窄到具体文件再逐批迁移）
-engine-ts/
 battle-evaluator/
 scripts/
 src/ui/

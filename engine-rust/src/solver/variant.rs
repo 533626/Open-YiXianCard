@@ -23,6 +23,10 @@ pub struct SolverEvaluation {
     pub p1_hp: f64,
     pub p2_hp: f64,
     pub hp_delta_for_side: f64,
+    /// 终局时本方体魄（未截上限）。体魄跨轮保留（锻玄宗突破路之一），驱动侧据此给阵型的
+    /// 长期收益计价；只是读数，不参与 winner / actorTurn / hpDelta。
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub physique_for_side: Option<f64>,
     pub score: f64,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub value_metrics: Option<SolverValueMetrics>,
@@ -51,6 +55,8 @@ struct SuccessfulEvaluationInput {
     summary: ReplaySummary,
     p1_hp: i64,
     p2_hp: i64,
+    p1_physique: i64,
+    p2_physique: i64,
     value_metrics: Option<SolverValueMetrics>,
     rule_impacts: Vec<SolverRuleImpactReport>,
     decision_events: Vec<ReplayDecisionEvent>,
@@ -71,6 +77,8 @@ pub fn evaluate_fixture(
                     summary: run.summary,
                     p1_hp: run.p1.hp,
                     p2_hp: run.p2.hp,
+                    p1_physique: run.p1.physique,
+                    p2_physique: run.p2.physique,
                     value_metrics: None,
                     rule_impacts: Vec::new(),
                     decision_events: run.decision_events,
@@ -146,17 +154,15 @@ pub fn evaluate_fixture_deck_across_battle_seeds(
             "battle seeds reached evaluation without public-entry normalization".to_string(),
         );
     }
+    // 换阵型只克隆一次，再逐种子改决策回退种子（与「先按种子克隆、再换阵型」等价：
+    // 两步改的是不同字段）。原写法每个种子要克隆整个 fixture 两次。
+    let mut variant = create_fixture_variant(fixture, side, cards, hand_card_ids);
     aggregate_seed_evaluations(
         seeds
             .iter()
             .map(|seed| {
-                evaluate_fixture_deck(
-                    &with_typed_decision_fallback(fixture, *seed),
-                    side,
-                    cards,
-                    hand_card_ids.clone(),
-                    score_profile,
-                )
+                set_typed_decision_fallback(&mut variant, *seed);
+                evaluate_fixture(&variant, side, score_profile)
             })
             .collect(),
         seeds,
@@ -165,9 +171,13 @@ pub fn evaluate_fixture_deck_across_battle_seeds(
 
 fn with_typed_decision_fallback(fixture: &BattleFixture, seed: u32) -> BattleFixture {
     let mut seeded = fixture.clone();
-    let source = seeded.source.get_or_insert_with(FixtureSource::default);
-    source.synthetic_decision_fallback_seed = Some(seed);
+    set_typed_decision_fallback(&mut seeded, seed);
     seeded
+}
+
+fn set_typed_decision_fallback(fixture: &mut BattleFixture, seed: u32) {
+    let source = fixture.source.get_or_insert_with(FixtureSource::default);
+    source.synthetic_decision_fallback_seed = Some(seed);
 }
 
 fn aggregate_seed_evaluations(
@@ -205,6 +215,11 @@ fn aggregate_seed_evaluations(
         p1_hp: average(|item| item.p1_hp),
         p2_hp: average(|item| item.p2_hp),
         hp_delta_for_side: average(|item| item.hp_delta_for_side),
+        physique_for_side: evaluations
+            .iter()
+            .map(|item| item.physique_for_side)
+            .sum::<Option<f64>>()
+            .map(|total| total / count),
         score: average_score,
         value_metrics: first
             .value_metrics
@@ -340,7 +355,7 @@ pub(crate) fn fixture_hand_candidates(
                 original_card_definition_by_id(*card_id).unwrap_or_else(|| CardDefinition {
                     id: *card_id,
                     base_id: None,
-                    name: format!("card:{card_id}"),
+                    name: format!("card:{card_id}").into(),
                     card_type: None,
                     attack: None,
                     random_attack: None,
@@ -356,9 +371,9 @@ pub(crate) fn fixture_hand_candidates(
                     hexagram: None,
                     rarity: None,
                     career_name: None,
-                    other_params: Vec::new(),
+                    other_params: Vec::new().into(),
                 });
-            card.name = format!("card:{card_id}");
+            card.name = format!("card:{card_id}").into();
             card
         })
         .collect()
@@ -368,7 +383,7 @@ fn complete_original_card(card: &CardDefinition) -> CardDefinition {
     let mut completed = original_card_definition_by_id(card.id).unwrap_or_else(|| card.clone());
     completed.id = card.id;
     completed.base_id = card.base_id.or(completed.base_id);
-    completed.name = card.name.clone();
+    completed.name = card.name;
     completed.card_type = card.card_type.clone().or(completed.card_type);
     completed.attack = card.attack.or(completed.attack);
     completed.random_attack = card.random_attack.or(completed.random_attack);
@@ -408,6 +423,8 @@ fn evaluation_from_event_run(
             summary: run.summary,
             p1_hp: final_event.p1.hp,
             p2_hp: final_event.p2.hp,
+            p1_physique: final_event.p1.physique,
+            p2_physique: final_event.p2.physique,
             value_metrics,
             rule_impacts: Vec::new(),
             decision_events,
@@ -425,6 +442,8 @@ fn evaluation_from_summary(
         summary,
         p1_hp,
         p2_hp,
+        p1_physique,
+        p2_physique,
         value_metrics,
         rule_impacts,
         decision_events,
@@ -447,6 +466,10 @@ fn evaluation_from_summary(
         p1_hp: p1_hp as f64,
         p2_hp: p2_hp as f64,
         hp_delta_for_side: hp_delta_for_side as f64,
+        physique_for_side: Some(match side {
+            PlayerSide::P1 => p1_physique,
+            PlayerSide::P2 => p2_physique,
+        } as f64),
         score,
         value_metrics,
         rule_impacts,
@@ -459,7 +482,7 @@ fn evaluation_from_summary(
 
 /// Canonical checkpoint attribution for one fixture, without running a search.
 ///
-/// The browser and TUI need the same attribution the analysis pipeline consumes,
+/// The browser needs the same attribution the analysis pipeline consumes,
 /// and recomputing value channels on the consumer side would fork the weight
 /// table. Callers get `canonical-rule-impact-v1` verbatim.
 pub fn explain_fixture_rule_impact(
@@ -509,6 +532,7 @@ fn failed_evaluation(
         p1_hp: 0.0,
         p2_hp: 0.0,
         hp_delta_for_side: FAILED_SCORE as f64,
+        physique_for_side: None,
         score: FAILED_SCORE as f64,
         value_metrics: None,
         rule_impacts: Vec::new(),

@@ -98,20 +98,22 @@ impl ReplayState {
             7_000_046 => {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
                 let target_side = opponent_side(actor_side);
-                if self.is_element_activated(actor_side, Element::Earth) {
+                // Card_7000046.cs：攻击 → 自身加防 → CheckWuXing(JiHuoTuLing) 成立时才先减半
+                // 对方灵气、再减半对方防御（IL_0129→IL_01df）；未激活土灵直接结束。
+                self.apply_configured_defense(actor_side, card);
+                if self.check_wu_xing(actor_side, Element::Earth) {
                     let anima_loss = div_ceil(self.actor(target_side).core.anima.max(0), 2);
                     self.reduce_anima_unchecked(target_side, anima_loss);
+                    let defense_loss = div_ceil(self.actor(target_side).core.defense.max(0), 2);
+                    self.lose_defense(target_side, defense_loss);
                 }
-                self.apply_configured_defense(actor_side, card);
-                let defense_loss = div_ceil(self.actor(target_side).core.defense.max(0), 2);
-                self.lose_defense(target_side, defense_loss);
                 Some(attacked)
             }
             7_000_048 => {
-                if self.is_element_activated(actor_side, Element::Water) {
+                if self.check_wu_xing(actor_side, Element::Water) {
                     self.gain_anima(actor_side, other_param(card, 0).max(0));
                 }
-                if self.is_element_activated(actor_side, Element::Wood) {
+                if self.check_wu_xing(actor_side, Element::Wood) {
                     let healing =
                         self.actor(actor_side).core.anima.max(0) * other_param(card, 1).max(0);
                     self.modify_actor_hp(actor_side, healing, false, false);
@@ -127,7 +129,7 @@ impl ReplayState {
                     Element::Metal,
                     Element::Earth,
                 ] {
-                    if self.is_element_activated(actor_side, element) {
+                    if self.check_wu_xing(actor_side, element) {
                         attacked |= self.attack_by_config(actor_side, card, 0, slot);
                     }
                 }
@@ -135,7 +137,7 @@ impl ReplayState {
             }
             7_000_063 => {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
-                if self.is_element_activated(actor_side, Element::Metal) {
+                if self.check_wu_xing(actor_side, Element::Metal) {
                     self.actor_mut(opponent_side(actor_side))
                         .mirage_ronghui
                         .cannot_gain_hp += other_param(card, 0).max(0);

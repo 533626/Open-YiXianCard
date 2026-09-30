@@ -18,7 +18,7 @@
 | 默认求解预算 | 默认快路径不误触重型穷举 | `排序建议` <= 2,000 eval；`卡池建议` <= 15,000 eval；`仙命构筑` <= 5,000 eval；`穷举牌序` 明确标注 |
 | fixture 导入 | 按编号选择 fixture 后立即跑 UI 模拟并显示一致性 | `e63*` 可筛出 `e63lwvs/round-*`；`.fixture-consistency` 展示 UI=Engine 或 UI!=Engine |
 | adapter 一致性 | UI adapter 输出与直接 engine replay 对比 | winnerSide、actorTurnCount、hpDeltaP1MinusP2、finalHp 全等 |
-| TS/Rust 存档复用 | WebUI 导出/导入 Rust TUI 单方构筑存档 | JSON 为 `schemaVersion: 2`、`kind: tuiPlayerBuild`；Rust TUI 可直接读 |
+| 构筑存档 | WebUI 导出/导入单方构筑存档 | JSON 为 `schemaVersion: 2`、`kind: tuiPlayerBuild`（历史格式名，TUI 已于 2026-09-24 移出仓库） |
 | 调步操作 | 战斗导航按钮与方向键支持逐动切换 | 按钮最小 38x34px；`ArrowLeft/Up` 上一动，`ArrowRight/Down` 下一动，输入框聚焦时不抢键；引擎透视光标到达中线后居中跟随，手动滚动后下一次调步回中 |
 | 布局稳定 | 关键控件不引发横向滚动或文本溢出 | 1180px 宽桌面无 body 横向滚动；按钮文本不截断 |
 | 空白率上限 | 首屏关键面板非交互空白不吞掉视口 | 1440x900 下无战斗结果时不渲染右侧 60% 空战斗面板；战斗态 `.player-panel` 内裸露背景占比 <= 15% |

@@ -365,33 +365,32 @@ impl ReplayState {
     pub(super) fn apply_ronghui_five_emperors_upgrade_transform(
         &mut self,
         actor_side: PlayerSide,
-        mut drawn: super::DrawnCard,
-    ) -> super::DrawnCard {
+        drawn: &mut super::DrawnCard,
+    ) {
         if self.actor(actor_side).ronghui.five_emperors_upgrade > 0
             && can_upgrade_original_battle_deck_card(drawn.card.id)
         {
             if let Some(upgraded) = original_card_definition(drawn.card.id + 10_000) {
                 self.actor_mut(actor_side).ronghui.five_emperors_upgrade -= 1;
-                self.replace_ronghui_drawn_card(actor_side, &mut drawn, upgraded);
+                self.replace_ronghui_drawn_card(actor_side, drawn, upgraded);
             } else {
                 self.missing_decision("card:178:upgrade definition");
             }
         }
-        drawn
     }
 
     pub(super) fn apply_ronghui_alchemy_pot_transform(
         &mut self,
         actor_side: PlayerSide,
-        mut drawn: super::DrawnCard,
-    ) -> super::DrawnCard {
+        drawn: &mut super::DrawnCard,
+    ) {
         if self.actor(actor_side).ronghui.alchemy_pot > 0 {
             self.actor_mut(actor_side).ronghui.alchemy_pot -= 1;
             // CardActionBase reads the config field, never an id-derived
             // upgrade rank. A missing rarity is CardConfig's default zero.
             if drawn.card.rarity.unwrap_or(0) >= 1 && drawn.card.id != 19 {
                 if let Some(lowered) = original_card_definition(drawn.card.id - 10_000) {
-                    self.replace_ronghui_drawn_card(actor_side, &mut drawn, lowered);
+                    self.replace_ronghui_drawn_card(actor_side, drawn, lowered);
                 } else {
                     self.missing_decision("card:181:downgrade definition");
                 }
@@ -406,14 +405,13 @@ impl ReplayState {
                 self.modify_actor_hp(target_side, drain, false, false);
             }
         }
-        drawn
     }
 
     pub(super) fn apply_ronghui_free_and_easy_tune_transform(
         &mut self,
         actor_side: PlayerSide,
-        mut drawn: super::DrawnCard,
-    ) -> super::DrawnCard {
+        drawn: &mut super::DrawnCard,
+    ) {
         if self.actor(actor_side).ronghui.free_and_easy_tune > 0
             && normalized_base_id(&drawn.card) == 0
         {
@@ -438,7 +436,7 @@ impl ReplayState {
                     previous_card.id
                 };
                 if let Some(replacement) = original_card_definition(replacement_id) {
-                    self.replace_ronghui_drawn_card(actor_side, &mut drawn, replacement);
+                    self.replace_ronghui_drawn_card(actor_side, drawn, replacement);
                 } else {
                     self.missing_decision("card:206:replacement definition");
                 }
@@ -446,7 +444,6 @@ impl ReplayState {
                 self.missing_decision("card:206:previous active grid");
             }
         }
-        drawn
     }
 
     pub(super) fn reduce_ronghui_rear_move_anima_cost(

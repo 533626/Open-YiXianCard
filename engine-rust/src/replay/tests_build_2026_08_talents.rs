@@ -237,14 +237,14 @@ fn fate_417_talent_199_wu_xing_count_raises_smash_damage_and_water_momentum() {
     // 五行 → 16 伤 → 16/5=3）。
     let mut spring = card(7_000_059, 7_000_059, "水灵•泉涌");
     spring.anima = Some(2);
-    spring.other_params = vec![1];
+    spring.other_params = vec![1].into();
     let mut smash = card(7_000_066, 7_000_066, "混元碎击");
     smash.attack = Some(4);
-    smash.other_params = vec![4];
+    smash.other_params = vec![4].into();
     let mut thorn = card(7_000_027, 7_000_027, "木灵•玫刺");
     thorn.attack = Some(4);
     let mut flash = card(7_000_038, 7_000_038, "火灵•瞬燃");
-    flash.other_params = vec![4];
+    flash.other_params = vec![4].into();
     let mut battle = fixture(deck(smash.clone()), deck(basic_attack()));
     battle.players.p1.cards = vec![spring.clone(), smash.clone(), thorn, flash];
     battle.players.p1.active_slot_count = 4;
@@ -452,7 +452,7 @@ fn qi_swallow_mountains_has_no_passive_turn_growth() {
     // Card_4000060.cs OnExecuted 只有 ModifyMaxHp(otherParams[0]) +
     // CheckHouZhao→ModifyHp(otherParams[1])：未打出时无任何逐回合效果。
     let mut qi_swallow = card(4_010_060, 4_000_060, "气吞山河");
-    qi_swallow.other_params = vec![12, 24];
+    qi_swallow.other_params = vec![12, 24].into();
     let mut cards = vec![basic_attack(), qi_swallow.clone()];
     cards.resize_with(DECK_SIZE, basic_attack);
     let mut battle = fixture(cards, deck(basic_attack()));
@@ -473,7 +473,7 @@ fn qi_swallow_mountains_play_raises_max_hp_only_and_rear_move_heals() {
     // 后招成立条件 = cardItem.hadUsed（本卡槽再次打出），故首次打出无后招
     // （4085/15 四次打出均首次 → hp 不变；c5c3/13 t17u1 同）。
     let mut qi_swallow = card(4_010_060, 4_000_060, "气吞山河");
-    qi_swallow.other_params = vec![12, 24];
+    qi_swallow.other_params = vec![12, 24].into();
     let mut cards = vec![qi_swallow.clone(), basic_attack()];
     cards.resize_with(DECK_SIZE, basic_attack);
     let mut battle = fixture(cards, deck(basic_attack()));

@@ -18,7 +18,7 @@ fn deck_with(cards: Vec<CardDefinition>) -> Vec<CardDefinition> {
 fn sustain(value: i64) -> OriginalEnumValue {
     OriginalEnumValue {
         value,
-        name: "Sustain".to_string(),
+        name: "Sustain".to_string().into(),
     }
 }
 
@@ -50,7 +50,7 @@ fn chance_nether_three_point_hand_freezes_max_hp_bonus_for_all_attack_segments()
 #[test]
 fn chance_nether_three_point_hand_guards_zero_divisor() {
     let mut card = original_card(10_000_067);
-    card.other_params = vec![0];
+    card.other_params = vec![0].into();
     let mut p1 = player(deck_with(vec![card.clone()]));
     p1.base_max_hp = 10;
     let mut state =
@@ -339,7 +339,7 @@ fn canonical_secret_sword_handlers_match_frozen_ts_contracts() {
 
     let mut diligent = original_card(1_000_054);
     diligent.attack = Some(6);
-    diligent.other_params = vec![5];
+    diligent.other_params = vec![5].into();
     let mut p1 = player(deck_with(vec![diligent.clone()]));
     p1.last_round_exp = 17;
     let mut state =
@@ -361,7 +361,7 @@ fn canonical_secret_sword_handlers_match_frozen_ts_contracts() {
 #[test]
 fn canonical_astrology_handlers_match_frozen_ts_contracts() {
     let mut rebirth = original_card(4_000_047);
-    rebirth.other_params = vec![4];
+    rebirth.other_params = vec![4].into();
     let mut p1 = player(deck_with(vec![rebirth.clone()]));
     p1.initial_anima = 3;
     let mut state =
@@ -374,7 +374,7 @@ fn canonical_astrology_handlers_match_frozen_ts_contracts() {
     assert_eq!(state.p1.core.hp, 40);
 
     let mut contest = original_card(4_000_050);
-    contest.other_params = vec![13, 2];
+    contest.other_params = vec![13, 2].into();
     let mut p1 = player(deck_with(vec![contest.clone()]));
     p1.base_max_hp = 80;
     let mut p2 = player(deck_with(vec![basic_attack()]));
@@ -385,7 +385,7 @@ fn canonical_astrology_handlers_match_frozen_ts_contracts() {
 
     let mut slay_dragon = original_card(4_000_051);
     slay_dragon.attack = Some(10);
-    slay_dragon.other_params = vec![5];
+    slay_dragon.other_params = vec![5].into();
     let mut state = ReplayState::test_from_fixture(&fixture(
         player(deck_with(vec![slay_dragon.clone()])),
         player(deck_with(vec![basic_attack()])),
@@ -397,7 +397,7 @@ fn canonical_astrology_handlers_match_frozen_ts_contracts() {
 
     let mut ask_way = original_card(4_000_053);
     ask_way.attack = Some(6);
-    ask_way.other_params = vec![2, 2];
+    ask_way.other_params = vec![2, 2].into();
     let mut state = ReplayState::test_from_fixture(&fixture(
         player(deck_with(vec![ask_way.clone()])),
         player(deck_with(vec![basic_attack()])),
@@ -409,7 +409,7 @@ fn canonical_astrology_handlers_match_frozen_ts_contracts() {
     assert_eq!(state.p2.status.flaw, 2);
 
     let mut derivation = original_card(4_000_054);
-    derivation.other_params = vec![2];
+    derivation.other_params = vec![2].into();
     let mut state = ReplayState::test_from_fixture(&fixture(
         player(deck_with(vec![derivation.clone()])),
         player(deck_with(vec![basic_attack()])),
@@ -437,7 +437,7 @@ fn canonical_five_element_handlers_match_frozen_ts_contracts() {
     assert_eq!(state.p2.core.defense, 1);
 
     let mut nourish = original_card(7_000_048);
-    nourish.other_params = vec![2, 2];
+    nourish.other_params = vec![2, 2].into();
     let mut p1 = player(deck_with(vec![nourish.clone()]));
     p1.initial_anima = 3;
     let mut state =
@@ -463,7 +463,7 @@ fn canonical_five_element_handlers_match_frozen_ts_contracts() {
 
     let mut seal_throat = original_card(7_000_063);
     seal_throat.attack = Some(8);
-    seal_throat.other_params = vec![2];
+    seal_throat.other_params = vec![2].into();
     let mut state = ReplayState::test_from_fixture(&fixture(
         player(deck_with(vec![seal_throat.clone()])),
         player(deck_with(vec![basic_attack()])),
@@ -508,7 +508,7 @@ fn canonical_fist_and_artifact_handlers_match_frozen_ts_contracts() {
 
     let mut spear = original_card(99_000_107);
     spear.attack = Some(12);
-    spear.other_params = vec![2];
+    spear.other_params = vec![2].into();
     let mut p2 = player(deck_with(vec![basic_attack()]));
     p2.initial_defense = 6;
     let mut state =
@@ -518,7 +518,7 @@ fn canonical_fist_and_artifact_handlers_match_frozen_ts_contracts() {
     assert_eq!(state.p2.core.hp, 41);
 
     let mut tower = original_card(99_000_111);
-    tower.other_params = vec![25, 1];
+    tower.other_params = vec![25, 1].into();
     let mut p2 = player(deck_with(vec![basic_attack()]));
     p2.initial_defense = 5;
     let mut state =
@@ -530,7 +530,7 @@ fn canonical_fist_and_artifact_handlers_match_frozen_ts_contracts() {
 
     let mut struggle = original_card(10_000_054);
     struggle.physique = Some(2);
-    struggle.other_params = vec![14];
+    struggle.other_params = vec![14].into();
     let mut state = ReplayState::test_from_fixture(&fixture(
         player(deck_with(vec![struggle.clone()])),
         player(deck_with(vec![basic_attack()])),
@@ -541,7 +541,7 @@ fn canonical_fist_and_artifact_handlers_match_frozen_ts_contracts() {
     assert_eq!(state.p1.core.physique, 2);
 
     let mut burn_boats = original_card(10_000_061);
-    burn_boats.other_params = vec![80, 3];
+    burn_boats.other_params = vec![80, 3].into();
     let mut p1 = player(deck_with(vec![burn_boats.clone()]));
     p1.base_max_hp = 100;
     let mut state =
@@ -554,7 +554,7 @@ fn canonical_fist_and_artifact_handlers_match_frozen_ts_contracts() {
     assert_eq!(state.p1.core.attack_bonus, 3);
 
     let mut burial = original_card(10_000_064);
-    burial.other_params = vec![3];
+    burial.other_params = vec![3].into();
     let mut state = ReplayState::test_from_fixture(&fixture(
         player(deck_with(vec![burial.clone()])),
         player(deck_with(vec![basic_attack()])),
@@ -596,7 +596,7 @@ fn five_element_bloom_uses_matching_rarity_for_temporary_seals() {
 fn canonical_replay_handlers_cover_clear_heart_formation_and_dream_anima_infusion() {
     let mut formation = original_card(126);
     formation.defense = Some(5);
-    formation.other_params = vec![2];
+    formation.other_params = vec![2].into();
     let second_formation = original_card(48);
     let mut p1 = player(deck_with(vec![formation.clone(), second_formation]));
     p1.active_slot_count = 2;
@@ -614,7 +614,7 @@ fn canonical_replay_handlers_cover_clear_heart_formation_and_dream_anima_infusio
 
     let mut low = custom_card(1_020_067, 1_000_067, "梦•灵气灌注");
     low.anima = Some(2);
-    low.other_params = vec![10];
+    low.other_params = vec![10].into();
     let mut state = ReplayState::test_from_fixture(&fixture(
         player(deck_with(vec![low.clone()])),
         player(deck_with(vec![basic_attack()])),
@@ -626,7 +626,7 @@ fn canonical_replay_handlers_cover_clear_heart_formation_and_dream_anima_infusio
 
     let mut high = custom_card(1_040_067, 1_000_067, "梦•灵气灌注");
     high.anima = Some(2);
-    high.other_params = vec![10];
+    high.other_params = vec![10].into();
     let mut state = ReplayState::test_from_fixture(&fixture(
         player(deck_with(vec![high.clone()])),
         player(deck_with(vec![basic_attack()])),
@@ -712,6 +712,8 @@ fn one_slot_player(cards: Vec<CardDefinition>) -> FixturePlayer {
         talents: Vec::new(),
         fate_strategies: Vec::new(),
         fate_strategy_temp_datas: Default::default(),
+        xian_mo_strategies: Vec::new(),
+        xian_mo_temp_datas: Default::default(),
         active_slot_count: 1,
         initial_defense: 0,
         initial_anima: 0,
@@ -775,7 +777,7 @@ fn double_ghost_knock_applies_injuries_before_attacking() {
     double_ghost.anima = Some(-1);
     double_ghost.attack = Some(7);
     double_ghost.attack_count = Some(2);
-    double_ghost.other_params = vec![2, 1];
+    double_ghost.other_params = vec![2, 1].into();
 
     let mut p1 = one_slot_player(one_slot_deck_with(double_ghost));
     p1.initial_anima = 1;
@@ -797,7 +799,7 @@ fn double_ghost_knock_does_not_inherit_beng_quan_han() {
     double_ghost.anima = Some(-1);
     double_ghost.attack = Some(7);
     double_ghost.attack_count = Some(2);
-    double_ghost.other_params = vec![2, 1];
+    double_ghost.other_params = vec![2, 1].into();
 
     let mut p1 = one_slot_player(one_slot_deck_with(double_ghost));
     p1.initial_anima = 1;

@@ -409,9 +409,7 @@ fn stratified_worker_count(item_count: usize, chunk_target: usize) -> usize {
     } else {
         item_count.div_ceil(chunk_target)
     };
-    thread::available_parallelism()
-        .map(usize::from)
-        .unwrap_or(1)
+    solver_parallelism()
         .min(item_count)
         .min(target_limited_count.max(1))
         .max(1)

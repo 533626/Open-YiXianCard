@@ -26,7 +26,7 @@ fn external_repeat_sources_are_checked_after_each_prior_effect() {
 
     // The same contract applies to the later 聚焰 branch.
     let mut gather_flame = test_card(270, 270, "幻•火灵聚炎动态重复");
-    gather_flame.other_params = vec![0, 0];
+    gather_flame.other_params = vec![0, 0].into();
     let mut fire_state = ReplayState::test_from_fixture(&minimal_fixture(
         filler_cards(gather_flame),
         filler_cards(basic_attack_test_card()),
@@ -102,7 +102,7 @@ fn profound_spirit_healing_respects_exorcism_before_counting_debuffs() {
 fn spirit_formation_echo_base_lifecycle_keeps_primary_action_again_snapshot() {
     let mut upgraded = original_card_definition_by_id(9_020_026)
         .expect("missing rarity-two clear-intestine purple fern");
-    upgraded.name = "测试灵阵".to_string();
+    upgraded.name = "测试灵阵".to_string().into();
     let mut fixture = minimal_fixture(
         filler_cards(upgraded),
         filler_cards(basic_attack_test_card()),
@@ -139,48 +139,42 @@ fn hound_and_alchemy_read_explicit_rarity_instead_of_id_segments() {
     let mut embryo = test_card(19, 19, "澄心剑胚显式稀有度");
     embryo.rarity = Some(2);
     state.p1.chance.you_ming_xu_hun_quan = 1;
-    let transformed = state.apply_you_ming_xu_hun_quan_replacement(
-        PlayerSide::P1,
-        DrawnCard {
-            source_slot: 0,
-            card: embryo,
-            fallback_basic_attack: false,
-            skipped_slots: Vec::new(),
-            skipped_opening_slots: Vec::new(),
-            fate_398_skipped_fifth_grid: false,
-        },
-    );
+    let mut transformed = DrawnCard {
+        source_slot: 0,
+        card: embryo,
+        fallback_basic_attack: false,
+        skipped_slots: Vec::new(),
+        skipped_opening_slots: Vec::new(),
+        fate_398_skipped_fifth_grid: false,
+    };
+    state.apply_you_ming_xu_hun_quan_replacement(PlayerSide::P1, &mut transformed);
     assert_eq!(transformed.card.id, 20_000);
 
     let mut upgraded_id_zero_rarity = test_card(10_000, 0, "升级段但零稀有度");
     upgraded_id_zero_rarity.rarity = Some(0);
     state.p1.chance.you_ming_xu_hun_quan = 1;
-    let transformed = state.apply_you_ming_xu_hun_quan_replacement(
-        PlayerSide::P1,
-        DrawnCard {
-            source_slot: 0,
-            card: upgraded_id_zero_rarity.clone(),
-            fallback_basic_attack: false,
-            skipped_slots: Vec::new(),
-            skipped_opening_slots: Vec::new(),
-            fate_398_skipped_fifth_grid: false,
-        },
-    );
+    let mut transformed = DrawnCard {
+        source_slot: 0,
+        card: upgraded_id_zero_rarity.clone(),
+        fallback_basic_attack: false,
+        skipped_slots: Vec::new(),
+        skipped_opening_slots: Vec::new(),
+        fate_398_skipped_fifth_grid: false,
+    };
+    state.apply_you_ming_xu_hun_quan_replacement(PlayerSide::P1, &mut transformed);
     assert_eq!(transformed.card.id, 0);
 
     let mut alchemy_state = ReplayState::test_from_fixture(&fixture);
     alchemy_state.p1.ronghui.alchemy_pot = 1;
-    let transformed = alchemy_state.apply_ronghui_alchemy_pot_transform(
-        PlayerSide::P1,
-        DrawnCard {
-            source_slot: 0,
-            card: upgraded_id_zero_rarity,
-            fallback_basic_attack: false,
-            skipped_slots: Vec::new(),
-            skipped_opening_slots: Vec::new(),
-            fate_398_skipped_fifth_grid: false,
-        },
-    );
+    let mut transformed = DrawnCard {
+        source_slot: 0,
+        card: upgraded_id_zero_rarity,
+        fallback_basic_attack: false,
+        skipped_slots: Vec::new(),
+        skipped_opening_slots: Vec::new(),
+        fate_398_skipped_fifth_grid: false,
+    };
+    alchemy_state.apply_ronghui_alchemy_pot_transform(PlayerSide::P1, &mut transformed);
     assert_eq!(transformed.card.id, 10_000);
     assert_eq!(
         (alchemy_state.p1.core.hp, alchemy_state.p1.core.max_hp),

@@ -1,5 +1,5 @@
 use super::*;
-use crate::fixture::{BattleFixture, FixturePlayer, FixtureSource};
+use crate::fixture::{BattleFixture, FixturePlayer};
 use crate::model::{CardDefinition, PlayerSide, DECK_SIZE};
 
 fn basic_attack() -> CardDefinition {
@@ -430,7 +430,7 @@ fn fate_strategy_336_grants_agility_after_first_anima_gain() {
 #[test]
 fn fate_strategy_336_precedes_anima_opening_card() {
     let mut opening = original_card_definition_by_id(11_000_009).expect("missing 探灵 opening");
-    opening.other_params = vec![1];
+    opening.other_params = vec![1].into();
     let mut p1 = player();
     p1.fate_strategies = vec![336];
     p1.cards[0] = opening;
@@ -547,9 +547,9 @@ fn fate_strategy_428_palm_card_retains_momentum_on_attack() {
     // HasFateStrategy(428) && m_CurrentUsingCard.name.Contains("掌") 时，
     // 攻击计算气势不递减（-0 而不是 -1）。
     let mut palm_card = basic_attack();
-    palm_card.name = "迎风掌".to_string();
+    palm_card.name = "迎风掌".to_string().into();
     let mut non_palm_card = basic_attack();
-    non_palm_card.name = "连环拳".to_string();
+    non_palm_card.name = "连环拳".to_string().into();
 
     // 1. Fate 428 + 掌牌：气势不递减
     let mut p1 = player();
@@ -597,11 +597,11 @@ fn card_10000092_ling_kong_fei_sao_uses_half_anima_attack() {
         c.id = 10_000_092;
         c.base_id = Some(10_000_092);
         c.attack = Some(8);
-        c.other_params = vec![1, 2, 3, 1];
+        c.other_params = vec![1, 2, 3, 1].into();
         c
     });
     card.attack = Some(8);
-    card.other_params = vec![1, 2, 3, 1];
+    card.other_params = vec![1, 2, 3, 1].into();
 
     let mut p1 = player();
     p1.cards = vec![card.clone(); DECK_SIZE];
@@ -611,91 +611,39 @@ fn card_10000092_ling_kong_fei_sao_uses_half_anima_attack() {
 
     // p2 takes 10 damage: 100 - 10 = 90
     assert_eq!(state.p2.core.hp, 90);
-
-    // 旧 build（24610558）：Card_10000092.cs OnExecuted 为
-    // attack + anima * otherParams[0]（整乘，8 + 5*1 = 13），阈值见
-    // original_config::LING_KONG_FEI_SAO_FORMULA_SINCE_BUILD。candidates 层
-    // 23 个旧录制对局即因该公式未门控而漂移。
-    let mut old_fixture = {
-        let mut p1_old = player();
-        p1_old.cards = vec![card; DECK_SIZE];
-        fixture(p1_old, player())
-    };
-    old_fixture.source = Some(FixtureSource {
-        steam_build: Some("24610558".to_string()),
-        ..FixtureSource::default()
-    });
-    let mut old_state = ReplayState::test_from_fixture(&old_fixture);
-    old_state.p1.core.anima = 5;
-    old_state.execute_actor_turn();
-    assert_eq!(old_state.p2.core.hp, 87);
 }
 
 #[test]
-fn card_10000092_ling_kong_fei_sao_hp_cost_follows_build_and_level_down() {
-    // 24811621→24963639 CardConfig: 凌空飞扫 hpCost 6 -> 2.
-    // 现代 build (>=24963639): 无论是对局原牌还是厄劫缠身等对局内降级重查 catalog, hpCost 均为 2.
-    // 旧 build (<24963639): hpCost 为 6.
+fn card_10000092_ling_kong_fei_sao_hp_cost_is_two() {
+    // CardConfig 凌空飞扫 hpCost = 2；对局内降级（厄劫缠身）重查 catalog 同样是 2。
     let card = original_card_definition_by_id(10_000_092).unwrap();
-    assert_eq!(card.hp_cost, Some(6)); // catalog 保持旧值 6
+    assert_eq!(card.hp_cost, Some(2));
 
-    // 1. 现代 build 结算 hpCost = 2
     let mut p1 = player();
     p1.cards = vec![card.clone(); DECK_SIZE];
     let mut state = ReplayState::test_from_fixture(&fixture(p1, player()));
     state.p1.core.hp = 100;
     state.execute_actor_turn();
     assert_eq!(state.p1.core.hp, 98); // 100 - 2 = 98
-
-    // 2. 旧 build 结算 hpCost = 6
-    let mut old_fixture = {
-        let mut p1_old = player();
-        p1_old.cards = vec![card; DECK_SIZE];
-        fixture(p1_old, player())
-    };
-    old_fixture.source = Some(FixtureSource {
-        steam_build: Some("24610558".to_string()),
-        ..FixtureSource::default()
-    });
-    let mut old_state = ReplayState::test_from_fixture(&old_fixture);
-    old_state.p1.core.hp = 100;
-    old_state.execute_actor_turn();
-    assert_eq!(old_state.p1.core.hp, 94); // 100 - 6 = 94
 }
 
 #[test]
-fn card_4000097_bent_bow_heal_amount_follows_fixture_build() {
-    // build 24963639 CardConfig：弯弓射虎 otherParams[0] 下调 4：
-    // 4000097 [16,4,10]→[12,4,10]、4010097 [24,4,10]→[20,4,10]、
-    // 4020097 [32,4,10]→[28,4,10]。Card_4000097.cs 先机
-    // ModifyMaxHp/ModifyHp(otherParams[0])；后招 attack + AddHpCount/otherParams[1]。
-    // shared 快照仍是旧值：catalog 保持旧值断言是故意的，shared 重生成到
-    // ≥24963639 时本断言失败即提醒删除门控表。一刀切新值曾翻转 284 个旧 exact。
-    for (card_id, legacy_gain) in [(4_000_097, 16), (4_010_097, 24), (4_020_097, 32)] {
+fn card_4000097_bent_bow_heal_amount() {
+    // Card_4000097.cs 先机 ModifyMaxHp/ModifyHp(otherParams[0])；后招 attack + AddHpCount/otherParams[1]。
+    for (card_id, gain) in [(4_000_097, 12), (4_010_097, 20), (4_020_097, 28)] {
         let card = original_card_definition_by_id(card_id)
             .unwrap_or_else(|| panic!("missing original card {card_id}"));
         assert_eq!(card.attack, Some(8), "card {card_id}");
-        assert_eq!(
-            card.other_params,
-            vec![legacy_gain, 4, 10],
-            "card {card_id}"
-        );
+        assert_eq!(card.other_params, vec![gain, 4, 10], "card {card_id}");
     }
 
-    // 新 build（25093011）：4010097 首次打出（先机生效、后招不成立），
+    // 4010097 首次打出（先机生效、后招不成立），
     // 46/97 → maxHp 117、hp 66、本场累计回血 +20，对方不受击。
     // oracle 锚点：yiwen-20260903-63bcb796 f4eu5d4/round-12 cp26。
     let card = original_card_definition_by_id(4_010_097).expect("missing 弯弓射虎 4010097");
-    let mut new_fixture = {
-        let mut p1 = player();
-        p1.cards = vec![card.clone(); DECK_SIZE];
-        fixture(p1, player())
-    };
-    new_fixture.source = Some(FixtureSource {
-        steam_build: Some("25093011".to_string()),
-        ..FixtureSource::default()
-    });
-    let mut state = ReplayState::test_from_fixture(&new_fixture);
+    let mut p1 = player();
+    p1.cards = vec![card.clone(); DECK_SIZE];
+    let mut state = ReplayState::test_from_fixture(&fixture(p1, player()));
     state.p1.core.max_hp = 97;
     state.p1.core.hp = 46;
     state.test_apply_card_effect(PlayerSide::P1, &card, 0);
@@ -703,28 +651,6 @@ fn card_4000097_bent_bow_heal_amount_follows_fixture_build() {
     assert_eq!(state.p1.core.hp, 66);
     assert_eq!(state.p1.hp_mutation.add_hp_count, 20);
     assert_eq!(state.p2.core.hp, 100);
-
-    // 旧 build（24811621）：同样首差点回 +24（maxHp 121、hp 70、累计 +24），
-    // 当时旧值正确，门控必须保留此档。注意 24963639 标签刻意不断言：
-    // external/hf-latest-32728000 同标签对局新旧值需求相反（镜像批次标签
-    // 不可信），门控阈值保守取 25093011，见分支注释。
-    let mut old_fixture = {
-        let mut p1 = player();
-        p1.cards = vec![card.clone(); DECK_SIZE];
-        fixture(p1, player())
-    };
-    old_fixture.source = Some(FixtureSource {
-        steam_build: Some("24811621".to_string()),
-        ..FixtureSource::default()
-    });
-    let mut old_state = ReplayState::test_from_fixture(&old_fixture);
-    old_state.p1.core.max_hp = 97;
-    old_state.p1.core.hp = 46;
-    old_state.test_apply_card_effect(PlayerSide::P1, &card, 0);
-    assert_eq!(old_state.p1.core.max_hp, 121);
-    assert_eq!(old_state.p1.core.hp, 70);
-    assert_eq!(old_state.p1.hp_mutation.add_hp_count, 24);
-    assert_eq!(old_state.p2.core.hp, 100);
 }
 
 #[test]
@@ -757,32 +683,17 @@ fn card_1000034_spirit_gathering_tiebreak_flag_is_idempotent_under_echo() {
 
 #[test]
 fn fate_strategy_128_water_spirit_card_grants_sharpness() {
-    // build 25093011 FateStrategyFunctions.cs 新增（金灵分支之后、320 分支之前）：
+    // FateStrategyFunctions.cs（金灵分支之后、320 分支之前）：
     // HasFateStrategy(128) && cardConfig.name.Contains("水灵")
     //   → ModifyBuffValue(BuffType.FengRui, 1)。
     let mut water_card = basic_attack();
-    water_card.name = "水灵•春雨".to_string();
+    water_card.name = "水灵•春雨".to_string().into();
 
     let mut p1 = player();
     p1.fate_strategies = vec![128];
     let mut state = ReplayState::test_from_fixture(&fixture(p1, player()));
     state.apply_selected_card_hooks(PlayerSide::P1, &water_card, 0);
     assert_eq!(state.p1.sword.sharpness, 1);
-
-    // 旧 build（24963639）：锋锐 hunk 在 24963639→25093011 才引入，
-    // 旧录制不得加锋锐（candidates eswiq48 即此类漂移）。
-    let mut old_fixture = {
-        let mut p1_old = player();
-        p1_old.fate_strategies = vec![128];
-        fixture(p1_old, player())
-    };
-    old_fixture.source = Some(FixtureSource {
-        steam_build: Some("24963639".to_string()),
-        ..FixtureSource::default()
-    });
-    let mut old_state = ReplayState::test_from_fixture(&old_fixture);
-    old_state.apply_selected_card_hooks(PlayerSide::P1, &water_card, 0);
-    assert_eq!(old_state.p1.sword.sharpness, 0);
 
     // 对照：无 Fate 128 时水灵牌不加锋锐。
     let mut state_no_fate = ReplayState::test_from_fixture(&fixture(player(), player()));
@@ -791,7 +702,7 @@ fn fate_strategy_128_water_spirit_card_grants_sharpness() {
 
     // 对照：持 Fate 128 打金灵牌不加锋锐，旧行为（+1 灵气）保持。
     let mut gold_card = basic_attack();
-    gold_card.name = "金灵•铁骨".to_string();
+    gold_card.name = "金灵•铁骨".to_string().into();
     let mut p1_gold = player();
     p1_gold.fate_strategies = vec![128];
     let mut state_gold = ReplayState::test_from_fixture(&fixture(p1_gold, player()));

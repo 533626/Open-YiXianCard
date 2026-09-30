@@ -18,6 +18,8 @@ fn player(cards: Vec<CardDefinition>, initial_anima: i64) -> FixturePlayer {
         talents: Vec::new(),
         fate_strategies: Vec::new(),
         fate_strategy_temp_datas: Default::default(),
+        xian_mo_strategies: Vec::new(),
+        xian_mo_temp_datas: Default::default(),
         active_slot_count: 1,
         initial_defense: 0,
         initial_anima,

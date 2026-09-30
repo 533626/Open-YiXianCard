@@ -17,6 +17,7 @@ mod battle_start;
 mod body;
 mod card_effect_catalog;
 mod card_routing;
+mod xian_mo;
 mod cards_dream_direct;
 mod cards_dream_fate;
 mod cards_dream_mirage;
@@ -50,7 +51,8 @@ mod original_build_profile;
 mod original_config;
 pub use observation::{
     ReplayAttackSegment, ReplayDetailEntry, ReplayDetailedEvent, ReplayDetailedRun,
-    ReplayDetailedStep, ReplayHookCategory, ReplayMutationKind, ReplayMutationReceipt,
+    ReplayDetailedSideState, ReplayDetailedStep, ReplayHookCategory, ReplayMutationKind,
+    ReplayMutationReceipt, ReplayQueuedCard,
 };
 
 mod fate_strategy;
@@ -88,6 +90,8 @@ mod tests_build_2026_08;
 #[cfg(all(test, feature = "private-fixtures"))]
 mod tests_build_2026_08_rotation_fixtures;
 #[cfg(test)]
+mod tests_build_2026_09_season;
+#[cfg(test)]
 mod tests_calamity_skip_mask;
 #[cfg(test)]
 mod tests_card19_fate387;
@@ -111,6 +115,8 @@ mod tests_original_grants;
 mod tests_percent_roll_decisions;
 #[cfg(test)]
 mod tests_player;
+#[cfg(test)]
+mod tests_card9_hand_segments;
 #[cfg(all(test, feature = "private-fixtures"))]
 mod tests_random_range_decisions;
 #[cfg(test)]
@@ -463,6 +469,9 @@ struct ReplayPlayerIdentity {
     /// Talent 199 (五行灵田系) card params — BattleCharacter.GetWuXingCountInDeck
     /// scans their names for 五行 tokens when fate strategy 417 is present.
     talent_199_card_ids: Vec<i64>,
+    /// 开局手牌张数（fixture handCards）。灵猫乱剑（Card 9）的段数由服务端 battleParams 下发；
+    /// 评估 fixture 没有服务端队列时按牌面「每保留 1 张手牌追加 1 次攻击」由它推出（见 swords.rs）。
+    hand_card_count: i64,
 }
 
 #[derive(Debug, Clone, Default)]
@@ -935,6 +944,7 @@ struct ReplayMirageRonghuiState {
     mirage_sharpness_conversion_turns: i64,
     mirage_healing_conversion_turns: i64,
     mirage_water_defense_cap: i64,
+    mirage_water_defense_uncapped: i64,
     internal_injury_extra_triggers: i64,
     ordinary_sword_action_again_cards: i64,
     infinity_plate: i64,
@@ -1117,6 +1127,10 @@ struct ReplayObservationRuntime {
     /// value and increments, so a card that attacks several times (循环多段、
     /// 追加攻击、百杀概率段) gets one continuous numbering (第 1 段…第 N 段).
     current_attack_segment_index: usize,
+    /// Detailed-only：卡牌放回队列之前的行动方出牌队列。原版稳定 checkpoint
+    /// （cardExecuteCompletedBeforeAwaitContinuation）在在途卡重新入队之前采样，
+    /// CardCompleted 事件的 side state 用它代替放回后的队列。
+    card_completed_queue: Option<(PlayerSide, Vec<ReplayQueuedCard>)>,
 }
 
 #[derive(Debug)]
@@ -1131,7 +1145,7 @@ struct ExecutedReplay {
 /// and it is the only caller allowed to perturb the opening state. Parity feeds the
 /// golden `winner / actorTurn / hpDelta` comparison, `Ui` feeds the browser's
 /// parity-shaped timeline, `None` feeds the summary comparison and `Detailed`
-/// feeds the inspector/TUI surfaces: a perturbed run reaching any of them would
+/// feeds the inspector surfaces: a perturbed run reaching any of them would
 /// silently rewrite the battle it claims to reproduce.
 fn reject_perturbations_outside_analysis(
     fixture: &BattleFixture,
@@ -1297,6 +1311,7 @@ pub fn run_replay_fixture_with_detailed_events(
         attack_segments: state.observation.attack_segments,
         turn_end_hooks: state.observation.turn_end_hooks,
         mutation_receipts: state.observation.mutation_receipts,
+        remaining_decision_params: state.decision_tape.len(),
     })
 }
 
@@ -1442,7 +1457,6 @@ struct ReplayState {
     p2: ReplayPlayer,
     first_player: PlayerSide,
     current_actor: PlayerSide,
-    original_build_profile: original_build_profile::OriginalBuildProfile,
     actor_turn: i64,
     max_actor_turns: i64,
     decision_tape: Vec<i64>,
@@ -1497,10 +1511,4 @@ impl ReplayState {
         }
     }
 
-    fn original_build_has_capability(
-        &self,
-        capability: original_build_profile::OriginalBuildCapability,
-    ) -> bool {
-        self.original_build_profile.has(capability)
-    }
 }

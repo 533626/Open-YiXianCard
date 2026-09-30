@@ -73,10 +73,10 @@ post-battle rewards / rank / account progression
   fixture 或对局 fixture 索引。
 - 规则验收 fixture、回放 admission receipts、corpus manifests 和 attestation 是私有工程证据，不是公开站点
   的 demo 数据源；发布门禁必须阻止它们及其索引进入静态网站产物。
-- 玩家回放派生的工程 corpus、replay-derived reports、analysis archives 与 ratatui/crossterm TUI
+- 玩家回放派生的工程 corpus、replay-derived reports、analysis archives
   不随网站或公开源码发布，也不适用项目 MIT License。开发用 `main` 维护完整工程面，公开源码由
   `bun run export:public`（依据 `public-export-policy.json`）按 allowlist 生成投影，只保留 Rust canonical engine、
-  已冻结 TS compatibility archive、browser UI、公开 evaluator contracts 和规则开发文档。
+  browser UI、公开 evaluator contracts 和规则开发文档（原 engine-ts/ 已移出仓库，Rust 是唯一实现）。
 
 公开导出投影已排除上述私有路径；旧 Git 历史仍可能包含它们，因此历史发布面仍需
 单独的 fresh-history export、隐私审计和 provenance review。`PRIVATE_ENGINEERING_EXTRACTION.json` 与
@@ -136,7 +136,7 @@ Solver、GA 和 value 层只消费已准入的规则能力。一个可发布的�
 [Browser UI: free build + explicit local import + diagnosis]
 
 [Private engineering companion]
-  analysis / solver reports / replay corpus / ratatui TUI
+  analysis / solver reports / replay corpus
 
 [GitHub source] -> [local gates and static build]
   (website publication and Cloudflare deployment deferred)
@@ -145,7 +145,7 @@ Solver、GA 和 value 层只消费已准入的规则能力。一个可发布的�
 依赖方向必须保持：
 
 1. 原作证据与准入决定规则范围；私有 Analysis 不能反向成为规则证据。
-2. Rust Engine 是唯一可变规则实现；TS 兼容档案已冻结（2026-08-09 冻结），只保留只读兼容档案与类型，不参与产品执行。
+2. Rust Engine 是唯一战斗实现；`engine-ts/` 已移出仓库（可从 git 历史取回），不参与产品执行。
 3. Battle Evaluator 提供中立契约、适配器和统一 telemetry，避免 UI 各自解释结果。
 4. UI 只编排输入并展示事实结果，不在 DOM 层复制战斗规则。
 5. 共享 schema 必须版本化；输入、报告与发布物能识别不兼容版本并明确失败。
@@ -257,4 +257,4 @@ V1 延期：
 - 项目自有代码和文档使用 MIT License；第三方权利与非隶属关系见根目录 `NOTICE`。
 - 玩家回放派生 corpus 不公开、不随 MIT 再授权，也不提供精选、脱敏、示例或 demo fixture。
 - 开发仓库保持私有并在统一 main 维护完整工程面；公开源码通过 export:public 投影导出，本次不 push、不发布源码、不发布网站，也不部署 Cloudflare。
-- 公开发布前必须从保留的私有 ref 生成 fresh history export，并把 corpus、replay-derived reports、analysis、TUI/ratatui 从整个历史与发布面拆分，再经过单独隐私审计。
+- 公开发布前必须从保留的私有 ref 生成 fresh history export，并把 corpus、replay-derived reports、analysis 从整个历史与发布面拆分，再经过单独隐私审计。

@@ -9,6 +9,8 @@ pub struct ReplayDetailedRun {
     pub attack_segments: Vec<ReplayAttackSegment>,
     pub turn_end_hooks: Vec<ReplayTurnEndHookReceipt>,
     pub mutation_receipts: Vec<ReplayMutationReceipt>,
+    /// 终局时决策带（原版 battleParamsQueue）尚未消费的参数个数。
+    pub remaining_decision_params: usize,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -16,6 +18,30 @@ pub struct ReplayDetailedEvent {
     pub event: ReplayEvent,
     pub p1: Vec<ReplayDetailEntry>,
     pub p2: Vec<ReplayDetailEntry>,
+    pub p1_state: ReplayDetailedSideState,
+    pub p2_state: ReplayDetailedSideState,
+}
+
+/// Detailed 观测附带的、不进 parity 快照的单侧状态：与原版 oracle trace 的
+/// `actionAgainPerRound`（battleTempData）和 `cardQueue`（剩余出牌队列）对齐。
+/// CardCompleted 事件中行动方的 `card_queue` 取在途卡重新入队之前的队列，
+/// 与原版稳定 checkpoint 边界一致。
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ReplayDetailedSideState {
+    pub action_again_per_round: i64,
+    pub active_slot_count: usize,
+    pub card_queue: Vec<ReplayQueuedCard>,
+    /// 已解锁格位（原版 m_BattleDeck，长度 == unlockGrids）。
+    pub physical_deck: Vec<ReplayQueuedCard>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ReplayQueuedCard {
+    pub id: i64,
+    pub grid: usize,
+    pub skip: bool,
+    pub had_used: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -168,7 +194,7 @@ impl ReplayState {
             actor,
             slot,
             card_id: card.map(|card| card.id),
-            card_name: card.map(|card| card.name.clone()),
+            card_name: card.map(|card| card.name).map(|value| value.to_string()),
             p1: self.p1.snapshot(),
             p2: self.p2.snapshot(),
         };
@@ -185,10 +211,22 @@ impl ReplayState {
             });
         }
         if self.observation.mode.is_detailed() {
+            let mut p1_state = self.p1.detailed_side_state();
+            let mut p2_state = self.p2.detailed_side_state();
+            if kind == ReplayEventKind::CardCompleted {
+                if let Some((side, queue)) = self.observation.card_completed_queue.take() {
+                    match side {
+                        PlayerSide::P1 => p1_state.card_queue = queue,
+                        PlayerSide::P2 => p2_state.card_queue = queue,
+                    }
+                }
+            }
             self.observation.detailed_events.push(ReplayDetailedEvent {
                 event: event.clone(),
                 p1: self.p1.detail_entries(),
                 p2: self.p2.detail_entries(),
+                p1_state,
+                p2_state,
             });
         }
         self.observation.events.push(event);
@@ -221,7 +259,7 @@ impl ReplayState {
             actor,
             slot,
             card_id: card.map(|card| card.id),
-            card_name: card.map(|card| card.name.clone()),
+            card_name: card.map(|card| card.name).map(|value| value.to_string()),
             p1_snapshot,
             p2_snapshot,
             p1: p1.clone(),
@@ -267,7 +305,7 @@ impl ReplayState {
                 };
                 (
                     Some(frame.effective.card_id),
-                    Some(frame.effective.name.clone()),
+                    Some(frame.effective.name.to_string()),
                     category,
                 )
             }

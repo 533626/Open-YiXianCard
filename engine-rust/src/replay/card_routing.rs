@@ -186,7 +186,7 @@ mod tests {
     #[test]
     fn wuxing_sect_chain_reaches_formation_kernel() {
         let mut card = super::super::tests::test_card(7_000_058, 7_000_058, "五行阵法");
-        card.other_params = vec![5];
+        card.other_params = vec![5].into();
         let fixture = super::super::tests::minimal_fixture(
             super::super::tests::filler_cards(super::super::tests::basic_attack_test_card()),
             super::super::tests::filler_cards(super::super::tests::basic_attack_test_card()),

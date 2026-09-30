@@ -7753,6 +7753,16 @@
       "isMiJingTalent": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 120
+        }
+      },
       "archiveKind": "sect",
       "archiveKey": "sect:QiXingGe",
       "archiveLabel": "七星阁仙命",
@@ -7771,6 +7781,16 @@
       "isMiJingTalent": true,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 120
+        }
+      },
       "archiveKind": "sect",
       "archiveKey": "sect:QiXingGe",
       "archiveLabel": "七星阁仙命",
@@ -7789,6 +7809,16 @@
       "isMiJingTalent": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 120
+        }
+      },
       "archiveKind": "sect",
       "archiveKey": "sect:QiXingGe",
       "archiveLabel": "七星阁仙命",
@@ -7807,6 +7837,16 @@
       "isMiJingTalent": true,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 120
+        }
+      },
       "archiveKind": "sect",
       "archiveKey": "sect:QiXingGe",
       "archiveLabel": "七星阁仙命",
@@ -10882,6 +10922,16 @@
       "isMiJingTalent": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 20093
+        }
+      },
       "archiveKind": "exclusive",
       "archiveKey": "exclusive:1000005",
       "archiveLabel": "陆剑心仙命",
@@ -15543,6 +15593,16 @@
       "isMiJingTalent": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 33
+        }
+      },
       "archiveKind": "unclassified",
       "archiveKey": "unclassified",
       "archiveLabel": "未归档仙命",
@@ -15745,6 +15805,16 @@
       "isMiJingTalent": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 3
+        }
+      },
       "archiveKind": "unclassified",
       "archiveKey": "unclassified",
       "archiveLabel": "未归档仙命",
@@ -15779,6 +15849,16 @@
       "isMiJingTalent": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 36
+        }
+      },
       "archiveKind": "unclassified",
       "archiveKey": "unclassified",
       "archiveLabel": "未归档仙命",
@@ -15813,6 +15893,16 @@
       "isMiJingTalent": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 26
+        }
+      },
       "archiveKind": "unclassified",
       "archiveKey": "unclassified",
       "archiveLabel": "未归档仙命",
@@ -15865,6 +15955,16 @@
       "isMiJingTalent": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 60
+        }
+      },
       "archiveKind": "unclassified",
       "archiveKey": "unclassified",
       "archiveLabel": "未归档仙命",
@@ -15883,6 +15983,16 @@
       "isMiJingTalent": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 60
+        }
+      },
       "archiveKind": "unclassified",
       "archiveKey": "unclassified",
       "archiveLabel": "未归档仙命",
@@ -15901,6 +16011,16 @@
       "isMiJingTalent": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 60
+        }
+      },
       "archiveKind": "unclassified",
       "archiveKey": "unclassified",
       "archiveLabel": "未归档仙命",
@@ -15919,6 +16039,16 @@
       "isMiJingTalent": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 60
+        }
+      },
       "archiveKind": "unclassified",
       "archiveKey": "unclassified",
       "archiveLabel": "未归档仙命",
@@ -16223,6 +16353,16 @@
       "isMiJingTalent": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 130
+        }
+      },
       "archiveKind": "unclassified",
       "archiveKey": "unclassified",
       "archiveLabel": "未归档仙命",
@@ -16317,6 +16457,16 @@
       "isMiJingTalent": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 79
+        }
+      },
       "archiveKind": "unclassified",
       "archiveKey": "unclassified",
       "archiveLabel": "未归档仙命",
@@ -16335,6 +16485,16 @@
       "isMiJingTalent": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 79
+        }
+      },
       "archiveKind": "unclassified",
       "archiveKey": "unclassified",
       "archiveLabel": "未归档仙命",
@@ -16353,6 +16513,16 @@
       "isMiJingTalent": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 79
+        }
+      },
       "archiveKind": "unclassified",
       "archiveKey": "unclassified",
       "archiveLabel": "未归档仙命",
@@ -16371,6 +16541,16 @@
       "isMiJingTalent": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 79
+        }
+      },
       "archiveKind": "unclassified",
       "archiveKey": "unclassified",
       "archiveLabel": "未归档仙命",

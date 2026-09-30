@@ -8,10 +8,7 @@ pub(super) fn evaluate_candidate_decks(
     if decks.is_empty() {
         return Vec::new();
     }
-    let worker_count = thread::available_parallelism()
-        .map(usize::from)
-        .unwrap_or(1)
-        .min(decks.len());
+    let worker_count = solver_parallelism().min(decks.len());
     let chunk_size = decks.len().div_ceil(worker_count);
     thread::scope(|scope| {
         let mut handles = Vec::new();
@@ -392,7 +389,7 @@ pub(super) fn complete_deck_ids(baseline: &[CardDefinition], ids: &[i64]) -> Vec
                 .unwrap_or_else(|| CardDefinition {
                     id: *id,
                     base_id: None,
-                    name: format!("card:{id}"),
+                    name: format!("card:{id}").into(),
                     card_type: None,
                     attack: None,
                     random_attack: None,
@@ -408,7 +405,7 @@ pub(super) fn complete_deck_ids(baseline: &[CardDefinition], ids: &[i64]) -> Vec
                     hexagram: None,
                     rarity: None,
                     career_name: None,
-                    other_params: Vec::new(),
+                    other_params: Vec::new().into(),
                 })
         })
         .collect()
@@ -434,7 +431,90 @@ pub(super) fn deck_sort_key(cards: &[CardDefinition]) -> String {
         .join("|")
 }
 
+/// `original_card_config_key` 读到的全部字段；按它记忆化（排列枚举对每个排列的每张牌都要算
+/// 一次键，而牌池里不同的牌只有几张）。字段集合必须与下方 JSON 完全一致。
+#[derive(Clone, PartialEq, Eq, Hash)]
+struct CardConfigKeyFields {
+    id: i64,
+    base_id: Option<i64>,
+    name: crate::model::SharedStr,
+    card_type: Option<crate::model::OriginalEnumValue>,
+    anima: Option<i64>,
+    hp_cost: Option<i64>,
+    action_again: Option<bool>,
+    attack: Option<i64>,
+    random_attack: Option<i64>,
+    attack_count: Option<i64>,
+    defense: Option<i64>,
+    random_defense: Option<i64>,
+    damage: Option<i64>,
+    physique: Option<i64>,
+    sword_intent: Option<i64>,
+    hexagram: Option<i64>,
+    other_params: crate::model::SharedInts,
+}
+
+impl CardConfigKeyFields {
+    fn of(card: &CardDefinition) -> Self {
+        Self {
+            id: card.id,
+            base_id: card.base_id,
+            name: card.name,
+            card_type: card.card_type.clone(),
+            anima: card.anima,
+            hp_cost: card.hp_cost,
+            action_again: card.action_again,
+            attack: card.attack,
+            random_attack: card.random_attack,
+            attack_count: card.attack_count,
+            defense: card.defense,
+            random_defense: card.random_defense,
+            damage: card.damage,
+            physique: card.physique,
+            sword_intent: card.sword_intent,
+            hexagram: card.hexagram,
+            other_params: card.other_params.clone(),
+        }
+    }
+}
+
+type CardKeyCache = std::cell::RefCell<std::collections::HashMap<CardConfigKeyFields, String>>;
+
+fn cached_card_key(
+    cache: &'static std::thread::LocalKey<CardKeyCache>,
+    card: &CardDefinition,
+    compute: fn(&CardDefinition) -> String,
+) -> String {
+    let fields = CardConfigKeyFields::of(card);
+    cache.with(|cache| {
+        if let Some(key) = cache.borrow().get(&fields) {
+            return key.clone();
+        }
+        let key = compute(card);
+        cache.borrow_mut().insert(fields, key.clone());
+        key
+    })
+}
+
+thread_local! {
+    static CONFIG_KEY_CACHE: CardKeyCache = CardKeyCache::default();
+    static TS_CONFIG_KEY_CACHE: CardKeyCache = CardKeyCache::default();
+}
+
 fn original_card_config_key(card: &CardDefinition) -> String {
+    cached_card_key(&CONFIG_KEY_CACHE, card, uncached_original_card_config_key)
+}
+
+/// 排序键同样只读 `CardConfigKeyFields` 里的字段，按它记忆化。
+fn ts_original_card_config_key(card: &CardDefinition) -> String {
+    cached_card_key(
+        &TS_CONFIG_KEY_CACHE,
+        card,
+        uncached_ts_original_card_config_key,
+    )
+}
+
+fn uncached_original_card_config_key(card: &CardDefinition) -> String {
     serde_json::json!({
         "id": card.id,
         "baseId": card.base_id,
@@ -462,7 +542,7 @@ fn original_card_config_key(card: &CardDefinition) -> String {
     .to_string()
 }
 
-fn ts_original_card_config_key(card: &CardDefinition) -> String {
+fn uncached_ts_original_card_config_key(card: &CardDefinition) -> String {
     let mut fields = Vec::new();
     push_json_i64_field(&mut fields, "id", card.id);
     if let Some(value) = card.base_id {
@@ -528,5 +608,37 @@ pub(super) fn evals_per_sec(count: usize, seconds: f64) -> f64 {
         count as f64
     } else {
         count as f64 / seconds
+    }
+}
+
+#[cfg(test)]
+mod card_config_key_cache_tests {
+    use super::*;
+
+    #[test]
+    fn cached_card_config_key_matches_uncached() {
+        for id in [1_000_001_i64, 1_010_001, 2_000_003, 4_000_010, 11_000_007] {
+            let Some(card) = crate::replay::original_card_definition_by_id(id) else {
+                continue;
+            };
+            let first = original_card_config_key(&card);
+            assert_eq!(first, uncached_original_card_config_key(&card));
+            assert_eq!(original_card_config_key(&card), first);
+            let mut changed = card.clone();
+            changed.attack = Some(changed.attack.unwrap_or(0) + 7);
+            assert_eq!(
+                original_card_config_key(&changed),
+                uncached_original_card_config_key(&changed)
+            );
+            assert_eq!(
+                ts_original_card_config_key(&changed),
+                uncached_ts_original_card_config_key(&changed)
+            );
+            assert_eq!(
+                ts_original_card_config_key(&card),
+                uncached_ts_original_card_config_key(&card)
+            );
+            assert_ne!(original_card_config_key(&changed), first);
+        }
     }
 }

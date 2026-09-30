@@ -122,7 +122,7 @@ fn original_card_template(card_id: i64) -> CardDefinition {
     CardDefinition {
         id: card_id,
         base_id: Some(normalize_base_id(card_id)),
-        name: format!("card:{card_id}"),
+        name: format!("card:{card_id}").into(),
         card_type: None,
         attack: None,
         random_attack: None,
@@ -138,6 +138,6 @@ fn original_card_template(card_id: i64) -> CardDefinition {
         hexagram: None,
         rarity: None,
         career_name: None,
-        other_params: Vec::new(),
+        other_params: Vec::new().into(),
     }
 }

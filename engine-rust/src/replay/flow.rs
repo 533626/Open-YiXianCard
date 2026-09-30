@@ -833,17 +833,10 @@ impl ReplayState {
             self.spend_anima_unchecked(actor_side, anima_payment);
         }
 
-        let effective_hp_cost = super::original_config::ling_kong_fei_sao_hp_cost(
-            drawn.card.id,
-            self.original_build_profile.steam_build_number(),
-        )
-        .unwrap_or_else(|| super::support::effective_hp_cost(&drawn.card, self.actor(actor_side)))
-            + wood_spirit_hp_cost;
-        let printed_hp_cost = super::original_config::ling_kong_fei_sao_hp_cost(
-            drawn.card.id,
-            self.original_build_profile.steam_build_number(),
-        )
-        .unwrap_or_else(|| drawn.card.hp_cost.unwrap_or(0).max(0));
+        let effective_hp_cost =
+            super::support::effective_hp_cost(&drawn.card, self.actor(actor_side))
+                + wood_spirit_hp_cost;
+        let printed_hp_cost = drawn.card.hp_cost.unwrap_or(0).max(0);
         if effective_hp_cost > 0 {
             self.pay_card_hp_cost(actor_side, effective_hp_cost);
         }
@@ -856,16 +849,15 @@ impl ReplayState {
 
         // BattleExecuter pays the selected physical card's cost before
         // CardActionBase.Execute. The verified transforms run in source order:
-        // 复刻 -> 连音曲 -> 虚魂犬 -> 五帝 -> 相生 -> 仙蛋黄粽 -> 画龙 -> 化生壶.
-        drawn = self.apply_synthetic_full_scope_replica_transform(actor_side, drawn);
-        drawn = self.apply_ronghui_free_and_easy_tune_transform(actor_side, drawn);
-        drawn = self.apply_you_ming_xu_hun_quan_replacement(actor_side, drawn);
-        drawn = self.apply_upgrade_next_frenzy_sword(actor_side, drawn);
-        drawn = self.apply_ronghui_five_emperors_upgrade_transform(actor_side, drawn);
-        drawn = self.apply_generating_interaction_upgrade(actor_side, drawn);
-        drawn = self.apply_immortal_egg_yolk_zongzi_upgrade(actor_side, drawn);
+        // 复刻 -> 连音曲 -> 虚魂犬 -> 五帝 -> 相生 -> 仙蛋黄粽 -> 画龙 -> 狂剑升阶 -> 化生壶.
+        self.apply_synthetic_full_scope_replica_transform(actor_side, &mut drawn);
+        self.apply_ronghui_free_and_easy_tune_transform(actor_side, &mut drawn);
+        self.apply_you_ming_xu_hun_quan_replacement(actor_side, &mut drawn);
+        self.apply_ronghui_five_emperors_upgrade_transform(actor_side, &mut drawn);
+        self.apply_generating_interaction_upgrade(actor_side, &mut drawn);
+        self.apply_immortal_egg_yolk_zongzi_upgrade(actor_side, &mut drawn);
         let pre_paint_card_id = drawn.card.id;
-        drawn = self.apply_paint_finishing_touch_upgrade(actor_side, drawn);
+        self.apply_paint_finishing_touch_upgrade(actor_side, &mut drawn);
         if drawn.card.id != pre_paint_card_id {
             self.record_detail_step(
                 event_index,
@@ -875,7 +867,8 @@ impl ReplayState {
                 Some(&drawn.card),
             );
         }
-        drawn = self.apply_ronghui_alchemy_pot_transform(actor_side, drawn);
+        self.apply_upgrade_next_frenzy_sword(actor_side, &mut drawn);
+        self.apply_ronghui_alchemy_pot_transform(actor_side, &mut drawn);
         let transformed_was_used = self
             .actor(actor_side)
             .deck
@@ -955,6 +948,10 @@ impl ReplayState {
             && (card_type == super::CARD_TYPE_CONSUME || card_type == super::CARD_TYPE_SUSTAIN);
         let should_skip = should_skip || marked_skipped_by_effect;
         let jump_distance = self.actor(actor_side).turn.jump_to_previous_card.max(0);
+        if self.observation.mode.is_detailed() {
+            let queue = self.actor(actor_side).detailed_side_state().card_queue;
+            self.observation.card_completed_queue = Some((actor_side, queue));
+        }
         if jump_distance > 0 {
             self.actor_mut(actor_side).complete_drawn_card_with_jump(
                 &drawn,
@@ -1062,6 +1059,57 @@ impl ReplayState {
         &mut self,
         actor_side: PlayerSide,
     ) -> Option<(CardDefinition, usize, bool)> {
+        // 快路径：常见情况下预演只是在出牌方身上 draw_next_card（只读写 ReplayPlayer 自身），
+        // 只克隆出牌方即可。以下两种情况会触及对局状态，退回整局克隆的原路径：
+        //   - 瞬影击层数 > 0 且抽到带生命消耗的牌（跳过循环会扣血、造成伤害）；
+        //   - 抽牌跳过的槽位里有开局效果牌（trigger_skipped_opening_effects 会执行效果）。
+        // 两条路径对同一输入给出相同的 (牌, 槽位, 是否已用)。
+        let skip_limit = self.nameless_white_deer_skip_limit();
+        // 最快路径：队首牌不会被任何跳过机制跳过 → 就是它，连出牌方都不用克隆。
+        // 瞬影击只看抽到的牌有没有生命消耗；抽牌没有跳过任何槽位，自然没有开局效果要补。
+        if let Some(source_slot) = self.actor(actor_side).peek_unskipped_next_slot(skip_limit) {
+            let actor = self.actor(actor_side);
+            let slot = &actor.deck.slots[source_slot];
+            if !(actor.fate.instant_shadow_strike > 0 && slot.card.hp_cost.unwrap_or(0) > 0) {
+                let peeked = (slot.card.clone(), source_slot, slot.used);
+                #[cfg(debug_assertions)]
+                {
+                    let mut player = self.actor(actor_side).clone();
+                    player.fate.rear_move_succeeded = false;
+                    let drawn = player
+                        .draw_next_card(skip_limit)
+                        .expect("peeked slot implies a drawable card");
+                    assert!(
+                        drawn.skipped_slots.is_empty()
+                            && drawn.source_slot == peeked.1
+                            && drawn.card == peeked.0
+                            && player.deck.slots[drawn.source_slot].used == peeked.2,
+                        "peek_unskipped_next_slot disagrees with draw_next_card"
+                    );
+                }
+                return Some(peeked);
+            }
+        }
+        let mut player = self.actor(actor_side).clone();
+        player.fate.rear_move_succeeded = false;
+        let drawn = player.draw_next_card(skip_limit)?;
+        let shadow_strike_skip =
+            player.fate.instant_shadow_strike > 0 && drawn.card.hp_cost.unwrap_or(0) > 0;
+        let skipped_opening = drawn.skipped_opening_slots.iter().any(|&skipped_slot| {
+            player.deck.slots.get(skipped_slot).is_some_and(|slot| {
+                let base_id = super::support::normalized_base_id(&slot.card);
+                Self::card_has_opening_effect(base_id) && base_id != 56
+            })
+        });
+        if !shadow_strike_skip && !skipped_opening {
+            let was_used_before_effect = player
+                .deck
+                .slots
+                .get(drawn.source_slot)
+                .is_some_and(|slot_state| slot_state.used);
+            return Some((drawn.card, drawn.source_slot, was_used_before_effect));
+        }
+        drop(player);
         // Draw is &mut, so the peek must run on a detached copy that never
         // advances the real decisions/RNG. The only fields that grow with the
         // number of executed turns are the append-only observation/decision
@@ -1334,30 +1382,30 @@ impl ReplayState {
     fn apply_generating_interaction_upgrade(
         &mut self,
         actor_side: PlayerSide,
-        drawn: super::DrawnCard,
-    ) -> super::DrawnCard {
+        drawn: &mut super::DrawnCard,
+    ) {
         if self.actor(actor_side).fate.generating_interaction_upgrade <= 0 {
-            return drawn;
+            return;
         }
         let Some(current_element) = super::support::element_from_card(&drawn.card) else {
-            return drawn;
+            return;
         };
         let Some(previous_element) = self.actor(actor_side).elements.last_element else {
-            return drawn;
+            return;
         };
         if !super::support::is_element_generated_by(
             previous_element,
             current_element,
             self.actor(actor_side).identity.talents.contains(&137),
         ) {
-            return drawn;
+            return;
         }
         if !super::original_config::can_upgrade_original_battle_deck_card(drawn.card.id) {
-            return drawn;
+            return;
         }
         let upgraded_id = drawn.card.id + 10_000;
         let Some(upgraded) = super::original_config::original_card_definition(upgraded_id) else {
-            return drawn;
+            return;
         };
         self.actor_mut(actor_side)
             .fate
@@ -1370,33 +1418,26 @@ impl ReplayState {
         {
             slot.card = upgraded.clone();
         }
-        super::DrawnCard {
-            source_slot: drawn.source_slot,
-            card: upgraded,
-            fallback_basic_attack: drawn.fallback_basic_attack,
-            skipped_slots: drawn.skipped_slots,
-            skipped_opening_slots: drawn.skipped_opening_slots,
-            fate_398_skipped_fifth_grid: drawn.fate_398_skipped_fifth_grid,
-        }
+        drawn.card = upgraded;
     }
 
     fn apply_paint_finishing_touch_upgrade(
         &mut self,
         actor_side: PlayerSide,
-        drawn: super::DrawnCard,
-    ) -> super::DrawnCard {
+        drawn: &mut super::DrawnCard,
+    ) {
         if self.actor(actor_side).fate.paint_finishing_touch <= 0 {
-            return drawn;
+            return;
         }
         // CardActionBase.cs:877 gates 画龙点睛 with CardConfig.CanUpgrade().
         // 澄心剑胚 (19) is explicitly noUpgrade even though 10019 exists for
         // other battle-time paths.
         if !super::original_config::can_upgrade_original_battle_deck_card(drawn.card.id) {
-            return drawn;
+            return;
         }
         let upgraded_id = drawn.card.id + 10_000;
         let Some(upgraded) = super::original_config::original_card_definition(upgraded_id) else {
-            return drawn;
+            return;
         };
         self.modify_paint_finishing_touch(actor_side, -1);
         if let Some(slot) = self
@@ -1407,43 +1448,39 @@ impl ReplayState {
         {
             slot.card = upgraded.clone();
         }
-        super::DrawnCard {
-            source_slot: drawn.source_slot,
-            card: upgraded,
-            fallback_basic_attack: drawn.fallback_basic_attack,
-            skipped_slots: drawn.skipped_slots,
-            skipped_opening_slots: drawn.skipped_opening_slots,
-            fate_398_skipped_fifth_grid: drawn.fate_398_skipped_fifth_grid,
-        }
+        drawn.card = upgraded;
     }
 
-    /// CardActionBase.cs:1187-1193；守卫紧跟 1168 的幽冥虚魂圈，同属 Execute 的
-    /// 同一段状态机。消耗一层 ShengJiXiaCiKuangJian（671），扣固定生命后把当前
-    /// 这张 rarity=0 的狂剑升一阶；原版 IL_18d4 会回写 cardActionBase.cardConfig，
-    /// 所以升阶对**本次出牌**立即生效。
+    /// CardActionBase.cs:1187-1193（Execute 状态机 IL_17ac）。执行顺序在画龙点睛
+    /// （IL_1421）与升级下张云剑（IL_15db）之后、化生壶 LianYaoHu（IL_19ec）之前——
+    /// 源码行号相邻的幽冥虚魂圈不代表执行相邻。消耗一层 ShengJiXiaCiKuangJian（671），
+    /// 扣固定生命后把当前这张 rarity=0 的狂剑升一阶；原版 IL_18d4 会回写
+    /// cardActionBase.cardConfig，所以升阶对**本次出牌**立即生效。rarity 读的是
+    /// 画龙点睛回写之后的配置：已被画龙升阶（rarity≥1）的狂剑不再触发
+    /// （oracle：hf-latest-33331000 3dfe77e1e41cabd9/round-13）。
     fn apply_upgrade_next_frenzy_sword(
         &mut self,
         actor_side: PlayerSide,
-        drawn: super::DrawnCard,
-    ) -> super::DrawnCard {
+        drawn: &mut super::DrawnCard,
+    ) {
         if self.actor(actor_side).sword.upgrade_next_frenzy_sword <= 0
             || drawn.card.rarity.unwrap_or(0) != 0
             || !super::original_config::can_upgrade_original_battle_deck_card(drawn.card.id)
             || !super::support::is_frenzy_sword(self.actor(actor_side), &drawn.card)
         {
-            return drawn;
+            return;
         }
         // 原版固定读 1030076 的 otherParams[2] 当生命代价，与牌组里实际是哪一阶无关。
         let hp_cost = super::original_config::original_card_definition(1_030_076)
             .map(|config| super::support::other_param(&config, 2).max(0))
             .unwrap_or(0);
         if self.actor(actor_side).core.hp <= hp_cost {
-            return drawn;
+            return;
         }
         let Some(upgraded) =
             super::original_config::original_card_definition(drawn.card.id + 10_000)
         else {
-            return drawn;
+            return;
         };
         self.actor_mut(actor_side).sword.upgrade_next_frenzy_sword -= 1;
         self.modify_actor_hp(actor_side, -hp_cost, false, false);
@@ -1455,24 +1492,17 @@ impl ReplayState {
         {
             slot.card = upgraded.clone();
         }
-        super::DrawnCard {
-            source_slot: drawn.source_slot,
-            card: upgraded,
-            fallback_basic_attack: drawn.fallback_basic_attack,
-            skipped_slots: drawn.skipped_slots,
-            skipped_opening_slots: drawn.skipped_opening_slots,
-            fate_398_skipped_fifth_grid: drawn.fate_398_skipped_fifth_grid,
-        }
+        drawn.card = upgraded;
     }
 
     /// CardActionBase.cs:1588-1605,1638-1660; immediately after 相生相成.
     fn apply_immortal_egg_yolk_zongzi_upgrade(
         &mut self,
         actor_side: PlayerSide,
-        mut drawn: super::DrawnCard,
-    ) -> super::DrawnCard {
+        drawn: &mut super::DrawnCard,
+    ) {
         if self.actor(actor_side).hp_mutation.immortal_egg_yolk_zongzi <= 0 {
-            return drawn;
+            return;
         }
         self.actor_mut(actor_side)
             .hp_mutation
@@ -1484,7 +1514,7 @@ impl ReplayState {
             .flatten();
         let Some(upgraded) = upgraded else {
             self.actor_mut(actor_side).hp_mutation.appetite += 2;
-            return drawn;
+            return;
         };
         if let Some(slot) = self
             .actor_mut(actor_side)
@@ -1495,7 +1525,6 @@ impl ReplayState {
             slot.card = upgraded.clone();
         }
         drawn.card = upgraded;
-        drawn
     }
 
     fn nameless_white_deer_skip_limit(&self) -> i64 {
