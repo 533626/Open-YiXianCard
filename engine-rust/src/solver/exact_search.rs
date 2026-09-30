@@ -10,6 +10,7 @@ use crate::{EngineError, Result as EngineResult};
 use serde::{Deserialize, Serialize};
 use std::cmp::Ordering;
 use std::collections::{BTreeMap, BTreeSet};
+#[cfg(not(target_arch = "wasm32"))]
 use std::thread;
 #[cfg(target_arch = "wasm32")]
 use std::time::Duration;
@@ -49,6 +50,7 @@ const DEFAULT_TOP_N: usize = 20;
 const DEFAULT_MAX_EVALUATIONS: usize = 200_000;
 const STRATIFIED_POPULATION_LIMIT: usize = 1_000_000;
 const STRATIFIED_SHARD_TARGET: usize = 4_096;
+#[cfg(not(target_arch = "wasm32"))]
 const STRATIFIED_SORT_CHUNK_TARGET: usize = 4_096;
 const FNV_OFFSET_BASIS: u64 = 0xcbf2_9ce4_8422_2325;
 const FNV_PRIME: u64 = 0x0000_0100_0000_01b3;
@@ -170,6 +172,7 @@ struct StratifiedShard {
     limit: usize,
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 struct StratifiedSortItem {
     hash: u64,
     deck: CandidateDeck,
@@ -198,6 +201,8 @@ pub(super) fn solver_parallelism() -> usize {
             .unwrap_or_else(|| thread::available_parallelism().map(usize::from).unwrap_or(1))
     })
 }
+
+
 
 pub fn solve_deck(
     fixture: &BattleFixture,

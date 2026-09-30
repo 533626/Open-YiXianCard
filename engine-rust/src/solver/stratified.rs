@@ -298,6 +298,7 @@ fn sort_stratified_candidate_decks_single_thread(decks: &mut [CandidateDeck], vi
     decks.sort_by(|left, right| compare_stratified_decks(left, right, visit_seed));
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 fn sort_stratified_candidate_decks_parallel(decks: &mut Vec<CandidateDeck>, visit_seed: u64) {
     if decks.len() <= 1 {
         return;
@@ -335,6 +336,12 @@ fn sort_stratified_candidate_decks_parallel(decks: &mut Vec<CandidateDeck>, visi
         .collect();
 }
 
+#[cfg(target_arch = "wasm32")]
+fn sort_stratified_candidate_decks_parallel(decks: &mut Vec<CandidateDeck>, visit_seed: u64) {
+    sort_stratified_candidate_decks_single_thread(decks, visit_seed);
+}
+
+#[cfg(not(target_arch = "wasm32"))]
 fn split_stratified_sort_items(
     items: Vec<StratifiedSortItem>,
     worker_count: usize,
@@ -355,6 +362,7 @@ fn split_stratified_sort_items(
     chunks
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 fn merge_stratified_sort_chunks(
     mut chunks: Vec<Vec<StratifiedSortItem>>,
 ) -> Vec<StratifiedSortItem> {
@@ -373,6 +381,7 @@ fn merge_stratified_sort_chunks(
     chunks.pop().unwrap_or_default()
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 fn merge_two_stratified_sort_chunks(
     left: Vec<StratifiedSortItem>,
     right: Vec<StratifiedSortItem>,
@@ -403,6 +412,7 @@ fn merge_two_stratified_sort_chunks(
     merged
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 fn stratified_worker_count(item_count: usize, chunk_target: usize) -> usize {
     let target_limited_count = if chunk_target <= 1 {
         item_count
@@ -425,6 +435,7 @@ fn compare_stratified_decks(
         .then(left.key.cmp(&right.key))
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 fn compare_stratified_sort_items(
     left: &StratifiedSortItem,
     right: &StratifiedSortItem,
