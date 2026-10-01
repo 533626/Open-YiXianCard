@@ -12,6 +12,7 @@ import {
   lockedBaseTalentId,
   normalizePlayerTalents,
   slotHasDualCareerTalent,
+  xianMoStrategyById,
 } from "./data";
 import { normalizeBaseId } from "./domain";
 import {
@@ -149,6 +150,7 @@ const CLOSE_PICKER_ACTIONS = new Set([
   "close-card-picker",
   "close-talent-picker",
   "close-fate-picker",
+  "close-xianmo-picker",
   "close-career-picker",
   "close-character-picker",
 ]);
@@ -297,6 +299,7 @@ const ACTION_HANDLERS: Record<string, ActionHandler> = {
     if (side && slot !== null && slot > 0) selectTalentSlot(context.state, side, slot);
   },
   "open-fate-picker": ({ context, side }) => { if (side) openFatePicker(context.state, side); },
+  "open-xianmo-picker": ({ context, side }) => { if (side) openXianMoPicker(context.state, side); },
   "open-character-picker": ({ context, side }) => { if (side) openCharacterPicker(context.state, side); },
   "pick-character": ({ target, context }) => pickCharacter(target, context.state),
   "pick-career": ({ target, context }) => pickCareer(target, context.state),
@@ -319,6 +322,8 @@ const ACTION_HANDLERS: Record<string, ActionHandler> = {
   "pick-talent": ({ target, context }) => pickTalent(target, context.state),
   "toggle-fate-strategy": ({ target, context, side }) => toggleFateStrategy(target, context.state, side),
   "clear-fate-strategies": ({ context, side }) => { if (side) clearFateStrategies(context.state, side); },
+  "toggle-xianmo-strategy": ({ target, context, side }) => toggleXianMoStrategy(target, context.state, side),
+  "clear-xianmo-strategies": ({ context, side }) => { if (side) clearXianMoStrategies(context.state, side); },
   "clear-talent-slot": ({ context, side, slot }) => { if (side && slot !== null && slot > 0) clearTalentSlot(context.state, side, slot); },
   "apply-character-talents": ({ context, side }) => { if (side) applyCharacterTalents(context.state, side); },
   "reset-player": ({ context, side }) => { if (side) resetPlayer(context.state, side); },
@@ -457,7 +462,7 @@ function selectBuild(target: HTMLSelectElement, state: AppState, side: Side): vo
 
 function setPickerMode(target: HTMLElement, state: AppState): void {
   const mode = target.dataset.mode as AppState["pickerMode"];
-  if (mode === "none" || mode === "card" || mode === "talent" || mode === "fate" || mode === "career" || mode === "character") {
+  if (mode === "none" || mode === "card" || mode === "talent" || mode === "fate" || mode === "xianmo" || mode === "career" || mode === "character") {
     state.pickerMode = mode;
   }
 }
@@ -480,6 +485,12 @@ function selectTalentSlot(state: AppState, side: Side, slot: number): void {
 function openFatePicker(state: AppState, side: Side): void {
   state.activeSide = side;
   state.pickerMode = "fate";
+}
+
+function openXianMoPicker(state: AppState, side: Side): void {
+  state.activeSide = side;
+  state.pickerMode = "xianmo";
+  state.pickerSearch = "";
 }
 
 function openCharacterPicker(state: AppState, side: Side): void {
@@ -629,6 +640,24 @@ function clearFateStrategies(state: AppState, side: Side): void {
   state.config.players[side].fateStrategies = [];
   state.activeSide = side;
   state.pickerMode = "fate";
+}
+
+function toggleXianMoStrategy(target: HTMLElement, state: AppState, side: Side | undefined): void {
+  if (side) state.activeSide = side;
+  const strategyId = Number(target.dataset.xianmoStrategyId);
+  if (!Number.isInteger(strategyId)) return;
+  const player = state.config.players[state.activeSide];
+  if (!xianMoStrategyById.has(strategyId)) return;
+  const selected = new Set(player.xianMoStrategies ?? []);
+  if (selected.has(strategyId)) selected.delete(strategyId);
+  else selected.add(strategyId);
+  player.xianMoStrategies = [...selected].sort((left, right) => left - right);
+}
+
+function clearXianMoStrategies(state: AppState, side: Side): void {
+  state.config.players[side].xianMoStrategies = [];
+  state.activeSide = side;
+  state.pickerMode = "xianmo";
 }
 
 function clearTalentSlot(state: AppState, side: Side, slot: number): void {

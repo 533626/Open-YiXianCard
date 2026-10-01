@@ -237,3 +237,96 @@
   color: var(--muted);
   border-style: dashed;
 }
+
+.season-xianmo-strip {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(72px, 86px) minmax(0, 1fr);
+  gap: 5px;
+  align-items: stretch;
+  min-height: 28px;
+}
+
+.combined-page .season-xianmo-strip {
+  grid-template-columns: 1fr;
+  min-height: 24px;
+}
+
+.combined-page .season-xianmo-chips {
+  display: none;
+}
+
+.season-xianmo-open {
+  min-width: 0;
+  min-height: 28px;
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 7px;
+  border: 1px solid var(--line);
+  border-left: 3px solid #ff793f;
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(180deg, rgba(255, 121, 63, 0.08), transparent 52%),
+    var(--bg-elevated);
+  text-align: left;
+}
+
+.combined-page .season-xianmo-open {
+  min-height: 24px;
+  padding: 3px 5px;
+}
+
+.season-xianmo-strip.editing .season-xianmo-open {
+  border-color: var(--accent-bright);
+  border-left-color: var(--accent-bright);
+  background: var(--accent-soft);
+}
+
+.season-xianmo-icon {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ff793f;
+  box-shadow: 0 0 12px rgba(255, 121, 63, 0.45);
+}
+
+.season-xianmo-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-sm);
+  font-weight: 800;
+}
+
+.season-xianmo-count {
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  font-weight: 700;
+}
+
+.season-xianmo-chips {
+  min-width: 0;
+  display: flex;
+  align-items: stretch;
+  gap: 5px;
+  overflow: hidden;
+}
+
+.season-xianmo-chip {
+  min-width: 0;
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: rgba(10, 16, 32, 0.66);
+  padding: 0 9px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--text);
+  cursor: pointer;
+}

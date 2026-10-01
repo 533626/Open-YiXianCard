@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "type": "open-yixiancard-public-export",
-  "sourceCommit": "e50f2570d3954c785f302c0fe0416155c7fc0cf8",
-  "sourceTree": "389a9f44350fe97bc2037c2895cacdb9ddb74557",
+  "sourceCommit": "ce2e1888361488a29aed8341b03752a234517207",
+  "sourceTree": "3ae3df1c2da75f504a75dde26b0c121d0742dd17",
   "policySha256": "1849577f1e7aa73e2669438f7ccba2898f5721c726a5ed63034be3c1ad46d443",
   "files": [
     {
@@ -140,8 +140,8 @@
     {
       "path": "docs/ROTATION_RUNBOOK.md",
       "mode": "100644",
-      "bytes": 13359,
-      "sha256": "89f33e0554e680fada6ff4c3493dc53b2ca7551bcae4d0de5d077cc77a518e49"
+      "bytes": 13477,
+      "sha256": "f690701338b8f03b3949dbece68bf8dc72ddb940837514e1d146cf8cfd40ff52"
     },
     {
       "path": "docs/RULE_DEBUGGING_LESSONS.md",
@@ -921,7 +921,7 @@
       "path": "index.html",
       "mode": "100644",
       "bytes": 869,
-      "sha256": "063a115c0d5d6e33a51a632bb0251e03b371521ce1fb9a2e77c5a89098478ad9"
+      "sha256": "1ed9c4d6df8249e9975050daf1ebe3696b7c8243ae37d6a94bd7573ba9b20f4f"
     },
     {
       "path": "jsconfig.json",
@@ -1070,8 +1070,8 @@
     {
       "path": "shared/data/card-archive.json",
       "mode": "100644",
-      "bytes": 778494,
-      "sha256": "e597b7c828082043527e1f687e37e93be5a12470dc562793a067d897e534429a"
+      "bytes": 780528,
+      "sha256": "b92f3138994cb630d7a670f28f49e789be123f626f56cd64b717ba0d8386c371"
     },
     {
       "path": "shared/data/character-talent-audit.json",
@@ -1088,8 +1088,8 @@
     {
       "path": "shared/data/fate-strategy-archive.json",
       "mode": "100644",
-      "bytes": 327965,
-      "sha256": "cd8bfbc90b16291865e9464747ab49a85047c6838b3984c2a3b19a1089179955"
+      "bytes": 418967,
+      "sha256": "855ff9d1e18ff56d31c580c820eed52cfc138e0079a990568a1acd4091a2a223"
     },
     {
       "path": "shared/data/fate-strategy-cards.json",
@@ -1118,14 +1118,20 @@
     {
       "path": "shared/data/original-card-configs.ts",
       "mode": "100644",
-      "bytes": 931554,
-      "sha256": "f235cfe7b23bd6e715fe723fd907dc823553aa27d486f60c638a2a0082fa803d"
+      "bytes": 994461,
+      "sha256": "24372e5e7fbfbb3b1877f39ebbf2eedd14d2fd56756675f7f11401e9fec98dea"
     },
     {
       "path": "shared/data/talent-archive.json",
       "mode": "100644",
       "bytes": 438463,
       "sha256": "27f05d2db1217082397fa9620cd485f8ed2252b12f8bc8006431a59b02b97510"
+    },
+    {
+      "path": "shared/data/xian-mo-strategy-archive.json",
+      "mode": "100644",
+      "bytes": 131196,
+      "sha256": "ef5594066d208598ea13aebabd2fa51b16461c63ac195c8befb0fff617794bfc"
     },
     {
       "path": "src/ui/__tests__/battle-event-hooks.test.ts",
@@ -1220,8 +1226,8 @@
     {
       "path": "src/ui/__tests__/layout-verification.test.ts",
       "mode": "100644",
-      "bytes": 36053,
-      "sha256": "b186d735c415fd08ab3663fb3ea759a46b763e7e7c5ac7f26107719cc2b475a9"
+      "bytes": 36227,
+      "sha256": "ac438a5f37e276d70a96250a109e36d20d184ba7da7fb3427c9ce8fe2499cf5f"
     },
     {
       "path": "src/ui/__tests__/main-actions-worker.test.ts",
@@ -1340,14 +1346,14 @@
     {
       "path": "src/ui/data.ts",
       "mode": "100644",
-      "bytes": 293,
-      "sha256": "de68f7d51d461bad019d3a2cf9fe3b6df07e1d54e979fffcbc6f1b74afaf9638"
+      "bytes": 325,
+      "sha256": "74c36f89c9bf61dc5d8812b6471bb312366d2538944882d4a2e57088388d37f0"
     },
     {
       "path": "src/ui/data/card-picker.ts",
       "mode": "100644",
-      "bytes": 15829,
-      "sha256": "2997abc7094a85c243bd01b3806604ffa9c41f53e4f6c1a5afa741ad41c33725"
+      "bytes": 16005,
+      "sha256": "332755effbf20b84617ba658bd79f4889f5e1eb92c29ef8d3c1469b2b513e03d"
     },
     {
       "path": "src/ui/data/cards.ts",
@@ -1376,14 +1382,14 @@
     {
       "path": "src/ui/data/players.ts",
       "mode": "100644",
-      "bytes": 5143,
-      "sha256": "0503f02ad2ca735ea5f7ec9eafe644a73f2246121739c283bcecbdb1f93ae928"
+      "bytes": 5194,
+      "sha256": "1bf47fa19f75c767ec122b837971dfa7509784a11bf9635bcb3e1c018f3e67b4"
     },
     {
       "path": "src/ui/data/source.ts",
       "mode": "100644",
-      "bytes": 3889,
-      "sha256": "93246fa01268fdda80bda6f3c790d752e3684409983a9155c828ecb9ef817e13"
+      "bytes": 4792,
+      "sha256": "50e2469892cab97a35a6b704b49b1298e83c001b6b4d69259734cb2f9b7197ac"
     },
     {
       "path": "src/ui/data/talents.ts",
@@ -1396,6 +1402,12 @@
       "mode": "100644",
       "bytes": 1202,
       "sha256": "1dd196e903dec13dc8cb528dccf95f193f365c6da4f1b9cc6fcd0307e0ef5b75"
+    },
+    {
+      "path": "src/ui/data/xian-mo.ts",
+      "mode": "100644",
+      "bytes": 2129,
+      "sha256": "5a3993a4306dd92d8987277a8f001d7c2c07264d59ce54cc5c5593228de8b078"
     },
     {
       "path": "src/ui/deck-diagnostics.ts",
@@ -1418,8 +1430,8 @@
     {
       "path": "src/ui/domain.ts",
       "mode": "100644",
-      "bytes": 9612,
-      "sha256": "a486e4b2e19f1c29c4dad6f7b7cb1d5fadea759e8ac07729cb9473fe8ce1a695"
+      "bytes": 9724,
+      "sha256": "57cabfc42e44c33ba72861f76f8b56b1c448da1eb01fa7f47424207983d7e2b7"
     },
     {
       "path": "src/ui/evidence-mode.ts",
@@ -1478,8 +1490,8 @@
     {
       "path": "src/ui/main-actions.ts",
       "mode": "100644",
-      "bytes": 26479,
-      "sha256": "695a73108d587be23f342e14244feadca93f9f02e23d7f315270d4561c8df674"
+      "bytes": 27788,
+      "sha256": "797bf1b636dc8db4d7ba49261dc4b5a2bc82d995261a06db7127243af0f8e3cd"
     },
     {
       "path": "src/ui/main-bootstrap.ts",
@@ -1526,14 +1538,14 @@
     {
       "path": "src/ui/main-storage.ts",
       "mode": "100644",
-      "bytes": 8074,
-      "sha256": "f87c3e821533e37bf2df4b6485ef4697177a74f8667479418acc73bf4a302b94"
+      "bytes": 8474,
+      "sha256": "24ff70d872adea4a5c62e9eb6b9d502ac0207aaafc703819e63787a27498f82e"
     },
     {
       "path": "src/ui/main-utils.ts",
       "mode": "100644",
-      "bytes": 14711,
-      "sha256": "5c572e571e427bc48ad2017ab8ce25746116f0a955201a9667addad82e67f765"
+      "bytes": 14825,
+      "sha256": "5ff67aef58dddc8e99ede88a1bb4e572f0b27528b067c27516fe6419ecfa079e"
     },
     {
       "path": "src/ui/main.ts",
@@ -1610,8 +1622,8 @@
     {
       "path": "src/ui/render-pickers.ts",
       "mode": "100644",
-      "bytes": 24782,
-      "sha256": "501e21ebf41596812fced94fd6cbbe2ac42535e877663d71b97eeeba32c6dad4"
+      "bytes": 28494,
+      "sha256": "4729618ce7a98034149059b9ba3585bcbbb0ecb768cf797295f87a41ae6a9be8"
     },
     {
       "path": "src/ui/render-player-deck.ts",
@@ -1622,8 +1634,8 @@
     {
       "path": "src/ui/render-player-panel.ts",
       "mode": "100644",
-      "bytes": 6248,
-      "sha256": "4b45f3a02c288a3eb7979de1f7a7ed65dcbe2a80fd75a322b66038346f369e3f"
+      "bytes": 6419,
+      "sha256": "ea932e8bd1936fbff895c762df2ab9d7f44b6cce65797cec5ab862a7f25d26e1"
     },
     {
       "path": "src/ui/render-player-setup.ts",
@@ -1634,14 +1646,14 @@
     {
       "path": "src/ui/render-player-talents.ts",
       "mode": "100644",
-      "bytes": 4229,
-      "sha256": "8851508b0a80509659842fd1fa2384bfa920f3e791a59ac6340f35df09f37b7e"
+      "bytes": 5272,
+      "sha256": "c0b5e76a3520171ab9783cbe006f30fc5d1013d379a7df58abf425f27f53ca09"
     },
     {
       "path": "src/ui/render-setup.ts",
       "mode": "100644",
-      "bytes": 3772,
-      "sha256": "7a048466cdbf8ff5babfba671aa33c5e168d89f02d69dbd54aa5e53ea3463f02"
+      "bytes": 3839,
+      "sha256": "7f66768a31d5ee2bfe1073f64f7479fd9f6e1dc4496be949a8e536cd969d7453"
     },
     {
       "path": "src/ui/render-solver-result.ts",
@@ -1676,8 +1688,8 @@
     {
       "path": "src/ui/replay-fixture-builder.ts",
       "mode": "100644",
-      "bytes": 2677,
-      "sha256": "a01fb6c59a749baf77d33a4049b3e4e265ef0524c675bd3ccf340b025eef5bd4"
+      "bytes": 2918,
+      "sha256": "af5213b2b04c73032d899cbff5ec0513f515472f0fdea0e81e8d06a4fa140f3c"
     },
     {
       "path": "src/ui/replay-fixture-config.ts",
@@ -1874,8 +1886,8 @@
     {
       "path": "src/ui/styles/setup-picker-candidates.css",
       "mode": "100644",
-      "bytes": 6965,
-      "sha256": "bf67266bf4305471bba9d1ff75b9f7e8aa7acdb9cec5da34c6d3876d0aa7e79f"
+      "bytes": 7511,
+      "sha256": "aa40954116a97bdd41618748348f7fa025ec5a66936673020696f650a3e16ec9"
     },
     {
       "path": "src/ui/styles/setup-picker-card.css",
@@ -1886,8 +1898,8 @@
     {
       "path": "src/ui/styles/setup-picker.css",
       "mode": "100644",
-      "bytes": 7726,
-      "sha256": "5857f1f7a9dc2f4f0b2a216836060b4dd5bb6fd57a6ccde3b0a0cccafa203fe7"
+      "bytes": 7807,
+      "sha256": "a8126f164a9a1c8da49f085a65df8a7b4d78bdee852b8de45fe08a7a553824dc"
     },
     {
       "path": "src/ui/styles/setup-solver.css",
@@ -1898,8 +1910,8 @@
     {
       "path": "src/ui/styles/setup-talents.css",
       "mode": "100644",
-      "bytes": 4564,
-      "sha256": "2944cc2a0d88186c622bcbd5c7f526e6d39221259ef6079cadd728da71470da5"
+      "bytes": 6415,
+      "sha256": "f1706279701e97dd6169ac755158cc4fb15f35071ce0f05861e0beeddbe21588"
     },
     {
       "path": "src/ui/styles/setup.css",
@@ -1934,8 +1946,8 @@
     {
       "path": "src/ui/types.ts",
       "mode": "100644",
-      "bytes": 15304,
-      "sha256": "02e5fffce38809fd7419f2c833ac0211b0bfc51b573338a78a50966bdff67556"
+      "bytes": 15986,
+      "sha256": "c996d5e8e6c56f5a750da0d2c5ece1f7e1b3abf6712ee6d539f041bef27858ad"
     },
     {
       "path": "src/ui/view-utils.ts",
@@ -1974,5 +1986,5 @@
       "sha256": "638113cf4444d1592ac2c6eea62bf819275ab6d51dde403881a2413d68dfd2a8"
     }
   ],
-  "treeDigest": "e30c22178b0dd59d1935e623022a5ab83bc2c825c10f5c648c3714cb5df5fb8f"
+  "treeDigest": "6043f9626ffd557d462350b6ceb548cadc6746b59b548ce7781fc5176a0425ae"
 }

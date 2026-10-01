@@ -65,6 +65,10 @@ function buildFixturePlayer(
     talentTempDatas: player.talentTempDatas,
     permanentBuffTempDatas: player.permanentBuffTempDatas,
     fateStrategies: player.fateStrategies,
+    ...(player.xianMoStrategies?.length ? { xianMoStrategies: player.xianMoStrategies } : {}),
+    ...(player.xianMoTempDatas && Object.keys(player.xianMoTempDatas).length > 0
+      ? { xianMoTempDatas: player.xianMoTempDatas }
+      : {}),
     cards: player.deck.map((slot) =>
       config.sourceKind === "original-fixture" && slot.originalConfig
         ? slot.originalConfig

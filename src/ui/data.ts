@@ -7,3 +7,4 @@ export * from "./data/derivations";
 export * from "./data/players";
 export * from "./data/talents";
 export * from "./data/fate";
+export * from "./data/xian-mo";

@@ -22,6 +22,7 @@ import {
   slotHasDualCareerTalent,
   talentChoiceGroupsForSlot,
   talentDetailText,
+  xianMoStrategyGroups,
 } from "./data";
 import type { CardPickerGroup } from "./data";
 import { renderCardFace } from "./render-card-face";
@@ -34,6 +35,8 @@ import type {
   Side,
   TalentOption,
   TalentSlotOption,
+  XianMoStrategyGroup,
+  XianMoStrategyOption,
 } from "./types";
 
 export function renderCardPopup(state: AppState): string {
@@ -286,6 +289,56 @@ export function renderFateStrategyPopup(state: AppState): string {
   `;
 }
 
+export function renderXianMoStrategyPopup(state: AppState): string {
+  if (state.pickerMode !== "xianmo") return "";
+  const side = state.activeSide;
+  const player = state.config.players[side];
+  const query = (state.pickerSearch ?? "").trim().toLowerCase();
+  const allGroups = xianMoStrategyGroups();
+  const selected = new Set(player.xianMoStrategies ?? []);
+
+  const filteredGroups = allGroups
+    .map((group) => ({
+      ...group,
+      options: group.options.filter((option) =>
+        !query ||
+        option.name.toLowerCase().includes(query) ||
+        option.desc.toLowerCase().includes(query) ||
+        String(option.id).includes(query),
+      ),
+    }))
+    .filter((group) => group.options.length > 0);
+
+  return `
+    <div class="picker-popup-backdrop" data-action="close-xianmo-picker"></div>
+    <section class="picker-popup build-picker-popup identity-popup xianmo-popup" aria-label="构筑选择">
+      <div class="picker-popup-head">
+        <div class="build-picker-heading">
+          ${pickerPopupTitle(side, "构筑选择", "百家之道")}
+          ${renderBuildPickerTabs(state)}
+        </div>
+        <div class="picker-popup-tools">
+          ${pickerSearch("搜百家之道秘策", "xianmo", state.pickerSearch ?? "", "搜索")}
+          <button
+            type="button"
+            data-action="clear-xianmo-strategies"
+            data-side="${side}"
+            ${(player.xianMoStrategies?.length ?? 0) === 0 ? "disabled" : ""}
+          >清空</button>
+          ${pickerCloseButton("close-xianmo-picker")}
+        </div>
+      </div>
+      ${filteredGroups.length === 0
+        ? `<div class="empty-picker-note">无匹配仙魔秘策</div>`
+        : `
+          <div class="picker-popup-grid xianmo-popup-grid" style="--picker-cols: ${filteredGroups.length}">
+            ${filteredGroups.map((group) => renderXianMoStrategyPickerColumn(group, selected)).join("")}
+          </div>
+        `}
+    </section>
+  `;
+}
+
 function renderCardPickerSection(
   state: AppState,
   group: CardPickerGroup,
@@ -393,6 +446,16 @@ function renderFateStrategyPickerColumn(
   );
 }
 
+function renderXianMoStrategyPickerColumn(
+  group: XianMoStrategyGroup,
+  selected: ReadonlySet<number>,
+): string {
+  return renderPickerColumn(group.label, group.options.length,
+    group.options.map((option) => renderXianMoStrategyCandidate(option, selected.has(option.id))).join(""),
+    " xianmo-realm-col",
+  );
+}
+
 function renderPickerColumn(label: string, count: number, content: string, extraClass = ""): string {
   return `
     <div class="deck-realm-col${extraClass}">
@@ -421,17 +484,20 @@ function renderBuildPickerTabs(state: AppState): string {
       .map((option) => option.id),
   );
   const selectedFateCount = player.fateStrategies.filter((id) => fateOptionIds.has(id)).length;
+  const selectedXianMoCount = (player.xianMoStrategies ?? []).length;
+  const showFate = state.pickerMode === "fate" || selectedFateCount > 0;
   return `<nav class="build-picker-tabs" aria-label="构筑选择类型">
     ${buildPickerTab("character", "角色", state.pickerMode)}
     ${buildPickerTab("talent", "仙命", state.pickerMode, !hasCharacter)}
     ${buildPickerTab("career", "副职", state.pickerMode, !hasCharacter)}
-    ${buildPickerTab("fate", "天衍", state.pickerMode, !hasCharacter, `${selectedFateCount}/${fateOptionIds.size}`)}
+    ${buildPickerTab("xianmo", "百家", state.pickerMode, false, selectedXianMoCount > 0 ? `${selectedXianMoCount}` : "")}
+    ${showFate ? buildPickerTab("fate", "天衍", state.pickerMode, !hasCharacter, `${selectedFateCount}/${fateOptionIds.size}`) : ""}
     ${buildPickerTab("card", "卡牌", state.pickerMode)}
   </nav>`;
 }
 
 function buildPickerTab(
-  mode: "character" | "talent" | "career" | "fate" | "card",
+  mode: "character" | "talent" | "career" | "fate" | "xianmo" | "card",
   label: string,
   selected: AppState["pickerMode"],
   disabled = false,
@@ -466,6 +532,13 @@ function buildPickerTab(
       "作用：选择本局使用的天衍策略。",
       "计数：显示已选数量与当前角色可用总数。",
       "范围：这里只配置战斗输入，不模拟战斗外获得过程。",
+    ].join("\n"),
+    xianmo: [
+      "百家之道",
+      "",
+      "作用：第十一赛季【百家之道】修道者助力与秘策（底层标识 XianMo）。",
+      "机制：每局出现修道者提供秘策，包含卡槽附魔、入战增益、开关机制等。",
+      "范围：配置入战生效的百家之道秘策，与 Rust 仿真内核完整对齐。",
     ].join("\n"),
     card: [
       "卡牌选择",
@@ -580,6 +653,28 @@ function renderFateStrategyCandidate(option: FateStrategyOption, selected: boole
     >
       <span class="cand-name">${escapeHtml(fateStrategyDisplayName(option))}</span>
       <span class="cand-sub">${escapeHtml(fateStrategySummary(option))}</span>
+    </button>
+  `;
+}
+
+function renderXianMoStrategyCandidate(
+  option: XianMoStrategyOption,
+  selected: boolean,
+): string {
+  const isBattle = option.isBattleEffect || option.affectsBattle;
+  return `
+    <button
+      type="button"
+      class="deck-candidate xianmo-candidate ${selected ? "selected" : ""}"
+      data-action="toggle-xianmo-strategy"
+      data-xianmo-strategy-id="${option.id}"
+      title="${escapeAttribute(option.desc)}"
+    >
+      <div class="cand-row">
+        <span class="cand-name">${escapeHtml(option.name)}</span>
+        ${isBattle ? `<span class="cand-badge">入战</span>` : ""}
+      </div>
+      <span class="cand-sub">${escapeHtml(option.desc)}</span>
     </button>
   `;
 }

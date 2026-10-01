@@ -44,6 +44,7 @@ const CONFIG_MUTATING_ACTIONS = new Set([
   "adjust-jifangsheng-rank",
   "clear-deck",
   "clear-fate-strategies",
+  "clear-xianmo-strategies",
   "clear-slot",
   "clear-talent-slot",
   "cycle-level",
@@ -59,6 +60,7 @@ const CONFIG_MUTATING_ACTIONS = new Set([
   "shift-deck-slot",
   "slot-level",
   "toggle-fate-strategy",
+  "toggle-xianmo-strategy",
 ]);
 
 /** 改动当前卡组/角色/仙命/天衍，使当前构筑不再等于任一已保存存档。 */
@@ -70,6 +72,7 @@ const DECK_EDITING_ACTIONS = new Set([
   "apply-solver-baseline",
   "clear-deck",
   "clear-fate-strategies",
+  "clear-xianmo-strategies",
   "clear-slot",
   "clear-talent-slot",
   "cycle-level",
@@ -79,6 +82,7 @@ const DECK_EDITING_ACTIONS = new Set([
   "reset-player",
   "shift-deck-slot",
   "toggle-fate-strategy",
+  "toggle-xianmo-strategy",
 ]);
 
 export function isDeckEditingAction(action: string): boolean {

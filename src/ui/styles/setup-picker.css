@@ -27,7 +27,8 @@
 .character-popup,
 .talent-popup,
 .career-popup,
-.fate-popup {
+.fate-popup,
+.xianmo-popup {
   grid-template-rows: auto minmax(0, 1fr);
   gap: 6px;
   padding: 8px 10px 10px;
@@ -158,7 +159,8 @@
 .combined-page > .setup-picker-host .character-popup,
 .combined-page > .setup-picker-host .talent-popup,
 .combined-page > .setup-picker-host .career-popup,
-.combined-page > .setup-picker-host .fate-popup {
+.combined-page > .setup-picker-host .fate-popup,
+.combined-page > .setup-picker-host .xianmo-popup {
   position: absolute;
   grid-column: 2;
   inset: 8px;
@@ -176,7 +178,8 @@
   grid-template-rows: auto minmax(0, 1fr);
 }
 
-.fate-popup {
+.fate-popup,
+.xianmo-popup {
   width: min(900px, calc(100vw - 36px));
   height: min(460px, calc(100vh - 108px));
   max-height: min(460px, calc(100vh - 108px));

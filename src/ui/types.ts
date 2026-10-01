@@ -135,6 +135,26 @@ export interface FateStrategyGroup {
   readonly options: readonly FateStrategyOption[];
 }
 
+export interface XianMoStrategyOption {
+  readonly id: number;
+  readonly name: string;
+  readonly desc: string;
+  readonly category: string;
+  readonly categoryLabel: string;
+  readonly isBattleEffect: boolean;
+  readonly affectsBattle: boolean;
+  readonly npcId: number;
+  readonly minRound?: number;
+  readonly maxRound?: number;
+  readonly otherParams: readonly number[];
+}
+
+export interface XianMoStrategyGroup {
+  readonly id: string;
+  readonly label: string;
+  readonly options: readonly XianMoStrategyOption[];
+}
+
 export interface DeckSlotConfig {
   baseId: number;
   level: number;
@@ -168,6 +188,8 @@ export interface PlayerConfig {
   lastElement: CardElement | null;
   talents: number[];
   fateStrategies: number[];
+  xianMoStrategies: number[];
+  xianMoTempDatas: Record<string, number>;
   lingWuCardBaseIds: number[];
   handCardIds: number[];
   lastRoundUsedCardBaseIds: number[];
@@ -225,6 +247,8 @@ export interface SavedPlayerConfig {
   lastElement: CardElement | null;
   talents: number[];
   fateStrategies: number[];
+  xianMoStrategies?: number[];
+  xianMoTempDatas?: Record<string, number>;
   lingWuCardBaseIds: number[];
   handCardIds: number[];
   lastRoundUsedCardBaseIds: number[];
@@ -380,7 +404,7 @@ export interface TargetPracticeState {
   duelP1Player: PlayerConfig | null;
 }
 
-export type PickerMode = "none" | "card" | "talent" | "fate" | "career" | "character";
+export type PickerMode = "none" | "card" | "talent" | "fate" | "career" | "character" | "xianmo";
 export type CardPickerScope = "common" | "season" | "special";
 
 export interface SolverRunStatus {

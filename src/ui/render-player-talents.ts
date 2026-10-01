@@ -6,6 +6,7 @@ import {
   isFateStrategyImplemented,
   talentDetailText,
   talentPickerColumn,
+  xianMoStrategyDisplayName,
 } from "./data";
 import { JI_FANGSHENG_CHARACTER_ID, maxJiFangshengInitialFateRank } from "./derived-state";
 import { escapeAttribute, escapeHtml } from "./view-utils";
@@ -77,6 +78,27 @@ export function renderFateStrategyStrip(state: AppState, side: Side, player: Pla
           ? ""
           : selected.map((option) => `
             <button type="button" class="season-fate-chip" data-action="toggle-fate-strategy" data-side="${side}" data-fate-strategy-id="${option.id}" title="取消">${escapeHtml(fateStrategyDisplayName(option))}</button>
+          `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+export function renderXianMoStrategyStrip(state: AppState, side: Side, player: PlayerConfig): string {
+  const selectedIds = player.xianMoStrategies ?? [];
+  const editing = state.pickerMode === "xianmo" && state.activeSide === side;
+  return `
+    <div class="season-xianmo-strip ${editing ? "editing" : ""}">
+      <button type="button" class="season-xianmo-open" data-action="open-xianmo-picker" data-side="${side}">
+        <span class="season-xianmo-icon"></span>
+        <span class="season-xianmo-title">百家</span>
+        <span class="season-xianmo-count">${selectedIds.length}</span>
+      </button>
+      <div class="season-xianmo-chips">
+        ${selectedIds.length === 0
+          ? ""
+          : selectedIds.map((id) => `
+            <button type="button" class="season-xianmo-chip" data-action="toggle-xianmo-strategy" data-side="${side}" data-xianmo-strategy-id="${id}" title="取消">${escapeHtml(xianMoStrategyDisplayName(id))}</button>
           `).join("")}
       </div>
     </div>

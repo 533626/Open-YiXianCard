@@ -231,21 +231,25 @@
   border-style: solid;
 }
 
-.fate-popup-grid {
+.fate-popup-grid,
+.xianmo-popup-grid {
   grid-template-columns: repeat(var(--picker-cols, 3), minmax(0, 1fr));
 }
 
-.fate-realm-col {
+.fate-realm-col,
+.xianmo-realm-col {
   min-height: 220px;
   max-height: 380px;
 }
 
-.build-picker-popup.fate-popup .fate-realm-col {
+.build-picker-popup.fate-popup .fate-realm-col,
+.build-picker-popup.xianmo-popup .xianmo-realm-col {
   min-height: 0;
   max-height: none;
 }
 
-.fate-candidate {
+.fate-candidate,
+.xianmo-candidate {
   min-height: 48px;
   flex-direction: column;
   align-items: flex-start;
@@ -254,7 +258,28 @@
   border-left: 3px solid #9b8cff;
 }
 
-.fate-candidate .cand-name {
+.xianmo-candidate {
+  border-left-color: #c9a84c;
+}
+
+.xianmo-candidate .cand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.xianmo-candidate .cand-badge {
+  font-size: 10px;
+  padding: 1px 4px;
+  border-radius: 2px;
+  background: rgba(201, 168, 76, 0.25);
+  color: #f5d688;
+  border: 1px solid rgba(201, 168, 76, 0.5);
+}
+
+.fate-candidate .cand-name,
+.xianmo-candidate .cand-name {
   font-size: var(--fs-sm);
   line-height: 1.1;
 }
@@ -293,7 +318,8 @@
 .talent-popup .deck-realm-list,
 .character-popup .deck-realm-list,
 .career-popup .deck-realm-list,
-.fate-popup .deck-realm-list {
+.fate-popup .deck-realm-list,
+.xianmo-popup .deck-realm-list {
   overflow-y: auto;
 }
 

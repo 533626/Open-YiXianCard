@@ -2,36 +2,36 @@
   "schemaVersion": 1,
   "scope": "原作 FateStrategyConfig 天衍仙命索引；分组逻辑对齐 SeasonInfo10DetailItem：通用、门派通用、角色专属。",
   "totals": {
-    "sourceStrategyCount": 353,
-    "availableStrategyCount": 317,
-    "indexedCount": 317,
-    "commonCount": 66,
-    "sectCount": 97,
+    "sourceStrategyCount": 427,
+    "availableStrategyCount": 402,
+    "indexedCount": 402,
+    "commonCount": 73,
+    "sectCount": 117,
     "sectEightCount": 32,
-    "exclusiveCount": 154,
-    "battleEffectCount": 58,
-    "implementedCount": 63,
+    "exclusiveCount": 212,
+    "battleEffectCount": 89,
+    "implementedCount": 64,
     "unverifiedRegistrationCount": 0,
-    "missingRegistrationCount": 0,
-    "missingBattleCount": 0,
-    "recordOnlyCount": 254,
+    "missingRegistrationCount": 30,
+    "missingBattleCount": 30,
+    "recordOnlyCount": 268,
     "ignoredBattleCount": 0,
-    "unclassifiedNonBattleCount": 0
+    "unclassifiedNonBattleCount": 40
   },
   "groups": [
     {
       "kind": "common",
       "key": "fate-strategy:common",
       "label": "通用",
-      "totalCount": 66,
+      "totalCount": 73,
       "battleEffectCount": 8,
       "implementedCount": 5,
       "unverifiedRegistrationCount": 0,
       "missingRegistrationCount": 0,
       "missingBattleCount": 0,
-      "recordOnlyCount": 61,
+      "recordOnlyCount": 62,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 6
     },
     {
       "kind": "sect",
@@ -51,7 +51,7 @@
       "kind": "sect",
       "key": "fate-strategy:sect-extreme-card:DuanXuanZong",
       "label": "锻玄宗极卡",
-      "totalCount": 2,
+      "totalCount": 4,
       "battleEffectCount": 0,
       "implementedCount": 0,
       "unverifiedRegistrationCount": 0,
@@ -59,7 +59,7 @@
       "missingBattleCount": 0,
       "recordOnlyCount": 2,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 2
     },
     {
       "kind": "sect",
@@ -79,13 +79,13 @@
       "kind": "sect",
       "key": "fate-strategy:sect-card-pool:DuanXuanZong",
       "label": "锻玄宗牌池",
-      "totalCount": 11,
+      "totalCount": 14,
       "battleEffectCount": 0,
       "implementedCount": 0,
       "unverifiedRegistrationCount": 0,
       "missingRegistrationCount": 0,
       "missingBattleCount": 0,
-      "recordOnlyCount": 11,
+      "recordOnlyCount": 14,
       "ignoredBattleCount": 0,
       "unclassifiedNonBattleCount": 0
     },
@@ -107,7 +107,7 @@
       "kind": "sect",
       "key": "fate-strategy:sect-extreme-card:QiXingGe",
       "label": "七星阁极卡",
-      "totalCount": 2,
+      "totalCount": 4,
       "battleEffectCount": 0,
       "implementedCount": 0,
       "unverifiedRegistrationCount": 0,
@@ -115,7 +115,7 @@
       "missingBattleCount": 0,
       "recordOnlyCount": 2,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 2
     },
     {
       "kind": "sect",
@@ -135,13 +135,13 @@
       "kind": "sect",
       "key": "fate-strategy:sect-card-pool:QiXingGe",
       "label": "七星阁牌池",
-      "totalCount": 11,
+      "totalCount": 14,
       "battleEffectCount": 0,
       "implementedCount": 0,
       "unverifiedRegistrationCount": 0,
       "missingRegistrationCount": 0,
       "missingBattleCount": 0,
-      "recordOnlyCount": 11,
+      "recordOnlyCount": 14,
       "ignoredBattleCount": 0,
       "unclassifiedNonBattleCount": 0
     },
@@ -163,15 +163,15 @@
       "kind": "sect",
       "key": "fate-strategy:sect-extreme-card:WuXingDaoMeng",
       "label": "五行道盟极卡",
-      "totalCount": 2,
+      "totalCount": 4,
       "battleEffectCount": 0,
       "implementedCount": 0,
       "unverifiedRegistrationCount": 0,
       "missingRegistrationCount": 0,
       "missingBattleCount": 0,
-      "recordOnlyCount": 2,
+      "recordOnlyCount": 3,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 1
     },
     {
       "kind": "sect",
@@ -191,13 +191,13 @@
       "kind": "sect",
       "key": "fate-strategy:sect-card-pool:WuXingDaoMeng",
       "label": "五行道盟牌池",
-      "totalCount": 11,
+      "totalCount": 14,
       "battleEffectCount": 0,
       "implementedCount": 0,
       "unverifiedRegistrationCount": 0,
       "missingRegistrationCount": 0,
       "missingBattleCount": 0,
-      "recordOnlyCount": 11,
+      "recordOnlyCount": 14,
       "ignoredBattleCount": 0,
       "unclassifiedNonBattleCount": 0
     },
@@ -219,7 +219,7 @@
       "kind": "sect",
       "key": "fate-strategy:sect-extreme-card:YunLingJianZong",
       "label": "云灵剑宗极卡",
-      "totalCount": 2,
+      "totalCount": 4,
       "battleEffectCount": 0,
       "implementedCount": 0,
       "unverifiedRegistrationCount": 0,
@@ -227,7 +227,7 @@
       "missingBattleCount": 0,
       "recordOnlyCount": 2,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 2
     },
     {
       "kind": "sect",
@@ -247,13 +247,13 @@
       "kind": "sect",
       "key": "fate-strategy:sect-card-pool:YunLingJianZong",
       "label": "云灵剑宗牌池",
-      "totalCount": 11,
+      "totalCount": 14,
       "battleEffectCount": 0,
       "implementedCount": 0,
       "unverifiedRegistrationCount": 0,
       "missingRegistrationCount": 0,
       "missingBattleCount": 0,
-      "recordOnlyCount": 11,
+      "recordOnlyCount": 14,
       "ignoredBattleCount": 0,
       "unclassifiedNonBattleCount": 0
     },
@@ -261,77 +261,77 @@
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:3000002",
       "label": "杜伶鸳专属",
-      "totalCount": 6,
-      "battleEffectCount": 2,
+      "totalCount": 8,
+      "battleEffectCount": 3,
       "implementedCount": 3,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 1,
+      "missingBattleCount": 1,
       "recordOnlyCount": 3,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 1
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:2000006",
       "label": "风绪专属",
-      "totalCount": 6,
-      "battleEffectCount": 1,
+      "totalCount": 9,
+      "battleEffectCount": 3,
       "implementedCount": 2,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 2,
+      "missingBattleCount": 2,
       "recordOnlyCount": 4,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 1
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:3000003",
       "label": "花沁蕊专属",
-      "totalCount": 6,
-      "battleEffectCount": 2,
+      "totalCount": 9,
+      "battleEffectCount": 4,
       "implementedCount": 2,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 2,
+      "missingBattleCount": 2,
       "recordOnlyCount": 4,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 1
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:4000004",
       "label": "姬方生专属",
-      "totalCount": 6,
-      "battleEffectCount": 2,
+      "totalCount": 9,
+      "battleEffectCount": 4,
       "implementedCount": 3,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 2,
+      "missingBattleCount": 2,
       "recordOnlyCount": 3,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 1
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:2000004",
       "label": "姜袭明专属",
-      "totalCount": 6,
-      "battleEffectCount": 3,
+      "totalCount": 9,
+      "battleEffectCount": 5,
       "implementedCount": 3,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 2,
+      "missingBattleCount": 2,
       "recordOnlyCount": 3,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 1
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:1000006",
       "label": "黎承云专属",
-      "totalCount": 7,
+      "totalCount": 9,
       "battleEffectCount": 2,
       "implementedCount": 2,
       "unverifiedRegistrationCount": 0,
@@ -339,18 +339,18 @@
       "missingBattleCount": 0,
       "recordOnlyCount": 5,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 2
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:4000005",
       "label": "李㵘专属",
-      "totalCount": 6,
-      "battleEffectCount": 2,
+      "totalCount": 8,
+      "battleEffectCount": 4,
       "implementedCount": 2,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 2,
+      "missingBattleCount": 2,
       "recordOnlyCount": 4,
       "ignoredBattleCount": 0,
       "unclassifiedNonBattleCount": 0
@@ -359,7 +359,7 @@
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:1000004",
       "label": "林小月专属",
-      "totalCount": 7,
+      "totalCount": 10,
       "battleEffectCount": 2,
       "implementedCount": 2,
       "unverifiedRegistrationCount": 0,
@@ -367,18 +367,18 @@
       "missingBattleCount": 0,
       "recordOnlyCount": 5,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 3
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:4000006",
       "label": "聆羽专属",
-      "totalCount": 6,
-      "battleEffectCount": 2,
+      "totalCount": 8,
+      "battleEffectCount": 4,
       "implementedCount": 2,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 2,
+      "missingBattleCount": 2,
       "recordOnlyCount": 4,
       "ignoredBattleCount": 0,
       "unclassifiedNonBattleCount": 0
@@ -387,40 +387,40 @@
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:1000003",
       "label": "龙瑶专属",
-      "totalCount": 6,
-      "battleEffectCount": 1,
+      "totalCount": 8,
+      "battleEffectCount": 2,
       "implementedCount": 1,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 1,
+      "missingBattleCount": 1,
       "recordOnlyCount": 5,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 1
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:1000005",
       "label": "陆剑心专属",
-      "totalCount": 9,
-      "battleEffectCount": 5,
+      "totalCount": 11,
+      "battleEffectCount": 6,
       "implementedCount": 5,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 1,
+      "missingBattleCount": 1,
       "recordOnlyCount": 4,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 1
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:1000001",
       "label": "牧逸风专属",
-      "totalCount": 6,
-      "battleEffectCount": 2,
+      "totalCount": 8,
+      "battleEffectCount": 4,
       "implementedCount": 2,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 2,
+      "missingBattleCount": 2,
       "recordOnlyCount": 4,
       "ignoredBattleCount": 0,
       "unclassifiedNonBattleCount": 0
@@ -429,35 +429,35 @@
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:3000004",
       "label": "慕虎专属",
-      "totalCount": 7,
-      "battleEffectCount": 3,
+      "totalCount": 10,
+      "battleEffectCount": 4,
       "implementedCount": 3,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 1,
+      "missingBattleCount": 1,
       "recordOnlyCount": 4,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 2
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:3000005",
       "label": "南宫生专属",
-      "totalCount": 6,
-      "battleEffectCount": 3,
+      "totalCount": 8,
+      "battleEffectCount": 4,
       "implementedCount": 4,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 1,
+      "missingBattleCount": 1,
       "recordOnlyCount": 2,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 1
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:3000006",
       "label": "祁忘忧专属",
-      "totalCount": 7,
+      "totalCount": 9,
       "battleEffectCount": 3,
       "implementedCount": 4,
       "unverifiedRegistrationCount": 0,
@@ -465,69 +465,69 @@
       "missingBattleCount": 0,
       "recordOnlyCount": 3,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 2
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:2000001",
       "label": "谭舒雁专属",
-      "totalCount": 6,
-      "battleEffectCount": 2,
+      "totalCount": 9,
+      "battleEffectCount": 3,
       "implementedCount": 2,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 1,
+      "missingBattleCount": 1,
       "recordOnlyCount": 4,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 2
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:4000002",
       "label": "屠馗专属",
-      "totalCount": 6,
-      "battleEffectCount": 2,
+      "totalCount": 9,
+      "battleEffectCount": 4,
       "implementedCount": 2,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 2,
+      "missingBattleCount": 2,
       "recordOnlyCount": 4,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 1
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:2000005",
       "label": "吴策专属",
-      "totalCount": 7,
-      "battleEffectCount": 3,
+      "totalCount": 9,
+      "battleEffectCount": 4,
       "implementedCount": 3,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 1,
+      "missingBattleCount": 1,
       "recordOnlyCount": 4,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 1
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:3000001",
       "label": "吾行之专属",
-      "totalCount": 7,
-      "battleEffectCount": 1,
+      "totalCount": 9,
+      "battleEffectCount": 2,
       "implementedCount": 1,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 1,
+      "missingBattleCount": 1,
       "recordOnlyCount": 6,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 1
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:4000001",
       "label": "小布专属",
-      "totalCount": 6,
+      "totalCount": 8,
       "battleEffectCount": 2,
       "implementedCount": 3,
       "unverifiedRegistrationCount": 0,
@@ -535,46 +535,46 @@
       "missingBattleCount": 0,
       "recordOnlyCount": 3,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 2
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:2000002",
       "label": "炎尘专属",
-      "totalCount": 6,
-      "battleEffectCount": 1,
+      "totalCount": 9,
+      "battleEffectCount": 3,
       "implementedCount": 1,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 2,
+      "missingBattleCount": 2,
       "recordOnlyCount": 5,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 1
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:1000002",
       "label": "炎雪专属",
-      "totalCount": 6,
-      "battleEffectCount": 2,
+      "totalCount": 9,
+      "battleEffectCount": 4,
       "implementedCount": 2,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 2,
+      "missingBattleCount": 2,
       "recordOnlyCount": 4,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 1
     },
     {
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:2000003",
       "label": "曜灵专属",
-      "totalCount": 6,
-      "battleEffectCount": 1,
-      "implementedCount": 1,
+      "totalCount": 8,
+      "battleEffectCount": 3,
+      "implementedCount": 2,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 1,
+      "missingBattleCount": 1,
       "recordOnlyCount": 5,
       "ignoredBattleCount": 0,
       "unclassifiedNonBattleCount": 0
@@ -583,15 +583,15 @@
       "kind": "exclusive",
       "key": "fate-strategy:exclusive:4000003",
       "label": "叶冥冥专属",
-      "totalCount": 7,
-      "battleEffectCount": 1,
+      "totalCount": 9,
+      "battleEffectCount": 2,
       "implementedCount": 3,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0,
-      "missingBattleCount": 0,
+      "missingRegistrationCount": 1,
+      "missingBattleCount": 1,
       "recordOnlyCount": 4,
       "ignoredBattleCount": 0,
-      "unclassifiedNonBattleCount": 0
+      "unclassifiedNonBattleCount": 1
     }
   ],
   "strategies": [
@@ -754,7 +754,7 @@
       ],
       "otherParams": [],
       "exprs": [],
-      "isGeneric": true,
+      "isGeneric": false,
       "isBattleEffect": false,
       "isAvailable": true,
       "isSpecialBuild": false,
@@ -911,7 +911,7 @@
       ],
       "countParam": 4,
       "otherParams": [
-        7
+        12
       ],
       "exprs": [],
       "isGeneric": false,
@@ -938,8 +938,8 @@
       "excludeCharacters": [],
       "weights": [
         0,
-        20,
-        50
+        0,
+        0
       ],
       "otherParams": [
         3
@@ -1084,6 +1084,135 @@
       "isSpecialBuild": false,
       "overrideSpritePath": "Icon_Talent_8",
       "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 354,
+      "nameKey": "FateStrategyName_354",
+      "descKey": "FateStrategyDesc_354",
+      "archiveKind": "common",
+      "archiveKey": "fate-strategy:common",
+      "archiveLabel": "通用",
+      "section": "common",
+      "sectionLabel": "通用",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "includeCharacters": [],
+      "excludeCharacters": [
+        1000001,
+        2000001,
+        3000001,
+        4000001
+      ],
+      "weights": [
+        0,
+        0,
+        50
+      ],
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 400,
+      "nameKey": "FateStrategyName_400",
+      "descKey": "FateStrategyDesc_400",
+      "archiveKind": "common",
+      "archiveKey": "fate-strategy:common",
+      "archiveLabel": "通用",
+      "section": "common",
+      "sectionLabel": "通用",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        100,
+        0,
+        0
+      ],
+      "countParam": 1,
+      "otherParams": [
+        2,
+        3
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 11,
+      "isSpecialBuild": false,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 401,
+      "nameKey": "FateStrategyName_401",
+      "descKey": "FateStrategyDesc_401",
+      "archiveKind": "common",
+      "archiveKey": "fate-strategy:common",
+      "archiveLabel": "通用",
+      "section": "common",
+      "sectionLabel": "通用",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        50,
+        0,
+        0
+      ],
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 433,
+      "nameKey": "FateStrategyName_433",
+      "descKey": "FateStrategyDesc_433",
+      "archiveKind": "common",
+      "archiveKey": "fate-strategy:common",
+      "archiveLabel": "通用",
+      "section": "common",
+      "sectionLabel": "通用",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        100,
+        0,
+        0
+      ],
+      "otherParams": [
+        4,
+        4
+      ],
+      "exprs": [],
+      "isGeneric": true,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "unclassified-nonbattle",
       "registrationStatus": "missing",
       "recordOnlyBranches": [],
       "sourceFiles": []
@@ -1783,6 +1912,69 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 356,
+      "nameKey": "FateStrategyName_356",
+      "descKey": "FateStrategyDesc_356",
+      "archiveKind": "common",
+      "archiveKey": "fate-strategy:common",
+      "archiveLabel": "通用",
+      "section": "common",
+      "sectionLabel": "通用",
+      "category": "ActiveCountable",
+      "categoryLabel": "主动计数",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        50,
+        50
+      ],
+      "countParam": 2,
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": true,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 358,
+      "nameKey": "FateStrategyName_358",
+      "descKey": "FateStrategyDesc_358",
+      "archiveKind": "common",
+      "archiveKey": "fate-strategy:common",
+      "archiveLabel": "通用",
+      "section": "common",
+      "sectionLabel": "通用",
+      "category": "ActiveCountable",
+      "categoryLabel": "主动计数",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        10
+      ],
+      "countParam": 1,
+      "otherParams": [
+        1,
+        10
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
       "strategyId": 5,
       "nameKey": "FateStrategyName_5",
       "descKey": "FateStrategyDesc_5",
@@ -2077,6 +2269,36 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 355,
+      "nameKey": "FateStrategyName_355",
+      "descKey": "FateStrategyDesc_355",
+      "archiveKind": "common",
+      "archiveKey": "fate-strategy:common",
+      "archiveLabel": "通用",
+      "section": "common",
+      "sectionLabel": "通用",
+      "category": "ActiveCoolDown",
+      "categoryLabel": "主动冷却",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        100,
+        0
+      ],
+      "countParam": 3,
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": true,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
       "strategyId": 8,
       "nameKey": "FateStrategyName_8",
       "descKey": "FateStrategyDesc_8",
@@ -2090,7 +2312,7 @@
       "includeCharacters": [],
       "excludeCharacters": [],
       "weights": [
-        50,
+        0,
         0,
         0
       ],
@@ -2406,7 +2628,7 @@
       "isGeneric": false,
       "isBattleEffect": false,
       "isAvailable": true,
-      "effectRound": 13,
+      "effectRound": 12,
       "isSpecialBuild": false,
       "status": "record-only",
       "registrationStatus": "missing",
@@ -2652,7 +2874,7 @@
       "isGeneric": false,
       "isBattleEffect": false,
       "isAvailable": true,
-      "effectRound": 13,
+      "effectRound": 12,
       "isSpecialBuild": false,
       "status": "record-only",
       "registrationStatus": "missing",
@@ -2693,7 +2915,7 @@
       "isGeneric": false,
       "isBattleEffect": false,
       "isAvailable": true,
-      "effectRound": 13,
+      "effectRound": 12,
       "isSpecialBuild": false,
       "status": "record-only",
       "registrationStatus": "missing",
@@ -2775,7 +2997,7 @@
       "isGeneric": false,
       "isBattleEffect": false,
       "isAvailable": true,
-      "effectRound": 13,
+      "effectRound": 12,
       "isSpecialBuild": false,
       "status": "record-only",
       "registrationStatus": "missing",
@@ -2816,7 +3038,7 @@
       "isGeneric": false,
       "isBattleEffect": false,
       "isAvailable": true,
-      "effectRound": 13,
+      "effectRound": 12,
       "isSpecialBuild": false,
       "status": "record-only",
       "registrationStatus": "missing",
@@ -3113,7 +3335,7 @@
       "isGeneric": false,
       "isBattleEffect": false,
       "isAvailable": true,
-      "effectRound": 13,
+      "effectRound": 12,
       "isSpecialBuild": true,
       "status": "record-only",
       "registrationStatus": "missing",
@@ -3151,6 +3373,76 @@
       "effectRound": 13,
       "isSpecialBuild": true,
       "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 366,
+      "nameKey": "FateStrategyName_366",
+      "descKey": "FateStrategyDesc_366",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-extreme-card:DuanXuanZong",
+      "archiveLabel": "锻玄宗极卡",
+      "section": "sect-extreme-card",
+      "sectionLabel": "门派极卡",
+      "category": "JiCard",
+      "categoryLabel": "极卡",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        50,
+        50
+      ],
+      "otherParams": [
+        10000027,
+        10000100
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 13,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 367,
+      "nameKey": "FateStrategyName_367",
+      "descKey": "FateStrategyDesc_367",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-extreme-card:DuanXuanZong",
+      "archiveLabel": "锻玄宗极卡",
+      "section": "sect-extreme-card",
+      "sectionLabel": "门派极卡",
+      "category": "JiCard",
+      "categoryLabel": "极卡",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        50,
+        50
+      ],
+      "otherParams": [
+        10000019,
+        10000101
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 12,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
       "registrationStatus": "missing",
       "recordOnlyBranches": [],
       "sourceFiles": []
@@ -3337,8 +3629,8 @@
       "excludeCharacters": [],
       "weights": [
         0,
-        30,
-        40
+        0,
+        0
       ],
       "countParam": 6,
       "otherParams": [
@@ -3349,6 +3641,44 @@
       "isBattleEffect": false,
       "isAvailable": true,
       "effectRound": 10,
+      "isSpecialBuild": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 207,
+      "nameKey": "FateStrategyName_207",
+      "descKey": "FateStrategyDesc_207",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-card-pool:DuanXuanZong",
+      "archiveLabel": "锻玄宗牌池",
+      "section": "sect-card-pool",
+      "sectionLabel": "门派牌池",
+      "category": "AddCardPool",
+      "categoryLabel": "加入牌池",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "includeCharacters": [],
+      "excludeCharacters": [
+        4000002,
+        4000006
+      ],
+      "weights": [
+        0,
+        0,
+        0
+      ],
+      "countParam": 8,
+      "otherParams": [
+        278
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 9,
       "isSpecialBuild": true,
       "status": "record-only",
       "registrationStatus": "missing",
@@ -3393,6 +3723,43 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 212,
+      "nameKey": "FateStrategyName_212",
+      "descKey": "FateStrategyDesc_212",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-card-pool:DuanXuanZong",
+      "archiveLabel": "锻玄宗牌池",
+      "section": "sect-card-pool",
+      "sectionLabel": "门派牌池",
+      "category": "AddCardPool",
+      "categoryLabel": "加入牌池",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "includeCharacters": [],
+      "excludeCharacters": [
+        4000002
+      ],
+      "weights": [
+        0,
+        0,
+        0
+      ],
+      "countParam": 8,
+      "otherParams": [
+        297
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 12,
+      "isSpecialBuild": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
       "strategyId": 216,
       "nameKey": "FateStrategyName_216",
       "descKey": "FateStrategyDesc_216",
@@ -3428,6 +3795,44 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 220,
+      "nameKey": "FateStrategyName_220",
+      "descKey": "FateStrategyDesc_220",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-card-pool:DuanXuanZong",
+      "archiveLabel": "锻玄宗牌池",
+      "section": "sect-card-pool",
+      "sectionLabel": "门派牌池",
+      "category": "AddCardPool",
+      "categoryLabel": "加入牌池",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "includeCharacters": [],
+      "excludeCharacters": [
+        4000003,
+        4000004
+      ],
+      "weights": [
+        0,
+        0,
+        0
+      ],
+      "countParam": 8,
+      "otherParams": [
+        291
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 9,
+      "isSpecialBuild": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
       "strategyId": 223,
       "nameKey": "FateStrategyName_223",
       "descKey": "FateStrategyDesc_223",
@@ -3444,8 +3849,8 @@
       "excludeCharacters": [],
       "weights": [
         0,
-        30,
-        40
+        0,
+        0
       ],
       "countParam": 8,
       "otherParams": [
@@ -3514,8 +3919,8 @@
       "excludeCharacters": [],
       "weights": [
         0,
-        30,
-        40
+        0,
+        0
       ],
       "countParam": 8,
       "otherParams": [
@@ -3958,7 +4363,7 @@
       "isGeneric": false,
       "isBattleEffect": false,
       "isAvailable": true,
-      "effectRound": 13,
+      "effectRound": 12,
       "isSpecialBuild": true,
       "status": "record-only",
       "registrationStatus": "missing",
@@ -3993,9 +4398,79 @@
       "isGeneric": false,
       "isBattleEffect": false,
       "isAvailable": true,
-      "effectRound": 13,
+      "effectRound": 12,
       "isSpecialBuild": true,
       "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 362,
+      "nameKey": "FateStrategyName_362",
+      "descKey": "FateStrategyDesc_362",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-extreme-card:QiXingGe",
+      "archiveLabel": "七星阁极卡",
+      "section": "sect-extreme-card",
+      "sectionLabel": "门派极卡",
+      "category": "JiCard",
+      "categoryLabel": "极卡",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        50,
+        50
+      ],
+      "otherParams": [
+        4000014,
+        4000100
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 12,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 363,
+      "nameKey": "FateStrategyName_363",
+      "descKey": "FateStrategyDesc_363",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-extreme-card:QiXingGe",
+      "archiveLabel": "七星阁极卡",
+      "section": "sect-extreme-card",
+      "sectionLabel": "门派极卡",
+      "category": "JiCard",
+      "categoryLabel": "极卡",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        50,
+        50
+      ],
+      "otherParams": [
+        4000043,
+        4000101
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 13,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
       "registrationStatus": "missing",
       "recordOnlyBranches": [],
       "sourceFiles": []
@@ -4134,6 +4609,41 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 199,
+      "nameKey": "FateStrategyName_199",
+      "descKey": "FateStrategyDesc_199",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-card-pool:QiXingGe",
+      "archiveLabel": "七星阁牌池",
+      "section": "sect-card-pool",
+      "sectionLabel": "门派牌池",
+      "category": "AddCardPool",
+      "categoryLabel": "加入牌池",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        0
+      ],
+      "countParam": 6,
+      "otherParams": [
+        266
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 10,
+      "isSpecialBuild": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
       "strategyId": 200,
       "nameKey": "FateStrategyName_200",
       "descKey": "FateStrategyDesc_200",
@@ -4258,12 +4768,47 @@
       "excludeCharacters": [],
       "weights": [
         0,
-        30,
-        40
+        0,
+        0
       ],
       "countParam": 8,
       "otherParams": [
         307
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 9,
+      "isSpecialBuild": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 218,
+      "nameKey": "FateStrategyName_218",
+      "descKey": "FateStrategyDesc_218",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-card-pool:QiXingGe",
+      "archiveLabel": "七星阁牌池",
+      "section": "sect-card-pool",
+      "sectionLabel": "门派牌池",
+      "category": "AddCardPool",
+      "categoryLabel": "加入牌池",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        0
+      ],
+      "countParam": 8,
+      "otherParams": [
+        268
       ],
       "exprs": [],
       "isGeneric": false,
@@ -4328,8 +4873,8 @@
       "excludeCharacters": [],
       "weights": [
         0,
-        30,
-        40
+        0,
+        0
       ],
       "countParam": 8,
       "otherParams": [
@@ -4340,6 +4885,45 @@
       "isBattleEffect": false,
       "isAvailable": true,
       "effectRound": 12,
+      "isSpecialBuild": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 233,
+      "nameKey": "FateStrategyName_233",
+      "descKey": "FateStrategyDesc_233",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-card-pool:QiXingGe",
+      "archiveLabel": "七星阁牌池",
+      "section": "sect-card-pool",
+      "sectionLabel": "门派牌池",
+      "category": "AddCardPool",
+      "categoryLabel": "加入牌池",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "includeCharacters": [],
+      "excludeCharacters": [
+        2000002,
+        2000003,
+        2000005
+      ],
+      "weights": [
+        0,
+        0,
+        0
+      ],
+      "countParam": 8,
+      "otherParams": [
+        324
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 9,
       "isSpecialBuild": true,
       "status": "record-only",
       "registrationStatus": "missing",
@@ -4815,6 +5399,76 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 364,
+      "nameKey": "FateStrategyName_364",
+      "descKey": "FateStrategyDesc_364",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-extreme-card:WuXingDaoMeng",
+      "archiveLabel": "五行道盟极卡",
+      "section": "sect-extreme-card",
+      "sectionLabel": "门派极卡",
+      "category": "JiCard",
+      "categoryLabel": "极卡",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        50,
+        50
+      ],
+      "otherParams": [
+        7000016,
+        7000108
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 13,
+      "isSpecialBuild": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 365,
+      "nameKey": "FateStrategyName_365",
+      "descKey": "FateStrategyDesc_365",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-extreme-card:WuXingDaoMeng",
+      "archiveLabel": "五行道盟极卡",
+      "section": "sect-extreme-card",
+      "sectionLabel": "门派极卡",
+      "category": "JiCard",
+      "categoryLabel": "极卡",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        50,
+        50
+      ],
+      "otherParams": [
+        7000095,
+        7000107
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 12,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
       "strategyId": 266,
       "nameKey": "FateStrategyName_266",
       "descKey": "FateStrategyDesc_266",
@@ -4935,8 +5589,8 @@
       ],
       "weights": [
         0,
-        30,
-        40
+        0,
+        0
       ],
       "countParam": 8,
       "otherParams": [
@@ -5007,8 +5661,8 @@
       "excludeCharacters": [],
       "weights": [
         0,
-        30,
-        40
+        0,
+        0
       ],
       "countParam": 8,
       "otherParams": [
@@ -5094,6 +5748,116 @@
       "isBattleEffect": false,
       "isAvailable": true,
       "effectRound": 12,
+      "isSpecialBuild": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 225,
+      "nameKey": "FateStrategyName_225",
+      "descKey": "FateStrategyDesc_225",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-card-pool:WuXingDaoMeng",
+      "archiveLabel": "五行道盟牌池",
+      "section": "sect-card-pool",
+      "sectionLabel": "门派牌池",
+      "category": "AddCardPool",
+      "categoryLabel": "加入牌池",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        0
+      ],
+      "countParam": 8,
+      "otherParams": [
+        316
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 12,
+      "isSpecialBuild": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 226,
+      "nameKey": "FateStrategyName_226",
+      "descKey": "FateStrategyDesc_226",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-card-pool:WuXingDaoMeng",
+      "archiveLabel": "五行道盟牌池",
+      "section": "sect-card-pool",
+      "sectionLabel": "门派牌池",
+      "category": "AddCardPool",
+      "categoryLabel": "加入牌池",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "includeCharacters": [],
+      "excludeCharacters": [
+        3000005
+      ],
+      "weights": [
+        0,
+        0,
+        0
+      ],
+      "countParam": 8,
+      "otherParams": [
+        317
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 9,
+      "isSpecialBuild": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 230,
+      "nameKey": "FateStrategyName_230",
+      "descKey": "FateStrategyDesc_230",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-card-pool:WuXingDaoMeng",
+      "archiveLabel": "五行道盟牌池",
+      "section": "sect-card-pool",
+      "sectionLabel": "门派牌池",
+      "category": "AddCardPool",
+      "categoryLabel": "加入牌池",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "includeCharacters": [],
+      "excludeCharacters": [
+        3000003,
+        3000006
+      ],
+      "weights": [
+        0,
+        0,
+        0
+      ],
+      "countParam": 8,
+      "otherParams": [
+        315
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 9,
       "isSpecialBuild": true,
       "status": "record-only",
       "registrationStatus": "missing",
@@ -5526,7 +6290,7 @@
       "isGeneric": false,
       "isBattleEffect": false,
       "isAvailable": true,
-      "effectRound": 13,
+      "effectRound": 12,
       "isSpecialBuild": true,
       "status": "record-only",
       "registrationStatus": "missing",
@@ -5564,6 +6328,76 @@
       "effectRound": 13,
       "isSpecialBuild": true,
       "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 360,
+      "nameKey": "FateStrategyName_360",
+      "descKey": "FateStrategyDesc_360",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-extreme-card:YunLingJianZong",
+      "archiveLabel": "云灵剑宗极卡",
+      "section": "sect-extreme-card",
+      "sectionLabel": "门派极卡",
+      "category": "JiCard",
+      "categoryLabel": "极卡",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        50,
+        50
+      ],
+      "otherParams": [
+        1000022,
+        1000099
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 13,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 361,
+      "nameKey": "FateStrategyName_361",
+      "descKey": "FateStrategyDesc_361",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-extreme-card:YunLingJianZong",
+      "archiveLabel": "云灵剑宗极卡",
+      "section": "sect-extreme-card",
+      "sectionLabel": "门派极卡",
+      "category": "JiCard",
+      "categoryLabel": "极卡",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        50,
+        50
+      ],
+      "otherParams": [
+        1000033,
+        1000100
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 12,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
       "registrationStatus": "missing",
       "recordOnlyBranches": [],
       "sourceFiles": []
@@ -5747,8 +6581,8 @@
       "excludeCharacters": [],
       "weights": [
         0,
-        30,
-        40
+        0,
+        0
       ],
       "countParam": 6,
       "otherParams": [
@@ -5759,6 +6593,76 @@
       "isBattleEffect": false,
       "isAvailable": true,
       "effectRound": 10,
+      "isSpecialBuild": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 195,
+      "nameKey": "FateStrategyName_195",
+      "descKey": "FateStrategyDesc_195",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-card-pool:YunLingJianZong",
+      "archiveLabel": "云灵剑宗牌池",
+      "section": "sect-card-pool",
+      "sectionLabel": "门派牌池",
+      "category": "AddCardPool",
+      "categoryLabel": "加入牌池",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        0
+      ],
+      "countParam": 8,
+      "otherParams": [
+        261
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 9,
+      "isSpecialBuild": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 196,
+      "nameKey": "FateStrategyName_196",
+      "descKey": "FateStrategyDesc_196",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-card-pool:YunLingJianZong",
+      "archiveLabel": "云灵剑宗牌池",
+      "section": "sect-card-pool",
+      "sectionLabel": "门派牌池",
+      "category": "AddCardPool",
+      "categoryLabel": "加入牌池",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        0
+      ],
+      "countParam": 8,
+      "otherParams": [
+        262
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 9,
       "isSpecialBuild": true,
       "status": "record-only",
       "registrationStatus": "missing",
@@ -5922,8 +6826,8 @@
       "excludeCharacters": [],
       "weights": [
         0,
-        30,
-        40
+        0,
+        0
       ],
       "countParam": 8,
       "otherParams": [
@@ -5957,8 +6861,8 @@
       "excludeCharacters": [],
       "weights": [
         0,
-        30,
-        40
+        0,
+        0
       ],
       "countParam": 6,
       "otherParams": [
@@ -5969,6 +6873,41 @@
       "isBattleEffect": false,
       "isAvailable": true,
       "effectRound": 13,
+      "isSpecialBuild": true,
+      "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 232,
+      "nameKey": "FateStrategyName_232",
+      "descKey": "FateStrategyDesc_232",
+      "archiveKind": "sect",
+      "archiveKey": "fate-strategy:sect-card-pool:YunLingJianZong",
+      "archiveLabel": "云灵剑宗牌池",
+      "section": "sect-card-pool",
+      "sectionLabel": "门派牌池",
+      "category": "AddCardPool",
+      "categoryLabel": "加入牌池",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "includeCharacters": [],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        0
+      ],
+      "countParam": 8,
+      "otherParams": [
+        323
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 9,
       "isSpecialBuild": true,
       "status": "record-only",
       "registrationStatus": "missing",
@@ -6100,7 +7039,7 @@
         30,
         40
       ],
-      "countParam": 8,
+      "countParam": 6,
       "otherParams": [
         50
       ],
@@ -6235,6 +7174,45 @@
       ]
     },
     {
+      "strategyId": 409,
+      "nameKey": "FateStrategyName_409",
+      "descKey": "FateStrategyDesc_409",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:3000002",
+      "archiveLabel": "杜伶鸳专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "characterId": 3000002,
+      "characterName": "杜伶鸳",
+      "includeCharacters": [
+        3000002
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        150
+      ],
+      "otherParams": [
+        3
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "FateStrategyFunctions.cs"
+      ]
+    },
+    {
       "strategyId": 132,
       "nameKey": "FateStrategyName_132",
       "descKey": "FateStrategyDesc_132",
@@ -6292,7 +7270,7 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
+        25,
         25
       ],
       "countParam": 8,
@@ -6363,6 +7341,47 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 408,
+      "nameKey": "FateStrategyName_408",
+      "descKey": "FateStrategyDesc_408",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:3000002",
+      "archiveLabel": "杜伶鸳专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "GetCardOnRound",
+      "categoryLabel": "按轮次获得牌",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "characterId": 3000002,
+      "characterName": "杜伶鸳",
+      "includeCharacters": [
+        3000002
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        150
+      ],
+      "countParam": 1,
+      "otherParams": [
+        7000073
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 12,
+      "isSpecialBuild": false,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "Card_7000073.cs"
+      ]
+    },
+    {
       "strategyId": 299,
       "nameKey": "FateStrategyName_299",
       "descKey": "FateStrategyDesc_299",
@@ -6430,9 +7449,93 @@
       "isSpecialBuild": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 332
+        }
+      },
       "recordOnlyBranches": [],
       "sourceFiles": [
         "CardActionBase.cs"
+      ]
+    },
+    {
+      "strategyId": 404,
+      "nameKey": "FateStrategyName_404",
+      "descKey": "FateStrategyDesc_404",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:2000006",
+      "archiveLabel": "风绪专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "characterId": 2000006,
+      "characterName": "风绪",
+      "includeCharacters": [
+        2000006
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        0
+      ],
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "FateStrategyFunctions.cs"
+      ]
+    },
+    {
+      "strategyId": 405,
+      "nameKey": "FateStrategyName_405",
+      "descKey": "FateStrategyDesc_405",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:2000006",
+      "archiveLabel": "风绪专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "characterId": 2000006,
+      "characterName": "风绪",
+      "includeCharacters": [
+        2000006
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        150,
+        150,
+        0
+      ],
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "BattleCharacter.cs"
       ]
     },
     {
@@ -6456,7 +7559,7 @@
       "excludeCharacters": [],
       "weights": [
         0,
-        0,
+        150,
         150
       ],
       "otherParams": [
@@ -6467,7 +7570,7 @@
       "isGeneric": false,
       "isBattleEffect": false,
       "isAvailable": true,
-      "effectRound": 13,
+      "effectRound": 11,
       "isSpecialBuild": false,
       "status": "record-only",
       "registrationStatus": "missing",
@@ -6494,11 +7597,11 @@
       ],
       "excludeCharacters": [],
       "weights": [
-        100,
-        50,
-        25
+        0,
+        0,
+        0
       ],
-      "countParam": 7,
+      "countParam": 8,
       "otherParams": [
         215,
         4000038,
@@ -6526,6 +7629,57 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 439,
+      "nameKey": "FateStrategyName_439",
+      "descKey": "FateStrategyDesc_439",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:2000006",
+      "archiveLabel": "风绪专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyRongHui",
+      "categoryLabel": "融会",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "characterId": 2000006,
+      "characterName": "风绪",
+      "includeCharacters": [
+        2000006
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        100,
+        25,
+        25
+      ],
+      "countParam": 8,
+      "otherParams": [
+        214,
+        4000014,
+        429
+      ],
+      "exprs": [
+        {
+          "param": "阴符玉简"
+        },
+        {
+          "type": {
+            "value": 4,
+            "name": "LevelLessOrEqual"
+          },
+          "param": "1"
+        }
+      ],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
       "strategyId": 300,
       "nameKey": "FateStrategyName_300",
       "descKey": "FateStrategyDesc_300",
@@ -6546,7 +7700,7 @@
       "excludeCharacters": [],
       "weights": [
         150,
-        150,
+        0,
         0
       ],
       "countParam": 1,
@@ -6601,6 +7755,16 @@
       "overrideSpritePath": "Icon_Talent_198",
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-full-scope-active.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 338
+        }
+      },
       "recordOnlyBranches": [],
       "sourceFiles": [
         "BattleCharacter.cs"
@@ -6721,6 +7885,81 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 410,
+      "nameKey": "FateStrategyName_410",
+      "descKey": "FateStrategyDesc_410",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:3000003",
+      "archiveLabel": "花沁蕊专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "characterId": 3000003,
+      "characterName": "花沁蕊",
+      "includeCharacters": [
+        3000003
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        150,
+        0,
+        0
+      ],
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 411,
+      "nameKey": "FateStrategyName_411",
+      "descKey": "FateStrategyDesc_411",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:3000003",
+      "archiveLabel": "花沁蕊专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "characterId": 3000003,
+      "characterName": "花沁蕊",
+      "includeCharacters": [
+        3000003
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        0
+      ],
+      "otherParams": [
+        8
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "BattleCharacter.cs",
+        "CardPanel.cs"
+      ]
+    },
+    {
       "strategyId": 184,
       "nameKey": "FateStrategyName_184",
       "descKey": "FateStrategyDesc_184",
@@ -6741,7 +7980,7 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
+        25,
         25
       ],
       "countParam": 6,
@@ -6767,6 +8006,57 @@
       "isAvailable": true,
       "isSpecialBuild": true,
       "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 374,
+      "nameKey": "FateStrategyName_374",
+      "descKey": "FateStrategyDesc_374",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:3000003",
+      "archiveLabel": "花沁蕊专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyRongHui",
+      "categoryLabel": "融会",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "characterId": 3000003,
+      "characterName": "花沁蕊",
+      "includeCharacters": [
+        3000003
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        100,
+        25,
+        25
+      ],
+      "countParam": 8,
+      "otherParams": [
+        20,
+        7000098,
+        413
+      ],
+      "exprs": [
+        {
+          "param": "桃花印"
+        },
+        {
+          "type": {
+            "value": 4,
+            "name": "LevelLessOrEqual"
+          },
+          "param": "1"
+        }
+      ],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
       "registrationStatus": "missing",
       "recordOnlyBranches": [],
       "sourceFiles": []
@@ -6830,8 +8120,8 @@
       ],
       "excludeCharacters": [],
       "weights": [
-        150,
-        150,
+        100,
+        100,
         0
       ],
       "countParam": 1,
@@ -6842,7 +8132,7 @@
       "isGeneric": false,
       "isBattleEffect": false,
       "isAvailable": true,
-      "effectRound": 13,
+      "effectRound": 12,
       "isSpecialBuild": false,
       "overrideSpritePath": "Icon_Talent_90",
       "status": "record-only",
@@ -6929,6 +8219,85 @@
       ]
     },
     {
+      "strategyId": 427,
+      "nameKey": "FateStrategyName_427",
+      "descKey": "FateStrategyDesc_427",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:4000004",
+      "archiveLabel": "姬方生专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "characterId": 4000004,
+      "characterName": "姬方生",
+      "includeCharacters": [
+        4000004
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        150
+      ],
+      "otherParams": [
+        2
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "FateStrategyFunctions.cs"
+      ]
+    },
+    {
+      "strategyId": 428,
+      "nameKey": "FateStrategyName_428",
+      "descKey": "FateStrategyDesc_428",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:4000004",
+      "archiveLabel": "姬方生专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "characterId": 4000004,
+      "characterName": "姬方生",
+      "includeCharacters": [
+        4000004
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        0
+      ],
+      "otherParams": [
+        6
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "BattleCharacter.cs",
+        "FateStrategyFunctions.cs"
+      ]
+    },
+    {
       "strategyId": 191,
       "nameKey": "FateStrategyName_191",
       "descKey": "FateStrategyDesc_191",
@@ -6948,8 +8317,8 @@
       ],
       "excludeCharacters": [],
       "weights": [
-        100,
-        50,
+        0,
+        0,
         0
       ],
       "countParam": 6,
@@ -6975,6 +8344,57 @@
       "isAvailable": true,
       "isSpecialBuild": true,
       "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 377,
+      "nameKey": "FateStrategyName_377",
+      "descKey": "FateStrategyDesc_377",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:4000004",
+      "archiveLabel": "姬方生专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyRongHui",
+      "categoryLabel": "融会",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "characterId": 4000004,
+      "characterName": "姬方生",
+      "includeCharacters": [
+        4000004
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        100,
+        25,
+        25
+      ],
+      "countParam": 8,
+      "otherParams": [
+        82,
+        10000096,
+        417
+      ],
+      "exprs": [
+        {
+          "param": "万玄破魔掌"
+        },
+        {
+          "type": {
+            "value": 4,
+            "name": "LevelLessOrEqual"
+          },
+          "param": "4"
+        }
+      ],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
       "registrationStatus": "missing",
       "recordOnlyBranches": [],
       "sourceFiles": []
@@ -7039,9 +8459,9 @@
       ],
       "excludeCharacters": [],
       "weights": [
-        0,
         150,
-        150
+        150,
+        0
       ],
       "countParam": 1,
       "otherParams": [
@@ -7083,7 +8503,9 @@
         150,
         0
       ],
-      "otherParams": [],
+      "otherParams": [
+        4
+      ],
       "exprs": [],
       "isGeneric": false,
       "isBattleEffect": true,
@@ -7252,6 +8674,46 @@
       ]
     },
     {
+      "strategyId": 436,
+      "nameKey": "FateStrategyName_436",
+      "descKey": "FateStrategyDesc_436",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:2000004",
+      "archiveLabel": "姜袭明专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "characterId": 2000004,
+      "characterName": "姜袭明",
+      "includeCharacters": [
+        2000004
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        150
+      ],
+      "otherParams": [
+        3
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "overrideSpritePath": "Card_4",
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "FateStrategyFunctions.cs"
+      ]
+    },
+    {
       "strategyId": 179,
       "nameKey": "FateStrategyName_179",
       "descKey": "FateStrategyDesc_179",
@@ -7271,8 +8733,8 @@
       ],
       "excludeCharacters": [],
       "weights": [
-        100,
-        50,
+        0,
+        0,
         0
       ],
       "countParam": 6,
@@ -7298,6 +8760,57 @@
       "isAvailable": true,
       "isSpecialBuild": true,
       "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 438,
+      "nameKey": "FateStrategyName_438",
+      "descKey": "FateStrategyDesc_438",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:2000004",
+      "archiveLabel": "姜袭明专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyRongHui",
+      "categoryLabel": "融会",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "characterId": 2000004,
+      "characterName": "姜袭明",
+      "includeCharacters": [
+        2000004
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        100,
+        25,
+        25
+      ],
+      "countParam": 8,
+      "otherParams": [
+        10,
+        4000067,
+        422
+      ],
+      "exprs": [
+        {
+          "param": "星爆术"
+        },
+        {
+          "type": {
+            "value": 4,
+            "name": "LevelLessOrEqual"
+          },
+          "param": "2"
+        }
+      ],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
       "registrationStatus": "missing",
       "recordOnlyBranches": [],
       "sourceFiles": []
@@ -7343,6 +8856,43 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 399,
+      "nameKey": "FateStrategyName_399",
+      "descKey": "FateStrategyDesc_399",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:2000004",
+      "archiveLabel": "姜袭明专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "Switch",
+      "categoryLabel": "Switch",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "characterId": 2000004,
+      "characterName": "姜袭明",
+      "includeCharacters": [
+        2000004
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        150,
+        150,
+        0
+      ],
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ]
+    },
+    {
       "strategyId": 106,
       "nameKey": "FateStrategyName_106",
       "descKey": "FateStrategyDesc_106",
@@ -7362,9 +8912,9 @@
       ],
       "excludeCharacters": [],
       "weights": [
+        0,
         150,
-        150,
-        0
+        150
       ],
       "otherParams": [],
       "exprs": [],
@@ -7415,6 +8965,16 @@
       "isSpecialBuild": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 109
+        }
+      },
       "recordOnlyBranches": [],
       "sourceFiles": [
         "FateStrategyFunctions.cs"
@@ -7534,6 +9094,42 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 390,
+      "nameKey": "FateStrategyName_390",
+      "descKey": "FateStrategyDesc_390",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:1000006",
+      "archiveLabel": "黎承云专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "ActiveCoolDown",
+      "categoryLabel": "主动冷却",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "characterId": 1000006,
+      "characterName": "黎承云",
+      "includeCharacters": [
+        1000006
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        150
+      ],
+      "countParam": 4,
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
       "strategyId": 175,
       "nameKey": "FateStrategyName_175",
       "descKey": "FateStrategyDesc_175",
@@ -7554,10 +9150,10 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
+        25,
         25
       ],
-      "countParam": 3,
+      "countParam": 5,
       "otherParams": [
         213,
         1000065,
@@ -7616,10 +9212,49 @@
       "isGeneric": false,
       "isBattleEffect": false,
       "isAvailable": true,
-      "effectRound": 12,
+      "effectRound": 11,
       "isSpecialBuild": true,
       "overrideSpritePath": "Icon_Talent_193",
       "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 391,
+      "nameKey": "FateStrategyName_391",
+      "descKey": "FateStrategyDesc_391",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:1000006",
+      "archiveLabel": "黎承云专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "MultiAddCardPool",
+      "categoryLabel": "MultiAddCardPool",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "characterId": 1000006,
+      "characterName": "黎承云",
+      "includeCharacters": [
+        1000006
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        150
+      ],
+      "countParam": 5,
+      "otherParams": [
+        1000062,
+        1000051
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "unclassified-nonbattle",
       "registrationStatus": "missing",
       "recordOnlyBranches": [],
       "sourceFiles": []
@@ -7658,6 +9293,16 @@
       "isSpecialBuild": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 335
+        }
+      },
       "recordOnlyBranches": [],
       "sourceFiles": [
         "BattleCharacter.cs",
@@ -7699,10 +9344,103 @@
       "isSpecialBuild": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 349
+        }
+      },
       "recordOnlyBranches": [],
       "sourceFiles": [
-        "CardActionBase.cs",
-        "CardPanel.cs"
+        "CardActionBase.cs"
+      ]
+    },
+    {
+      "strategyId": 429,
+      "nameKey": "FateStrategyName_429",
+      "descKey": "FateStrategyDesc_429",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:4000005",
+      "archiveLabel": "李㵘专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "characterId": 4000005,
+      "characterName": "李㵘",
+      "includeCharacters": [
+        4000005
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        150
+      ],
+      "otherParams": [
+        1,
+        1
+      ],
+      "exprs": [
+        {
+          "param": "双节棍"
+        },
+        {
+          "param": "赤金盘龙棍"
+        }
+      ],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "CardActionBase.cs"
+      ]
+    },
+    {
+      "strategyId": 430,
+      "nameKey": "FateStrategyName_430",
+      "descKey": "FateStrategyDesc_430",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:4000005",
+      "archiveLabel": "李㵘专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "characterId": 4000005,
+      "characterName": "李㵘",
+      "includeCharacters": [
+        4000005
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        0
+      ],
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "FateStrategyFunctions.cs"
       ]
     },
     {
@@ -7726,10 +9464,10 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
+        25,
         25
       ],
-      "countParam": 7,
+      "countParam": 8,
       "otherParams": [
         222,
         10000045,
@@ -7930,9 +9668,9 @@
       ],
       "excludeCharacters": [],
       "weights": [
-        0,
         150,
-        150
+        150,
+        0
       ],
       "otherParams": [],
       "exprs": [],
@@ -7948,6 +9686,46 @@
         "BattleCharacter.cs",
         "FateStrategyFunctions.cs"
       ]
+    },
+    {
+      "strategyId": 386,
+      "nameKey": "FateStrategyName_386",
+      "descKey": "FateStrategyDesc_386",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:1000004",
+      "archiveLabel": "林小月专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "ActiveCountable",
+      "categoryLabel": "主动计数",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "characterId": 1000004,
+      "characterName": "林小月",
+      "includeCharacters": [
+        1000004
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        150
+      ],
+      "countParam": 1,
+      "otherParams": [
+        33,
+        34,
+        35
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
     },
     {
       "strategyId": 322,
@@ -7982,6 +9760,16 @@
       "isSpecialBuild": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 322
+        }
+      },
       "recordOnlyBranches": [
         {
           "branch": "主动使用时变换猫名手牌；无可变牌时减修为并抽狂剑",
@@ -8015,7 +9803,7 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
+        25,
         0
       ],
       "countParam": 8,
@@ -8046,6 +9834,57 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 370,
+      "nameKey": "FateStrategyName_370",
+      "descKey": "FateStrategyDesc_370",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:1000004",
+      "archiveLabel": "林小月专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyRongHui",
+      "categoryLabel": "融会",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "characterId": 1000004,
+      "characterName": "林小月",
+      "includeCharacters": [
+        1000004
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        100,
+        25,
+        0
+      ],
+      "countParam": 8,
+      "otherParams": [
+        9,
+        1000026,
+        403
+      ],
+      "exprs": [
+        {
+          "param": "灵猫乱剑"
+        },
+        {
+          "type": {
+            "value": 4,
+            "name": "LevelLessOrEqual"
+          },
+          "param": "3"
+        }
+      ],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
       "strategyId": 94,
       "nameKey": "FateStrategyName_94",
       "descKey": "FateStrategyDesc_94",
@@ -8065,7 +9904,7 @@
       ],
       "excludeCharacters": [],
       "weights": [
-        150,
+        0,
         0,
         0
       ],
@@ -8164,6 +10003,45 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 385,
+      "nameKey": "FateStrategyName_385",
+      "descKey": "FateStrategyDesc_385",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:1000004",
+      "archiveLabel": "林小月专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "GetCardOnRound",
+      "categoryLabel": "按轮次获得牌",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "characterId": 1000004,
+      "characterName": "林小月",
+      "includeCharacters": [
+        1000004
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        100,
+        100,
+        0
+      ],
+      "countParam": 1,
+      "otherParams": [
+        424
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 12,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
       "strategyId": 336,
       "nameKey": "FateStrategyName_336",
       "descKey": "FateStrategyDesc_336",
@@ -8240,6 +10118,86 @@
       ]
     },
     {
+      "strategyId": 431,
+      "nameKey": "FateStrategyName_431",
+      "descKey": "FateStrategyDesc_431",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:4000006",
+      "archiveLabel": "聆羽专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "characterId": 4000006,
+      "characterName": "聆羽",
+      "includeCharacters": [
+        4000006
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        150
+      ],
+      "otherParams": [
+        5
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "overrideSpritePath": "Icon_Talent_267",
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "FateStrategyFunctions.cs"
+      ]
+    },
+    {
+      "strategyId": 432,
+      "nameKey": "FateStrategyName_432",
+      "descKey": "FateStrategyDesc_432",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:4000006",
+      "archiveLabel": "聆羽专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "characterId": 4000006,
+      "characterName": "聆羽",
+      "includeCharacters": [
+        4000006
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        150
+      ],
+      "otherParams": [
+        2,
+        4
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ]
+    },
+    {
       "strategyId": 193,
       "nameKey": "FateStrategyName_193",
       "descKey": "FateStrategyDesc_193",
@@ -8260,10 +10218,10 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
-        0
+        25,
+        25
       ],
-      "countParam": 4,
+      "countParam": 6,
       "otherParams": [
         383,
         10000050,
@@ -8449,6 +10407,46 @@
       ]
     },
     {
+      "strategyId": 384,
+      "nameKey": "FateStrategyName_384",
+      "descKey": "FateStrategyDesc_384",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:1000003",
+      "archiveLabel": "龙瑶专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "characterId": 1000003,
+      "characterName": "龙瑶",
+      "includeCharacters": [
+        1000003
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        0
+      ],
+      "otherParams": [
+        3
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "overrideSpritePath": "Icon_Talent_220",
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "FateStrategyFunctions.cs"
+      ]
+    },
+    {
       "strategyId": 172,
       "nameKey": "FateStrategyName_172",
       "descKey": "FateStrategyDesc_172",
@@ -8469,10 +10467,10 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
+        25,
         25
       ],
-      "countParam": 3,
+      "countParam": 5,
       "otherParams": [
         16,
         1000065,
@@ -8659,6 +10657,46 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 383,
+      "nameKey": "FateStrategyName_383",
+      "descKey": "FateStrategyDesc_383",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:1000003",
+      "archiveLabel": "龙瑶专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "MultiAddCardPool",
+      "categoryLabel": "MultiAddCardPool",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "characterId": 1000003,
+      "characterName": "龙瑶",
+      "includeCharacters": [
+        1000003
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        75,
+        0
+      ],
+      "countParam": 8,
+      "otherParams": [
+        331,
+        1000049,
+        1000061
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
       "strategyId": 99,
       "nameKey": "FateStrategyName_99",
       "descKey": "FateStrategyDesc_99",
@@ -8679,7 +10717,7 @@
       "excludeCharacters": [],
       "weights": [
         0,
-        0,
+        150,
         150
       ],
       "otherParams": [],
@@ -8871,7 +10909,7 @@
       "excludeCharacters": [],
       "weights": [
         0,
-        0,
+        150,
         150
       ],
       "otherParams": [
@@ -8928,6 +10966,43 @@
       ]
     },
     {
+      "strategyId": 387,
+      "nameKey": "FateStrategyName_387",
+      "descKey": "FateStrategyDesc_387",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:1000005",
+      "archiveLabel": "陆剑心专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "characterId": 1000005,
+      "characterName": "陆剑心",
+      "includeCharacters": [
+        1000005
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        150
+      ],
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "CardActionBase.cs"
+      ]
+    },
+    {
       "strategyId": 323,
       "nameKey": "FateStrategyName_323",
       "descKey": "FateStrategyDesc_323",
@@ -8966,6 +11041,46 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 389,
+      "nameKey": "FateStrategyName_389",
+      "descKey": "FateStrategyDesc_389",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:1000005",
+      "archiveLabel": "陆剑心专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "ActiveCoolDown",
+      "categoryLabel": "主动冷却",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "characterId": 1000005,
+      "characterName": "陆剑心",
+      "includeCharacters": [
+        1000005
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        100
+      ],
+      "countParam": 3,
+      "otherParams": [],
+      "exprs": [
+        {
+          "param": "云剑"
+        }
+      ],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
       "strategyId": 174,
       "nameKey": "FateStrategyName_174",
       "descKey": "FateStrategyDesc_174",
@@ -8986,7 +11101,7 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
+        25,
         25
       ],
       "countParam": 6,
@@ -9040,6 +11155,16 @@
       "overrideSpritePath": "Icon_Talent_66",
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 84
+        }
+      },
       "recordOnlyBranches": [],
       "sourceFiles": [
         "BattleCharacter.cs"
@@ -9125,6 +11250,86 @@
       ]
     },
     {
+      "strategyId": 379,
+      "nameKey": "FateStrategyName_379",
+      "descKey": "FateStrategyDesc_379",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:1000001",
+      "archiveLabel": "牧逸风专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "characterId": 1000001,
+      "characterName": "牧逸风",
+      "includeCharacters": [
+        1000001
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        150
+      ],
+      "otherParams": [
+        1
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "CardActionBase.cs",
+        "FateStrategyFunctions.cs"
+      ]
+    },
+    {
+      "strategyId": 380,
+      "nameKey": "FateStrategyName_380",
+      "descKey": "FateStrategyDesc_380",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:1000001",
+      "archiveLabel": "牧逸风专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "characterId": 1000001,
+      "characterName": "牧逸风",
+      "includeCharacters": [
+        1000001
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        0
+      ],
+      "otherParams": [
+        2
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "BattleCharacter.cs",
+        "FateStrategyFunctions.cs"
+      ]
+    },
+    {
       "strategyId": 82,
       "nameKey": "FateStrategyName_82",
       "descKey": "FateStrategyDesc_82",
@@ -9183,10 +11388,10 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
+        25,
         25
       ],
-      "countParam": 6,
+      "countParam": 8,
       "otherParams": [
         1,
         1000042,
@@ -9376,6 +11581,47 @@
       ]
     },
     {
+      "strategyId": 412,
+      "nameKey": "FateStrategyName_412",
+      "descKey": "FateStrategyDesc_412",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:3000004",
+      "archiveLabel": "慕虎专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "characterId": 3000004,
+      "characterName": "慕虎",
+      "includeCharacters": [
+        3000004
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        150,
+        0,
+        0
+      ],
+      "otherParams": [
+        2
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "CardActionBase.cs",
+        "CardPanel.cs",
+        "FateStrategyFunctions.cs"
+      ]
+    },
+    {
       "strategyId": 185,
       "nameKey": "FateStrategyName_185",
       "descKey": "FateStrategyDesc_185",
@@ -9395,8 +11641,8 @@
       ],
       "excludeCharacters": [],
       "weights": [
-        100,
-        50,
+        0,
+        0,
         0
       ],
       "countParam": 8,
@@ -9422,6 +11668,57 @@
       "isAvailable": true,
       "isSpecialBuild": true,
       "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 378,
+      "nameKey": "FateStrategyName_378",
+      "descKey": "FateStrategyDesc_378",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:3000004",
+      "archiveLabel": "慕虎专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyRongHui",
+      "categoryLabel": "融会",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "characterId": 3000004,
+      "characterName": "慕虎",
+      "includeCharacters": [
+        3000004
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        100,
+        25,
+        25
+      ],
+      "countParam": 4,
+      "otherParams": [
+        18,
+        7000100,
+        423
+      ],
+      "exprs": [
+        {
+          "param": "刚劲"
+        },
+        {
+          "type": {
+            "value": 4,
+            "name": "LevelLessOrEqual"
+          },
+          "param": "3"
+        }
+      ],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
       "registrationStatus": "missing",
       "recordOnlyBranches": [],
       "sourceFiles": []
@@ -9486,8 +11783,8 @@
       ],
       "excludeCharacters": [],
       "weights": [
-        150,
-        150,
+        0,
+        0,
         0
       ],
       "countParam": 1,
@@ -9542,6 +11839,45 @@
       "isSpecialBuild": true,
       "overrideSpritePath": "Icon_Talent_91",
       "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 414,
+      "nameKey": "FateStrategyName_414",
+      "descKey": "FateStrategyDesc_414",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:3000004",
+      "archiveLabel": "慕虎专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "GetCardOnRound",
+      "categoryLabel": "按轮次获得牌",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "characterId": 3000004,
+      "characterName": "慕虎",
+      "includeCharacters": [
+        3000004
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        100,
+        100,
+        0
+      ],
+      "countParam": 1,
+      "otherParams": [
+        426
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 12,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
       "registrationStatus": "missing",
       "recordOnlyBranches": [],
       "sourceFiles": []
@@ -9740,6 +12076,81 @@
       ]
     },
     {
+      "strategyId": 416,
+      "nameKey": "FateStrategyName_416",
+      "descKey": "FateStrategyDesc_416",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:3000005",
+      "archiveLabel": "南宫生专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "characterId": 3000005,
+      "characterName": "南宫生",
+      "includeCharacters": [
+        3000005
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        0
+      ],
+      "otherParams": [
+        5
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "FateStrategyFunctions.cs"
+      ]
+    },
+    {
+      "strategyId": 415,
+      "nameKey": "FateStrategyName_415",
+      "descKey": "FateStrategyDesc_415",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:3000005",
+      "archiveLabel": "南宫生专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "ActiveCoolDown",
+      "categoryLabel": "主动冷却",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "characterId": 3000005,
+      "characterName": "南宫生",
+      "includeCharacters": [
+        3000005
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        0
+      ],
+      "countParam": 2,
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
       "strategyId": 186,
       "nameKey": "FateStrategyName_186",
       "descKey": "FateStrategyDesc_186",
@@ -9760,10 +12171,10 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
+        25,
         0
       ],
-      "countParam": 5,
+      "countParam": 8,
       "otherParams": [
         7000072,
         7000038,
@@ -9811,7 +12222,7 @@
       "excludeCharacters": [],
       "weights": [
         0,
-        150,
+        0,
         150
       ],
       "otherParams": [],
@@ -9822,6 +12233,16 @@
       "isSpecialBuild": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-full-scope-active.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 148
+        }
+      },
       "recordOnlyBranches": [],
       "sourceFiles": [
         "BattleCharacter.cs"
@@ -9862,7 +12283,8 @@
       "registrationStatus": "verified",
       "recordOnlyBranches": [],
       "sourceFiles": [
-        "BattleCharacter.cs"
+        "BattleCharacter.cs",
+        "CardPanel.cs"
       ]
     },
     {
@@ -9887,7 +12309,7 @@
       "weights": [
         0,
         150,
-        150
+        0
       ],
       "otherParams": [],
       "exprs": [],
@@ -9935,6 +12357,16 @@
       "isSpecialBuild": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 334
+        }
+      },
       "recordOnlyBranches": [
         {
           "branch": "战斗结束后还原临时升级",
@@ -9945,6 +12377,80 @@
       "sourceFiles": [
         "FateStrategyFunctions.cs"
       ]
+    },
+    {
+      "strategyId": 417,
+      "nameKey": "FateStrategyName_417",
+      "descKey": "FateStrategyDesc_417",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:3000006",
+      "archiveLabel": "祁忘忧专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "characterId": 3000006,
+      "characterName": "祁忘忧",
+      "includeCharacters": [
+        3000006
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        150
+      ],
+      "otherParams": [
+        6
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ]
+    },
+    {
+      "strategyId": 418,
+      "nameKey": "FateStrategyName_418",
+      "descKey": "FateStrategyDesc_418",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:3000006",
+      "archiveLabel": "祁忘忧专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "characterId": 3000006,
+      "characterName": "祁忘忧",
+      "includeCharacters": [
+        3000006
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        150
+      ],
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
     },
     {
       "strategyId": 187,
@@ -9967,7 +12473,7 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
+        25,
         25
       ],
       "countParam": 6,
@@ -10196,6 +12702,44 @@
       ]
     },
     {
+      "strategyId": 394,
+      "nameKey": "FateStrategyName_394",
+      "descKey": "FateStrategyDesc_394",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:2000001",
+      "archiveLabel": "谭舒雁专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "characterId": 2000001,
+      "characterName": "谭舒雁",
+      "includeCharacters": [
+        2000001
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        150
+      ],
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "overrideSpritePath": "Icon_Talent_64",
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ]
+    },
+    {
       "strategyId": 339,
       "nameKey": "FateStrategyName_339",
       "descKey": "FateStrategyDesc_339",
@@ -10233,6 +12777,42 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 392,
+      "nameKey": "FateStrategyName_392",
+      "descKey": "FateStrategyDesc_392",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:2000001",
+      "archiveLabel": "谭舒雁专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "ActiveCoolDown",
+      "categoryLabel": "主动冷却",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "characterId": 2000001,
+      "characterName": "谭舒雁",
+      "includeCharacters": [
+        2000001
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        150
+      ],
+      "countParam": 3,
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
       "strategyId": 176,
       "nameKey": "FateStrategyName_176",
       "descKey": "FateStrategyDesc_176",
@@ -10253,10 +12833,10 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
+        25,
         0
       ],
-      "countParam": 6,
+      "countParam": 8,
       "otherParams": [
         12,
         4000042,
@@ -10304,8 +12884,8 @@
       "excludeCharacters": [],
       "weights": [
         0,
-        150,
-        150
+        0,
+        0
       ],
       "countParam": 1,
       "otherParams": [
@@ -10319,6 +12899,45 @@
       "isSpecialBuild": true,
       "overrideSpritePath": "Icon_Talent_63",
       "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 393,
+      "nameKey": "FateStrategyName_393",
+      "descKey": "FateStrategyDesc_393",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:2000001",
+      "archiveLabel": "谭舒雁专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "GetCardOnRound",
+      "categoryLabel": "按轮次获得牌",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "characterId": 2000001,
+      "characterName": "谭舒雁",
+      "includeCharacters": [
+        2000001
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        100,
+        100,
+        0
+      ],
+      "countParam": 1,
+      "otherParams": [
+        425
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 12,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
       "registrationStatus": "missing",
       "recordOnlyBranches": [],
       "sourceFiles": []
@@ -10383,8 +13002,8 @@
       ],
       "excludeCharacters": [],
       "weights": [
-        150,
         0,
+        150,
         0
       ],
       "otherParams": [
@@ -10477,6 +13096,45 @@
       ]
     },
     {
+      "strategyId": 423,
+      "nameKey": "FateStrategyName_423",
+      "descKey": "FateStrategyDesc_423",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:4000002",
+      "archiveLabel": "屠馗专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "characterId": 4000002,
+      "characterName": "屠馗",
+      "includeCharacters": [
+        4000002
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        150
+      ],
+      "otherParams": [
+        2
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "FateStrategyFunctions.cs"
+      ]
+    },
+    {
       "strategyId": 189,
       "nameKey": "FateStrategyName_189",
       "descKey": "FateStrategyDesc_189",
@@ -10497,10 +13155,10 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
+        25,
         0
       ],
-      "countParam": 2,
+      "countParam": 6,
       "otherParams": [
         70,
         10000068,
@@ -10547,7 +13205,7 @@
       ],
       "excludeCharacters": [],
       "weights": [
-        150,
+        0,
         0,
         0
       ],
@@ -10565,6 +13223,86 @@
       "registrationStatus": "missing",
       "recordOnlyBranches": [],
       "sourceFiles": []
+    },
+    {
+      "strategyId": 422,
+      "nameKey": "FateStrategyName_422",
+      "descKey": "FateStrategyDesc_422",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:4000002",
+      "archiveLabel": "屠馗专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "GetCardOnRound",
+      "categoryLabel": "按轮次获得牌",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "characterId": 4000002,
+      "characterName": "屠馗",
+      "includeCharacters": [
+        4000002
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        100,
+        100,
+        0
+      ],
+      "countParam": 1,
+      "otherParams": [
+        418
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 12,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 437,
+      "nameKey": "FateStrategyName_437",
+      "descKey": "FateStrategyDesc_437",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:4000002",
+      "archiveLabel": "屠馗专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "Switch",
+      "categoryLabel": "Switch",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "characterId": 4000002,
+      "characterName": "屠馗",
+      "includeCharacters": [
+        4000002
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        150
+      ],
+      "otherParams": [
+        1,
+        2
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "overrideSpritePath": "Icon_Talent_171",
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "FateStrategyFunctions.cs"
+      ]
     },
     {
       "strategyId": 124,
@@ -10676,6 +13414,16 @@
       "isSpecialBuild": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 329
+        }
+      },
       "recordOnlyBranches": [
         {
           "branch": "先手加 1 次换牌机会",
@@ -10725,6 +13473,55 @@
       "isSpecialBuild": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 330
+        }
+      },
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "FateStrategyFunctions.cs"
+      ]
+    },
+    {
+      "strategyId": 402,
+      "nameKey": "FateStrategyName_402",
+      "descKey": "FateStrategyDesc_402",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:2000005",
+      "archiveLabel": "吴策专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "characterId": 2000005,
+      "characterName": "吴策",
+      "includeCharacters": [
+        2000005
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        150
+      ],
+      "otherParams": [
+        3
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
       "recordOnlyBranches": [],
       "sourceFiles": [
         "FateStrategyFunctions.cs"
@@ -10751,10 +13548,10 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
+        25,
         25
       ],
-      "countParam": 4,
+      "countParam": 8,
       "otherParams": [
         23,
         4000014,
@@ -10861,6 +13658,47 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 403,
+      "nameKey": "FateStrategyName_403",
+      "descKey": "FateStrategyDesc_403",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:2000005",
+      "archiveLabel": "吴策专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "MultiAddCardPool",
+      "categoryLabel": "MultiAddCardPool",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "characterId": 2000005,
+      "characterName": "吴策",
+      "includeCharacters": [
+        2000005
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        75,
+        0
+      ],
+      "countParam": 4,
+      "otherParams": [
+        4000054,
+        4000051,
+        4000065,
+        53
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
       "strategyId": 128,
       "nameKey": "FateStrategyName_128",
       "descKey": "FateStrategyDesc_128",
@@ -10929,10 +13767,87 @@
       "isGeneric": false,
       "isBattleEffect": false,
       "isAvailable": true,
-      "effectRound": 12,
+      "effectRound": 13,
       "isSpecialBuild": true,
       "overrideSpritePath": "Icon_Talent_264",
       "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 407,
+      "nameKey": "FateStrategyName_407",
+      "descKey": "FateStrategyDesc_407",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:3000001",
+      "archiveLabel": "吾行之专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "characterId": 3000001,
+      "characterName": "吾行之",
+      "includeCharacters": [
+        3000001
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        0
+      ],
+      "otherParams": [
+        4,
+        3
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "overrideSpritePath": "Icon_Talent_261",
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "FateStrategyFunctions.cs"
+      ]
+    },
+    {
+      "strategyId": 406,
+      "nameKey": "FateStrategyName_406",
+      "descKey": "FateStrategyDesc_406",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:3000001",
+      "archiveLabel": "吾行之专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "ActiveCountable",
+      "categoryLabel": "主动计数",
+      "sectName": "WuXingDaoMeng",
+      "sectLabel": "五行道盟",
+      "characterId": 3000001,
+      "characterName": "吾行之",
+      "includeCharacters": [
+        3000001
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        150
+      ],
+      "countParam": 2,
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "unclassified-nonbattle",
       "registrationStatus": "missing",
       "recordOnlyBranches": [],
       "sourceFiles": []
@@ -10958,7 +13873,7 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
+        25,
         25
       ],
       "countParam": 4,
@@ -11262,6 +14177,43 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 420,
+      "nameKey": "FateStrategyName_420",
+      "descKey": "FateStrategyDesc_420",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:4000001",
+      "archiveLabel": "小布专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "characterId": 4000001,
+      "characterName": "小布",
+      "includeCharacters": [
+        4000001
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        150,
+        0,
+        0
+      ],
+      "otherParams": [
+        3
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
       "strategyId": 188,
       "nameKey": "FateStrategyName_188",
       "descKey": "FateStrategyDesc_188",
@@ -11282,10 +14234,10 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
+        25,
         25
       ],
-      "countParam": 4,
+      "countParam": 8,
       "otherParams": [
         45,
         10000052,
@@ -11344,10 +14296,48 @@
       "isGeneric": false,
       "isBattleEffect": false,
       "isAvailable": true,
-      "effectRound": 4,
       "isSpecialBuild": false,
       "overrideSpritePath": "Icon_Talent_152",
       "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 421,
+      "nameKey": "FateStrategyName_421",
+      "descKey": "FateStrategyDesc_421",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:4000001",
+      "archiveLabel": "小布专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "GetCardOnRound",
+      "categoryLabel": "按轮次获得牌",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "characterId": 4000001,
+      "characterName": "小布",
+      "includeCharacters": [
+        4000001
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        75
+      ],
+      "countParam": 1,
+      "otherParams": [
+        10000064
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "effectRound": 14,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
       "registrationStatus": "missing",
       "recordOnlyBranches": [],
       "sourceFiles": []
@@ -11378,7 +14368,7 @@
       ],
       "otherParams": [
         2,
-        5
+        9
       ],
       "exprs": [],
       "isGeneric": false,
@@ -11387,6 +14377,16 @@
       "isSpecialBuild": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-full-scope-active.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 151
+        }
+      },
       "recordOnlyBranches": [],
       "sourceFiles": [
         "FateStrategyFunctions.cs"
@@ -11424,6 +14424,16 @@
       "isSpecialBuild": false,
       "status": "implemented",
       "registrationStatus": "verified",
+      "verificationEvidence": {
+        "kind": "synthetic-original-oracle",
+        "legality": "client-executable",
+        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
+        "steamBuild": "24253909",
+        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
+        "targetProof": {
+          "targetId": 327
+        }
+      },
       "recordOnlyBranches": [
         {
           "branch": "战斗结束后还原临时升级",
@@ -11431,6 +14441,82 @@
           "evidence": "localization.json:FateStrategyDesc_327 + BattleCharacter.cs:7997-8012"
         }
       ],
+      "sourceFiles": [
+        "FateStrategyFunctions.cs"
+      ]
+    },
+    {
+      "strategyId": 395,
+      "nameKey": "FateStrategyName_395",
+      "descKey": "FateStrategyDesc_395",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:2000002",
+      "archiveLabel": "炎尘专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "characterId": 2000002,
+      "characterName": "炎尘",
+      "includeCharacters": [
+        2000002
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        150
+      ],
+      "otherParams": [
+        3
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "FateStrategyFunctions.cs"
+      ]
+    },
+    {
+      "strategyId": 396,
+      "nameKey": "FateStrategyName_396",
+      "descKey": "FateStrategyDesc_396",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:2000002",
+      "archiveLabel": "炎尘专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "characterId": 2000002,
+      "characterName": "炎尘",
+      "includeCharacters": [
+        2000002
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        0
+      ],
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
       "sourceFiles": [
         "FateStrategyFunctions.cs"
       ]
@@ -11495,10 +14581,10 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
+        25,
         25
       ],
-      "countParam": 1,
+      "countParam": 3,
       "otherParams": [
         28,
         4000045,
@@ -11521,6 +14607,57 @@
       "isAvailable": true,
       "isSpecialBuild": true,
       "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 372,
+      "nameKey": "FateStrategyName_372",
+      "descKey": "FateStrategyDesc_372",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:2000002",
+      "archiveLabel": "炎尘专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyRongHui",
+      "categoryLabel": "融会",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "characterId": 2000002,
+      "characterName": "炎尘",
+      "includeCharacters": [
+        2000002
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        100,
+        25,
+        0
+      ],
+      "countParam": 8,
+      "otherParams": [
+        29,
+        4000041,
+        407
+      ],
+      "exprs": [
+        {
+          "param": "瓮中捉鳖"
+        },
+        {
+          "type": {
+            "value": 4,
+            "name": "LevelLessOrEqual"
+          },
+          "param": "3"
+        }
+      ],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
       "registrationStatus": "missing",
       "recordOnlyBranches": [],
       "sourceFiles": []
@@ -11586,7 +14723,7 @@
       "excludeCharacters": [],
       "weights": [
         150,
-        150,
+        0,
         0
       ],
       "countParam": 2,
@@ -11637,7 +14774,7 @@
       "isGeneric": false,
       "isBattleEffect": false,
       "isAvailable": true,
-      "effectRound": 12,
+      "effectRound": 11,
       "isSpecialBuild": true,
       "overrideSpritePath": "Icon_Talent_122",
       "status": "record-only",
@@ -11721,6 +14858,80 @@
       "recordOnlyBranches": [],
       "sourceFiles": [
         "FateStrategyFunctions.cs"
+      ]
+    },
+    {
+      "strategyId": 381,
+      "nameKey": "FateStrategyName_381",
+      "descKey": "FateStrategyDesc_381",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:1000002",
+      "archiveLabel": "炎雪专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "characterId": 1000002,
+      "characterName": "炎雪",
+      "includeCharacters": [
+        1000002
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        150
+      ],
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ]
+    },
+    {
+      "strategyId": 382,
+      "nameKey": "FateStrategyName_382",
+      "descKey": "FateStrategyDesc_382",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:1000002",
+      "archiveLabel": "炎雪专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "characterId": 1000002,
+      "characterName": "炎雪",
+      "includeCharacters": [
+        1000002
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        0
+      ],
+      "otherParams": [],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "BattleCharacter.cs"
       ]
     },
     {
@@ -11809,6 +15020,57 @@
       "isAvailable": true,
       "isSpecialBuild": true,
       "status": "record-only",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
+      "strategyId": 369,
+      "nameKey": "FateStrategyName_369",
+      "descKey": "FateStrategyDesc_369",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:1000002",
+      "archiveLabel": "炎雪专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyRongHui",
+      "categoryLabel": "融会",
+      "sectName": "YunLingJianZong",
+      "sectLabel": "云灵剑宗",
+      "characterId": 1000002,
+      "characterName": "炎雪",
+      "includeCharacters": [
+        1000002
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        100,
+        25,
+        25
+      ],
+      "countParam": 4,
+      "otherParams": [
+        2,
+        1000039,
+        401
+      ],
+      "exprs": [
+        {
+          "param": "炎舞"
+        },
+        {
+          "type": {
+            "value": 4,
+            "name": "LevelLessOrEqual"
+          },
+          "param": "4"
+        }
+      ],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
       "registrationStatus": "missing",
       "recordOnlyBranches": [],
       "sourceFiles": []
@@ -11971,6 +15233,45 @@
       ]
     },
     {
+      "strategyId": 397,
+      "nameKey": "FateStrategyName_397",
+      "descKey": "FateStrategyDesc_397",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:2000003",
+      "archiveLabel": "曜灵专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "characterId": 2000003,
+      "characterName": "曜灵",
+      "includeCharacters": [
+        2000003
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        0,
+        150
+      ],
+      "otherParams": [
+        5
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "implemented",
+      "registrationStatus": "verified",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "FateStrategyFunctions.cs"
+      ]
+    },
+    {
       "strategyId": 341,
       "nameKey": "FateStrategyName_341",
       "descKey": "FateStrategyDesc_341",
@@ -12028,7 +15329,7 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
+        25,
         0
       ],
       "otherParams": [
@@ -12136,6 +15437,45 @@
       "registrationStatus": "missing",
       "recordOnlyBranches": [],
       "sourceFiles": []
+    },
+    {
+      "strategyId": 398,
+      "nameKey": "FateStrategyName_398",
+      "descKey": "FateStrategyDesc_398",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:2000003",
+      "archiveLabel": "曜灵专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "Switch",
+      "categoryLabel": "Switch",
+      "sectName": "QiXingGe",
+      "sectLabel": "七星阁",
+      "characterId": 2000003,
+      "characterName": "曜灵",
+      "includeCharacters": [
+        2000003
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        0
+      ],
+      "otherParams": [
+        5
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "BattleExecuter.cs"
+      ]
     },
     {
       "strategyId": 160,
@@ -12254,6 +15594,45 @@
       ]
     },
     {
+      "strategyId": 424,
+      "nameKey": "FateStrategyName_424",
+      "descKey": "FateStrategyDesc_424",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:4000003",
+      "archiveLabel": "叶冥冥专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyNormal",
+      "categoryLabel": "普通",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "characterId": 4000003,
+      "characterName": "叶冥冥",
+      "includeCharacters": [
+        4000003
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        0,
+        150,
+        150
+      ],
+      "otherParams": [
+        3
+      ],
+      "exprs": [],
+      "isGeneric": false,
+      "isBattleEffect": true,
+      "isAvailable": true,
+      "isSpecialBuild": false,
+      "status": "missing-battle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": [
+        "BattleCharacter.cs"
+      ]
+    },
+    {
       "strategyId": 190,
       "nameKey": "FateStrategyName_190",
       "descKey": "FateStrategyDesc_190",
@@ -12274,7 +15653,7 @@
       "excludeCharacters": [],
       "weights": [
         100,
-        50,
+        25,
         0
       ],
       "countParam": 6,
@@ -12305,6 +15684,57 @@
       "sourceFiles": []
     },
     {
+      "strategyId": 376,
+      "nameKey": "FateStrategyName_376",
+      "descKey": "FateStrategyDesc_376",
+      "archiveKind": "exclusive",
+      "archiveKey": "fate-strategy:exclusive:4000003",
+      "archiveLabel": "叶冥冥专属",
+      "section": "exclusive",
+      "sectionLabel": "角色专属",
+      "category": "FateStrategyRongHui",
+      "categoryLabel": "融会",
+      "sectName": "DuanXuanZong",
+      "sectLabel": "锻玄宗",
+      "characterId": 4000003,
+      "characterName": "叶冥冥",
+      "includeCharacters": [
+        4000003
+      ],
+      "excludeCharacters": [],
+      "weights": [
+        100,
+        25,
+        0
+      ],
+      "countParam": 4,
+      "otherParams": [
+        73,
+        10000090,
+        415
+      ],
+      "exprs": [
+        {
+          "param": "疯魔"
+        },
+        {
+          "type": {
+            "value": 4,
+            "name": "LevelLessOrEqual"
+          },
+          "param": "2"
+        }
+      ],
+      "isGeneric": false,
+      "isBattleEffect": false,
+      "isAvailable": true,
+      "isSpecialBuild": true,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "recordOnlyBranches": [],
+      "sourceFiles": []
+    },
+    {
       "strategyId": 157,
       "nameKey": "FateStrategyName_157",
       "descKey": "FateStrategyDesc_157",
@@ -12325,7 +15755,7 @@
       "excludeCharacters": [],
       "weights": [
         150,
-        150,
+        0,
         0
       ],
       "countParam": 1,

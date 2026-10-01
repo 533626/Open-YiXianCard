@@ -1,0 +1,4320 @@
+{
+  "schemaVersion": 1,
+  "targetSteamBuild": "25621897",
+  "totalCount": 146,
+  "battleCount": 146,
+  "groups": [
+    {
+      "id": "Switch",
+      "label": "开关秘策",
+      "strategies": [
+        {
+          "id": 1001,
+          "name": "天灵之音",
+          "desc": "战斗开始时，双方各加1【KEYWORD_灵气】。\n主动使用：禁用此效果，再次使用解除禁用。",
+          "category": "Switch",
+          "categoryLabel": "开关",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1
+          ],
+          "npcId": 1,
+          "minRound": 3,
+          "maxRound": 13
+        },
+        {
+          "id": 1002,
+          "name": "狂舞之音",
+          "desc": "战斗开始时，双方各加1层【KEYWORD_加攻】。\n主动使用：禁用此效果，再次使用解除禁用。",
+          "category": "Switch",
+          "categoryLabel": "开关",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1
+          ],
+          "npcId": 1,
+          "minRound": 3,
+          "maxRound": 13
+        },
+        {
+          "id": 1003,
+          "name": "回春之音",
+          "desc": "战斗开始时，双方各加15%当前生命及等量生命上限。\n主动使用：禁用此效果，再次使用解除禁用。",
+          "category": "Switch",
+          "categoryLabel": "开关",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            15
+          ],
+          "npcId": 1,
+          "minRound": 3,
+          "maxRound": 13
+        },
+        {
+          "id": 1004,
+          "name": "断肠之音",
+          "desc": "战斗开始时，双方各加3层【KEYWORD_内伤】。\n主动使用：禁用此效果，再次使用解除禁用。",
+          "category": "Switch",
+          "categoryLabel": "开关",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 1,
+          "minRound": 3,
+          "maxRound": 13
+        },
+        {
+          "id": 1005,
+          "name": "困仙之音",
+          "desc": "战斗中自身首次使用卡牌时，令双方在2个回合内无法触发【KEYWORD_再次行动】效果。\n主动使用：禁用此效果，再次使用解除禁用。",
+          "category": "Switch",
+          "categoryLabel": "开关",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            2
+          ],
+          "npcId": 1,
+          "minRound": 3,
+          "maxRound": 13
+        },
+        {
+          "id": 1006,
+          "name": "肃杀之音",
+          "desc": "战斗开始时，双方各减15%当前生命及等量生命上限。\n主动使用：禁用此效果，再次使用解除禁用。",
+          "category": "Switch",
+          "categoryLabel": "开关",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            15
+          ],
+          "npcId": 1,
+          "minRound": 3,
+          "maxRound": 13
+        },
+        {
+          "id": 1007,
+          "name": "强化之音",
+          "desc": "战斗开始时，升级双方下1次使用的牌（战斗结束还原）。\n主动使用：禁用此效果，再次使用解除禁用。",
+          "category": "Switch",
+          "categoryLabel": "开关",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1
+          ],
+          "npcId": 1,
+          "minRound": 3,
+          "maxRound": 13
+        },
+        {
+          "id": 1008,
+          "name": "幽绪之音",
+          "desc": "战斗中令双方每次攻击时减1生命。\n主动使用：禁用此效果，再次使用解除禁用。",
+          "category": "Switch",
+          "categoryLabel": "开关",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1
+          ],
+          "npcId": 1,
+          "minRound": 3,
+          "maxRound": 13
+        },
+        {
+          "id": 5010,
+          "name": "轮回之术",
+          "desc": "战斗中每次使用卡组后3格的[非]普通攻击的牌时，减2生命将其【KEYWORD_跳过】。\n主动使用：禁用此效果，再次使用解除禁用。",
+          "category": "Switch",
+          "categoryLabel": "开关",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3,
+            2
+          ],
+          "npcId": 5,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 7036,
+          "name": "灵香缭绕",
+          "desc": "战斗开始时获得2层【KEYWORD_辟邪】，并加9生命。\n主动使用：禁用此效果（获得【KEYWORD_辟邪】），再次使用解除禁用。",
+          "category": "Switch",
+          "categoryLabel": "开关",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            2,
+            9
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7094,
+          "name": "天衍-搏命之勇",
+          "desc": "每场战斗开始时，获得1层【KEYWORD_加攻】和2层【KEYWORD_内伤】。\n主动使用：禁用此效果，再次使用解除禁用。",
+          "category": "Switch",
+          "categoryLabel": "开关",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1,
+            2
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7116,
+          "name": "老鼠偷油",
+          "desc": "跳过自身卡组第5格的牌，若为星弈牌则加6生命；\n主动使用：禁用本天衍仙命的效果；再次使用解除禁用",
+          "category": "Switch",
+          "categoryLabel": "开关",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            6
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7135,
+          "name": "枯荣往复",
+          "desc": "生命上限+4；\n双方在各自回合开始时触发的每层【KEYWORD_恢复】/【KEYWORD_内伤】效果从加/减1生命改为2生命。\n主动使用：禁用本天衍仙命的效果；再次使用解除禁用。",
+          "category": "Switch",
+          "categoryLabel": "开关",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            4
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 23069,
+          "name": "黯星伤魂",
+          "desc": "自身所有加【KEYWORD_星力】的效果改为向对方施加等量【KEYWORD_内伤】。\n主动使用：禁用此效果；再次使用解除禁用",
+          "category": "Switch",
+          "categoryLabel": "开关",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 23,
+          "minRound": 1,
+          "maxRound": 3
+        }
+      ]
+    },
+    {
+      "id": "FuMo",
+      "label": "附魔秘策",
+      "strategies": [
+        {
+          "id": 5001,
+          "name": "逍遥刻纹",
+          "desc": "选择一个卡组格子，战斗中每次使用格子中的炼气期【KEYWORD_常规牌】时【KEYWORD_再次行动】。\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 5,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 5009,
+          "name": "双生刻纹",
+          "desc": "选择一个卡组格子，战斗中每次使用格子中的炼气期【KEYWORD_常规牌】时，重复一次这张牌【KEYWORD_升级】后的效果。\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 5,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13001,
+          "name": "淬毒刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：令自身下1次攻击向对方施加3层【KEYWORD_内伤】。\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13002,
+          "name": "驱邪刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：重复4次：每次随机减少1层【KEYWORD_负面状态】，若减少的【KEYWORD_负面状态】少于4层，每少1层加2生命。\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            2,
+            4
+          ],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13003,
+          "name": "画龙刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的【KEYWORD_常规牌】时将其升级（战斗结束还原）。\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1
+          ],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13004,
+          "name": "疗愈刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：增加自身生命及上限，数值等同于本场战斗中失去过的生命值的18%\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            18
+          ],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13005,
+          "name": "混元刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：卡组中每有一种【KEYWORD_五行】就+4防。\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            4
+          ],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13006,
+          "name": "追击刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的牌后追加6攻。\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            6
+          ],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13007,
+          "name": "厄劫刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：令对方下一次使用可降级的牌时将其降级（战斗结束还原）。\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1
+          ],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13008,
+          "name": "护体刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：获得3层[临时]【KEYWORD_护体】（下回合开始时失去全部[临时护体]）。\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13009,
+          "name": "水月刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：防+5并获得2层【KEYWORD_水月】。\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            5,
+            2
+          ],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13010,
+          "name": "移星刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：令后3格【KEYWORD_成为星位】。\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13011,
+          "name": "五行刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时根据其【KEYWORD_五行】获得效果：\n[金灵]：【KEYWORD_锋锐】+4；\n[水灵]或[木灵]：【KEYWORD_灵气】+2；\n[火灵]或[土灵]：【KEYWORD_防】+8。\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            4,
+            2,
+            8
+          ],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13012,
+          "name": "气势刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时获得效果：自身下3次攻击时加1【KEYWORD_气势】。\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13013,
+          "name": "两仪刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：【KEYWORD_卦象】+1，自身每有1【KEYWORD_卦象】再加1生命及上限。\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1,
+            1
+          ],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13014,
+          "name": "坚体刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：【KEYWORD_体魄】+3，然后自身每有6点[体魄]再加1【KEYWORD_防】。\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3,
+            6
+          ],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13015,
+          "name": "灰烬刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：减对方6生命及上限，并令对方下1次使用卡牌后将其[消耗]\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            6
+          ],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13016,
+          "name": "剑意刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：【KEYWORD_剑意】+1，每有2【KEYWORD_剑意】向对方造成1【KEYWORD_伤害】\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1,
+            2
+          ],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13017,
+          "name": "灵蛇刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：施加1层【KEYWORD_内伤】，对方每有1层【KEYWORD_负面状态】自身加1【KEYWORD_防】\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1,
+            1
+          ],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13018,
+          "name": "水木刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的牌根据其【KEYWORD_五行】获得效果：\n[水灵]：令本回合结束时【KEYWORD_水势】额外触发一次\n[木灵]：将1层【KEYWORD_加攻】转为【KEYWORD_木刺】\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 13019,
+          "name": "玄疗刻纹",
+          "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：生命+6（自身每有1层【KEYWORD_负面状态】多加1）\n主动使用：重新选择一个卡组格子。",
+          "category": "FuMo",
+          "categoryLabel": "附魔",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            6
+          ],
+          "npcId": 13,
+          "minRound": 8,
+          "maxRound": 13
+        }
+      ]
+    },
+    {
+      "id": "Active",
+      "label": "主动秘策",
+      "strategies": [
+        {
+          "id": 3013,
+          "name": "龙魂战意",
+          "desc": "主动使用（限{countParam}次）：下场战斗若自身为后手行动，则获得[死战之志]效果。",
+          "category": "ActiveCountable",
+          "categoryLabel": "主动计数",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 3,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 7012,
+          "name": "地火锻心",
+          "desc": "【19】加4攻；仙命【TALENT_92】的加攻取消上限。\n主动使用（冷却{countParam}轮）：选择一个自身已有的【19】相关仙命，重新选择其选项。",
+          "category": "ActiveCoolDown",
+          "categoryLabel": "主动冷却",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            4
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7062,
+          "name": "天衍-斩断俗尘",
+          "desc": "主动使用（限{countParam}次）：剩余换牌机会减半，删除当前牌池中所有筑基期牌。",
+          "category": "ActiveCountable",
+          "categoryLabel": "主动计数",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7114,
+          "name": "天衍-秘印亲和",
+          "desc": "主动使用（限{countParam}次）：减1修为，自选1张“秘印”获得。",
+          "category": "ActiveCountable",
+          "categoryLabel": "主动计数",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7136,
+          "name": "猫之狂念",
+          "desc": "战斗开始时算作已用过1次狂剑；\n主动使用（冷却{countParam}轮）：减1修为随机获得1张狂剑（不会高于自身境界，有可能获得特殊狂剑）",
+          "category": "ActiveCoolDown",
+          "categoryLabel": "主动冷却",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 11001,
+          "name": "剑宗秘卷",
+          "desc": "战斗中【KEYWORD_连云】效果可直接触发。\n主动使用（冷却{countParam}轮）：修为减1，从随机5张云灵剑宗门派牌（不低于自身上个境界）中选择1张获得。",
+          "category": "ActiveCoolDown",
+          "categoryLabel": "主动冷却",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            5
+          ],
+          "npcId": 11,
+          "minRound": 1,
+          "maxRound": 10
+        },
+        {
+          "id": 11002,
+          "name": "七星秘卷",
+          "desc": "战斗开始时加1【KEYWORD_卦象】并令卡组后6格是【KEYWORD_星位】。\n主动使用（冷却{countParam}轮）：修为减1，从随机5张七星阁门派牌（不低于自身上个境界）中选择1张获得。",
+          "category": "ActiveCoolDown",
+          "categoryLabel": "主动冷却",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            5
+          ],
+          "npcId": 11,
+          "minRound": 1,
+          "maxRound": 10
+        },
+        {
+          "id": 11003,
+          "name": "五行秘卷",
+          "desc": "战斗中【KEYWORD_五行】效果可直接触发。\n主动使用（冷却{countParam}轮）：修为减1，从随机5张五行道盟门派牌（不低于自身上个境界）中选择1张获得。",
+          "category": "ActiveCoolDown",
+          "categoryLabel": "主动冷却",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            5
+          ],
+          "npcId": 11,
+          "minRound": 1,
+          "maxRound": 10
+        },
+        {
+          "id": 11004,
+          "name": "锻玄秘卷",
+          "desc": "选择时加当前轮次×5的【KEYWORD_体魄】。每场战斗开始时加3【KEYWORD_体魄】。\n主动使用（冷却{countParam}轮）：修为减1，从随机5张锻玄宗门派牌（不低于自身上个境界）中选择1张获得。",
+          "category": "ActiveCoolDown",
+          "categoryLabel": "主动冷却",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            5,
+            5,
+            3
+          ],
+          "npcId": 11,
+          "minRound": 1,
+          "maxRound": 10
+        }
+      ]
+    },
+    {
+      "id": "Combat",
+      "label": "战斗秘策",
+      "strategies": [
+        {
+          "id": 2015,
+          "name": "承载之躯",
+          "desc": "生命上限+2；卡组中可额外放置1张【KEYWORD_持续】或【KEYWORD_消耗】牌。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            2,
+            1
+          ],
+          "npcId": 2,
+          "minRound": 1,
+          "maxRound": 5
+        },
+        {
+          "id": 3001,
+          "name": "龙威震慑",
+          "desc": "战斗中首次攻击对方时，施加1层【KEYWORD_减攻】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1
+          ],
+          "npcId": 3,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 3002,
+          "name": "龙鳞护体",
+          "desc": "战斗开始时获得1层【KEYWORD_护体】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1
+          ],
+          "npcId": 3,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 3003,
+          "name": "龙息强攻",
+          "desc": "卡组后4格的牌多1攻。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            4,
+            1
+          ],
+          "npcId": 3,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 3004,
+          "name": "龙影潜遁",
+          "desc": "战斗中首次被攻击前，先获得1回合的【KEYWORD_潜遁】（自身受到的攻击减40%）。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1
+          ],
+          "npcId": 3,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 3005,
+          "name": "龙行破空",
+          "desc": "【KEYWORD_速度】+3。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 3,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 3011,
+          "name": "龙吟聚灵",
+          "desc": "战斗中首次加【KEYWORD_灵气】时，多加2【KEYWORD_灵气】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            2
+          ],
+          "npcId": 3,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 3012,
+          "name": "龙鳞御防",
+          "desc": "每回合开始时加4防。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            4
+          ],
+          "npcId": 3,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 5004,
+          "name": "逍遥步法",
+          "desc": "每次使用普通攻击时加10【KEYWORD_身法】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 5,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 5005,
+          "name": "逍遥连音",
+          "desc": "每场战斗首次使用普通攻击时，先将其变为其上一格牌的复制（最高变为2级，战斗结束还原）。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1
+          ],
+          "npcId": 5,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 5007,
+          "name": "逍遥护身诀",
+          "desc": "战斗中首次使用普通攻击时，将其消耗并获得3层【KEYWORD_护体】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 5,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 5008,
+          "name": "逍遥神力掌",
+          "desc": "战斗中首次使用普通攻击时，将其消耗并获得3层【KEYWORD_加攻】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 5,
+          "minRound": 8,
+          "maxRound": 13
+        },
+        {
+          "id": 7002,
+          "name": "天衍-剑不出鞘",
+          "desc": "自身回合若未攻击，回合结束时加1【KEYWORD_剑意】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7005,
+          "name": "流风回雪",
+          "desc": "战斗开始时算作已用过1次云剑并加2【KEYWORD_云海】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1,
+            2
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7010,
+          "name": "天衍-灵猫踏云",
+          "desc": "每次使用云剑时获得1层【KEYWORD_云海】；每当【KEYWORD_云海】触发时加1【KEYWORD_灵气】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7011,
+          "name": "剑心演武",
+          "desc": "战斗结束时若【19】与云剑相邻，则减1修为抽1张云剑；若【19】与狂剑相邻，则减1修为抽1张狂剑。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7017,
+          "name": "护体剑阵",
+          "desc": "每场战斗首次使用剑阵时加5【KEYWORD_防】和1层【KEYWORD_护体】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1,
+            5,
+            1
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7021,
+          "name": "天衍-七星定魂",
+          "desc": "若卡组第8格空着，则战斗开始时放入【11】；若已有【11】则改为将其升级。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7022,
+          "name": "七星伤魂",
+          "desc": "每次使用卡组第8格的牌时，向对方施加2层【KEYWORD_内伤】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            2
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7024,
+          "name": "天衍-卜卦",
+          "desc": "战斗结束时，保存剩余【KEYWORD_卦象】（最多4），下场战斗开始时获得保存的【KEYWORD_卦象】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            4
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7026,
+          "name": "抽刀断水",
+          "desc": "每次使用金灵牌时加1【KEYWORD_灵气】；每次使用水灵牌时加1【KEYWORD_锋锐】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7028,
+          "name": "天衍-先天印记",
+          "desc": "战斗开始时，【KEYWORD_激活】先天五行【相生】的【KEYWORD_五行】和【克制】的【KEYWORD_五行】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7031,
+          "name": "灵阵回响",
+          "desc": "每场战斗中首次使用名字含“灵阵”的牌后重复一次其1级效果。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7032,
+          "name": "凝水化刃",
+          "desc": "【KEYWORD_水势】造成[伤害]的效果改为一次攻击，且【KEYWORD_击伤】对方时扣减的生命多50%。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7035,
+          "name": "荆棘伴生",
+          "desc": "每当获得【KEYWORD_加攻】时，其中1层转为【KEYWORD_木刺】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7037,
+          "name": "天衍-崩裂之拳",
+          "desc": "使用【KEYWORD_耗生命】的牌时，向对方造成所需【KEYWORD_耗生命】40%的[伤害]。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            40
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7038,
+          "name": "掌法感悟",
+          "desc": "每次战斗后，将卡组中名字含“掌”的1级牌升至2级。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7042,
+          "name": "禅心聚灵",
+          "desc": "加【KEYWORD_体魄】时，额外加1【KEYWORD_灵气】（每回合限1次）。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7048,
+          "name": "天衍-五行聚灵",
+          "desc": "战斗中每次【KEYWORD_激活】【KEYWORD_五行】时，若该【KEYWORD_五行】已激活过则加1【KEYWORD_灵气】（每回合限1次）。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7049,
+          "name": "琴心剑胆",
+          "desc": "将自身副职业切换为琴师，且牌池中额外加入{countParam}张【1000035】和【5000014】。\n所有琴师牌也视作狂剑。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1000035,
+            5000014
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7050,
+          "name": "霜寒水月",
+          "desc": "每次使用云剑时，获得1层【KEYWORD_水月】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7051,
+          "name": "玲珑游",
+          "desc": "描述中含“再次行动”的牌【KEYWORD_灵气】消耗减1。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7052,
+          "name": "狂剑聚灵",
+          "desc": "每次使用狂剑时加1【KEYWORD_灵气】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7053,
+          "name": "雁栖",
+          "desc": "每场战斗首次加生命或生命上限后，额外加当时生命上限20%的生命。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            20
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7054,
+          "name": "恃风雷",
+          "desc": "战斗开始时，升级卡组中第1张描述含“再次行动”或名字含“雷”的牌，战斗结束后还原。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7056,
+          "name": "七星连珠",
+          "desc": "每场战斗前7次使用星弈牌时，令后一格【KEYWORD_成为星位】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            7
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7057,
+          "name": "引虚",
+          "desc": "含“后招”效果的牌在首次使用时向对方施加1层【KEYWORD_虚弱】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7058,
+          "name": "百草织霞",
+          "desc": "战斗开始时，升级卡组中第1张木灵牌，战斗结束后还原。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7059,
+          "name": "风灵展翼",
+          "desc": "战斗中首次加【KEYWORD_灵气】时，额外加5【KEYWORD_身法】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            5
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7060,
+          "name": "灵之羽",
+          "desc": "每次使用【381】时额外加1【KEYWORD_灵气】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7061,
+          "name": "天衍-孤虚金书",
+          "desc": "到达第{effectRound}轮后：修为减{countParam}，获得{countParam}张【215】。\n战斗开始时若【215】前一格为空则放入【216】，若后一格为空则放入【217】，前后每有一格未能放入牌就改为让【215】升1级（战斗结束还原）。",
+          "category": "GetCardOnRound",
+          "categoryLabel": "按轮次发牌",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            215
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12,
+          "effectRound": 12
+        },
+        {
+          "id": 7063,
+          "name": "灯焰催心",
+          "desc": "战斗开始时，令对方下3次获得【KEYWORD_内伤】时多加1层。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7064,
+          "name": "朱雀之泪",
+          "desc": "自身回合开始时，若生命≤20，获得1层【KEYWORD_护体】（每场战斗限1次）。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            20
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7065,
+          "name": "盈月飞影",
+          "desc": "仅需9【KEYWORD_身法】即可触发【KEYWORD_再次行动】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            9
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7066,
+          "name": "天衍-木灵印记",
+          "desc": "战斗开始时【KEYWORD_激活木灵】并加2【KEYWORD_灵气】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            2
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7067,
+          "name": "云之剑气",
+          "desc": "战斗开始时【KEYWORD_剑气】+1；使用云剑后也可触发【KEYWORD_剑气】造成伤害。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7068,
+          "name": "飞火流霞",
+          "desc": "所有含【KEYWORD_击伤】效果的牌视作狂剑。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7069,
+          "name": "天衍-兴云布雨",
+          "desc": "战斗开始时，手牌或卡组中每有2张云剑加1【KEYWORD_灵气】（最多加3）。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7071,
+          "name": "剑气掌控",
+          "desc": "使用【19】后，将所有【KEYWORD_灵气】转为【KEYWORD_剑气】，并可触发1次【KEYWORD_剑气】造成伤害。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7076,
+          "name": "天衍-雪羽清风",
+          "desc": "每次加生命或加生命上限时多加1点。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7077,
+          "name": "无尽卦衍",
+          "desc": "每场战斗中前3次加【KEYWORD_卦象】时多加1点。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7078,
+          "name": "灯灵星耀",
+          "desc": "战斗开始时加1【KEYWORD_星力】；若自身修为比对方高5点或以上，额外再加1【KEYWORD_星力】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            5
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7079,
+          "name": "星渊",
+          "desc": "使用【KEYWORD_星位】上的牌时向对方施加1层【KEYWORD_内伤】（每场战斗限3次）。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7080,
+          "name": "虚灵归流",
+          "desc": "每当对方获得【KEYWORD_虚弱】时，自身加1【KEYWORD_灵气】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7082,
+          "name": "天髓归一",
+          "desc": "到达{effectRound}轮后：减1修为，获得1张【7000073】。\n【7000073】在卡组仅含2种[五行]时也可生效。",
+          "category": "GetCardOnRound",
+          "categoryLabel": "按轮次发牌",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            7000073
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12,
+          "effectRound": 12
+        },
+        {
+          "id": 7083,
+          "name": "灵树庇佑",
+          "desc": "战斗开始时，卡组中每有一种不同五行，就加3生命及上限。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7084,
+          "name": "雨润大地",
+          "desc": "每次【KEYWORD_激活水灵】时，额外【KEYWORD_激活土灵】；每次【KEYWORD_激活土灵】时额外加8【KEYWORD_防】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            8
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7085,
+          "name": "混元玉瓶",
+          "desc": "计算卡组中不同[五行]数量时，五行玉瓶中的[五行]也算入其中。（注：五行玉瓶中的牌不会触发【KEYWORD_被动】。）",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            6
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7087,
+          "name": "气盖山河",
+          "desc": "每场战斗首次获得【KEYWORD_气势】时多加2。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            2
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7088,
+          "name": "月魂爪",
+          "desc": "使用卡组第8格的牌攻击时，自身每有3层【KEYWORD_负面状态】就多1攻。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7089,
+          "name": "迅身掌",
+          "desc": "每次使用名字含“掌”的牌时加2【KEYWORD_身法】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            2
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7090,
+          "name": "强攻架势",
+          "desc": "每当切换【KEYWORD_架势】后，若变为【KEYWORD_拳】则获得1层【KEYWORD_气势】，若变为【KEYWORD_棍】则获得1层【KEYWORD_加攻】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1,
+            1
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7091,
+          "name": "天衍-风灵锻躯",
+          "desc": "每场战斗前5次加【KEYWORD_身法】时额外加1【KEYWORD_体魄】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            5
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7092,
+          "name": "灵灌崩拳",
+          "desc": "每有2【KEYWORD_灵气】，所有崩拳多1攻（最多4）。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            2,
+            4
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7093,
+          "name": "七星借命",
+          "desc": "战斗中首次生命≤0时，失去所有【KEYWORD_星力】和【KEYWORD_卦象】，每失去1点加3生命及上限，然后若生命>0则继续战斗。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7095,
+          "name": "天衍-土灵印记",
+          "desc": "战斗开始时【KEYWORD_激活土灵】并加8【KEYWORD_防】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            8
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7096,
+          "name": "天衍-金灵印记",
+          "desc": "战斗开始时【KEYWORD_激活金灵】并加4【KEYWORD_锋锐】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            4
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7097,
+          "name": "培土生金",
+          "desc": "每次使用土灵牌时加3【KEYWORD_锋锐】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7098,
+          "name": "天衍-火灵印记",
+          "desc": "战斗开始时【KEYWORD_激活火灵】并减对方4生命上限。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            4
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7099,
+          "name": "蹴鞠飞袭",
+          "desc": "每场战斗中首次使用火灵牌后追加6攻。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            6
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7100,
+          "name": "火灵亲和",
+          "desc": "战斗开始时，升级卡组中第1张火灵牌。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7101,
+          "name": "灵烟化爪",
+          "desc": "消耗【KEYWORD_灵气】或描述中含【KEYWORD_灵气】的牌攻击时多3攻。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7102,
+          "name": "魂体不竭",
+          "desc": "体魄及上限+4。战斗中每次自身【KEYWORD_耗生命】时，加1【KEYWORD_体魄】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            4
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7103,
+          "name": "天衍-猛虎之躯",
+          "desc": "战斗开始时，自身每有10生命，就额外加1生命及上限。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            10
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7104,
+          "name": "截拳式",
+          "desc": "每场战斗中首次【KEYWORD_击伤】对方后：若自身为【KEYWORD_拳】架势就施加1层【KEYWORD_减攻】，否则施加1层【KEYWORD_虚弱】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7105,
+          "name": "天衍-入冥",
+          "desc": "每场战斗开始时获得2层【KEYWORD_冥】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            2
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7109,
+          "name": "天衍-无忧灵酿",
+          "desc": "战斗中加灵气时额外加4生命及上限（每场战斗限3次）。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            4,
+            3
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7110,
+          "name": "谋定后动",
+          "desc": "战斗开始时若自身为后手行动，则下1次的【KEYWORD_后招】效果可直接触发；若自身为先手行动则加1换牌机会。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7111,
+          "name": "无尽棍势",
+          "desc": "锁定自身【KEYWORD_架势】为【KEYWORD_棍】；[切换架势]的效果改为【KEYWORD_气势】及上限+1并加3防",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7112,
+          "name": "乘雁而行",
+          "desc": "战斗开始时生命上限+20；每次触发【KEYWORD_再次行动】后生命+3",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            20,
+            3
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7113,
+          "name": "拳风破空",
+          "desc": "每次[切换架势]后向对方造成3【KEYWORD_伤害】",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7115,
+          "name": "以冥化灵",
+          "desc": "使用卡牌时若【KEYWORD_灵气】不足，可消耗自身的【KEYWORD_冥】代替【KEYWORD_灵气】",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7118,
+          "name": "热血化气",
+          "desc": "使用【KEYWORD_耗生命】的牌时加1【KEYWORD_灵气】（每回合限1次）",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7120,
+          "name": "上古威势",
+          "desc": "【KEYWORD_气势】上限+6；使用名字含“掌”的牌攻击时，【KEYWORD_气势】不会减少",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            6
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7121,
+          "name": "天衍-修玄不泯",
+          "desc": "每场战斗结束时，自身每有2层【KEYWORD_负面状态】就加1【KEYWORD_体魄】。若自身【KEYWORD_负面状态】≥10层，永久加1生命上限。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            2,
+            10
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7122,
+          "name": "天衍-水灵印记",
+          "desc": "选择时减1修为抽1张“水灵”牌。\n战斗开始时，升级卡组中第1张“水灵”牌，战斗结束还原。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7123,
+          "name": "天衍-猫魂庇佑",
+          "desc": "若自身命元低于50，战斗开始时加15%的当前生命及上限。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            50,
+            15
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7127,
+          "name": "惊雷破敌",
+          "desc": "每场战斗中首次使用名字含“雷”的牌攻击时，先向对方施加1层【KEYWORD_外伤】，且攻击附加【KEYWORD_碎防】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7128,
+          "name": "天衍-布星问卦",
+          "desc": "战斗开始时，升级卡组中第1张“星弈”牌或名字含“卦”的牌，战斗结束后还原。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7129,
+          "name": "风卜卦术",
+          "desc": "战斗开始时，升级卡组中第1张描述含“灵气”或“卦象”的牌，战斗结束还原。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7130,
+          "name": "淬剑-云海",
+          "desc": "使用【19】时加5【KEYWORD_云海】，并算作额外用了2次云剑",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            5,
+            2
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7132,
+          "name": "御云结阵",
+          "desc": "每次使用剑阵时获得1层【KEYWORD_云海】；每次【KEYWORD_云海】触发并减少时加2【KEYWORD_防】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            2
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7133,
+          "name": "霜华守护",
+          "desc": "每次加【KEYWORD_防】时多加1点。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 7134,
+          "name": "天衍-铸剑师",
+          "desc": "无视仙命【TALENT_92】的次数上限，且【19】每轮多加1攻。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            1
+          ],
+          "npcId": 7,
+          "minRound": 6,
+          "maxRound": 12
+        },
+        {
+          "id": 15018,
+          "name": "徐如林",
+          "desc": "若手牌不为空，战斗开始时加12%生命及等量生命上限",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            12
+          ],
+          "npcId": 15,
+          "minRound": 7,
+          "maxRound": 13
+        },
+        {
+          "id": 23045,
+          "name": "淬剑-灵气",
+          "desc": "使用【19】时加1【KEYWORD_灵气】",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": false,
+          "affectsBattle": true,
+          "otherParams": [
+            1
+          ],
+          "npcId": 23,
+          "minRound": 1,
+          "maxRound": 3
+        },
+        {
+          "id": 23058,
+          "name": "天衍-五行玉瓶",
+          "desc": "战斗开始时额外[激活]五行玉瓶中第2格牌的[五行]。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 23,
+          "minRound": 1,
+          "maxRound": 3
+        },
+        {
+          "id": 23062,
+          "name": "天衍-禅心锻身",
+          "desc": "仙命【TALENT_183】在每场战斗开始时多加1【KEYWORD_体魄】，且胜利时加【KEYWORD_体魄】上限的效果取消次数限制",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": false,
+          "affectsBattle": true,
+          "otherParams": [],
+          "npcId": 23,
+          "minRound": 1,
+          "maxRound": 3
+        },
+        {
+          "id": 23066,
+          "name": "木虎",
+          "desc": "战斗开始时【KEYWORD_激活木灵】；木灵牌的每1灵气消耗改为耗3生命。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 23,
+          "minRound": 1,
+          "maxRound": 3
+        },
+        {
+          "id": 23079,
+          "name": "料敌机先",
+          "desc": "第{effectRound}轮起生效：使用【22】时，获得3层临时【KEYWORD_护体】，自身下个回合开始失去临时【KEYWORD_护体】。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            3
+          ],
+          "npcId": 23,
+          "minRound": 1,
+          "maxRound": 3,
+          "effectRound": 3
+        },
+        {
+          "id": 23080,
+          "name": "相生灵阵",
+          "desc": "换牌机会+5；\n五行（木/火/土/金/水）灵阵的[持续]效果除了相同五行，还可以被其相生五行（火/土/金/水/木）的牌触发。",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            5
+          ],
+          "npcId": 23,
+          "minRound": 1,
+          "maxRound": 3
+        },
+        {
+          "id": 26001,
+          "name": "策略_26001",
+          "desc": "",
+          "category": "Other",
+          "categoryLabel": "其他",
+          "isBattleEffect": true,
+          "affectsBattle": true,
+          "otherParams": [
+            30,
+            3
+          ],
+          "npcId": 26,
+          "minRound": 1,
+          "maxRound": 3,
+          "effectRound": 15
+        }
+      ]
+    }
+  ],
+  "strategies": [
+    {
+      "id": 1001,
+      "name": "天灵之音",
+      "desc": "战斗开始时，双方各加1【KEYWORD_灵气】。\n主动使用：禁用此效果，再次使用解除禁用。",
+      "category": "Switch",
+      "categoryLabel": "开关",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1
+      ],
+      "npcId": 1,
+      "minRound": 3,
+      "maxRound": 13
+    },
+    {
+      "id": 1002,
+      "name": "狂舞之音",
+      "desc": "战斗开始时，双方各加1层【KEYWORD_加攻】。\n主动使用：禁用此效果，再次使用解除禁用。",
+      "category": "Switch",
+      "categoryLabel": "开关",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1
+      ],
+      "npcId": 1,
+      "minRound": 3,
+      "maxRound": 13
+    },
+    {
+      "id": 1003,
+      "name": "回春之音",
+      "desc": "战斗开始时，双方各加15%当前生命及等量生命上限。\n主动使用：禁用此效果，再次使用解除禁用。",
+      "category": "Switch",
+      "categoryLabel": "开关",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        15
+      ],
+      "npcId": 1,
+      "minRound": 3,
+      "maxRound": 13
+    },
+    {
+      "id": 1004,
+      "name": "断肠之音",
+      "desc": "战斗开始时，双方各加3层【KEYWORD_内伤】。\n主动使用：禁用此效果，再次使用解除禁用。",
+      "category": "Switch",
+      "categoryLabel": "开关",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 1,
+      "minRound": 3,
+      "maxRound": 13
+    },
+    {
+      "id": 1005,
+      "name": "困仙之音",
+      "desc": "战斗中自身首次使用卡牌时，令双方在2个回合内无法触发【KEYWORD_再次行动】效果。\n主动使用：禁用此效果，再次使用解除禁用。",
+      "category": "Switch",
+      "categoryLabel": "开关",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        2
+      ],
+      "npcId": 1,
+      "minRound": 3,
+      "maxRound": 13
+    },
+    {
+      "id": 1006,
+      "name": "肃杀之音",
+      "desc": "战斗开始时，双方各减15%当前生命及等量生命上限。\n主动使用：禁用此效果，再次使用解除禁用。",
+      "category": "Switch",
+      "categoryLabel": "开关",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        15
+      ],
+      "npcId": 1,
+      "minRound": 3,
+      "maxRound": 13
+    },
+    {
+      "id": 1007,
+      "name": "强化之音",
+      "desc": "战斗开始时，升级双方下1次使用的牌（战斗结束还原）。\n主动使用：禁用此效果，再次使用解除禁用。",
+      "category": "Switch",
+      "categoryLabel": "开关",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1
+      ],
+      "npcId": 1,
+      "minRound": 3,
+      "maxRound": 13
+    },
+    {
+      "id": 1008,
+      "name": "幽绪之音",
+      "desc": "战斗中令双方每次攻击时减1生命。\n主动使用：禁用此效果，再次使用解除禁用。",
+      "category": "Switch",
+      "categoryLabel": "开关",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1
+      ],
+      "npcId": 1,
+      "minRound": 3,
+      "maxRound": 13
+    },
+    {
+      "id": 2015,
+      "name": "承载之躯",
+      "desc": "生命上限+2；卡组中可额外放置1张【KEYWORD_持续】或【KEYWORD_消耗】牌。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        2,
+        1
+      ],
+      "npcId": 2,
+      "minRound": 1,
+      "maxRound": 5
+    },
+    {
+      "id": 3001,
+      "name": "龙威震慑",
+      "desc": "战斗中首次攻击对方时，施加1层【KEYWORD_减攻】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1
+      ],
+      "npcId": 3,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 3002,
+      "name": "龙鳞护体",
+      "desc": "战斗开始时获得1层【KEYWORD_护体】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1
+      ],
+      "npcId": 3,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 3003,
+      "name": "龙息强攻",
+      "desc": "卡组后4格的牌多1攻。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        4,
+        1
+      ],
+      "npcId": 3,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 3004,
+      "name": "龙影潜遁",
+      "desc": "战斗中首次被攻击前，先获得1回合的【KEYWORD_潜遁】（自身受到的攻击减40%）。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1
+      ],
+      "npcId": 3,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 3005,
+      "name": "龙行破空",
+      "desc": "【KEYWORD_速度】+3。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 3,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 3011,
+      "name": "龙吟聚灵",
+      "desc": "战斗中首次加【KEYWORD_灵气】时，多加2【KEYWORD_灵气】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        2
+      ],
+      "npcId": 3,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 3012,
+      "name": "龙鳞御防",
+      "desc": "每回合开始时加4防。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        4
+      ],
+      "npcId": 3,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 3013,
+      "name": "龙魂战意",
+      "desc": "主动使用（限{countParam}次）：下场战斗若自身为后手行动，则获得[死战之志]效果。",
+      "category": "ActiveCountable",
+      "categoryLabel": "主动计数",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 3,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 5001,
+      "name": "逍遥刻纹",
+      "desc": "选择一个卡组格子，战斗中每次使用格子中的炼气期【KEYWORD_常规牌】时【KEYWORD_再次行动】。\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 5,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 5004,
+      "name": "逍遥步法",
+      "desc": "每次使用普通攻击时加10【KEYWORD_身法】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 5,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 5005,
+      "name": "逍遥连音",
+      "desc": "每场战斗首次使用普通攻击时，先将其变为其上一格牌的复制（最高变为2级，战斗结束还原）。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1
+      ],
+      "npcId": 5,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 5007,
+      "name": "逍遥护身诀",
+      "desc": "战斗中首次使用普通攻击时，将其消耗并获得3层【KEYWORD_护体】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 5,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 5008,
+      "name": "逍遥神力掌",
+      "desc": "战斗中首次使用普通攻击时，将其消耗并获得3层【KEYWORD_加攻】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 5,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 5009,
+      "name": "双生刻纹",
+      "desc": "选择一个卡组格子，战斗中每次使用格子中的炼气期【KEYWORD_常规牌】时，重复一次这张牌【KEYWORD_升级】后的效果。\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 5,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 5010,
+      "name": "轮回之术",
+      "desc": "战斗中每次使用卡组后3格的[非]普通攻击的牌时，减2生命将其【KEYWORD_跳过】。\n主动使用：禁用此效果，再次使用解除禁用。",
+      "category": "Switch",
+      "categoryLabel": "开关",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3,
+        2
+      ],
+      "npcId": 5,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 7002,
+      "name": "天衍-剑不出鞘",
+      "desc": "自身回合若未攻击，回合结束时加1【KEYWORD_剑意】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7005,
+      "name": "流风回雪",
+      "desc": "战斗开始时算作已用过1次云剑并加2【KEYWORD_云海】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1,
+        2
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7010,
+      "name": "天衍-灵猫踏云",
+      "desc": "每次使用云剑时获得1层【KEYWORD_云海】；每当【KEYWORD_云海】触发时加1【KEYWORD_灵气】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7011,
+      "name": "剑心演武",
+      "desc": "战斗结束时若【19】与云剑相邻，则减1修为抽1张云剑；若【19】与狂剑相邻，则减1修为抽1张狂剑。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7012,
+      "name": "地火锻心",
+      "desc": "【19】加4攻；仙命【TALENT_92】的加攻取消上限。\n主动使用（冷却{countParam}轮）：选择一个自身已有的【19】相关仙命，重新选择其选项。",
+      "category": "ActiveCoolDown",
+      "categoryLabel": "主动冷却",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        4
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7017,
+      "name": "护体剑阵",
+      "desc": "每场战斗首次使用剑阵时加5【KEYWORD_防】和1层【KEYWORD_护体】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1,
+        5,
+        1
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7021,
+      "name": "天衍-七星定魂",
+      "desc": "若卡组第8格空着，则战斗开始时放入【11】；若已有【11】则改为将其升级。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7022,
+      "name": "七星伤魂",
+      "desc": "每次使用卡组第8格的牌时，向对方施加2层【KEYWORD_内伤】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        2
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7024,
+      "name": "天衍-卜卦",
+      "desc": "战斗结束时，保存剩余【KEYWORD_卦象】（最多4），下场战斗开始时获得保存的【KEYWORD_卦象】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        4
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7026,
+      "name": "抽刀断水",
+      "desc": "每次使用金灵牌时加1【KEYWORD_灵气】；每次使用水灵牌时加1【KEYWORD_锋锐】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7028,
+      "name": "天衍-先天印记",
+      "desc": "战斗开始时，【KEYWORD_激活】先天五行【相生】的【KEYWORD_五行】和【克制】的【KEYWORD_五行】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7031,
+      "name": "灵阵回响",
+      "desc": "每场战斗中首次使用名字含“灵阵”的牌后重复一次其1级效果。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7032,
+      "name": "凝水化刃",
+      "desc": "【KEYWORD_水势】造成[伤害]的效果改为一次攻击，且【KEYWORD_击伤】对方时扣减的生命多50%。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7035,
+      "name": "荆棘伴生",
+      "desc": "每当获得【KEYWORD_加攻】时，其中1层转为【KEYWORD_木刺】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7036,
+      "name": "灵香缭绕",
+      "desc": "战斗开始时获得2层【KEYWORD_辟邪】，并加9生命。\n主动使用：禁用此效果（获得【KEYWORD_辟邪】），再次使用解除禁用。",
+      "category": "Switch",
+      "categoryLabel": "开关",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        2,
+        9
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7037,
+      "name": "天衍-崩裂之拳",
+      "desc": "使用【KEYWORD_耗生命】的牌时，向对方造成所需【KEYWORD_耗生命】40%的[伤害]。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        40
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7038,
+      "name": "掌法感悟",
+      "desc": "每次战斗后，将卡组中名字含“掌”的1级牌升至2级。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7042,
+      "name": "禅心聚灵",
+      "desc": "加【KEYWORD_体魄】时，额外加1【KEYWORD_灵气】（每回合限1次）。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7048,
+      "name": "天衍-五行聚灵",
+      "desc": "战斗中每次【KEYWORD_激活】【KEYWORD_五行】时，若该【KEYWORD_五行】已激活过则加1【KEYWORD_灵气】（每回合限1次）。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7049,
+      "name": "琴心剑胆",
+      "desc": "将自身副职业切换为琴师，且牌池中额外加入{countParam}张【1000035】和【5000014】。\n所有琴师牌也视作狂剑。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1000035,
+        5000014
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7050,
+      "name": "霜寒水月",
+      "desc": "每次使用云剑时，获得1层【KEYWORD_水月】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7051,
+      "name": "玲珑游",
+      "desc": "描述中含“再次行动”的牌【KEYWORD_灵气】消耗减1。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7052,
+      "name": "狂剑聚灵",
+      "desc": "每次使用狂剑时加1【KEYWORD_灵气】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7053,
+      "name": "雁栖",
+      "desc": "每场战斗首次加生命或生命上限后，额外加当时生命上限20%的生命。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        20
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7054,
+      "name": "恃风雷",
+      "desc": "战斗开始时，升级卡组中第1张描述含“再次行动”或名字含“雷”的牌，战斗结束后还原。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7056,
+      "name": "七星连珠",
+      "desc": "每场战斗前7次使用星弈牌时，令后一格【KEYWORD_成为星位】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        7
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7057,
+      "name": "引虚",
+      "desc": "含“后招”效果的牌在首次使用时向对方施加1层【KEYWORD_虚弱】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7058,
+      "name": "百草织霞",
+      "desc": "战斗开始时，升级卡组中第1张木灵牌，战斗结束后还原。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7059,
+      "name": "风灵展翼",
+      "desc": "战斗中首次加【KEYWORD_灵气】时，额外加5【KEYWORD_身法】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        5
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7060,
+      "name": "灵之羽",
+      "desc": "每次使用【381】时额外加1【KEYWORD_灵气】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7061,
+      "name": "天衍-孤虚金书",
+      "desc": "到达第{effectRound}轮后：修为减{countParam}，获得{countParam}张【215】。\n战斗开始时若【215】前一格为空则放入【216】，若后一格为空则放入【217】，前后每有一格未能放入牌就改为让【215】升1级（战斗结束还原）。",
+      "category": "GetCardOnRound",
+      "categoryLabel": "按轮次发牌",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        215
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12,
+      "effectRound": 12
+    },
+    {
+      "id": 7062,
+      "name": "天衍-斩断俗尘",
+      "desc": "主动使用（限{countParam}次）：剩余换牌机会减半，删除当前牌池中所有筑基期牌。",
+      "category": "ActiveCountable",
+      "categoryLabel": "主动计数",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7063,
+      "name": "灯焰催心",
+      "desc": "战斗开始时，令对方下3次获得【KEYWORD_内伤】时多加1层。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7064,
+      "name": "朱雀之泪",
+      "desc": "自身回合开始时，若生命≤20，获得1层【KEYWORD_护体】（每场战斗限1次）。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        20
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7065,
+      "name": "盈月飞影",
+      "desc": "仅需9【KEYWORD_身法】即可触发【KEYWORD_再次行动】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        9
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7066,
+      "name": "天衍-木灵印记",
+      "desc": "战斗开始时【KEYWORD_激活木灵】并加2【KEYWORD_灵气】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        2
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7067,
+      "name": "云之剑气",
+      "desc": "战斗开始时【KEYWORD_剑气】+1；使用云剑后也可触发【KEYWORD_剑气】造成伤害。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7068,
+      "name": "飞火流霞",
+      "desc": "所有含【KEYWORD_击伤】效果的牌视作狂剑。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7069,
+      "name": "天衍-兴云布雨",
+      "desc": "战斗开始时，手牌或卡组中每有2张云剑加1【KEYWORD_灵气】（最多加3）。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7071,
+      "name": "剑气掌控",
+      "desc": "使用【19】后，将所有【KEYWORD_灵气】转为【KEYWORD_剑气】，并可触发1次【KEYWORD_剑气】造成伤害。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7076,
+      "name": "天衍-雪羽清风",
+      "desc": "每次加生命或加生命上限时多加1点。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7077,
+      "name": "无尽卦衍",
+      "desc": "每场战斗中前3次加【KEYWORD_卦象】时多加1点。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7078,
+      "name": "灯灵星耀",
+      "desc": "战斗开始时加1【KEYWORD_星力】；若自身修为比对方高5点或以上，额外再加1【KEYWORD_星力】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        5
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7079,
+      "name": "星渊",
+      "desc": "使用【KEYWORD_星位】上的牌时向对方施加1层【KEYWORD_内伤】（每场战斗限3次）。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7080,
+      "name": "虚灵归流",
+      "desc": "每当对方获得【KEYWORD_虚弱】时，自身加1【KEYWORD_灵气】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7082,
+      "name": "天髓归一",
+      "desc": "到达{effectRound}轮后：减1修为，获得1张【7000073】。\n【7000073】在卡组仅含2种[五行]时也可生效。",
+      "category": "GetCardOnRound",
+      "categoryLabel": "按轮次发牌",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        7000073
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12,
+      "effectRound": 12
+    },
+    {
+      "id": 7083,
+      "name": "灵树庇佑",
+      "desc": "战斗开始时，卡组中每有一种不同五行，就加3生命及上限。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7084,
+      "name": "雨润大地",
+      "desc": "每次【KEYWORD_激活水灵】时，额外【KEYWORD_激活土灵】；每次【KEYWORD_激活土灵】时额外加8【KEYWORD_防】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        8
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7085,
+      "name": "混元玉瓶",
+      "desc": "计算卡组中不同[五行]数量时，五行玉瓶中的[五行]也算入其中。（注：五行玉瓶中的牌不会触发【KEYWORD_被动】。）",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        6
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7087,
+      "name": "气盖山河",
+      "desc": "每场战斗首次获得【KEYWORD_气势】时多加2。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        2
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7088,
+      "name": "月魂爪",
+      "desc": "使用卡组第8格的牌攻击时，自身每有3层【KEYWORD_负面状态】就多1攻。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7089,
+      "name": "迅身掌",
+      "desc": "每次使用名字含“掌”的牌时加2【KEYWORD_身法】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        2
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7090,
+      "name": "强攻架势",
+      "desc": "每当切换【KEYWORD_架势】后，若变为【KEYWORD_拳】则获得1层【KEYWORD_气势】，若变为【KEYWORD_棍】则获得1层【KEYWORD_加攻】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1,
+        1
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7091,
+      "name": "天衍-风灵锻躯",
+      "desc": "每场战斗前5次加【KEYWORD_身法】时额外加1【KEYWORD_体魄】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        5
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7092,
+      "name": "灵灌崩拳",
+      "desc": "每有2【KEYWORD_灵气】，所有崩拳多1攻（最多4）。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        2,
+        4
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7093,
+      "name": "七星借命",
+      "desc": "战斗中首次生命≤0时，失去所有【KEYWORD_星力】和【KEYWORD_卦象】，每失去1点加3生命及上限，然后若生命>0则继续战斗。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7094,
+      "name": "天衍-搏命之勇",
+      "desc": "每场战斗开始时，获得1层【KEYWORD_加攻】和2层【KEYWORD_内伤】。\n主动使用：禁用此效果，再次使用解除禁用。",
+      "category": "Switch",
+      "categoryLabel": "开关",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1,
+        2
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7095,
+      "name": "天衍-土灵印记",
+      "desc": "战斗开始时【KEYWORD_激活土灵】并加8【KEYWORD_防】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        8
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7096,
+      "name": "天衍-金灵印记",
+      "desc": "战斗开始时【KEYWORD_激活金灵】并加4【KEYWORD_锋锐】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        4
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7097,
+      "name": "培土生金",
+      "desc": "每次使用土灵牌时加3【KEYWORD_锋锐】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7098,
+      "name": "天衍-火灵印记",
+      "desc": "战斗开始时【KEYWORD_激活火灵】并减对方4生命上限。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        4
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7099,
+      "name": "蹴鞠飞袭",
+      "desc": "每场战斗中首次使用火灵牌后追加6攻。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        6
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7100,
+      "name": "火灵亲和",
+      "desc": "战斗开始时，升级卡组中第1张火灵牌。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7101,
+      "name": "灵烟化爪",
+      "desc": "消耗【KEYWORD_灵气】或描述中含【KEYWORD_灵气】的牌攻击时多3攻。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7102,
+      "name": "魂体不竭",
+      "desc": "体魄及上限+4。战斗中每次自身【KEYWORD_耗生命】时，加1【KEYWORD_体魄】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        4
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7103,
+      "name": "天衍-猛虎之躯",
+      "desc": "战斗开始时，自身每有10生命，就额外加1生命及上限。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        10
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7104,
+      "name": "截拳式",
+      "desc": "每场战斗中首次【KEYWORD_击伤】对方后：若自身为【KEYWORD_拳】架势就施加1层【KEYWORD_减攻】，否则施加1层【KEYWORD_虚弱】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7105,
+      "name": "天衍-入冥",
+      "desc": "每场战斗开始时获得2层【KEYWORD_冥】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        2
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7109,
+      "name": "天衍-无忧灵酿",
+      "desc": "战斗中加灵气时额外加4生命及上限（每场战斗限3次）。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        4,
+        3
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7110,
+      "name": "谋定后动",
+      "desc": "战斗开始时若自身为后手行动，则下1次的【KEYWORD_后招】效果可直接触发；若自身为先手行动则加1换牌机会。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7111,
+      "name": "无尽棍势",
+      "desc": "锁定自身【KEYWORD_架势】为【KEYWORD_棍】；[切换架势]的效果改为【KEYWORD_气势】及上限+1并加3防",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7112,
+      "name": "乘雁而行",
+      "desc": "战斗开始时生命上限+20；每次触发【KEYWORD_再次行动】后生命+3",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        20,
+        3
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7113,
+      "name": "拳风破空",
+      "desc": "每次[切换架势]后向对方造成3【KEYWORD_伤害】",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7114,
+      "name": "天衍-秘印亲和",
+      "desc": "主动使用（限{countParam}次）：减1修为，自选1张“秘印”获得。",
+      "category": "ActiveCountable",
+      "categoryLabel": "主动计数",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7115,
+      "name": "以冥化灵",
+      "desc": "使用卡牌时若【KEYWORD_灵气】不足，可消耗自身的【KEYWORD_冥】代替【KEYWORD_灵气】",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7116,
+      "name": "老鼠偷油",
+      "desc": "跳过自身卡组第5格的牌，若为星弈牌则加6生命；\n主动使用：禁用本天衍仙命的效果；再次使用解除禁用",
+      "category": "Switch",
+      "categoryLabel": "开关",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        6
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7118,
+      "name": "热血化气",
+      "desc": "使用【KEYWORD_耗生命】的牌时加1【KEYWORD_灵气】（每回合限1次）",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7120,
+      "name": "上古威势",
+      "desc": "【KEYWORD_气势】上限+6；使用名字含“掌”的牌攻击时，【KEYWORD_气势】不会减少",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        6
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7121,
+      "name": "天衍-修玄不泯",
+      "desc": "每场战斗结束时，自身每有2层【KEYWORD_负面状态】就加1【KEYWORD_体魄】。若自身【KEYWORD_负面状态】≥10层，永久加1生命上限。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        2,
+        10
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7122,
+      "name": "天衍-水灵印记",
+      "desc": "选择时减1修为抽1张“水灵”牌。\n战斗开始时，升级卡组中第1张“水灵”牌，战斗结束还原。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7123,
+      "name": "天衍-猫魂庇佑",
+      "desc": "若自身命元低于50，战斗开始时加15%的当前生命及上限。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        50,
+        15
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7127,
+      "name": "惊雷破敌",
+      "desc": "每场战斗中首次使用名字含“雷”的牌攻击时，先向对方施加1层【KEYWORD_外伤】，且攻击附加【KEYWORD_碎防】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7128,
+      "name": "天衍-布星问卦",
+      "desc": "战斗开始时，升级卡组中第1张“星弈”牌或名字含“卦”的牌，战斗结束后还原。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7129,
+      "name": "风卜卦术",
+      "desc": "战斗开始时，升级卡组中第1张描述含“灵气”或“卦象”的牌，战斗结束还原。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7130,
+      "name": "淬剑-云海",
+      "desc": "使用【19】时加5【KEYWORD_云海】，并算作额外用了2次云剑",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        5,
+        2
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7132,
+      "name": "御云结阵",
+      "desc": "每次使用剑阵时获得1层【KEYWORD_云海】；每次【KEYWORD_云海】触发并减少时加2【KEYWORD_防】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        2
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7133,
+      "name": "霜华守护",
+      "desc": "每次加【KEYWORD_防】时多加1点。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7134,
+      "name": "天衍-铸剑师",
+      "desc": "无视仙命【TALENT_92】的次数上限，且【19】每轮多加1攻。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7135,
+      "name": "枯荣往复",
+      "desc": "生命上限+4；\n双方在各自回合开始时触发的每层【KEYWORD_恢复】/【KEYWORD_内伤】效果从加/减1生命改为2生命。\n主动使用：禁用本天衍仙命的效果；再次使用解除禁用。",
+      "category": "Switch",
+      "categoryLabel": "开关",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        4
+      ],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 7136,
+      "name": "猫之狂念",
+      "desc": "战斗开始时算作已用过1次狂剑；\n主动使用（冷却{countParam}轮）：减1修为随机获得1张狂剑（不会高于自身境界，有可能获得特殊狂剑）",
+      "category": "ActiveCoolDown",
+      "categoryLabel": "主动冷却",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 7,
+      "minRound": 6,
+      "maxRound": 12
+    },
+    {
+      "id": 11001,
+      "name": "剑宗秘卷",
+      "desc": "战斗中【KEYWORD_连云】效果可直接触发。\n主动使用（冷却{countParam}轮）：修为减1，从随机5张云灵剑宗门派牌（不低于自身上个境界）中选择1张获得。",
+      "category": "ActiveCoolDown",
+      "categoryLabel": "主动冷却",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        5
+      ],
+      "npcId": 11,
+      "minRound": 1,
+      "maxRound": 10
+    },
+    {
+      "id": 11002,
+      "name": "七星秘卷",
+      "desc": "战斗开始时加1【KEYWORD_卦象】并令卡组后6格是【KEYWORD_星位】。\n主动使用（冷却{countParam}轮）：修为减1，从随机5张七星阁门派牌（不低于自身上个境界）中选择1张获得。",
+      "category": "ActiveCoolDown",
+      "categoryLabel": "主动冷却",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        5
+      ],
+      "npcId": 11,
+      "minRound": 1,
+      "maxRound": 10
+    },
+    {
+      "id": 11003,
+      "name": "五行秘卷",
+      "desc": "战斗中【KEYWORD_五行】效果可直接触发。\n主动使用（冷却{countParam}轮）：修为减1，从随机5张五行道盟门派牌（不低于自身上个境界）中选择1张获得。",
+      "category": "ActiveCoolDown",
+      "categoryLabel": "主动冷却",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        5
+      ],
+      "npcId": 11,
+      "minRound": 1,
+      "maxRound": 10
+    },
+    {
+      "id": 11004,
+      "name": "锻玄秘卷",
+      "desc": "选择时加当前轮次×5的【KEYWORD_体魄】。每场战斗开始时加3【KEYWORD_体魄】。\n主动使用（冷却{countParam}轮）：修为减1，从随机5张锻玄宗门派牌（不低于自身上个境界）中选择1张获得。",
+      "category": "ActiveCoolDown",
+      "categoryLabel": "主动冷却",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        5,
+        5,
+        3
+      ],
+      "npcId": 11,
+      "minRound": 1,
+      "maxRound": 10
+    },
+    {
+      "id": 13001,
+      "name": "淬毒刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：令自身下1次攻击向对方施加3层【KEYWORD_内伤】。\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 13002,
+      "name": "驱邪刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：重复4次：每次随机减少1层【KEYWORD_负面状态】，若减少的【KEYWORD_负面状态】少于4层，每少1层加2生命。\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        2,
+        4
+      ],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 13003,
+      "name": "画龙刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的【KEYWORD_常规牌】时将其升级（战斗结束还原）。\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1
+      ],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 13004,
+      "name": "疗愈刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：增加自身生命及上限，数值等同于本场战斗中失去过的生命值的18%\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        18
+      ],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 13005,
+      "name": "混元刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：卡组中每有一种【KEYWORD_五行】就+4防。\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        4
+      ],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 13006,
+      "name": "追击刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的牌后追加6攻。\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        6
+      ],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 13007,
+      "name": "厄劫刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：令对方下一次使用可降级的牌时将其降级（战斗结束还原）。\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1
+      ],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 13008,
+      "name": "护体刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：获得3层[临时]【KEYWORD_护体】（下回合开始时失去全部[临时护体]）。\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 13009,
+      "name": "水月刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：防+5并获得2层【KEYWORD_水月】。\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        5,
+        2
+      ],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 13010,
+      "name": "移星刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：令后3格【KEYWORD_成为星位】。\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 13011,
+      "name": "五行刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时根据其【KEYWORD_五行】获得效果：\n[金灵]：【KEYWORD_锋锐】+4；\n[水灵]或[木灵]：【KEYWORD_灵气】+2；\n[火灵]或[土灵]：【KEYWORD_防】+8。\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        4,
+        2,
+        8
+      ],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 13012,
+      "name": "气势刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时获得效果：自身下3次攻击时加1【KEYWORD_气势】。\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 13013,
+      "name": "两仪刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：【KEYWORD_卦象】+1，自身每有1【KEYWORD_卦象】再加1生命及上限。\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1,
+        1
+      ],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 13014,
+      "name": "坚体刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：【KEYWORD_体魄】+3，然后自身每有6点[体魄]再加1【KEYWORD_防】。\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3,
+        6
+      ],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 13015,
+      "name": "灰烬刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：减对方6生命及上限，并令对方下1次使用卡牌后将其[消耗]\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        6
+      ],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 13016,
+      "name": "剑意刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：【KEYWORD_剑意】+1，每有2【KEYWORD_剑意】向对方造成1【KEYWORD_伤害】\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1,
+        2
+      ],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 13017,
+      "name": "灵蛇刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：施加1层【KEYWORD_内伤】，对方每有1层【KEYWORD_负面状态】自身加1【KEYWORD_防】\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        1,
+        1
+      ],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 13018,
+      "name": "水木刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的牌根据其【KEYWORD_五行】获得效果：\n[水灵]：令本回合结束时【KEYWORD_水势】额外触发一次\n[木灵]：将1层【KEYWORD_加攻】转为【KEYWORD_木刺】\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 13019,
+      "name": "玄疗刻纹",
+      "desc": "选择一个卡组格子，战斗中首次使用格子中的牌时：生命+6（自身每有1层【KEYWORD_负面状态】多加1）\n主动使用：重新选择一个卡组格子。",
+      "category": "FuMo",
+      "categoryLabel": "附魔",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        6
+      ],
+      "npcId": 13,
+      "minRound": 8,
+      "maxRound": 13
+    },
+    {
+      "id": 15018,
+      "name": "徐如林",
+      "desc": "若手牌不为空，战斗开始时加12%生命及等量生命上限",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        12
+      ],
+      "npcId": 15,
+      "minRound": 7,
+      "maxRound": 13
+    },
+    {
+      "id": 23045,
+      "name": "淬剑-灵气",
+      "desc": "使用【19】时加1【KEYWORD_灵气】",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": false,
+      "affectsBattle": true,
+      "otherParams": [
+        1
+      ],
+      "npcId": 23,
+      "minRound": 1,
+      "maxRound": 3
+    },
+    {
+      "id": 23058,
+      "name": "天衍-五行玉瓶",
+      "desc": "战斗开始时额外[激活]五行玉瓶中第2格牌的[五行]。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 23,
+      "minRound": 1,
+      "maxRound": 3
+    },
+    {
+      "id": 23062,
+      "name": "天衍-禅心锻身",
+      "desc": "仙命【TALENT_183】在每场战斗开始时多加1【KEYWORD_体魄】，且胜利时加【KEYWORD_体魄】上限的效果取消次数限制",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": false,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 23,
+      "minRound": 1,
+      "maxRound": 3
+    },
+    {
+      "id": 23066,
+      "name": "木虎",
+      "desc": "战斗开始时【KEYWORD_激活木灵】；木灵牌的每1灵气消耗改为耗3生命。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 23,
+      "minRound": 1,
+      "maxRound": 3
+    },
+    {
+      "id": 23069,
+      "name": "黯星伤魂",
+      "desc": "自身所有加【KEYWORD_星力】的效果改为向对方施加等量【KEYWORD_内伤】。\n主动使用：禁用此效果；再次使用解除禁用",
+      "category": "Switch",
+      "categoryLabel": "开关",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [],
+      "npcId": 23,
+      "minRound": 1,
+      "maxRound": 3
+    },
+    {
+      "id": 23079,
+      "name": "料敌机先",
+      "desc": "第{effectRound}轮起生效：使用【22】时，获得3层临时【KEYWORD_护体】，自身下个回合开始失去临时【KEYWORD_护体】。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        3
+      ],
+      "npcId": 23,
+      "minRound": 1,
+      "maxRound": 3,
+      "effectRound": 3
+    },
+    {
+      "id": 23080,
+      "name": "相生灵阵",
+      "desc": "换牌机会+5；\n五行（木/火/土/金/水）灵阵的[持续]效果除了相同五行，还可以被其相生五行（火/土/金/水/木）的牌触发。",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        5
+      ],
+      "npcId": 23,
+      "minRound": 1,
+      "maxRound": 3
+    },
+    {
+      "id": 26001,
+      "name": "策略_26001",
+      "desc": "",
+      "category": "Other",
+      "categoryLabel": "其他",
+      "isBattleEffect": true,
+      "affectsBattle": true,
+      "otherParams": [
+        30,
+        3
+      ],
+      "npcId": 26,
+      "minRound": 1,
+      "maxRound": 3,
+      "effectRound": 15
+    }
+  ]
+}

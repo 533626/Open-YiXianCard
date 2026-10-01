@@ -478,15 +478,15 @@ describe("UI 手输卡组布局契约", () => {
     expect(characterHtml).toContain('class="build-picker-tabs"');
     expect(characterHtml).toContain('data-mode="character"');
     expect(characterHtml).toContain('data-mode="talent"');
-    expect(characterHtml).toContain('data-mode="fate"');
+    expect(characterHtml).toContain('data-mode="xianmo"');
+    expect(characterHtml).not.toContain('data-mode="fate"');
     expect(characterHtml).toContain('data-mode="card"');
     expect(characterHtml).toContain("角色选择");
     expect(characterHtml).toContain("作用：切换当前玩家角色。");
     expect(characterHtml).toContain("联动：角色会限定可选仙命");
     expect(characterHtml).toContain("仙命选择");
     expect(characterHtml).toContain("槽位：第一格为角色固定仙命");
-    expect(characterHtml).toContain("天衍策略");
-    expect(characterHtml).toContain("范围：这里只配置战斗输入");
+    expect(characterHtml).toContain("百家之道");
     expect(characterHtml).toContain("卡牌选择");
     expect(characterHtml).toContain("筛选：可搜索");
 
@@ -503,6 +503,8 @@ describe("UI 手输卡组布局契约", () => {
     expect(fateHtml).toContain('data-mode="fate"');
     expect(fateHtml).toMatch(/data-mode="fate"[^>]*>[\s\S]*?天衍[\s\S]*?class="build-picker-tab-count">0\/\d+</);
     expect(fateHtml).toContain('data-action="clear-fate-strategies"');
+    expect(fateHtml).toContain("天衍策略");
+    expect(fateHtml).toContain("范围：这里只配置战斗输入");
 
     const pickerCss = ["setup-picker.css", "setup-picker-card.css", "setup-picker-candidates.css"]
       .map((file) => readFileSync(resolve(import.meta.dir, `../styles/${file}`), "utf8"))
@@ -510,8 +512,8 @@ describe("UI 手输卡组布局契约", () => {
     const responsiveCss = readFileSync(resolve(import.meta.dir, "../styles/responsive.css"), "utf8");
     expect(pickerCss).toMatch(/\.identity-popup \.cand-name\s*\{[\s\S]*font-size:\s*15px/);
     expect(pickerCss).toMatch(/\.character-popup\s*\{[\s\S]*height:\s*min\(372px/);
-    // 卡牌/角色/仙命/副职/天衍浮层统一为右侧栏（钉在第 2 列），遮罩只盖右列且不压黑
-    expect(pickerCss).toMatch(/\.combined-page > \.setup-picker-host \.card-popup,[\s\S]*?\.combined-page > \.setup-picker-host \.character-popup,[\s\S]*?\.combined-page > \.setup-picker-host \.talent-popup,[\s\S]*?\.combined-page > \.setup-picker-host \.career-popup,[\s\S]*?\.combined-page > \.setup-picker-host \.fate-popup\s*\{[\s\S]*?grid-column:\s*2;/);
+    // 卡牌/角色/仙命/副职/天衍/百家浮层统一为右侧栏（钉在第 2 列），遮罩只盖右列且不压黑
+    expect(pickerCss).toMatch(/\.combined-page > \.setup-picker-host \.card-popup,[\s\S]*?\.combined-page > \.setup-picker-host \.character-popup,[\s\S]*?\.combined-page > \.setup-picker-host \.talent-popup,[\s\S]*?\.combined-page > \.setup-picker-host \.career-popup,[\s\S]*?\.combined-page > \.setup-picker-host \.fate-popup,[\s\S]*?\.combined-page > \.setup-picker-host \.xianmo-popup\s*\{[\s\S]*?grid-column:\s*2;/);
     expect(pickerCss).toMatch(/\.combined-page > \.setup-picker-host \.picker-popup-backdrop\s*\{[\s\S]*?grid-column:\s*2;[\s\S]*?background:\s*transparent;/);
     expect(responsiveCss).toMatch(/\.character-popup \.character-popup-grid\s*\{[\s\S]*repeat\(4/);
   });

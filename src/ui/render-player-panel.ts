@@ -7,7 +7,7 @@ import { LEVEL_OPTIONS, derivePlayerBattleStats } from "./derived-state";
 import { renderBattleHp } from "./player-battle-state";
 import { renderPlayerDeck } from "./render-player-deck";
 import { renderPhysiqueField, renderSetupBody, renderSetupToolbar } from "./render-player-setup";
-import { renderFateStrategyStrip, renderTalentRow } from "./render-player-talents";
+import { renderFateStrategyStrip, renderTalentRow, renderXianMoStrategyStrip } from "./render-player-talents";
 import {
   escapeAttribute,
   escapeHtml,
@@ -48,7 +48,8 @@ export function renderPlayerPanel(state: AppState, side: Side): string {
       })}
       <div class="player-build-topline">
         ${character ? renderTalentRow(state, side, player) : ""}
-        ${character ? renderFateStrategyStrip(state, side, player) : ""}
+        ${character && (player.fateStrategies.length > 0 || state.pickerMode === "fate") ? renderFateStrategyStrip(state, side, player) : ""}
+        ${character ? renderXianMoStrategyStrip(state, side, player) : ""}
       </div>
       ${renderPlayerDeck({ state, side, player, frame, runtime, battleActiveSlots })}
       ${renderSetupBody(state, side, player, runtime, previousRuntime)}

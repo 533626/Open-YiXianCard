@@ -74,6 +74,7 @@ python3 research/original-game/build_evidence_manifest.py \
 bun run generate:original-build-profiles                        # profiles 重生成（链 tip=manifest）
 python3 research/original-game/extract_build.py --promote-only --build <new>  # current + combines + archive
 bun run evidence:card-configs                                   # 卡配置（含新卡）
+bun run build:ui                                                # WASM 与浏览器工作台同步构建
 ```
 
 要点：
@@ -84,7 +85,7 @@ bun run evidence:card-configs                                   # 卡配置（�
   无需新登记，profiles 只加 profile 行。源码变更时逐条核对正交性（方法级 diff），
   **非正交登记必须标注「待真实 reverify」**（先例：422 星力机制三处触发点改写）。
 - 同步 `docs/AGENT_CONTEXT.md` build 号（项目入口，push 前必查）。
-- 门禁：`check:original-build-profiles`、`test:evaluator`、`check:rust:quick`、
+- 门禁：`check:original-build-profiles`、`test:evaluator`、`build:ui`、`check:rust:quick`、
   `check:docs-drift`；测试里机械 build 号期望（original-build-flags 等）随轮换更新。
 
 ## 2. 规则影响评估（一次做透，别挤牙膏）

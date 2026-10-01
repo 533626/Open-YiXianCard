@@ -2,6 +2,7 @@ import baseCardCoverage from "../../../shared/data/base-card-coverage.json";
 import cardArchive from "../../../shared/data/card-archive.json";
 import characterTalentAudit from "../../../shared/data/character-talent-audit.json";
 import fateStrategyArchive from "../../../shared/data/fate-strategy-archive.json";
+import xianMoStrategyArchive from "../../../shared/data/xian-mo-strategy-archive.json";
 import talentArchive from "../../../shared/data/talent-archive.json";
 import { ORIGINAL_CARD_CONFIGS } from "../../../shared/data/original-card-configs";
 import {
@@ -107,3 +108,23 @@ export const talentArchiveById = new Map(talentArchiveRows.map((row) => [row.id,
 
 export const fateStrategyRows = (fateStrategyArchive as { strategies: FateStrategyArchiveRow[] })
   .strategies.filter((strategy) => strategy.category !== "DaoYun");
+
+export type XianMoStrategyRow = {
+  readonly id: number;
+  readonly name: string;
+  readonly desc: string;
+  readonly category: string;
+  readonly categoryLabel: string;
+  readonly isBattleEffect: boolean;
+  readonly affectsBattle: boolean;
+  readonly otherParams: readonly number[];
+  readonly npcId: number;
+  readonly minRound?: number;
+  readonly maxRound?: number;
+  readonly effectRound?: number;
+};
+
+export const xianMoStrategyRows = (xianMoStrategyArchive as { strategies: XianMoStrategyRow[] }).strategies;
+export const xianMoStrategyById = new Map(xianMoStrategyRows.map((row) => [row.id, row] as const));
+export const xianMoStrategyGroupsData = (xianMoStrategyArchive as { groups: readonly { readonly id: string; readonly label: string; readonly strategies: readonly XianMoStrategyRow[] }[] }).groups;
+

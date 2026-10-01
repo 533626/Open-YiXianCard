@@ -1,5 +1,5 @@
 import { sideLabel } from "./data";
-import { renderCardPopup, renderCareerPopup, renderCharacterPopup, renderFateStrategyPopup, renderTalentPopup } from "./render-pickers";
+import { renderCardPopup, renderCareerPopup, renderCharacterPopup, renderFateStrategyPopup, renderTalentPopup, renderXianMoStrategyPopup } from "./render-pickers";
 import { renderPlayerPanel } from "./render-player-panel";
 import { renderDeckDiagnosticPanel } from "./render-deck-diagnostics";
 import type { AppState } from "./types";
@@ -11,6 +11,7 @@ export function renderSetupPickers(state: AppState): string {
     ${renderTalentPopup(state)}
     ${renderCareerPopup(state)}
     ${renderFateStrategyPopup(state)}
+    ${renderXianMoStrategyPopup(state)}
     ${renderCharacterPopup(state)}
   `;
 }

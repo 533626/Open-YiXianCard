@@ -95,6 +95,8 @@ export function defaultPlayerConfig(
     lastElement: null,
     talents: [...recommendedTalents],
     fateStrategies: [],
+    xianMoStrategies: [],
+    xianMoTempDatas: {},
     lingWuCardBaseIds: [],
     handCardIds: [],
     lastRoundUsedCardBaseIds: [],

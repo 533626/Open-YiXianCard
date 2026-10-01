@@ -98,6 +98,8 @@ export interface OriginalReplayPlayerFixture {
   readonly currentPermanentBuffTempDatas?: Readonly<Record<string, number>>;
   readonly permanentBuffTempDatas: Readonly<Record<string, number>>;
   readonly fateStrategies?: readonly number[];
+  readonly xianMoStrategies?: readonly number[];
+  readonly xianMoTempDatas?: Readonly<Record<string, number>>;
   readonly cards: readonly OriginalCardConfig[];
 }
 

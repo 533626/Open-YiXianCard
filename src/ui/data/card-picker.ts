@@ -62,6 +62,7 @@ const ARCHIVE_PICKER_BUCKETS = [
 ] as const;
 
 const SEASON_PICKER_BUCKETS = [
+  { id: "season-xianmo", label: "百家之道" },
   { id: "season-luck", label: "气运" },
   { id: "season-life-shop", label: "命坊" },
   { id: "season-fate-branch", label: "命运分支" },
@@ -126,6 +127,7 @@ export function cardsGroupedForPicker(
     "HuaShen",
     "YuanYing",
     "season-fate-strategy",
+    "season-xianmo",
     "JinDan",
     "ZhuJi",
     "LianQi",
@@ -270,6 +272,7 @@ function isNumericPlaceholderCard(card: CardOption): boolean {
 
 function seasonCardPickerColumn(card: CardOption): string {
   const { archiveKey } = card;
+  if (archiveKey.startsWith("season:xianmo:") || archiveKey.includes(":xianmo")) return "season-xianmo";
   if (archiveKey.startsWith("season:past:relic:")) return "season-relic";
   if (archiveKey.startsWith("season:history:mirage:")) return "season-mirage";
   if (archiveKey.startsWith("season:history:dream:")) return "season-dream";
