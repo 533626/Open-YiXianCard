@@ -7,6 +7,7 @@ use crate::model::{CardDefinition, PlayerSide};
 /// invariant: the body kernel must never claim another sect's ids.
 #[cfg(test)]
 pub(super) const BODY_HANDLED_IDS: &[i64] = &[
+    10_000_102, 10_000_103, 10_000_104, 10_000_105, 10_000_106, 10_000_107, 10_000_108, 10_000_109,
     219, 222, 377, 381, 382, 383, 392, 417, 9_000_027, 99_000_215, 10_000_001, 10_000_002,
     10_000_003, 10_000_004, 10_000_005, 10_000_006, 10_000_007, 10_000_008, 10_000_009, 10_000_010,
     10_000_011, 10_000_012, 10_000_013, 10_000_014, 10_000_015, 10_000_016, 10_000_017, 10_000_018,
@@ -25,6 +26,63 @@ impl ReplayState {
     ) -> Option<bool> {
         let mut attacked = false;
         match normalized_base_id(card) {
+            10_000_102 => {
+                self.apply_configured_anima(actor_side, card);
+                self.apply_configured_physique(actor_side, card);
+                self.gain_attack_bonus(actor_side, other_param(card, 0));
+            }
+            10_000_103 => {
+                self.modify_momentum_limit(actor_side, other_param(card, 0));
+                self.modify_momentum(actor_side, other_param(card, 0));
+                let bonus = (self.actor(actor_side).core.anima + self.actor(actor_side).beng.momentum).min(other_param(card, 1));
+                attacked |= self.attack_by_config(actor_side, card, bonus, slot);
+            }
+            10_000_104 => {
+                if slot % 2 == 0 {
+                    self.apply_configured_physique(actor_side, card);
+                } else {
+                    self.modify_momentum(actor_side, other_param(card, 0));
+                }
+                let bonus = self.actor(actor_side).core.physique / other_param(card, 1).max(1);
+                attacked |= self.attack_by_config(actor_side, card, bonus, slot);
+            }
+            10_000_105 => {
+                attacked |= self.attack_by_config(actor_side, card, 0, slot);
+                self.gain_agility(actor_side, other_param(card, 0).max(0));
+                self.actor_mut(actor_side).beng.beng_quan_fei_zhou += other_param(card, 1).max(0);
+            }
+            10_000_106 => {
+                attacked |= self.attack_by_config(actor_side, card, 0, slot);
+                self.gain_attack_bonus(actor_side, other_param(card, 0));
+                let limit = other_param(card, 1);
+                let spent = self.spend_anima_up_to(actor_side, limit);
+                let momentum = (limit - spent).min(self.actor(actor_side).beng.momentum).max(0);
+                self.modify_momentum(actor_side, -momentum);
+                self.gain_agility(actor_side, (spent + momentum) * other_param(card, 2));
+            }
+            10_000_107 => {
+                let amount = (other_param(card, 0) + self.actor(actor_side).core.attack_bonus) * (10 + self.actor(actor_side).beng.momentum) / 10;
+                self.modify_actor_hp(actor_side, amount, false, false);
+                let bonus = self.actor(actor_side).add_hp_count() / other_param(card, 1).max(1);
+                attacked |= self.attack_by_config(actor_side, card, bonus, slot);
+            }
+            10_000_108 => {
+                self.apply_configured_anima(actor_side, card);
+                self.modify_actor_hp(actor_side, other_param(card, 2), false, false);
+                self.add_actor_negative_status(actor_side, 100, other_param(card, 0));
+                let gain = (self.actor(actor_side).core.anima + self.known_negative_status_count(actor_side)).min(other_param(card, 1));
+                self.gain_agility(actor_side, gain);
+            }
+            10_000_109 => {
+                // Both segment inputs are frozen before either attack.
+                let first = card.attack.unwrap_or(0) + self.actor(actor_side).core.anima;
+                let second = card.attack.unwrap_or(0) + self.known_negative_status_count(actor_side);
+                self.apply_attack(actor_side, first, slot);
+                self.apply_attack(actor_side, second, slot);
+                let heal = self.actor(actor_side).turn.actual_damage_carry / other_param(card, 0).max(1);
+                self.modify_actor_hp(actor_side, heal, false, false);
+                attacked = true;
+            }
             219 => {
                 attacked |= self.attack_by_config(actor_side, card, 0, slot);
                 let locked_stance = self.has_locked_li_stance(actor_side);
@@ -59,16 +117,13 @@ impl ReplayState {
                 self.apply_fate_strategy_stance_switch(actor_side);
             }
             222 => {
-                // Card_222.cs：拳 → 身法 otherParams[0]+[1]；棍 → 身法 otherParams[0] 并攻击；
-                // 两种架势都没有（如幻羽鹦复制给无架势方）时不加身法、不攻击。
-                // oracle：hf-latest-33333000 bbcfba241c4acf94/round-13。
+                // Card_222.cs（build 25796222）：先无条件身法 otherParams[0]；拳 → 再加 [1]；
+                // 棍 → 攻击。两种架势都没有（如幻羽鹦复制给无架势方）时只加 [0]、不攻击。
+                // 旧 build 无架势不加身法（oracle：hf-latest-33333000 bbcfba241c4acf94/round-13）。
+                self.gain_agility(actor_side, other_param(card, 0).max(0));
                 if self.actor(actor_side).beng.quan_stance > 0 {
-                    self.gain_agility(
-                        actor_side,
-                        other_param(card, 0).max(0) + other_param(card, 1).max(0),
-                    );
+                    self.gain_agility(actor_side, other_param(card, 1).max(0));
                 } else if self.actor(actor_side).beng.gun_stance > 0 {
-                    self.gain_agility(actor_side, other_param(card, 0).max(0));
                     attacked |= self.attack_by_config(actor_side, card, 0, slot);
                 }
                 // CardActionBase.SwitchJiaShi：拳→棍、棍→拳；两者皆无时不加任何架势。

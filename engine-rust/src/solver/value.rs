@@ -1,11 +1,8 @@
 use crate::{PlayerSide, ReplayEventKind, ReplayPlayerSnapshot, ReplayRun};
 use serde::{Deserialize, Serialize};
 
-// The weight table is generated, not hand-written: `value_weights.rs` comes from
-// `analysis/generated/value-weights-v1.json` via `bun run report:value-weights`,
-// and `analysis/value/value-weights.generated.ts` is the same artifact rendered for
-// TypeScript, so the two languages cannot drift apart one-sidedly. Repricing means
-// re-running the training pipeline, not editing a constant.
+// The weight table is calibrated offline and shared with other consumers.
+// Repricing means re-running calibration, not editing individual constants.
 use super::value_weights::{
     ACTION_AGAIN_WEIGHT, ACTIVATED_ELEMENT_WEIGHT, AGILITY_WEIGHT, ANIMA_WEIGHT, AREA_WEIGHT,
     ATTACK_BONUS_WEIGHT, ATTACK_REDUCTION_WEIGHT, CLOUD_CHAIN_WEIGHT,

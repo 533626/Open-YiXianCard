@@ -736,7 +736,7 @@ fn one_slot_player(cards: Vec<CardDefinition>) -> FixturePlayer {
 }
 
 #[test]
-fn talent_153_pays_missing_anima_with_hp_and_physique() {
+fn talent_153_pays_missing_anima_with_hp_only() {
     let mut tune = custom_card(5_010_015, 5_000_015, "TianYinKunXianQu");
     tune.card_type = Some(sustain(super::CARD_TYPE_SUSTAIN));
     tune.anima = Some(-1);
@@ -752,8 +752,9 @@ fn talent_153_pays_missing_anima_with_hp_and_physique() {
 
     state.test_execute_one_card(PlayerSide::P1);
     assert_eq!(state.p1.core.hp, 27);
-    assert_eq!(state.p1.core.max_hp, 32);
-    assert_eq!(state.p1.core.physique, 2);
+    // build 25796222 起不再扣体魄，最大生命也不随体魄减少。
+    assert_eq!(state.p1.core.max_hp, 33);
+    assert_eq!(state.p1.core.physique, 3);
     assert_eq!(state.p1.music.immortal_binding_tune, 1);
 }
 

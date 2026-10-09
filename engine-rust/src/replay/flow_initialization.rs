@@ -88,6 +88,10 @@ impl ReplayState {
                 .source
                 .as_ref()
                 .and_then(|source| source.synthetic_decision_fallback_seed),
+            robust_decisions: fixture
+                .source
+                .as_ref()
+                .is_some_and(|source| source.robust_decisions),
             decision_occurrence: 0,
             card_execution_occurrence: 0,
             current_card_execution: None,

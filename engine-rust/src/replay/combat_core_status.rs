@@ -5,6 +5,13 @@ use super::ReplayState;
 use crate::model::{CardDefinition, PlayerSide};
 
 impl ReplayState {
+    pub(super) fn consume_card_param(&mut self, _actor_side: PlayerSide) -> i64 {
+        if self.decision_tape.is_empty() {
+            self.missing_decision("card parameter");
+            return -1;
+        }
+        self.decision_tape.remove(0)
+    }
     /// BattleCharacter.ModifyBuffValue:8620-8640,8830-8865.
     /// Call once with the post-mitigation positive delta for every core
     /// negative status, including External Injury's specialized path.
@@ -414,15 +421,13 @@ impl ReplayState {
         if deficit <= 0 || !self.actor(actor_side).identity.talents.contains(&153) {
             return false;
         }
+        // CardActionBase.CheckAnima（build 25796222）只付生命 deficit×otherParams[0]，
+        // 不再要求/扣除体魄（旧 build 另扣 deficit×otherParams[1] 体魄）。
         let hp_cost = deficit * 3;
-        let physique_cost = deficit;
-        if hp_cost >= self.actor(actor_side).core.hp
-            || physique_cost > self.actor(actor_side).core.physique
-        {
+        if hp_cost >= self.actor(actor_side).core.hp {
             return false;
         }
         self.modify_actor_hp(actor_side, -hp_cost, true, true);
-        self.modify_physique_amount(actor_side, -physique_cost);
         true
     }
 

@@ -231,6 +231,13 @@ impl ReplayState {
             }
             214 => {
                 self.apply_configured_anima(actor_side, card);
+                // Card_214.cs（build 25796222）：先 ModifyMaxHp / ModifyHp(otherParams[3])，
+                // 再虚弱、破绽，最后设阴符玉简。
+                let hp_gain = other_param(card, 3).max(0);
+                if hp_gain > 0 {
+                    self.modify_actor_max_hp(actor_side, hp_gain);
+                    self.modify_actor_hp(actor_side, hp_gain, false, false);
+                }
                 let target_side = opponent_side(actor_side);
                 self.add_actor_negative_status(target_side, 101, other_param(card, 0).max(0));
                 self.add_actor_negative_status(target_side, 102, other_param(card, 1).max(0));

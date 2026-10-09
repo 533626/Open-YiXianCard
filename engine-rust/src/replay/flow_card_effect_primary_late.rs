@@ -52,6 +52,8 @@ impl ReplayState {
                 Some(false)
             }
             29 => {
+                // Card_29.cs（build 25796222）：先 ModifyAnima(anima) 再给对方破绽。
+                self.apply_configured_anima(actor_side, card);
                 self.add_actor_negative_status(
                     opponent_side(actor_side),
                     102,

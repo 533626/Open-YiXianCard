@@ -69,6 +69,7 @@ impl ReplayState {
         self.start_dream_mirage_selected_card(actor_side);
         self.apply_dream_mirage_before_card_hooks(actor_side, card, slot);
         self.apply_qi_xing_lian_zhu(actor_side, card, slot);
+        self.apply_xing_yi_lian(actor_side, card, slot);
         self.apply_selected_card_hooks_after_start(actor_side, card, slot, is_temporary);
         // FateStrategy 380 御云结阵 is an OnPlayCard hook: a sword-formation
         // card first adds one 云海 marker.  The shared post-body cloud-chain
@@ -88,6 +89,14 @@ impl ReplayState {
         // 必须在牌体执行前检查星位；例如天元心法会在牌体内把全槽变星，
         // 但原版不会因此把该张牌自身追认为星位牌。
         self.apply_xing_yuan_before_card_hook(actor_side, slot);
+        if self.actor(actor_side).elements.wood_scattered_branches > 0 {
+            // CardActionBase.OnBeforeExecuted MuLingSanZhiYe (BuffType 777):
+            // reads base Card_7000112.otherParams[1] (1), not played rarity.
+            let amount = 1 + self.actor(actor_side).core.attack_bonus;
+            self.modify_actor_hp(opponent_side(actor_side), -amount, false, false);
+            self.modify_actor_hp(actor_side, amount, false, false);
+            self.actor_mut(actor_side).elements.wood_scattered_branches -= 1;
+        }
         self.clear_actual_damage_before_execute(actor_side);
     }
 
@@ -393,6 +402,13 @@ impl ReplayState {
                     self.actor_mut(actor_side).beng.beng_quan_tu = 0;
                 }
             }
+            let inherited_fei_zhou = self.actor(actor_side).beng.beng_quan_fei_zhou;
+            if inherited_fei_zhou > 0 {
+                self.add_actor_negative_status(opponent_side(actor_side), 102, inherited_fei_zhou);
+                if base_id != 10_000_035 {
+                    self.actor_mut(actor_side).beng.beng_quan_fei_zhou = 0;
+                }
+            }
             let inherited_flash = self.actor(actor_side).beng.beng_quan_flash_agility;
             if inherited_flash > 0 {
                 self.gain_agility(actor_side, inherited_flash);
@@ -495,7 +511,7 @@ impl ReplayState {
         let base_id = normalized_base_id(card);
         if let Some(sword_intent) = card
             .sword_intent
-            .filter(|value| *value > 0 && !matches!(base_id, 47 | 183 | 309 | 1_000_050))
+            .filter(|value| *value > 0 && !matches!(base_id, 47 | 183 | 309 | 1_000_050 | 1_000_107))
         {
             self.modify_sword_intent(actor_side, sword_intent);
         }
@@ -518,6 +534,7 @@ impl ReplayState {
                 | 4_000_086
                 | 4_000_088
                 | 4_000_099
+                | 4_000_109
                 | 307
                 | 407 // 雷闪二度：卦象由 Card_407.cs 专属牌体发放
         ) {

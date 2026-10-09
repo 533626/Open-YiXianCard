@@ -95,6 +95,12 @@ impl ReplayState {
         {
             return card.clone();
         }
+        // CardActionBase.Execute 灵阵回响（build 25796222）：仅 cardConfig.rarity > 0 时把
+        // cardInfo.id 换成 GetBaseCardId；配置 rarity 为 0 的境界变体（梦•金灵阵 7010074 等）
+        // 按自身 id 回响。
+        if super::original_config::original_config_rarity(card.id) <= 0 {
+            return card.clone();
+        }
         super::original_config::original_card_definition(normalized_base_id(card))
             .unwrap_or_else(|| card.clone())
     }

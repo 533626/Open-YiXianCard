@@ -8,7 +8,7 @@ pub const RULE_IMPACT_SCHEMA_VERSION: &str = "canonical-rule-impact-v1";
 /// Field name and sign, in the exact order of `snapshot_features`.
 ///
 /// The sign travels with the field instead of being a positional index range:
-/// `NEGATIVE_FEATURE_FIELDS` in analysis/value/value-features.ts is keyed by name,
+/// negative feature signs are keyed by name,
 /// and a range would silently re-point at the wrong fields the first time this
 /// array gains an entry.
 const VALUE_FEATURE_FIELDS: [(&str, FeatureSign); 28] = [
@@ -76,7 +76,7 @@ pub struct SolverRuleImpactReport {
     /// comparing them could never fail. See `published_delta_total`.
     pub audit_delta_for_side: f64,
     /// Canonical actor-turn trajectory and terminal features consumed by the
-    /// λ calibration pipeline. Keys match analysis/value/value-features.ts.
+    /// λ calibration pipeline. Keys match the value feature contract.
     pub feature_sample_count: usize,
     pub features: BTreeMap<String, f64>,
     pub checkpoints: Vec<SolverRuleImpactCheckpoint>,

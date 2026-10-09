@@ -570,6 +570,12 @@ impl ReplayState {
                         self.activate_element(actor_side, super::Element::Earth);
                         self.activate_element(actor_side, super::Element::Metal);
                     }
+                    1_000_101 => {
+                        // TriggerOpening Card_1000101: only when owner has zero anima.
+                        if self.actor(actor_side).core.anima == 0 {
+                            self.gain_anima(actor_side, other_param(card, 0).max(0));
+                        }
+                    }
                     58 => self.apply_wave_cutting_seal_opening(actor_side),
                     11_000_023 => {
                         let loss = other_param(card, 1).max(0);

@@ -655,11 +655,11 @@ fn card_4000097_bent_bow_heal_amount() {
 
 #[test]
 fn card_1000034_spirit_gathering_tiebreak_flag_is_idempotent_under_echo() {
-    // yiwen-20260904-13f20d3d f4ktynk oracle 锚点（rust-kernel-mismatch）：
+    // 原版源码与 oracle 已确认的幂等旗置契约：
     // Card_1000034.cs 用 `SetBuffValue(BanDianLingQi, 1)`——奇数 mind stance
     // 的补整标志是幂等置位。回响阵纹（8000012）在同一回合以临时牌重复执行
     // 聚灵心法时不得累加；旧 `+= 1` 会在下一个奇数回合多 +1 灵气
-    // （f4ktynk/round-16 p1.anima 首差、round-17 暗鸦灵剑 defense+4 同根因）。
+    // （灵气与后续防御的差异来自同一旗置时点）。
     // BattleCharacter.cs 回合开始侧对奇数 num7 做旗置 ±1 后整除，与
     // half_anima∈{0,1} 恰好互补，故只需锁登记侧幂等。
     let mindset = original_card_definition_by_id(1_000_034).expect("missing 聚灵心法 1000034");

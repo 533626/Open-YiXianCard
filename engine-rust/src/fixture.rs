@@ -54,6 +54,11 @@ pub struct FixtureSource {
     pub synthetic_decision_seed: Option<u32>,
     pub synthetic_decision_sides: Vec<PlayerSide>,
     pub synthetic_decision_fallback_seed: Option<u32>,
+    /// Analysis-only robust mode for synthetic (tape-less) decisions: integer
+    /// random ranges resolve to floor((min+max)/2); percent rolls without a
+    /// hexagram resolve against p1 (p1 fails, p2 succeeds). Never set on
+    /// replay fixtures; tape-backed decisions are untouched.
+    pub robust_decisions: bool,
     /// Analysis-only perturbations applied after ordinary battle-start setup
     /// and before the first canonical observation checkpoint.
     pub solver_starting_perturbations: Vec<SolverStartingPerturbation>,

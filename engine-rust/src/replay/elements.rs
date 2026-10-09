@@ -1,7 +1,7 @@
 use super::support::{
     div_ceil, element_from_card, is_cloud_sword, is_element_generated_by,
-    is_frenzy_sword_for_actor, is_sword_formation_card, normalized_base_id, opponent_side,
-    other_param,
+    is_frenzy_sword_for_actor, is_pu_tong_gong_ji_base_id, is_sword_formation_card,
+    normalized_base_id, opponent_side, other_param,
 };
 use super::{Element, ReplayState};
 use crate::model::{CardDefinition, PlayerSide};
@@ -116,6 +116,7 @@ impl ReplayState {
     ) {
         self.start_dream_mirage_selected_card(actor_side);
         self.apply_qi_xing_lian_zhu(actor_side, card, slot);
+        self.apply_xing_yi_lian(actor_side, card, slot);
         self.apply_selected_card_hooks_after_start(actor_side, card, slot, false);
     }
 
@@ -142,7 +143,7 @@ impl ReplayState {
             .identity
             .fate_strategies
             .contains(&33)
-            && base_id == 0
+            && is_pu_tong_gong_ji_base_id(base_id)
             && self
                 .actor(actor_side)
                 .deck
@@ -253,7 +254,7 @@ impl ReplayState {
             .identity
             .fate_strategies
             .contains(&32)
-            && base_id == 0
+            && is_pu_tong_gong_ji_base_id(base_id)
         {
             let target_side = opponent_side(actor_side);
             let attack_bonus = self.actor(target_side).core.attack_bonus;
@@ -265,7 +266,7 @@ impl ReplayState {
             .identity
             .fate_strategies
             .contains(&36)
-            && base_id == 0
+            && is_pu_tong_gong_ji_base_id(base_id)
         {
             self.gain_attack_bonus(actor_side, 2);
         }
@@ -291,10 +292,10 @@ impl ReplayState {
         // （与金灵→gain_anima 对称）。该 hunk 在 24963639→25093011 才引入，
         // 旧 build 录制不存在此分支，按 fixture build 门控（阈值见 original_config）。
         if self
-                .actor(actor_side)
-                .identity
-                .fate_strategies
-                .contains(&128)
+            .actor(actor_side)
+            .identity
+            .fate_strategies
+            .contains(&128)
             && card.name.contains("水灵")
         {
             self.gain_sharpness(actor_side, 1);
@@ -516,6 +517,7 @@ impl ReplayState {
 /// invariant: the element kernel must never claim another sect's ids.
 #[cfg(test)]
 pub(super) const ELEMENT_HANDLED_IDS: &[i64] = &[
+    7_000_110, 7_000_115, 7_000_116,7_000_112, 7_000_113,
     13, 134, 413, 7_000_001, 7_000_002, 7_000_003, 7_000_004, 7_000_006, 7_000_007, 7_000_009,
     7_000_010, 7_000_011, 7_000_012, 7_000_013, 7_000_017, 7_000_018, 7_000_019, 7_000_022,
     7_000_023, 7_000_024, 7_000_027, 7_000_028, 7_000_029, 7_000_030, 7_000_031, 7_000_037,

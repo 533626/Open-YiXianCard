@@ -300,6 +300,7 @@ impl ReplayPlayer {
                 wood_spirit_all_growth: 0,
                 wood_spirit_all_growth_attack: 0,
                 wood_thorn: 0,
+                wood_scattered_branches: 0,
                 attack_life_drain: 0,
                 activated_metal: 0,
                 activated_water: 0,
@@ -317,6 +318,7 @@ impl ReplayPlayer {
                 used_water_spirit_card: 0,
                 long_ma_spirit: 0,
                 synthetic_ding_feng_bo_candidate: 0,
+                zhu_chen_bu: 0,
             },
             formations: ReplayFormationState {
                 turtle_formation: 0,
@@ -382,6 +384,7 @@ impl ReplayPlayer {
                 triggered_dream_beng_quan_chain: 0,
                 beng_quan_fu_hu: 0,
                 triggered_beng_quan_fu_hu: 0,
+                beng_quan_fei_zhou: 0,
                 quan_stance: initial_quan_stance,
                 gun_stance: initial_gun_stance,
             },
@@ -416,6 +419,7 @@ impl ReplayPlayer {
                 dream_thunder_round_limit: 0,
                 zi_mang_xing_bao: 0,
                 lei_shan_er_du: 0,
+                ling_yuan_wai_fang: 0,
                 star_slots: vec![2, 5],
             },
             status: ReplayStatusState {
@@ -505,6 +509,7 @@ impl ReplayPlayer {
                 fate_cycle_slots: [0, 0],
                 plum_blossom_twice: 0,
                 qi_xing_lian_zhu: 0,
+                xing_yi_lian: 0,
                 yellow_bird_behind: 0,
                 reverse_card_direction: 0,
                 sword_formation_guard: 0,
@@ -992,9 +997,6 @@ impl ReplayPlayer {
             self.status.entangle -= 1;
             decay.entangle = 1;
         }
-        if self.fate.last_stand_unyielding > 0 {
-            self.fate.last_stand_unyielding = 0;
-        }
         decay
     }
 
@@ -1280,6 +1282,12 @@ impl ReplayState {
             .apply_hp_delta_raw(delta, is_cost);
         receipt.requested = requested;
         self.apply_after_hp_modify_pipeline(actor_side, receipt.applied);
+        if !is_cost
+            && receipt.resolved > receipt.applied
+            && self.actor(actor_side).astrology.ling_yuan_wai_fang > 0
+        {
+            self.apply_damage(actor_side, receipt.resolved - receipt.applied, false, false, false);
+        }
         if !is_cost && receipt.resolved > 0 {
             self.apply_heavenly_secret_reverse_from_gain(actor_side, receipt.resolved);
             self.apply_dream_mirage_positive_resource_gain_damage(

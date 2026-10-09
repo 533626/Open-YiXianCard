@@ -26,6 +26,32 @@ impl ReplayState {
         }
     }
 
+    pub(super) fn apply_xing_yi_lian(
+        &mut self,
+        actor_side: PlayerSide,
+        card: &CardDefinition,
+        slot: usize,
+    ) {
+        // CardActionBase.OnBeforeExecuted:3618-3629. XingYiLian marks the
+        // current grid (or +1 星力 if it is already a star grid) and heals
+        // Card_4000104.otherParams[1] only when adding a new star grid.
+        if self.actor(actor_side).fate.xing_yi_lian <= 0 || !card.name.contains("星弈") {
+            return;
+        }
+        if self.actor(actor_side).astrology.star_slots.contains(&slot) {
+            self.modify_star_power(actor_side, 1);
+        } else {
+            self.actor_mut(actor_side).astrology.star_slots.push(slot);
+            let heal = super::original_config::original_card_definition(4_000_104)
+                .map(|config| other_param(&config, 1))
+                .unwrap_or(0);
+            if heal > 0 {
+                self.modify_actor_hp(actor_side, heal, false, false);
+            }
+        }
+        self.actor_mut(actor_side).fate.xing_yi_lian -= 1;
+    }
+
     pub(super) fn apply_card_completed_hooks(
         &mut self,
         actor_side: PlayerSide,
@@ -47,6 +73,90 @@ impl ReplayState {
     ) -> Option<bool> {
         let mut attacked = false;
         match base_id {
+            7_000_111 => {
+                // The original invokes the first eligible hand card through the
+                // normal temporary-card path. The replay fixture carries that
+                // selected id in the decision tape; missing selection stays strict.
+                let selected = self.consume_card_param(actor_side);
+                if selected >= 0 {
+                    if let Some(card) = super::original_config::original_card_definition(selected) {
+                        self.apply_temporary_card_effect(actor_side, &card, slot);
+                    }
+                }
+                if slot % 2 == 0 {
+                    self.modify_actor_hp(actor_side, -other_param(card, 1).max(0), false, false);
+                    self.modify_extra_actions(actor_side, 1);
+                } else {
+                    let selected = self.consume_card_param(actor_side);
+                    if selected >= 0 {
+                        if let Some(card) = super::original_config::original_card_definition(selected) {
+                            self.apply_temporary_card_effect(actor_side, &card, slot);
+                        }
+                    }
+                }
+            }
+            7_000_114 => {
+                self.gain_defense(actor_side, card.defense.unwrap_or(0));
+                self.actor_mut(actor_side).elements.zhu_chen_bu += 1;
+                if self.check_wu_xing(actor_side, Element::Earth) { self.gain_agility(actor_side, other_param(card, 0)); }
+            }
+            7_000_110 => {
+                attacked |= self.attack_by_config(actor_side, card, 0, slot);
+                let Some(first_slot) = active_neighbor_slot_index(self.actor(actor_side), slot, 1) else { return Some(attacked); };
+                let first = element_from_card(&self.actor(actor_side).deck.slots[first_slot].card);
+                if let Some(element) = first { self.activate_element(actor_side, element); }
+                let Some(second_slot) = active_neighbor_slot_index(self.actor(actor_side), first_slot, 1) else { return Some(attacked); };
+                let second = element_from_card(&self.actor(actor_side).deck.slots[second_slot].card);
+                if let Some(element) = second { self.activate_element(actor_side, element); }
+                let generates = matches!((first, second), (Some(Element::Metal),Some(Element::Water)) | (Some(Element::Water),Some(Element::Wood)) | (Some(Element::Wood),Some(Element::Fire)) | (Some(Element::Fire),Some(Element::Earth)) | (Some(Element::Earth),Some(Element::Metal)))
+                    || (self.actor(actor_side).identity.talents.contains(&137) && first != second && first.is_some() && second.is_some() && (first == Some(Element::Fire) || second == Some(Element::Fire)));
+                if generates { self.gain_defense(actor_side, other_param(card, 1)); }
+            }
+            7_000_115 => {
+                self.gain_water_momentum(actor_side, other_param(card, 0));
+                self.modify_actor_max_hp(actor_side, other_param(card, 1));
+                self.modify_actor_hp(actor_side, other_param(card, 1), false, false);
+                if self.check_wu_xing(actor_side, Element::Water) {
+                    let bonus = self.actor(actor_side).elements.water_momentum;
+                    attacked |= self.attack_by_config(actor_side, card, bonus, slot);
+                }
+                if self.check_wu_xing(actor_side, Element::Wood) {
+                    let bonus = self.actor(actor_side).core.anima;
+                    attacked |= self.attack_by_config(actor_side, card, bonus, slot);
+                }
+            }
+            7_000_116 => {
+                self.apply_configured_anima(actor_side, card);
+                self.gain_sharpness(actor_side, other_param(card, 0));
+                if self.check_wu_xing(actor_side, Element::Metal) || self.check_wu_xing(actor_side, Element::Water) {
+                    self.modify_extra_actions(actor_side, 1);
+                }
+            }
+            7_000_112 => {
+                self.apply_configured_anima(actor_side, card);
+                if self.check_wu_xing(actor_side, Element::Wood) {
+                    self.actor_mut(actor_side).elements.wood_scattered_branches += other_param(card, 0).max(0);
+                }
+                return Some(false);
+            }
+            7_000_113 => {
+                let mut amount = other_param(card, 0);
+                if self.check_wu_xing(actor_side, Element::Fire) {
+                    amount += self.actor(actor_side).core.attack_bonus * other_param(card, 1);
+                }
+                if self.check_wu_xing(actor_side, Element::Earth) && other_param(card, 2) > 0 {
+                    amount += self.actor(actor_side).core.defense / other_param(card, 2);
+                }
+                if self.check_wu_xing(actor_side, Element::Metal) && other_param(card, 3) > 0 {
+                    amount += self.actor(actor_side).sword.sharpness / other_param(card, 3);
+                }
+                if amount > 0 {
+                    let target = opponent_side(actor_side);
+                    self.modify_actor_hp(target, -amount, false, false);
+                    self.modify_actor_max_hp(target, -amount);
+                }
+                return Some(false);
+            }
             7_000_065 => {
                 // Card_7000065.OnExecuted: ExecuteTemporaryCard is deliberately
                 // routed through the five existing 五灵印 handlers.  Besides

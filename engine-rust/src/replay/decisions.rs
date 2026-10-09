@@ -32,6 +32,8 @@ pub enum ReplayDecisionProvider {
     Hexagram,
     RandomFallbackTape,
     DefaultValue,
+    /// Analysis-only robust resolution (`FixtureSource::robust_decisions`).
+    Robust,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
@@ -256,6 +258,8 @@ impl ReplayState {
             .filter(|_| self.synthetic_decision_sides.contains(&side));
         let (provider, seed, selected_option) = if synthetic_seed.is_some() && used_hexagram {
             (ReplayDecisionProvider::Hexagram, None, Some(max))
+        } else if synthetic_seed.is_some() && self.robust_decisions {
+            (ReplayDecisionProvider::Robust, None, Some(min + (max - min) / 2))
         } else if let Some(seed) = synthetic_seed {
             let index = seeded_decision_choice_index(
                 seed,
@@ -285,6 +289,8 @@ impl ReplayState {
             } else if let Some(seed) = self.synthetic_decision_fallback_seed {
                 if used_hexagram {
                     (ReplayDecisionProvider::Hexagram, None, Some(max))
+                } else if self.robust_decisions {
+                    (ReplayDecisionProvider::Robust, None, Some(min + (max - min) / 2))
                 } else {
                     let index = seeded_decision_choice_index(
                         seed,
@@ -373,8 +379,11 @@ impl ReplayState {
             .synthetic_decision_seed
             .filter(|_| self.synthetic_decision_sides.contains(&side));
 
+        let robust_roll = if side == PlayerSide::P1 { 99 } else { 0 };
         let resolved = if synthetic_seed.is_some() && used_hexagram {
             Some((ReplayDecisionProvider::Hexagram, None, 0))
+        } else if synthetic_seed.is_some() && self.robust_decisions {
+            Some((ReplayDecisionProvider::Robust, None, robust_roll))
         } else if let Some(seed) = synthetic_seed {
             let selected = seeded_decision_choice_index(
                 seed,
@@ -407,6 +416,8 @@ impl ReplayState {
                 Some(_) | None if self.synthetic_decision_fallback_seed.is_some() => {
                     if used_hexagram {
                         Some((ReplayDecisionProvider::Hexagram, None, 0))
+                    } else if self.robust_decisions {
+                        Some((ReplayDecisionProvider::Robust, None, robust_roll))
                     } else {
                         let seed = self
                             .synthetic_decision_fallback_seed

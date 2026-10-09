@@ -92,6 +92,8 @@ mod tests_build_2026_08_rotation_fixtures;
 #[cfg(test)]
 mod tests_build_2026_09_season;
 #[cfg(test)]
+mod tests_build_2026_10_rotation;
+#[cfg(test)]
 mod tests_calamity_skip_mask;
 #[cfg(test)]
 mod tests_card19_fate387;
@@ -119,6 +121,8 @@ mod tests_player;
 mod tests_card9_hand_segments;
 #[cfg(all(test, feature = "private-fixtures"))]
 mod tests_random_range_decisions;
+#[cfg(all(test, feature = "private-fixtures"))]
+mod tests_robust_decisions;
 #[cfg(test)]
 mod tests_resource_mutation_contract;
 #[cfg(test)]
@@ -314,6 +318,9 @@ pub struct ReplayPlayerSnapshot {
     pub water_stealth: i64,               // QianDun(12) 潜遁 Positive
     pub metal_iron_bone: i64,             // TieGu(9) 铁骨 Positive
     pub earth_eight_wastes: i64,          // HeBaHuang(11) 合八荒 Positive
+    pub wood_scattered_branches: i64,
+    pub zhu_chen_bu: i64,                 // ZhuChenBu(779) 土灵•逐尘步 Neutral
+    pub xing_yi_lian: i64,                // XingYiLian(778) 星弈•连 Neutral
     pub wood_array: i64,                  // MuLingZhen(243) 木灵阵 Neutral
     /// 阵法
     pub turtle_formation: i64, // GuiJiaZhen(252) 龟甲阵 Neutral
@@ -345,6 +352,7 @@ pub struct ReplayPlayerSnapshot {
     pub star_moon_fan: i64,               // XingYueYuShan(260) 星月折扇 Neutral
     pub infinite_hexagram_plate: i64,     // WuJiGuaPan(266) 无极卦盘 Neutral
     pub all_goes_well: i64,               // WanShiRuYi(387) 万事如意 Neutral
+    pub ling_yuan_wai_fang: i64,          // LingYuanWaiFang(787) 灵元外放 Positive
     /// 状态
     pub recovery: i64,        // HuiFu(248) 恢复 Positive
     pub meditation: i64, // Min(367) 冥 Negative（detail_entries 同口径 label「冥」）
@@ -556,6 +564,7 @@ struct ReplayElementState {
     wood_spirit_all_growth: i64,
     wood_spirit_all_growth_attack: i64,
     wood_thorn: i64,
+    wood_scattered_branches: i64,
     /// GongJiXiQuShengMing(668) 攻击吸取生命：梦•木灵阵（700081，境界<=元婴）
     /// 发放的逐段攻击吸血 charge。原版每段攻击前置钩子
     /// （BattleCharacter.cs:11766-11769）消耗 1 层：目标 -1 血、自身 +1 血。
@@ -575,6 +584,7 @@ struct ReplayElementState {
     used_water_spirit_card: i64,
     long_ma_spirit: i64,
     synthetic_ding_feng_bo_candidate: i64,
+    zhu_chen_bu: i64,
 }
 
 #[derive(Debug, Clone, Default)]
@@ -646,6 +656,7 @@ struct ReplayBengQuanState {
     triggered_dream_beng_quan_chain: i64,
     beng_quan_fu_hu: i64,
     triggered_beng_quan_fu_hu: i64,
+    beng_quan_fei_zhou: i64,
     quan_stance: i64,
     gun_stance: i64,
 }
@@ -691,6 +702,7 @@ struct ReplayAstrologyState {
     /// 下一张名字含「雷」的牌连续生效 2 次（CardActionBase.cs:1506-1519）。
     /// 内部状态，不进 parity snapshot。
     lei_shan_er_du: i64,
+    ling_yuan_wai_fang: i64,
     star_slots: Vec<usize>,
 }
 
@@ -796,6 +808,8 @@ struct ReplayFateTalentState {
     fate_cycle_slots: [i64; 2],
     plum_blossom_twice: i64,
     qi_xing_lian_zhu: i64,
+    /// Card_4000104 星弈•连 BuffType.XingYiLian 778.
+    xing_yi_lian: i64,
     yellow_bird_behind: i64,
     reverse_card_direction: i64,
     sword_formation_guard: i64,
@@ -1464,6 +1478,7 @@ struct ReplayState {
     synthetic_decision_seed: Option<u32>,
     synthetic_decision_sides: Vec<PlayerSide>,
     synthetic_decision_fallback_seed: Option<u32>,
+    robust_decisions: bool,
     decision_occurrence: u64,
     card_execution_occurrence: u64,
     current_card_execution: Option<ReplayCardExecution>,

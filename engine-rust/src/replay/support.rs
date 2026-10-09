@@ -20,7 +20,7 @@ const ELEMENT_NAME_TOKENS: [(&str, Element); 5] = [
 ];
 
 /// `shared/data/base-card-traits.json` 里的特征名 → 位号。JSON 出现未登记的名字时加载即 panic。
-#[inline(always)]                 // 调用点传字面量：内联后特征名比较在编译期折叠（同 model::name_token_bit）
+#[inline(always)] // 调用点传字面量：内联后特征名比较在编译期折叠（同 model::name_token_bit）
 fn trait_bit(trait_name: &str) -> Option<u16> {
     Some(match trait_name {
         "bengQuan" => 0,
@@ -32,6 +32,7 @@ fn trait_bit(trait_name: &str) -> Option<u16> {
         "element:wood" => 6,
         "rearMove" => 7,
         "spiritSword" => 8,
+        "frenzySword" => 9,
         _ => return None,
     })
 }
@@ -103,7 +104,6 @@ fn element_trait_by_base_id(base_id: i64) -> Option<Element> {
         .map(|&(_, element)| element)
 }
 
-
 pub(super) fn has_cloud_chain(actor: &ReplayPlayer) -> bool {
     // Original BattleCharacter.HasBuff, BattleCharacter.cs:8306-8320: these virtual
     // sources all satisfy HasBuff(LianYun), even without a stored LianYun buff.
@@ -132,6 +132,11 @@ pub(super) fn opponent_side(side: PlayerSide) -> PlayerSide {
 
 pub(super) fn normalized_base_id(card: &CardDefinition) -> i64 {
     card.base_id.unwrap_or_else(|| normalize_base_id(card.id))
+}
+
+/// BattleCharacter.IsPuTongGongJi：普通攻击(0) 或隐藏普通攻击(286) 的基础 id。
+pub(super) fn is_pu_tong_gong_ji_base_id(base_id: i64) -> bool {
+    base_id == 0 || base_id == 286
 }
 
 pub(super) fn card_rarity(card: &CardDefinition) -> i64 {
@@ -173,8 +178,8 @@ pub(super) fn adapt_fixture_card_for_replay(
             0
         };
         let moon_shadow_penalty = if fixture.talents.contains(&20_096) {
-            // TalentConfig 20096 otherParams[1]; Steam build 24217566: 7 -> 3.
-            3
+            // TalentConfig 20096 otherParams[1]; Steam build 24217566: 7 -> 3; 25796222: 3 -> 7.
+            7
         } else {
             0
         };
@@ -470,6 +475,7 @@ fn has_temporary_frenzy_sword_identity(actor: &ReplayPlayer) -> bool {
 pub(super) fn is_sword_formation_card(actor: &ReplayPlayer, card: &CardDefinition) -> bool {
     let base_id = normalized_base_id(card);
     is_sword_formation_base_id(base_id)
+        || card.name.contains("剑阵")
         || base_id == 213
         || (actor.identity.talents.contains(&192)
             && actor.sword.ling_wu_card_base_ids.contains(&base_id))
@@ -551,7 +557,17 @@ pub(super) fn is_fate_strategy_card(base_id: i64) -> bool {
 
 pub(super) fn element_from_card(card: &CardDefinition) -> Option<Element> {
     let base_id = normalized_base_id(card);
-    element_trait_by_base_id(base_id).or_else(|| card_element(base_id))
+    element_trait_by_base_id(base_id)
+        .or_else(|| card_element(base_id))
+        .or_else(|| {
+            // ActiveWuXingInName uses original config names even when the card
+            // body is not registered (e.g. 灵瓶 stores 7000112 / 7000116).
+            // CardDefinition.name.contains uses precomputed token bits.
+            ELEMENT_NAME_TOKENS
+                .iter()
+                .find(|(token, _)| card.name.contains(*token))
+                .map(|(_, element)| *element)
+        })
 }
 
 pub(super) fn is_five_element_card(card: &CardDefinition) -> bool {
@@ -857,7 +873,13 @@ mod element_trait_bit_tests {
 
     #[test]
     fn element_trait_bits_match_trait_bit() {
-        let names = ["element:metal", "element:water", "element:wood", "element:fire", "element:earth"];
+        let names = [
+            "element:metal",
+            "element:water",
+            "element:wood",
+            "element:fire",
+            "element:earth",
+        ];
         for ((bit, _), name) in ELEMENT_TRAIT_BITS.iter().zip(names) {
             assert_eq!(Some(*bit), trait_bit(name).map(|b| 1_u16 << b), "{name}");
         }

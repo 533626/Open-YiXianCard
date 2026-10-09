@@ -337,6 +337,20 @@ fn lethal_attack_converts_last_stand_intent_at_the_hit() {
 }
 
 #[test]
+fn lethal_damage_converts_last_stand_intent_at_the_hit() {
+    let mut state =
+        ReplayState::test_from_fixture(&fixture(deck(basic_attack()), deck(basic_attack())));
+    state.p2.core.hp = 5;
+    state.p2.fate.last_stand_intent = 1;
+
+    state.apply_damage(PlayerSide::P1, 8, false, false, false);
+
+    assert_eq!(state.p2.core.hp, -3);
+    assert_eq!(state.p2.fate.last_stand_intent, 0);
+    assert_eq!(state.p2.fate.last_stand_unyielding, 1);
+}
+
+#[test]
 fn lethal_attack_defers_last_stand_while_a_revive_is_available() {
     let mut state =
         ReplayState::test_from_fixture(&fixture(deck(basic_attack()), deck(basic_attack())));

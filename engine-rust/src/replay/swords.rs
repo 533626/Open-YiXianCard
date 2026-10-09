@@ -11,12 +11,13 @@ use std::collections::HashSet;
 /// invariant: the sword kernel must never claim another sect's ids.
 #[cfg(test)]
 pub(super) const SWORD_HANDLED_IDS: &[i64] = &[
+    1_000_102, 1_000_103, 1_000_105, 1_000_106,
     331, 401, 424, 213, 263, 1_000_002, 1_000_003, 1_000_004, 1_000_006, 1_000_008, 1_000_009,
     1_000_011, 1_000_014, 1_000_015, 1_000_016, 1_000_020, 1_000_021, 1_000_022, 1_000_024,
     1_000_025, 1_000_026, 1_000_027, 1_000_028, 1_000_029, 1_000_030, 1_000_033, 1_000_034,
     1_000_035, 1_000_036, 1_000_038, 1_000_039, 1_000_040, 1_000_041, 1_000_042, 1_000_043,
     1_000_044, 1_000_045, 1_000_046, 1_000_048, 1_000_052, 1_000_055, 1_000_059, 1_000_060,
-    1_000_062, 1_000_063, 1_000_064, 1_000_065, 1_000_096, 1_000_099, 1_000_100,
+    1_000_062, 1_000_063, 1_000_064, 1_000_065, 1_000_096, 1_000_099, 1_000_100, 1_000_101, 1_000_104, 1_000_107, 1_000_108,
 ];
 
 impl ReplayState {
@@ -257,6 +258,58 @@ impl ReplayState {
                 let bonus =
                     self.actor(actor_side).sword.frenzy_sword.max(0) * other_param(card, 0).max(0);
                 attacked |= self.attack_by_config(actor_side, card, bonus, slot);
+            }
+            1_000_102 => {
+                let gain = self.actor(actor_side).sword.frenzy_sword.min(other_param(card, 0));
+                self.gain_attack_bonus(actor_side, gain);
+                attacked |= self.attack_by_config(actor_side, card, 0, slot);
+            }
+            1_000_103 => {
+                attacked |= self.attack_by_config(actor_side, card, 0, slot);
+                self.gain_attack_bonus(actor_side, other_param(card, 0));
+            }
+            1_000_105 => {
+                self.apply_configured_anima(actor_side, card);
+                self.actor_mut(actor_side).sword.cloud_sea += other_param(card, 0);
+                if slot % 2 == 0 {
+                    let amount = other_param(card, 1) + self.actor(actor_side).core.anima * other_param(card, 3);
+                    let heal = amount.min(self.actor(actor_side).core.max_hp - self.actor(actor_side).core.hp);
+                    self.modify_actor_hp(actor_side, heal, false, false);
+                    self.gain_defense(actor_side, amount - heal);
+                } else {
+                    self.gain_agility(actor_side, other_param(card, 2));
+                }
+            }
+            1_000_106 => {
+                let resources = self.actor(actor_side).core.attack_bonus + self.actor(actor_side).sword.sword_intent;
+                let amount = other_param(card, 0) + (resources * other_param(card, 1)).min(other_param(card, 2));
+                self.modify_actor_max_hp(actor_side, amount);
+                self.modify_actor_hp(actor_side, amount, false, false);
+                if has_cloud_chain(self.actor(actor_side)) {
+                    attacked |= self.attack_by_config(actor_side, card, 0, slot);
+                }
+            }
+            1_000_104 => {
+                // Card_1000104: attack, anima, cloud sea, then extra cloud count.
+                attacked |= self.attack_by_config(actor_side, card, 0, slot);
+                self.apply_configured_anima(actor_side, card);
+                self.actor_mut(actor_side).sword.cloud_sea += other_param(card, 0).max(0);
+                if has_cloud_chain(self.actor(actor_side)) {
+                    self.gain_cloud_chain(actor_side, (other_param(card, 1) - 1).max(0));
+                }
+            }
+            1_000_107 => {
+                self.modify_sword_intent(actor_side, card.sword_intent.unwrap_or(0));
+                let resources = self.actor(actor_side).core.anima + self.actor(actor_side).sword.sword_intent;
+                self.gain_defense(actor_side, (resources * other_param(card, 0)).min(other_param(card, 1)).max(0));
+            }
+            1_000_108 => {
+                let bonus = self.actor(actor_side).core.defense / other_param(card, 0).max(1);
+                attacked |= self.attack_by_config(actor_side, card, bonus, slot);
+            }
+            1_000_101 => {
+                // Card_1000101.OnExecuted: configured segmented attack only.
+                attacked |= self.attack_by_config(actor_side, card, 0, slot);
             }
             1_000_099 => {
                 // 极•狂剑一式 Card_1000099.cs: num2 = GetBuffValue(KuangJian) *

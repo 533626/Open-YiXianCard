@@ -342,6 +342,10 @@ impl ReplayState {
         if actor.astrology.all_goes_well > 0 {
             actor.astrology.all_goes_well -= 1;
         }
+        if actor.astrology.ling_yuan_wai_fang > 0 {
+            // BattleCharacter.OnTurnStarted:3946-3948, same duration block as WanShiRuYi/TieGu.
+            actor.astrology.ling_yuan_wai_fang -= 1;
+        }
     }
 
     pub(super) fn apply_turn_start_wood_spirit_all_growth(&mut self, actor_side: PlayerSide) {
@@ -382,14 +386,7 @@ impl ReplayState {
         }
     }
 
-    pub(super) fn apply_turn_start_post_injury_formations(&mut self, actor_side: PlayerSide) {
-        if self.actor(actor_side).formations.evil_gu_formation > 0 {
-            let amount = self.actor(actor_side).formations.evil_gu_formation_value;
-            if amount > 0 {
-                self.add_actor_negative_status(opponent_side(actor_side), 100, amount);
-            }
-            self.actor_mut(actor_side).formations.evil_gu_formation -= 1;
-        }
+    pub(super) fn apply_turn_start_spirit_gathering_formation(&mut self, actor_side: PlayerSide) {
         if self.actor(actor_side).formations.spirit_gathering_formation > 0 {
             let amount = self
                 .actor(actor_side)
@@ -401,6 +398,16 @@ impl ReplayState {
             self.actor_mut(actor_side)
                 .formations
                 .spirit_gathering_formation -= 1;
+        }
+    }
+
+    pub(super) fn apply_turn_start_post_injury_formations(&mut self, actor_side: PlayerSide) {
+        if self.actor(actor_side).formations.evil_gu_formation > 0 {
+            let amount = self.actor(actor_side).formations.evil_gu_formation_value;
+            if amount > 0 {
+                self.add_actor_negative_status(opponent_side(actor_side), 100, amount);
+            }
+            self.actor_mut(actor_side).formations.evil_gu_formation -= 1;
         }
         if self.actor(actor_side).formations.heaven_force_formation > 0 {
             self.gain_attack_bonus(actor_side, 1);

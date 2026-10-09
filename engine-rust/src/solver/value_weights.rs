@@ -1,10 +1,8 @@
-// 本文件由 `bun run report:value-weights` 从
-// `analysis/generated/value-weights-v1.json` 生成，不要手改。
+// 本文件由离线校准生成；更新须重跑校准流程，不要手改权重。
 //
 // 权重不是手写的解释性数字：每一条都是在 GA 基础池自对弈上做起始状态
 // 配对扰动测出来的 λ10（单位 0.1 HP），或第二阶段跨对手排序目标搜索
 // 得到的过程项系数。改权重的正确做法是重跑训练，不是改这里的数。
-// 口径见 docs/VALUE_FUNCTION.md。
 
 /// HP_WEIGHT｜来源 unit-anchor，N 16128。内部单位定义：1 点生命 = 10 单位。不是自由参数，但仍跑扰动做恒等复核——+N 生命必须恰好回收 λ10 = 10，回收不到说明注入路径或评估口径坏了，整张表不可读。
 pub(super) const HP_WEIGHT: f64 = 10.0;
@@ -12,7 +10,7 @@ pub(super) const HP_WEIGHT: f64 = 10.0;
 pub(super) const MAX_HP_WEIGHT: f64 = 1.0;
 /// DEFENSE_WEIGHT｜来源 perturbation，N 16128。普通防御：回合开始衰减，先于护体吸收伤害。
 pub(super) const DEFENSE_WEIGHT: f64 = 2.0;
-/// GUARD_WEIGHT｜来源 perturbation，N 16128。护体层数：原版消耗一层抵消一次普通生命损失。手写年代按每层 60（=6 点生命）定价，而 docs/VALUE_FUNCTION.md 早就指出这明显偏低——一层护体的期望价值是它将要吸收的那一发伤害。
+/// GUARD_WEIGHT｜来源 perturbation，N 16128。护体层数：原版消耗一层抵消一次普通生命损失。手写年代按每层 60（=6 点生命）定价，但固定按此数值估价明显偏低——一层护体的期望价值是它将要吸收的那一发伤害。
 pub(super) const GUARD_WEIGHT: f64 = 61.0;
 /// ANIMA_WEIGHT｜来源 perturbation，N 16128。灵气：出牌成本资源。
 pub(super) const ANIMA_WEIGHT: f64 = 37.0;

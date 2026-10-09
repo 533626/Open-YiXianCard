@@ -397,6 +397,10 @@ impl ReplayState {
                         }
                     }
                 }
+                TurnStartPhase::SpiritGatheringFormation => {
+                    // BattleCharacter.OnTurnStarted IL_0e56, before NeiShang.
+                    self.apply_turn_start_spirit_gathering_formation(actor_side);
+                }
                 TurnStartPhase::PostInjuryFormations => {
                     self.apply_turn_start_post_injury_formations(actor_side);
                 }
@@ -430,6 +434,12 @@ impl ReplayState {
     /// feeds the `fengMoPhysique` phase that immediately follows it.
     fn apply_turn_end_phases(&mut self, actor_side: PlayerSide) {
         self.attribution_block = Some(super::TraceAttributionBlock::TurnEnd);
+        // BattleCharacter.OnTurnEnded:6501-6504.
+        // SiZhanBuDao is cleared at the very beginning of the actor's turn end,
+        // before any end-of-turn damage (TuLingZhen, ShuiShi, etc.).
+        if self.actor(actor_side).fate.last_stand_unyielding > 0 {
+            self.actor_mut(actor_side).fate.last_stand_unyielding = 0;
+        }
         let mut decayed = 0;
         for phase in TURN_END_PHASES {
             match phase {

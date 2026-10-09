@@ -7,9 +7,9 @@
     "recordOnlyCount": 56,
     "hiddenCount": 643,
     "obsoleteCount": 0,
-    "registeredCount": 787,
+    "registeredCount": 818,
     "unverifiedRegistrationCount": 0,
-    "missingRegistrationCount": 181
+    "missingRegistrationCount": 150
   },
   "groups": [
     {
@@ -834,9 +834,9 @@
       "recordOnlyCount": 0,
       "hiddenCount": 0,
       "obsoleteCount": 0,
-      "registeredCount": 0,
+      "registeredCount": 8,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 8
+      "missingRegistrationCount": 0
     },
     {
       "kind": "season",
@@ -1436,9 +1436,9 @@
       "recordOnlyCount": 0,
       "hiddenCount": 0,
       "obsoleteCount": 0,
-      "registeredCount": 0,
+      "registeredCount": 8,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 8
+      "missingRegistrationCount": 0
     },
     {
       "kind": "season",
@@ -1716,9 +1716,9 @@
       "recordOnlyCount": 1,
       "hiddenCount": 0,
       "obsoleteCount": 0,
-      "registeredCount": 0,
+      "registeredCount": 7,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 7
+      "missingRegistrationCount": 0
     },
     {
       "kind": "season",
@@ -1968,9 +1968,9 @@
       "recordOnlyCount": 0,
       "hiddenCount": 0,
       "obsoleteCount": 0,
-      "registeredCount": 0,
+      "registeredCount": 8,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 8
+      "missingRegistrationCount": 0
     },
     {
       "kind": "season",
@@ -4596,9 +4596,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000054
         }
@@ -4770,9 +4768,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000008
         }
@@ -5400,9 +5396,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000041
         }
@@ -8711,9 +8705,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 9000026
         }
@@ -10990,9 +10982,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 258
         }
@@ -11042,9 +11032,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 374
         }
@@ -11071,9 +11059,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 376
         }
@@ -11100,9 +11086,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 373
         }
@@ -11152,9 +11136,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 375
         }
@@ -11201,9 +11183,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 372
         }
@@ -12201,9 +12181,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000053
         }
@@ -12424,9 +12402,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000062
         }
@@ -12454,9 +12430,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000066
         }
@@ -12484,9 +12458,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000065
         }
@@ -12554,9 +12526,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000048
         }
@@ -12644,9 +12614,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000064
         }
@@ -12734,9 +12702,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000057
         }
@@ -12764,9 +12730,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000049
         }
@@ -12794,9 +12758,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000058
         }
@@ -12983,9 +12945,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000049
         }
@@ -13117,9 +13077,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000051
         }
@@ -13187,9 +13145,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000045
         }
@@ -13405,9 +13361,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000056
         }
@@ -13435,9 +13389,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000050
         }
@@ -13465,9 +13417,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000051
         }
@@ -13495,9 +13445,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000057
         }
@@ -13525,9 +13473,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000061
         }
@@ -13555,9 +13501,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000053
         }
@@ -13649,9 +13593,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 336
         }
@@ -13679,9 +13621,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 338
         }
@@ -13777,9 +13717,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 54
         }
@@ -13903,9 +13841,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 58
         }
@@ -13933,9 +13869,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 48
         }
@@ -13963,9 +13897,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 47
         }
@@ -13993,9 +13925,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 49
         }
@@ -14045,9 +13975,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 133
         }
@@ -14077,9 +14005,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 205
         }
@@ -14107,9 +14033,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 277
         }
@@ -14157,9 +14081,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 278
         }
@@ -14187,9 +14109,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 318
         }
@@ -14309,9 +14229,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 297
         }
@@ -14339,9 +14257,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 296
         }
@@ -14369,9 +14285,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000086
         }
@@ -14399,9 +14313,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000076
         }
@@ -14429,9 +14341,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000071
         }
@@ -14459,9 +14369,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000082
         }
@@ -14513,9 +14421,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000074
         }
@@ -14543,9 +14449,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000080
         }
@@ -14573,9 +14477,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000078
         }
@@ -14603,9 +14505,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000073
         }
@@ -14633,9 +14533,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000075
         }
@@ -14663,9 +14561,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000087
         }
@@ -14693,9 +14589,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000072
         }
@@ -14723,9 +14617,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000083
         }
@@ -14753,9 +14645,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000088
         }
@@ -14783,9 +14673,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000069
         }
@@ -14813,9 +14701,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000077
         }
@@ -14843,9 +14729,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000079
         }
@@ -14873,9 +14757,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000085
         }
@@ -14903,9 +14785,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000084
         }
@@ -14933,9 +14813,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000070
         }
@@ -14963,9 +14841,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000081
         }
@@ -14993,9 +14869,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 154
         }
@@ -15023,9 +14897,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 144
         }
@@ -15053,9 +14925,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 166
         }
@@ -15083,9 +14953,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 170
         }
@@ -15113,9 +14981,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 174
         }
@@ -15145,9 +15011,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 207
         }
@@ -15177,9 +15041,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 204
         }
@@ -15209,9 +15071,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 209
         }
@@ -15241,9 +15101,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 210
         }
@@ -15273,9 +15131,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 206
         }
@@ -15310,9 +15166,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 10000098
         }
@@ -15630,8 +15484,8 @@
       "realmLabel": "筑基",
       "variantCount": 3,
       "effectClass": "Card_10000102",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000103,
@@ -15652,8 +15506,8 @@
       "realmLabel": "金丹",
       "variantCount": 3,
       "effectClass": "Card_10000103",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000105,
@@ -15674,8 +15528,8 @@
       "realmLabel": "元婴",
       "variantCount": 3,
       "effectClass": "Card_10000105",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000104,
@@ -15696,8 +15550,8 @@
       "realmLabel": "元婴",
       "variantCount": 3,
       "effectClass": "Card_10000104",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000107,
@@ -15718,8 +15572,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_10000107",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000108,
@@ -15740,8 +15594,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_10000108",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000106,
@@ -15762,8 +15616,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_10000106",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000109,
@@ -15784,8 +15638,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_10000109",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 208,
@@ -15811,9 +15665,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 208
         }
@@ -15839,9 +15691,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 389
         }
@@ -15869,9 +15719,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 351
         }
@@ -15899,9 +15747,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 342
         }
@@ -15929,9 +15775,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 379
         }
@@ -15959,9 +15803,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 387
         }
@@ -15989,9 +15831,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 157
         }
@@ -16019,9 +15859,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 176
         }
@@ -16467,9 +16305,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 159
         }
@@ -16497,9 +16333,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 178
         }
@@ -17138,9 +16972,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 395
         },
@@ -17654,9 +17486,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 130
         }
@@ -17704,9 +17534,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 391
         }
@@ -17734,9 +17562,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 345
         }
@@ -17764,9 +17590,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 344
         }
@@ -17794,9 +17618,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 156
         }
@@ -17824,9 +17646,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 175
         }
@@ -17852,9 +17672,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 125
         }
@@ -17882,9 +17700,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 333
         }
@@ -17933,9 +17749,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 343
         }
@@ -17963,9 +17777,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 350
         }
@@ -17993,9 +17805,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 161
         }
@@ -18023,9 +17833,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 180
         }
@@ -18073,9 +17881,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 124
         }
@@ -18121,9 +17927,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 369
         }
@@ -18151,9 +17955,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 335
         }
@@ -18181,9 +17983,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 162
         }
@@ -18211,9 +18011,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 181
         }
@@ -18239,9 +18037,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 122
         }
@@ -18267,9 +18063,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 135
         }
@@ -18295,9 +18089,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 136
         }
@@ -18327,9 +18119,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 191
         }
@@ -18357,9 +18147,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 307
         }
@@ -18387,9 +18175,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 266
         }
@@ -18457,9 +18243,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 265
         }
@@ -18487,9 +18271,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 269
         }
@@ -18517,9 +18299,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 294
         }
@@ -18547,9 +18327,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 320
         }
@@ -18577,9 +18355,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 289
         }
@@ -18607,9 +18383,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 298
         }
@@ -18637,9 +18411,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000085
         }
@@ -18667,9 +18439,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000082
         }
@@ -18697,9 +18467,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000079
         }
@@ -18727,9 +18495,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000078
         }
@@ -18757,9 +18523,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000076
         }
@@ -18787,9 +18551,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000071
         }
@@ -18817,9 +18579,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000075
         }
@@ -18847,9 +18607,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000087
         }
@@ -18877,9 +18635,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000080
         }
@@ -18931,9 +18687,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000074
         }
@@ -18961,9 +18715,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000073
         }
@@ -18991,9 +18743,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000083
         }
@@ -19021,9 +18771,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000086
         }
@@ -19051,9 +18799,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000081
         }
@@ -19081,9 +18827,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000070
         }
@@ -19111,9 +18855,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000084
         }
@@ -19141,9 +18883,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000069
         }
@@ -19171,9 +18911,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000089
         }
@@ -19221,9 +18959,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 142
         }
@@ -19251,9 +18987,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 168
         }
@@ -19281,9 +19015,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 152
         }
@@ -19311,9 +19043,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 164
         }
@@ -19341,9 +19071,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 172
         }
@@ -19373,9 +19101,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 193
         }
@@ -19405,9 +19131,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 190
         }
@@ -19437,9 +19161,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 195
         }
@@ -19469,9 +19191,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 196
         }
@@ -19501,9 +19221,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 192
         }
@@ -19538,9 +19256,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000098
         }
@@ -19575,9 +19291,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 4000099
         }
@@ -19864,8 +19578,8 @@
       "realmLabel": "筑基",
       "variantCount": 3,
       "effectClass": "Card_4000102",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000103,
@@ -19886,8 +19600,8 @@
       "realmLabel": "金丹",
       "variantCount": 3,
       "effectClass": "Card_4000103",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000105,
@@ -19908,8 +19622,8 @@
       "realmLabel": "元婴",
       "variantCount": 3,
       "effectClass": "Card_4000105",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000104,
@@ -19930,8 +19644,8 @@
       "realmLabel": "元婴",
       "variantCount": 3,
       "effectClass": "Card_4000104",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000108,
@@ -19952,8 +19666,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_4000108",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000109,
@@ -19974,8 +19688,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_4000109",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000106,
@@ -19996,8 +19710,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_4000106",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000107,
@@ -20018,8 +19732,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_4000107",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 194,
@@ -20045,9 +19759,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 194
         }
@@ -20073,9 +19785,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 390
         }
@@ -20103,9 +19813,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 378
         }
@@ -20133,9 +19841,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 340
         }
@@ -20163,9 +19869,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 348
         }
@@ -20193,9 +19897,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 346
         }
@@ -20223,9 +19925,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 158
         }
@@ -20253,9 +19953,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 177
         }
@@ -20281,9 +19979,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 127
         }
@@ -20309,9 +20005,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 138
         }
@@ -20337,9 +20031,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 131
         }
@@ -20391,9 +20083,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 198
         }
@@ -20421,9 +20111,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 270
         }
@@ -20451,9 +20139,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 315
         }
@@ -20481,9 +20167,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 273
         }
@@ -20511,9 +20195,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 272
         }
@@ -20541,9 +20223,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 317
         }
@@ -20571,9 +20251,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 292
         }
@@ -20601,9 +20279,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 316
         }
@@ -20631,9 +20307,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 271
         }
@@ -20661,9 +20335,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 274
         }
@@ -20711,9 +20383,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000075
         }
@@ -20741,9 +20411,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000093
         }
@@ -20771,9 +20439,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000078
         }
@@ -20801,9 +20467,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000089
         }
@@ -20831,9 +20495,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000083
         }
@@ -20861,9 +20523,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000090
         }
@@ -20891,9 +20551,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000082
         }
@@ -20921,9 +20579,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000085
         }
@@ -20951,9 +20607,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000084
         }
@@ -20981,9 +20635,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000074
         }
@@ -21011,9 +20663,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000080
         }
@@ -21041,9 +20691,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000088
         }
@@ -21071,9 +20719,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000081
         }
@@ -21101,9 +20747,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000076
         }
@@ -21131,9 +20775,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000079
         }
@@ -21161,9 +20803,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000103
         }
@@ -21191,9 +20831,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000091
         }
@@ -21221,9 +20859,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000086
         }
@@ -21251,9 +20887,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000077
         }
@@ -21281,9 +20915,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000087
         }
@@ -21311,9 +20943,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 153
         }
@@ -21341,9 +20971,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 143
         }
@@ -21371,9 +20999,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 169
         }
@@ -21401,9 +21027,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 165
         }
@@ -21431,9 +21055,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 173
         }
@@ -21463,9 +21085,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 200
         }
@@ -21495,9 +21115,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 197
         }
@@ -21527,9 +21145,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 202
         }
@@ -21559,9 +21175,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 203
         }
@@ -21591,9 +21205,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 199
         }
@@ -21655,9 +21267,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 7000105
         }
@@ -21996,8 +21606,8 @@
       "realmLabel": "金丹",
       "variantCount": 3,
       "effectClass": "Card_7000110",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000111,
@@ -22018,8 +21628,8 @@
       "realmLabel": "元婴",
       "variantCount": 3,
       "effectClass": "Card_7000111",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000113,
@@ -22040,8 +21650,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_7000113",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000116,
@@ -22062,8 +21672,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_7000116",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000112,
@@ -22084,8 +21694,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_7000112",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000115,
@@ -22106,8 +21716,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_7000115",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000114,
@@ -22128,8 +21738,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_7000114",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 201,
@@ -22155,9 +21765,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 201
         }
@@ -22183,9 +21791,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 137
         }
@@ -22211,9 +21817,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 128
         }
@@ -22239,9 +21843,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 123
         }
@@ -22267,9 +21869,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 129
         }
@@ -22295,9 +21895,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 139
         }
@@ -22327,9 +21925,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 184
         }
@@ -22357,9 +21953,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 260
         }
@@ -22411,9 +22005,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 323
         }
@@ -22441,9 +22033,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 261
         }
@@ -22515,9 +22105,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 293
         }
@@ -22545,9 +22133,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 325
         }
@@ -22599,9 +22185,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 288
         }
@@ -22629,9 +22213,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 309
         }
@@ -22659,9 +22241,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000074
         }
@@ -22689,9 +22269,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000082
         }
@@ -22719,9 +22297,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000079
         }
@@ -22749,9 +22325,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000071
         }
@@ -22779,9 +22353,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000081
         }
@@ -22809,9 +22381,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000087
         }
@@ -22859,9 +22429,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000073
         }
@@ -22913,9 +22481,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000077
         }
@@ -22943,9 +22509,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000085
         }
@@ -22973,9 +22537,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000075
         }
@@ -23003,9 +22565,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000084
         }
@@ -23033,9 +22593,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000080
         }
@@ -23063,9 +22621,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000069
         }
@@ -23093,9 +22649,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000078
         }
@@ -23123,9 +22677,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000086
         }
@@ -23153,9 +22705,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000070
         }
@@ -23183,9 +22733,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000083
         }
@@ -23213,9 +22761,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000072
         }
@@ -23243,9 +22789,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 151
         }
@@ -23273,9 +22817,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 167
         }
@@ -23303,9 +22845,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 163
         }
@@ -23333,9 +22873,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 141
         }
@@ -23363,9 +22901,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 171
         }
@@ -23395,9 +22931,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 186
         }
@@ -23427,9 +22961,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 183
         }
@@ -23459,9 +22991,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 188
         }
@@ -23491,9 +23021,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 189
         }
@@ -23523,9 +23051,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 185
         }
@@ -23560,9 +23086,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 1000097
         }
@@ -23880,8 +23404,8 @@
       "realmLabel": "筑基",
       "variantCount": 3,
       "effectClass": "Card_1000101",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000102,
@@ -23902,8 +23426,8 @@
       "realmLabel": "金丹",
       "variantCount": 3,
       "effectClass": "Card_1000102",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000103,
@@ -23924,8 +23448,8 @@
       "realmLabel": "元婴",
       "variantCount": 3,
       "effectClass": "Card_1000103",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000104,
@@ -23946,8 +23470,8 @@
       "realmLabel": "元婴",
       "variantCount": 3,
       "effectClass": "Card_1000104",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000105,
@@ -23968,8 +23492,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_1000105",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000107,
@@ -23990,8 +23514,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_1000107",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000108,
@@ -24012,8 +23536,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_1000108",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000106,
@@ -24034,8 +23558,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_1000106",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 187,
@@ -24061,9 +23585,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 187
         }
@@ -24091,9 +23613,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 334
         }
@@ -24121,9 +23641,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 349
         }
@@ -24151,9 +23669,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 160
         }
@@ -24181,9 +23697,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 179
         }
@@ -25294,9 +24808,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 322
         }
@@ -25322,9 +24834,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 283
         }
@@ -25350,9 +24860,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 284
         }
@@ -25378,9 +24886,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 285
         }
@@ -25406,9 +24912,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 282
         }
@@ -25434,9 +24938,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 281
         }
@@ -25462,9 +24964,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 280
         }
@@ -25653,9 +25153,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 39
         },
@@ -25847,9 +25345,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 30
         }
@@ -25875,9 +25371,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 14
         }
@@ -26114,9 +25608,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 44
         }
@@ -26233,9 +25725,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 26
         },
@@ -26262,9 +25752,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 24
         }
@@ -26345,9 +25833,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 43
         }
@@ -26557,9 +26043,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-current-regression-build-24253909.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-regression-campaign-evidence.json",
         "targetProof": {
           "targetId": 79
         },
@@ -26641,9 +26125,7 @@
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
-        "sourceManifest": "synthetic-full-scope-active.ts",
         "steamBuild": "24253909",
-        "fullCampaignReport": "generated/synthetic-full-campaign-evidence.json",
         "targetProof": {
           "targetId": 329
         }

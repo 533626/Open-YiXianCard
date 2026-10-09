@@ -190,7 +190,18 @@ impl ReplayState {
     ) -> NegativeStatusMutationReceipt {
         let requested = amount;
         let before = self.negative_status_stack_value(actor_side, status);
-        if amount > 0 && matches!(status, 100 | 105) {
+        // BattleCharacter.ModifyBuffValue:8681. If delta == 0, return immediately;
+        // amplifiers (BeiXingShi, DengYanCuiXin, etc.) only trigger when delta > 0.
+        if amount <= 0 {
+            return NegativeStatusMutationReceipt {
+                status,
+                requested,
+                applied: 0,
+                before,
+                after: before,
+            };
+        }
+        if matches!(status, 100 | 105) {
             amount += self
                 .dream_mirage_value(
                     actor_side,
@@ -1039,6 +1050,14 @@ impl ReplayState {
             defense_absorbed = absorbed;
             remaining -= absorbed;
         }
+        // BattleCharacter.ApplyDamage:11202-11209. ZhuChenBu is the attacker's
+        // next-Attack converter: consume on any attack hit (even when defense absorbs
+        // the whole hit). Defense gain is evaluated post-hit from actual HP damage dealt (num / 3).
+        let consume_zhu_chen_bu =
+            apply_wound_bonus && self.actor(actor_side).elements.zhu_chen_bu > 0;
+        if consume_zhu_chen_bu {
+            self.actor_mut(actor_side).elements.zhu_chen_bu -= 1;
+        }
         if remaining <= 0 && !force_wound {
             if dream_mirage_reflected_incoming > 0 {
                 self.apply_dream_mirage_reflected_life_loss(
@@ -1079,13 +1098,16 @@ impl ReplayState {
             remaining = remaining * post_wound_multiplier_percent.max(0) / 100;
         }
         let hp_receipt = self.mutate_actor_hp(target, -remaining, false, false);
-        // BattleCharacter.ApplyDamage:11301-11309：非反伤、伤害 > 0 且未被护体挡下时求值
-        // `hp > 0 || CanRevive() || CheckSiZhan()`——致命一击当下即把死战之志转为死战不倒，
-        // 不等 DeathCheck。目前只接入攻击伤害（DamageType.Attack）；DamageType.Damage 与
-        // ReflectDamage 的调用点尚未逐一分类，仍由 DeathCheck 转换
-        // （research/original-game/BASE_BATTLE_RULES.md 七.7 待办）。
-        if apply_wound_bonus
-            && remaining > 0
+        if consume_zhu_chen_bu && hp_receipt.prevention != Some(super::HpMutationPrevention::Guard) {
+            let actual_wound = (-hp_receipt.applied).max(0);
+            if actual_wound > 0 {
+                self.gain_defense(actor_side, actual_wound / 3);
+            }
+        }
+        // BattleCharacter.ApplyDamage:11627-11638：非反伤、伤害 > 0 且未被护体挡下时求值
+        // `hp > 0 || CanRevive() || CheckSiZhan()`——致命一击（Attack 与 Damage）当下即把死战之志转为死战不倒，
+        // 不等 DeathCheck。
+        if remaining > 0
             && hp_receipt.prevention != Some(super::HpMutationPrevention::Guard)
             && self.actor(target).core.hp <= 0
             && !self.can_revive(target)

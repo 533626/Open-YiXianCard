@@ -123,6 +123,31 @@ impl Default for EffectInvocationLocal {
     }
 }
 
+/// 新调用帧的局部状态单元（等价于 `Rc::new(RefCell::new(Default))`）。每次出牌 / 临时效果都要建一个，
+/// 是战斗循环里最频繁的堆分配；这里在线程本地池里复用除池外已无人持有（strong 1、无 weak）的旧单元，
+/// 重置为默认值后交出——与新建不可区分（不与任何在途帧共享）。
+fn fresh_invocation_local() -> Rc<RefCell<EffectInvocationLocal>> {
+    const POOL_CAP: usize = 32;
+    thread_local! {
+        static POOL: RefCell<Vec<Rc<RefCell<EffectInvocationLocal>>>> = const { RefCell::new(Vec::new()) };
+    }
+    POOL.with(|pool| {
+        let mut pool = pool.borrow_mut();
+        if let Some(free) = pool
+            .iter()
+            .find(|cell| Rc::strong_count(cell) == 1 && Rc::weak_count(cell) == 0)
+        {
+            *free.borrow_mut() = EffectInvocationLocal::default();
+            return Rc::clone(free);
+        }
+        let cell = Rc::new(RefCell::new(EffectInvocationLocal::default()));
+        if pool.len() < POOL_CAP {
+            pool.push(Rc::clone(&cell));
+        }
+        cell
+    })
+}
+
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 struct EffectInvocationWindowSnapshot {
     action_again: bool,
@@ -183,23 +208,38 @@ impl ReplayState {
         } else {
             self.is_dream_mirage_intrinsic_beng_quan(actor_side, physical_card)
         };
+        // 身份是（卡, 崩拳标志, 出牌方状态）的纯函数，三者算的时候状态不变：同一引用（出牌主路径 origin 与
+        // effective 都是 `drawn.card`，崩拳标志也随之相同）直接复用，省掉重复的剑系判定 / 驻留查表。
+        let effective =
+            self.effect_card_identity(actor_side, effective_card, effective_is_beng_quan);
+        let origin = if std::ptr::eq(origin_card, effective_card) {
+            effective.clone()
+        } else {
+            self.effect_card_identity(actor_side, origin_card, origin_is_beng_quan)
+        };
+        // 实体卡是格位里的那份拷贝，内容通常与 effective 相同（同 id 时崩拳标志也取 effective 的）
+        let physical = if std::ptr::eq(physical_card, effective_card)
+            || (physical_card.id == effective_card.id && physical_card == effective_card)
+        {
+            effective.clone()
+        } else if std::ptr::eq(physical_card, origin_card) {
+            origin.clone()
+        } else {
+            self.effect_card_identity(actor_side, physical_card, physical_is_beng_quan)
+        };
         let frame = EffectInvocationFrame {
-            origin: self.effect_card_identity(actor_side, origin_card, origin_is_beng_quan),
-            effective: self.effect_card_identity(
-                actor_side,
-                effective_card,
-                effective_is_beng_quan,
-            ),
+            origin,
+            effective,
             effective_definition: effective_card.clone(),
             physical: PhysicalCardIdentity {
                 actor_side,
                 slot: physical_slot,
-                card: self.effect_card_identity(actor_side, physical_card, physical_is_beng_quan),
+                card: physical,
             },
             invocation_slot,
             kind,
             phase: EffectInvocationPhase::BeforeBody,
-            local: Rc::new(RefCell::new(EffectInvocationLocal::default())),
+            local: fresh_invocation_local(),
         };
         self.effect_invocation_stack.push(frame);
     }
@@ -235,7 +275,7 @@ impl ReplayState {
         });
         let local = parent_frame
             .map(|frame| Rc::clone(&frame.local))
-            .unwrap_or_else(|| Rc::new(RefCell::new(EffectInvocationLocal::default())));
+            .unwrap_or_else(fresh_invocation_local);
         let origin = parent_frame
             .map(|frame| frame.effective.clone())
             .unwrap_or_else(|| {
@@ -414,7 +454,7 @@ impl ReplayState {
             .map_or("", |frame| frame.effective.name.as_str())
     }
 
-    pub(super) fn active_effect_segment_source(&self) -> &str {
+    pub(super) fn active_effect_segment_source(&self) -> &'static str {
         self.effect_invocation_stack
             .last()
             .map_or("", |frame| frame.effective.segment_source.as_str())

@@ -62,14 +62,11 @@ impl ReplayState {
         return_sharpness_percent: i64,
         segment_source: Option<&str>,
     ) -> i64 {
-        let resolved_segment_source = match segment_source {
-            Some(source) => Some(source.to_string()),
-            None if !self.active_effect_segment_source().is_empty() => {
-                Some(self.active_effect_segment_source().to_string())
-            }
-            None => None,
+        // 段来源是驻留串（`&'static str`），直接借用，逐次攻击不再堆分配 String。
+        let segment_source = match segment_source {
+            Some(source) => Some(source),
+            None => Some(self.active_effect_segment_source()).filter(|source| !source.is_empty()),
         };
-        let segment_source = resolved_segment_source.as_deref();
         let target_side = opponent_side(actor_side);
         // Per-hit sampling: record the target's hp/def before this hit lands,
         // then again after the whole attack settles, so the browser can show

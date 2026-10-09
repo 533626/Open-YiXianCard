@@ -57,6 +57,9 @@ impl ReplayPlayer {
             metal_iron_bone: self.elements.metal_iron_bone,
             earth_eight_wastes: self.elements.earth_eight_wastes,
             wood_array: self.elements.wood_array,
+            wood_scattered_branches: self.elements.wood_scattered_branches,
+            zhu_chen_bu: self.elements.zhu_chen_bu,
+            xing_yi_lian: self.fate.xing_yi_lian,
             turtle_formation: self.formations.turtle_formation,
             shatter_formation: self.formations.shatter_formation,
             thunder_formation: self.formations.thunder_formation,
@@ -83,6 +86,7 @@ impl ReplayPlayer {
             star_moon_fan: self.astrology.star_moon_fan,
             infinite_hexagram_plate: self.astrology.infinite_hexagram_plate,
             all_goes_well: self.astrology.all_goes_well,
+            ling_yuan_wai_fang: self.astrology.ling_yuan_wai_fang,
             recovery: self.status.recovery,
             meditation: self.status.meditation,
             blood_calamity: self.status.blood_calamity,
@@ -308,6 +312,27 @@ impl ReplayPlayer {
             "earthEightWastes",
             "合八荒",
             self.elements.earth_eight_wastes,
+        );
+        push_nonzero(
+            &mut entries,
+            "五行",
+            "woodScatteredBranches",
+            "木灵•散枝叶",
+            self.elements.wood_scattered_branches,
+        );
+        push_nonzero(
+            &mut entries,
+            "五行",
+            "zhuChenBu",
+            "土灵•逐尘步",
+            self.elements.zhu_chen_bu,
+        );
+        push_nonzero(
+            &mut entries,
+            "卦星",
+            "xingYiLian",
+            "星弈•连",
+            self.fate.xing_yi_lian,
         );
         push_nonzero(
             &mut entries,
@@ -600,6 +625,13 @@ impl ReplayPlayer {
             "allGoesWell",
             "万事如意",
             self.astrology.all_goes_well,
+        );
+        push_nonzero(
+            &mut entries,
+            "卦星",
+            "lingYuanWaiFang",
+            "灵元外放",
+            self.astrology.ling_yuan_wai_fang,
         );
         push_nonzero(
             &mut entries,

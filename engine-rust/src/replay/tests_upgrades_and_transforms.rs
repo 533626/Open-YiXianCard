@@ -628,7 +628,8 @@ fn dream_counter_shock_reflects_after_frenzy_sword_lifesteal() {
 fn stance_switch_cards_do_nothing_without_a_stance() {
     // Card_222 转势 / Card_220：效果按拳、棍架势分支，SwitchJiaShi 在两者皆无时不加架势。
     // oracle：hf-latest-33333000 bbcfba241c4acf94/round-13（幻羽鹦把转势复制给无架势方）。
-    for card_id in [10_222, 220] {
+    // build 25796222 起转势先无条件加身法 otherParams[0]（无架势时也加），仍不攻击、不加架势。
+    for (card_id, agility) in [(10_222, 8), (220, 0)] {
         let card = original_card_definition_by_id(card_id).expect("stance switch card");
         let fixture = minimal_fixture(
             filler_cards(card),
@@ -643,7 +644,7 @@ fn stance_switch_cards_do_nothing_without_a_stance() {
         let mut state = ReplayState::test_from_fixture(&fixture);
         let hp_before = state.p2.core.hp;
         state.test_execute_one_card(PlayerSide::P1);
-        assert_eq!(state.p1.turn.agility, 0, "card {card_id}");
+        assert_eq!(state.p1.turn.agility, agility, "card {card_id}");
         assert_eq!(state.p1.beng.quan_stance, 0, "card {card_id}");
         assert_eq!(state.p1.beng.gun_stance, 0, "card {card_id}");
         assert_eq!(state.p2.core.hp, hp_before, "card {card_id}");

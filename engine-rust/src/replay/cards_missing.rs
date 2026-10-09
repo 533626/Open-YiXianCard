@@ -907,6 +907,7 @@ impl ReplayState {
                 55 | 56
                     | 57
                     | 58
+                    | 1_000_101
                     | 11_000_001
                     | 11_000_005
                     | 11_000_009
@@ -972,6 +973,12 @@ impl ReplayState {
             56 => {
                 self.activate_element(actor_side, super::Element::Fire);
                 self.activate_element(actor_side, super::Element::Earth);
+            }
+            1_000_101 => {
+                // TriggerOpening Card_1000101: only when owner has zero anima.
+                if self.actor(actor_side).core.anima == 0 {
+                    self.gain_anima(actor_side, other_param(card, 0).max(0));
+                }
             }
             58 => self.apply_wave_cutting_seal_opening(actor_side),
             11_000_001 => {

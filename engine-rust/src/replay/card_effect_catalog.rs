@@ -39,6 +39,7 @@ pub(super) const RECORD_ONLY_CARD_BASE_IDS: &[i64] = &[
 ];
 
 // Every entry is backed by the current-build Card_* source. The listed class
+// (catalog refreshed for the current HF season unlock pass).
 // does no more than the printed attack/anima/defense/sword-intent fields (or
 // the same random range). Unknown cards must not grow this list just to make a
 // replay pass.

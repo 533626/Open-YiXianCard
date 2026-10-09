@@ -1,7 +1,6 @@
 //! 仙魔（build 25621897 赛季机制）策略的战斗侧门禁。
 //!
-//! `data/xian-mo-battle-strategies.json` 由 `research/original-game/build_xian_mo_battle_strategies.py`
-//! 从反编译战斗源码与 `XianMoStrategyConfig.isBattleEffect` 穷举生成。选中其中任一策略而引擎尚未
+//! `data/xian-mo-battle-strategies.json` 从反编译战斗源码与 `XianMoStrategyConfig.isBattleEffect` 穷举生成。选中其中任一策略而引擎尚未
 //! 实现时一律 fail closed（`MissingRule`），不静默忽略——未实现的战斗效果会让终局三元失真。
 
 use super::BattleError;

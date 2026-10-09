@@ -32,10 +32,11 @@ pub(in crate::replay) enum TurnStartPhase {
     InternalInjuryTick,
     PostInjuryFormations,
     SpiritGatheringAnima,
+    SpiritGatheringFormation,
     DreamMirageTurnStartLate,
 }
 
-pub(in crate::replay) const TURN_START_PHASES: [TurnStartPhase; 25] = [
+pub(in crate::replay) const TURN_START_PHASES: [TurnStartPhase; 26] = [
     TurnStartPhase::ResetActionAgain,
     TurnStartPhase::ClearTurnHpGainedLedgers,
     // BattleCharacter.OnTurnStarted marks the opponent's 灵玄迷踪步 before
@@ -59,9 +60,12 @@ pub(in crate::replay) const TURN_START_PHASES: [TurnStartPhase; 25] = [
     TurnStartPhase::DreamGreatReturnPill,
     TurnStartPhase::TurnStartChanceHooks,
     TurnStartPhase::NextTurnDefense,
+    // OnTurnStarted IL_0d84 precedes the IL_1a4c internal-injury tick.
+    // 静气回血 near the HP cap must occur before that HP loss.
+    TurnStartPhase::SpiritGatheringAnima,
+    TurnStartPhase::SpiritGatheringFormation,
     TurnStartPhase::InternalInjuryTick,
     TurnStartPhase::PostInjuryFormations,
-    TurnStartPhase::SpiritGatheringAnima,
     TurnStartPhase::DreamMirageTurnStartLate,
 ];
 

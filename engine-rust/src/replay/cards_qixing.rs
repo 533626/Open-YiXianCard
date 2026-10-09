@@ -18,6 +18,84 @@ impl ReplayState {
         base_id: i64,
     ) -> Option<bool> {
         match base_id {
+            4_000_102 => {
+                let attack = self.consume_random_range(
+                    actor_side,
+                    card.attack.unwrap_or(0),
+                    card.random_attack.unwrap_or(card.attack.unwrap_or(0)),
+                );
+                self.apply_attack(actor_side, attack, slot);
+                if self.consume_percent_roll(actor_side) < 1 {
+                    self.apply_attack(actor_side, other_param(card, 0), slot);
+                }
+                self.actor_mut(actor_side).fate.exorcism += other_param(card, 1).max(0);
+                Some(true)
+            }
+            4_000_104 => {
+                let attacked = self.attack_by_config(actor_side, card, 0, slot);
+                self.apply_configured_anima(actor_side, card);
+                self.actor_mut(actor_side).fate.xing_yi_lian += other_param(card, 0).max(0);
+                Some(attacked)
+            }
+            4_000_106 => {
+                // Card_4000106: LingYuanWaiFang duration, then ModifyAnima,
+                // then ModifyHp(otherParams[0] + anima). Overflow reflect is
+                // BattleCharacter.ModifyHp:10110 (shared hook).
+                self.actor_mut(actor_side).astrology.ling_yuan_wai_fang += other_param(card, 1).max(0);
+                self.apply_configured_anima(actor_side, card);
+                let amount = other_param(card, 0) + self.actor(actor_side).core.anima;
+                self.modify_actor_hp(actor_side, amount, false, false);
+                Some(false)
+            }
+            4_000_108 => {
+                self.apply_configured_anima(actor_side, card);
+                let defense = self.consume_random_range(actor_side, card.defense.unwrap_or(0), card.random_defense.unwrap_or(card.defense.unwrap_or(0)));
+                let adjacent_thunder = super::support::active_neighbor_card(self.actor(actor_side), slot, -1)
+                    .is_some_and(|c| c.name.contains('雷'))
+                    || super::support::active_neighbor_card(self.actor(actor_side), slot, 1)
+                        .is_some_and(|c| c.name.contains('雷'));
+                if adjacent_thunder { self.apply_attack(actor_side, defense, slot); } else { self.gain_defense(actor_side, defense); }
+                if self.consume_percent_roll(actor_side) < 10 { self.modify_extra_actions(actor_side, 1); }
+                Some(adjacent_thunder)
+            }
+            4_000_105 => {
+                self.add_actor_negative_status(opponent_side(actor_side), 100, other_param(card, 0));
+                self.modify_dream_mirage_value(opponent_side(actor_side), super::cards_dream_mirage::DreamMirageValue::SnakeShadow, other_param(card, 1));
+                self.modify_extra_actions(actor_side, 1);
+                Some(false)
+            }
+            4_000_107 => {
+                let attacked = self.attack_by_config(actor_side, card, 0, slot);
+                if slot % 2 == 0 {
+                    self.modify_star_power(actor_side, other_param(card, 0));
+                } else {
+                    let amount = self.actor(actor_side).astrology.star_power.min(other_param(card, 1));
+                    self.modify_star_power(actor_side, -amount);
+                    self.modify_guard(actor_side, amount);
+                }
+                Some(attacked)
+            }
+            4_000_109 => {
+                let bonus = if self.known_negative_status_count(opponent_side(actor_side)) > 0 { other_param(card, 0) } else { 0 };
+                self.gain_hexagram(actor_side, card.hexagram.unwrap_or(0) + bonus);
+                if slot % 2 == 0 {
+                    self.add_actor_negative_status(opponent_side(actor_side), 100, other_param(card, 1));
+                } else {
+                    self.add_actor_negative_status(opponent_side(actor_side), 105, other_param(card, 2));
+                }
+                Some(false)
+            }
+            4_000_103 => {
+                self.modify_actor_hp(actor_side, other_param(card, 0), false, false);
+                if !was_used_before_effect {
+                    self.actor_mut(actor_side).turn.jump_to_previous_card += 1;
+                }
+                if self.check_rear_move(actor_side, was_used_before_effect) {
+                    let defense = self.actor(actor_side).dream_mirage.turn_hp_gained / other_param(card, 1).max(1);
+                    self.gain_defense(actor_side, defense);
+                }
+                Some(false)
+            }
             4_000_002 => {
                 self.apply_configured_defense(actor_side, card);
                 if let Some(hexagram) = card.hexagram.filter(|value| *value > 0) {

@@ -19,6 +19,10 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 thiserror = "2"
 
+# 常驻批评估（solve_deck_batch）的工作线程池；WASM 构建不带
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+rayon = "1"
+
 [dev-dependencies]
 pretty_assertions = "1"
 

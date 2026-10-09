@@ -32,8 +32,8 @@ function toOption(row: XianMoStrategyRow): XianMoStrategyOption {
     isBattleEffect: row.isBattleEffect,
     affectsBattle: row.affectsBattle,
     npcId: row.npcId,
-    minRound: row.minRound,
-    maxRound: row.maxRound,
+    ...(row.minRound === undefined ? {} : { minRound: row.minRound }),
+    ...(row.maxRound === undefined ? {} : { maxRound: row.maxRound }),
     otherParams: row.otherParams,
   };
 }
