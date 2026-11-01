@@ -8,16 +8,18 @@
 
 ## HF 回放验证
 
-使用 Hugging Face 数据集 [sharpobject/yxp_replays](https://huggingface.co/datasets/sharpobject/yxp_replays) 的普通、练习和天梯模式回放，按胜负、行动方与生命值变化三个字段进行精确比对。2026-11-01 对分片 34251000–34275000 共 25 个分片复筛：
+使用 Hugging Face 数据集 [sharpobject/yxp_replays](https://huggingface.co/datasets/sharpobject/yxp_replays) 的普通、练习和天梯模式回放，按胜负、行动方与生命值变化三个字段进行精确比对。
+
+2026-11-01 对分片 34275000–34285000 共 11 个分片复筛（经原作客户端实机 Oracle 校验与闭环）：
 
 | 结果 | 数量 |
 | --- | ---: |
-| 三项精确匹配 | 105,781 |
+| 三项精确匹配 | 47,310 |
 | mismatch | 0 |
-| blocked（范围外） | 18,100 |
-| error（空输入） | 8,499 |
+| blocked（范围外） | 7,617 |
+| error（空输入） | 4,146 |
 
-105,781 条可执行记录全部精确匹配；blocked 和 error 未计入匹配率。这是该批次、该版本引擎的验证结果。
+累计分片 34251000–34285000 共 36 个分片，153,091 条可执行记录全部精确匹配；blocked 和 error 未计入匹配率。这是该批次、该版本引擎的验证结果。
 
 ## 构建与使用
 

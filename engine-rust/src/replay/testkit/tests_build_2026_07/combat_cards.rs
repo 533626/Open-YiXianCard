@@ -858,6 +858,9 @@ fn combat_resources_have_one_production_write_kernel_and_narrow_raw_set_calls() 
         .expect("replay source directory must be readable")
         .collect::<std::result::Result<Vec<_>, _>>()
         .expect("replay source entries must be readable");
+    if let Ok(synthetic_entries) = std::fs::read_dir(replay_dir.join("synthetic")) {
+        entries.extend(synthetic_entries.filter_map(|e| e.ok()));
+    }
     entries.sort_by_key(|entry| entry.file_name());
 
     for entry in entries {

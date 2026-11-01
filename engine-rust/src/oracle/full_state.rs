@@ -27,7 +27,7 @@ use super::events;
 pub const ORIGINAL_ORACLE_FULL_STATE_SCHEMA_VERSION: u8 = 4;
 /// 运行中的 runtime-trace 插件版本，唯一真相源是
 /// `research/original-game/runtime-trace-plugin/src/YixianRuntimeTracePlugin.cs`。
-pub const ORIGINAL_ORACLE_PLUGIN_VERSION: &str = "0.30.19";
+pub const ORIGINAL_ORACLE_PLUGIN_VERSION: &str = "0.30.20";
 pub const ORIGINAL_ORACLE_FULL_STATE_CHECKPOINT_BOUNDARY: &str =
     "cardExecuteCompletedBeforeAwaitContinuation";
 

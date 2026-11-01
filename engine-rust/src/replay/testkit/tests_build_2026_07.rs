@@ -933,6 +933,9 @@ fn business_modules_cannot_write_core_resources_or_negative_status_outside_seman
         .expect("replay source directory must be readable")
         .collect::<std::result::Result<Vec<_>, _>>()
         .expect("replay source entries must be readable");
+    if let Ok(synthetic_entries) = std::fs::read_dir(replay_dir.join("synthetic")) {
+        entries.extend(synthetic_entries.filter_map(|e| e.ok()));
+    }
     entries.sort_by_key(|entry| entry.file_name());
 
     for entry in entries {

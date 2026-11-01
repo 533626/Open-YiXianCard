@@ -307,3 +307,19 @@ fn wuxing_cards_action_again_satisfied_by_check_wu_xing_and_dream_spike() {
         1
     );
 }
+
+#[test]
+fn hunyuan_wuji_formation_decrements_even_when_extra_actions_already_active() {
+    let mut state = ReplayState::test_from_fixture(&fixture(
+        player(deck_with(basic_attack())),
+        player(deck_with(basic_attack())),
+    ));
+    state.p1.elements.primordial_infinity_formation = 1;
+    state.p1.turn.extra_actions = 1;
+
+    // Activate metal element while extra_actions is already 1.
+    // Primordial infinity formation must still decrement to 0.
+    state.activate_element(PlayerSide::P1, Element::Metal);
+    assert_eq!(state.p1.elements.primordial_infinity_formation, 0);
+    assert_eq!(state.p1.turn.extra_actions, 1);
+}
