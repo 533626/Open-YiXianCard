@@ -55,8 +55,8 @@ const CARD_HANDLER_REGISTRY: &[CardHandlerFamily] = &[
     CardHandlerFamily::Missing,
 ];
 
-struct CardEffectContext<'state, 'card> {
-    state: &'state mut ReplayState,
+struct CardEffectContext<'state, 'card, const OBSERVE: bool> {
+    state: &'state mut ReplayState<OBSERVE>,
     actor_side: PlayerSide,
     card: &'card CardDefinition,
     slot: usize,
@@ -64,7 +64,7 @@ struct CardEffectContext<'state, 'card> {
     base_id: i64,
 }
 
-impl CardEffectContext<'_, '_> {
+impl<const OBSERVE: bool> CardEffectContext<'_, '_, OBSERVE> {
     fn dispatch(&mut self, family: CardHandlerFamily) -> Option<bool> {
         match family {
             CardHandlerFamily::Hexagram => self.state.apply_hexagram_card_effect(
@@ -222,7 +222,7 @@ impl CardEffectContext<'_, '_> {
     }
 }
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn apply_card_effect_primary(
         &mut self,
         actor_side: PlayerSide,

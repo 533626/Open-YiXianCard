@@ -1,3 +1,21 @@
+// Expand the canonical phase table at compile time so the transaction does
+// not carry an iterator and an Option across dynamic phase dispatch. The const
+// check pins every index to exactly one entry, in table order.
+macro_rules! static_phases {
+    ($phase:ident in $table:ident [$($index:literal),+ $(,)?] $body:block) => {
+        const _: () = {
+            let indices = [$($index),+];
+            assert!(indices.len() == $table.len());
+            let mut position = 0;
+            while position < indices.len() {
+                assert!(indices[position] == position);
+                position += 1;
+            }
+        };
+        $ (#[allow(unused_assignments)] { let $phase = $table[$index]; $body })+
+    };
+}
+
 use crate::fixture::{load_fixture_file, BattleFixture};
 use crate::model::{CardDefinition, PlayerSide};
 use crate::{EngineError, Result};
@@ -13,11 +31,12 @@ pub use turn_end_trace::{
 };
 
 mod action_again;
+mod active_mechanisms;
+pub(crate) use active_mechanisms::ActiveMechanisms;
 mod battle_start;
 mod body;
 mod card_effect_catalog;
 mod card_routing;
-mod xian_mo;
 mod cards_dream_direct;
 mod cards_dream_fate;
 mod cards_dream_mirage;
@@ -27,11 +46,19 @@ mod cards_missing;
 mod cards_qixing;
 mod cards_ronghui;
 mod cards_ronghui_early;
+// Synthetic-oracle card bodies are production settlement. #[path] keeps them
+// direct children of this module; the files live in replay/synthetic/.
+#[path = "replay/synthetic/cards_synthetic_full_scope_candidates.rs"]
 mod cards_synthetic_full_scope_candidates;
+#[path = "replay/synthetic/cards_synthetic_oracle_dream_mirage_pilot.rs"]
 mod cards_synthetic_oracle_dream_mirage_pilot;
+#[path = "replay/synthetic/cards_synthetic_oracle_verified.rs"]
 mod cards_synthetic_oracle_verified;
+#[path = "replay/synthetic/cards_synthetic_oracle_verified_secret_extreme_remaining.rs"]
 mod cards_synthetic_oracle_verified_secret_extreme_remaining;
+#[path = "replay/synthetic/cards_synthetic_oracle_verified_secret_misc.rs"]
 mod cards_synthetic_oracle_verified_secret_misc;
+#[path = "replay/synthetic/cards_synthetic_oracle_verified_secret_sword.rs"]
 mod cards_synthetic_oracle_verified_secret_sword;
 mod chance_cards;
 mod combat;
@@ -49,14 +76,18 @@ mod error;
 mod observation;
 mod original_build_profile;
 mod original_config;
+mod xian_mo;
 pub use observation::{
     ReplayAttackSegment, ReplayDetailEntry, ReplayDetailedEvent, ReplayDetailedRun,
     ReplayDetailedSideState, ReplayDetailedStep, ReplayHookCategory, ReplayMutationKind,
     ReplayMutationReceipt, ReplayQueuedCard,
 };
 
+#[path = "replay/deck_index.rs"]
+mod deck_index;
 mod fate_strategy;
 mod fate_strategy_elements;
+
 mod flow;
 mod flow_card_effect;
 mod flow_card_effect_fallback;
@@ -72,85 +103,153 @@ mod resources;
 mod snapshot;
 mod support;
 mod swords;
+// Test modules live in replay/testkit/. #[path] keeps `super` pointed at replay.
 #[cfg(test)]
+#[path = "replay/testkit/test_support.rs"]
 mod test_support;
 #[cfg(test)]
+#[path = "replay/testkit/tests.rs"]
 mod tests;
 #[cfg(test)]
+#[path = "replay/testkit/tests_action_again.rs"]
 mod tests_action_again;
 #[cfg(test)]
+#[path = "replay/testkit/tests_actual_damage_carry.rs"]
 mod tests_actual_damage_carry;
-#[cfg(all(test, feature = "private-fixtures"))]
+#[cfg(test)]
+#[path = "replay/testkit/tests_body.rs"]
 mod tests_body;
 #[cfg(test)]
+#[path = "replay/testkit/tests_build_2026_07.rs"]
 mod tests_build_2026_07;
 #[cfg(test)]
+#[path = "replay/testkit/tests_build_2026_08.rs"]
 mod tests_build_2026_08;
 #[cfg(test)]
+#[path = "replay/testkit/tests_build_2026_08_oracle_batch_027.rs"]
+mod tests_build_2026_08_oracle_batch_027;
 #[cfg(all(test, feature = "private-fixtures"))]
+#[path = "replay/testkit/tests_build_2026_08_rotation_fixtures.rs"]
 mod tests_build_2026_08_rotation_fixtures;
 #[cfg(test)]
+#[path = "replay/testkit/tests_build_2026_09_season.rs"]
 mod tests_build_2026_09_season;
 #[cfg(test)]
+#[path = "replay/testkit/tests_build_2026_10_rotation.rs"]
 mod tests_build_2026_10_rotation;
 #[cfg(test)]
+#[path = "replay/testkit/tests_calamity_skip_mask.rs"]
 mod tests_calamity_skip_mask;
 #[cfg(test)]
+#[path = "replay/testkit/tests_card19_fate387.rs"]
 mod tests_card19_fate387;
 #[cfg(test)]
+#[path = "replay/testkit/tests_card9_hand_segments.rs"]
+mod tests_card9_hand_segments;
+#[cfg(test)]
+#[path = "replay/testkit/tests_card_execution_lifecycle.rs"]
 mod tests_card_execution_lifecycle;
 #[cfg(test)]
+#[path = "replay/testkit/tests_chance.rs"]
 mod tests_chance;
 #[cfg(test)]
+#[path = "replay/testkit/tests_damage.rs"]
 mod tests_damage;
 #[cfg(test)]
+#[path = "replay/testkit/tests_data_driven.rs"]
+mod tests_data_driven;
+#[cfg(test)]
+#[path = "replay/testkit/tests_dream_five_elements_spike.rs"]
 mod tests_dream_five_elements_spike;
 #[cfg(test)]
+#[path = "replay/testkit/tests_fate_strategy.rs"]
 mod tests_fate_strategy;
 #[cfg(test)]
+#[path = "replay/testkit/tests_fate_strategy_batch_009.rs"]
 mod tests_fate_strategy_batch_009;
 #[cfg(test)]
+#[path = "replay/testkit/tests_hf1012_d.rs"]
+mod tests_hf1012_d;
+#[cfg(test)]
+#[path = "replay/testkit/tests_hold.rs"]
 mod tests_hold;
 #[cfg(test)]
+#[path = "replay/testkit/tests_original_grants.rs"]
 mod tests_original_grants;
 #[cfg(all(test, feature = "private-fixtures"))]
+#[path = "replay/testkit/tests_percent_roll_decisions.rs"]
 mod tests_percent_roll_decisions;
 #[cfg(test)]
+#[path = "replay/testkit/tests_player.rs"]
 mod tests_player;
-#[cfg(test)]
-mod tests_card9_hand_segments;
 #[cfg(all(test, feature = "private-fixtures"))]
+#[path = "replay/testkit/tests_random_range_decisions.rs"]
 mod tests_random_range_decisions;
+#[cfg(test)]
+#[path = "replay/testkit/tests_resource_mutation_contract.rs"]
+mod tests_resource_mutation_contract;
 #[cfg(all(test, feature = "private-fixtures"))]
+#[path = "replay/testkit/tests_robust_decisions.rs"]
 mod tests_robust_decisions;
 #[cfg(test)]
-mod tests_resource_mutation_contract;
-#[cfg(test)]
+#[path = "replay/testkit/tests_star_cards.rs"]
 mod tests_star_cards;
 #[cfg(test)]
+#[path = "replay/testkit/tests_strict_battle_start.rs"]
 mod tests_strict_battle_start;
 #[cfg(all(test, feature = "private-fixtures"))]
+#[path = "replay/testkit/tests_synthetic_decisions.rs"]
 mod tests_synthetic_decisions;
 #[cfg(test)]
+#[path = "replay/testkit/tests_synthetic_full_scope_candidates.rs"]
+mod tests_synthetic_full_scope_candidates;
 #[cfg(test)]
+#[path = "replay/testkit/tests_synthetic_oracle_dream_mirage_pilot.rs"]
+mod tests_synthetic_oracle_dream_mirage_pilot;
 #[cfg(test)]
+#[path = "replay/testkit/tests_synthetic_oracle_verified.rs"]
+mod tests_synthetic_oracle_verified;
 #[cfg(test)]
+#[path = "replay/testkit/tests_synthetic_oracle_verified_secret_extreme_remaining.rs"]
+mod tests_synthetic_oracle_verified_secret_extreme_remaining;
 #[cfg(test)]
+#[path = "replay/testkit/tests_synthetic_oracle_verified_secret_misc.rs"]
+mod tests_synthetic_oracle_verified_secret_misc;
 #[cfg(test)]
+#[path = "replay/testkit/tests_synthetic_oracle_verified_secret_sword.rs"]
+mod tests_synthetic_oracle_verified_secret_sword;
 #[cfg(test)]
+#[path = "replay/testkit/tests_synthetic_oracle_wave011.rs"]
+mod tests_synthetic_oracle_wave011;
 #[cfg(test)]
+#[path = "replay/testkit/tests_synthetic_oracle_wave012.rs"]
+mod tests_synthetic_oracle_wave012;
 #[cfg(test)]
+#[path = "replay/testkit/tests_synthetic_oracle_wave013.rs"]
+mod tests_synthetic_oracle_wave013;
 #[cfg(test)]
+#[path = "replay/testkit/tests_synthetic_oracle_wave014.rs"]
+mod tests_synthetic_oracle_wave014;
 #[cfg(test)]
+#[path = "replay/testkit/tests_synthetic_oracle_waves015_017.rs"]
+mod tests_synthetic_oracle_waves015_017;
 #[cfg(test)]
+#[path = "replay/testkit/tests_synthetic_oracle_waves018_019.rs"]
+mod tests_synthetic_oracle_waves018_019;
 #[cfg(test)]
+#[path = "replay/testkit/tests_synthetic_oracle_waves020_021.rs"]
+mod tests_synthetic_oracle_waves020_021;
 #[cfg(test)]
+#[path = "replay/testkit/tests_talent_batch_010.rs"]
 mod tests_talent_batch_010;
 #[cfg(test)]
+#[path = "replay/testkit/tests_talent_resource.rs"]
 mod tests_talent_resource;
 #[cfg(test)]
+#[path = "replay/testkit/tests_turn_action_lifecycle.rs"]
 mod tests_turn_action_lifecycle;
 mod turn_end_trace;
+pub mod wire;
 
 pub use decisions::{
     ReplayDecisionDomain, ReplayDecisionEvent, ReplayDecisionIntegerRange, ReplayDecisionKind,
@@ -174,7 +273,7 @@ enum Element {
     Earth,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ReplaySummary {
     pub winner_side: PlayerSide,
@@ -190,7 +289,7 @@ impl ReplaySummary {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ReplayRun {
     pub summary: ReplaySummary,
@@ -205,7 +304,7 @@ pub struct ReplayRun {
 
 /// Browser-facing replay stream with live state that intentionally stays outside
 /// the exact 29-field original-oracle snapshot.
-#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ReplayUiRun {
     pub summary: ReplaySummary,
@@ -215,7 +314,7 @@ pub struct ReplayUiRun {
     pub decision_events: Vec<ReplayDecisionEvent>,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub enum ReplayTerminationCause {
     TurnStartLethal,
@@ -233,7 +332,17 @@ pub struct ReplayEvaluationRun {
     pub decision_events: Vec<ReplayDecisionEvent>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize)]
+/// The solver's HpDelta projection reads four terminal counters. Keeping this
+/// internal surface small avoids building two full observation snapshots.
+pub(crate) struct ReplayTerminalEvaluation {
+    pub summary: ReplaySummary,
+    pub hp: [i64; 2],
+    pub physique: [i64; 2],
+    pub decision_events: Vec<ReplayDecisionEvent>,
+    pub uncaptured_synthetic_seeds: Vec<u32>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ReplayEvent {
     pub turn: i64,
@@ -246,7 +355,7 @@ pub struct ReplayEvent {
     pub p2: ReplayPlayerSnapshot,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ReplayUiEvent {
     pub turn: i64,
@@ -259,7 +368,7 @@ pub struct ReplayUiEvent {
     pub p2: ReplayUiPlayerSnapshot,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub enum ReplayEventKind {
     BattleStart,
@@ -269,7 +378,7 @@ pub enum ReplayEventKind {
     BattleEnd,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, serde::Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ReplayPlayerSnapshot {
     pub hp: i64,
@@ -319,43 +428,43 @@ pub struct ReplayPlayerSnapshot {
     pub metal_iron_bone: i64,             // TieGu(9) 铁骨 Positive
     pub earth_eight_wastes: i64,          // HeBaHuang(11) 合八荒 Positive
     pub wood_scattered_branches: i64,
-    pub zhu_chen_bu: i64,                 // ZhuChenBu(779) 土灵•逐尘步 Neutral
-    pub xing_yi_lian: i64,                // XingYiLian(778) 星弈•连 Neutral
-    pub wood_array: i64,                  // MuLingZhen(243) 木灵阵 Neutral
+    pub zhu_chen_bu: i64,  // ZhuChenBu(779) 土灵•逐尘步 Neutral
+    pub xing_yi_lian: i64, // XingYiLian(778) 星弈•连 Neutral
+    pub wood_array: i64,   // MuLingZhen(243) 木灵阵 Neutral
     /// 阵法
     pub turtle_formation: i64, // GuiJiaZhen(252) 龟甲阵 Neutral
-    pub shatter_formation: i64,           // SuiShaZhen(251) 碎杀阵 Neutral
-    pub thunder_formation: i64,           // YinLeiZhen(250) 引雷阵 Neutral
-    pub evil_gu_formation: i64,           // XieGuZhen(253) 邪蛊阵 Neutral
-    pub spirit_gathering_formation: i64,  // JuLinZhen(254) 聚灵阵 Neutral
+    pub shatter_formation: i64, // SuiShaZhen(251) 碎杀阵 Neutral
+    pub thunder_formation: i64, // YinLeiZhen(250) 引雷阵 Neutral
+    pub evil_gu_formation: i64, // XieGuZhen(253) 邪蛊阵 Neutral
+    pub spirit_gathering_formation: i64, // JuLinZhen(254) 聚灵阵 Neutral
     pub heaven_cycle_sword_formation: i64, // ZhouTianJianZhen(255) 周天剑阵 Neutral
-    pub heaven_force_formation: i64,      // TianGangJuLiZhen(257) 天罡聚力阵 Neutral
-    pub flower_maze_formation: i64,       // WanHuaMiHunZhen(258) 万花迷魂阵 Neutral
-    pub immovable_formation: i64,         // BuDongJinGangZhen(271) 不动金刚阵 Neutral
-    pub eight_gates_formation: i64,       // BaMenJinSuoZhen(256) 八门金锁阵 Neutral
-    pub six_yao_formation: i64,           // LiuYaoShaZhen(204) 六爻煞阵 Neutral
+    pub heaven_force_formation: i64, // TianGangJuLiZhen(257) 天罡聚力阵 Neutral
+    pub flower_maze_formation: i64, // WanHuaMiHunZhen(258) 万花迷魂阵 Neutral
+    pub immovable_formation: i64, // BuDongJinGangZhen(271) 不动金刚阵 Neutral
+    pub eight_gates_formation: i64, // BaMenJinSuoZhen(256) 八门金锁阵 Neutral
+    pub six_yao_formation: i64, // LiuYaoShaZhen(204) 六爻煞阵 Neutral
     /// 锻玄
     pub beng_quan_cun_jin: i64, // BengQuanCunJin(290) 崩拳寸劲 Neutral
-    pub beng_quan_return_profound: i64,   // BengQuanFanXuan(418) 崩拳返玄 Neutral
-    pub dream_beng_quan_chain: i64,       // MengLianBeng(725) 梦崩拳连崩 Neutral
+    pub beng_quan_return_profound: i64, // BengQuanFanXuan(418) 崩拳返玄 Neutral
+    pub dream_beng_quan_chain: i64, // MengLianBeng(725) 梦崩拳连崩 Neutral
     /// 琴曲
     pub immortal_binding_tune: i64, // TianYinKunXianQu(215) 天音困仙曲 Neutral
-    pub illusory_tune: i64,               // HuanYinQu(209) 幻音曲 Neutral
-    pub heartbreak_tune: i64,             // DuanChangQu(211) 断肠曲 Neutral
-    pub wild_dance_tune: i64,             // KuangWuQu(212) 狂舞曲 Neutral
-    pub rejuvenation_tune: i64,           // HuiChunQu(213) 回春曲 Neutral
-    pub xiaoyao_tune: i64,                // XiaoYaoQu(208) 逍遥曲 Neutral
-    pub xiaoyao_guqin: i64,               // XiaoYaoGuQin(274) 逍遥古琴 Neutral
-    pub chaotic_mind_tune: i64,           // WanMoShiXinQu(214) 万魔蚀心曲 Neutral
+    pub illusory_tune: i64, // HuanYinQu(209) 幻音曲 Neutral
+    pub heartbreak_tune: i64, // DuanChangQu(211) 断肠曲 Neutral
+    pub wild_dance_tune: i64, // KuangWuQu(212) 狂舞曲 Neutral
+    pub rejuvenation_tune: i64, // HuiChunQu(213) 回春曲 Neutral
+    pub xiaoyao_tune: i64, // XiaoYaoQu(208) 逍遥曲 Neutral
+    pub xiaoyao_guqin: i64, // XiaoYaoGuQin(274) 逍遥古琴 Neutral
+    pub chaotic_mind_tune: i64, // WanMoShiXinQu(214) 万魔蚀心曲 Neutral
     /// 卦星
-    pub ling_gua_art: i64,    // LingGuaShu(358) 灵卦术 Neutral
-    pub star_moon_fan: i64,               // XingYueYuShan(260) 星月折扇 Neutral
-    pub infinite_hexagram_plate: i64,     // WuJiGuaPan(266) 无极卦盘 Neutral
-    pub all_goes_well: i64,               // WanShiRuYi(387) 万事如意 Neutral
-    pub ling_yuan_wai_fang: i64,          // LingYuanWaiFang(787) 灵元外放 Positive
+    pub ling_gua_art: i64, // LingGuaShu(358) 灵卦术 Neutral
+    pub star_moon_fan: i64, // XingYueYuShan(260) 星月折扇 Neutral
+    pub infinite_hexagram_plate: i64, // WuJiGuaPan(266) 无极卦盘 Neutral
+    pub all_goes_well: i64, // WanShiRuYi(387) 万事如意 Neutral
+    pub ling_yuan_wai_fang: i64, // LingYuanWaiFang(787) 灵元外放 Positive
     /// 状态
-    pub recovery: i64,        // HuiFu(248) 恢复 Positive
-    pub meditation: i64, // Min(367) 冥 Negative（detail_entries 同口径 label「冥」）
+    pub recovery: i64, // HuiFu(248) 恢复 Positive
+    pub meditation: i64,   // Min(367) 冥 Negative（detail_entries 同口径 label「冥」）
     pub blood_calamity: i64, // XueGuangZhiZai(379) 血光之灾 Neutral
     pub lone_night_wolf: i64, // GuYeLang(234) 孤夜狼 Neutral
     pub leaf_blade_flower: i64, // YeRenHua(278) 叶刃花 Neutral
@@ -363,12 +472,12 @@ pub struct ReplayPlayerSnapshot {
     pub quiet_mindset: i64, // JingQiXinFa(203) 静气心法 Neutral
     pub reflect_mindset: i64, // FanZhenXinFa(217) 反震心法 Neutral
     pub graft_flowers_to_tree: i64, // YiHuaJieMu(216) 移花接木 Neutral
-    pub tide: i64,       // HaiChao(247) 海潮 Neutral
+    pub tide: i64,         // HaiChao(247) 海潮 Neutral
     pub dismantle_move: i64, // ChaiZhao(459) 拆招 Neutral
     pub all_things_inauspicious: i64, // ZhuShiBuYi(381) 诸事不宜 Neutral
-    pub fate_cycle: i64, // DongZhuJiXian(390) 命运轮回 Neutral
+    pub fate_cycle: i64,   // DongZhuJiXian(390) 命运轮回 Neutral
     pub yellow_bird_behind: i64, // HuangQueZaiHou(264) 黄雀在后 Neutral
-    pub exorcism: i64,   // BiXie(13) 辟邪 Positive
+    pub exorcism: i64,     // BiXie(13) 辟邪 Positive
     pub ice_snow_lotus: i64, // BingFengXueLian(14) 冰封雪莲 Positive
     pub leaf_shield_flower: i64, // YeDunHua(276) 叶盾花 Neutral
     pub paint_finishing_touch: i64, // HuaLongDianJing(281) 画龙点睛 Neutral
@@ -378,7 +487,7 @@ pub struct ReplayPlayerSnapshot {
     pub next_attack_shatter_defense: i64, // XiaCiGongJiSuiFang(383) 下次攻击碎防 Neutral
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ReplayUiPlayerSnapshot {
     #[serde(flatten)]
@@ -389,7 +498,7 @@ pub struct ReplayUiPlayerSnapshot {
     pub slots: Vec<ReplayUiCardSlotSnapshot>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ReplayUiCardSlotSnapshot {
     pub index: usize,
@@ -400,9 +509,54 @@ pub struct ReplayUiCardSlotSnapshot {
     pub had_used: bool,
 }
 
+/// A stable immutable definition shared by selections, transactions and frames.
+/// Original definitions borrow the finite catalog; fixture patches stay owned
+/// by the battle and never enter a process-global intern table.
+#[derive(Debug, Clone)]
+struct RuntimeCard(RuntimeCardStorage);
+
+#[derive(Debug, Clone)]
+enum RuntimeCardStorage {
+    Original(&'static CardDefinition),
+    Patched(std::sync::Arc<CardDefinition>),
+}
+
+impl RuntimeCard {
+    fn definition(&self) -> &CardDefinition {
+        match &self.0 {
+            RuntimeCardStorage::Original(card) => card,
+            RuntimeCardStorage::Patched(card) => card,
+        }
+    }
+}
+
+impl std::ops::Deref for RuntimeCard {
+    type Target = CardDefinition;
+    fn deref(&self) -> &Self::Target {
+        self.definition()
+    }
+}
+
+impl From<CardDefinition> for RuntimeCard {
+    fn from(card: CardDefinition) -> Self {
+        match original_config::original_card_definition_ref(card.id) {
+            Some(original) if *original == card => Self(RuntimeCardStorage::Original(original)),
+            _ => Self(RuntimeCardStorage::Patched(std::sync::Arc::new(card))),
+        }
+    }
+}
+
+impl PartialEq for RuntimeCard {
+    fn eq(&self, other: &Self) -> bool {
+        std::ptr::eq(self.definition(), other.definition())
+            || self.definition() == other.definition()
+    }
+}
+impl Eq for RuntimeCard {}
+
 #[derive(Debug, Clone)]
 struct ReplayCardSlot {
-    card: CardDefinition,
+    card: RuntimeCard,
     skipped: bool,
     used: bool,
 }
@@ -431,7 +585,7 @@ struct ReplayPlayer {
 
 /// Derived telemetry, not battle state: excluded from the 29-field oracle parity
 /// snapshot (`ORIGINAL_ORACLE_PROTOCOL_SNAPSHOT_FIELDS`); rules never read it back.
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, serde::Serialize)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ReplayPreventionState {
     /// Requested HP loss cancelled by a guard stack.
@@ -454,22 +608,91 @@ impl ReplayPreventionState {
     }
 }
 
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, serde::Serialize)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ReplayPreventionPair {
     pub p1: ReplayPreventionState,
     pub p2: ReplayPreventionState,
 }
 
+/// Ordered fixture IDs with a hot-path membership mask. Iteration retains
+/// duplicates and order; all IDs outside the mask use the original scan.
+#[derive(Debug, Clone, Default)]
+struct RuntimeIds {
+    values: Vec<i64>,
+    mask: [u64; 8],
+}
+
+impl RuntimeIds {
+    #[inline(always)]
+    fn contains(&self, id: &i64) -> bool {
+        let index = *id as u64;
+        if index < 512 {
+            self.mask[index as usize / 64] & (1 << (index % 64)) != 0
+        } else {
+            self.values.contains(id)
+        }
+    }
+
+    #[cfg(test)]
+    fn clear(&mut self) {
+        self.values.clear();
+        self.mask = [0; 8];
+    }
+    #[cfg(test)]
+    fn extend(&mut self, values: impl IntoIterator<Item = i64>) {
+        for id in values {
+            self.push(id);
+        }
+    }
+
+    #[cfg(test)]
+    fn push(&mut self, id: i64) {
+        if (0..512).contains(&id) {
+            self.mask[id as usize / 64] |= 1 << (id % 64);
+        }
+        self.values.push(id);
+    }
+}
+impl From<Vec<i64>> for RuntimeIds {
+    fn from(values: Vec<i64>) -> Self {
+        let mut mask = [0; 8];
+        for &id in &values {
+            if (0..512).contains(&id) {
+                mask[id as usize / 64] |= 1 << (id % 64);
+            }
+        }
+        Self { values, mask }
+    }
+}
+impl std::ops::Deref for RuntimeIds {
+    type Target = [i64];
+    fn deref(&self) -> &[i64] {
+        &self.values
+    }
+}
+impl<'a> IntoIterator for &'a RuntimeIds {
+    type Item = &'a i64;
+    type IntoIter = std::slice::Iter<'a, i64>;
+    fn into_iter(self) -> Self::IntoIter {
+        self.values.iter()
+    }
+}
+
 #[derive(Debug, Clone, Default)]
 struct ReplayPlayerIdentity {
     level: i64,
     character_id: Option<i64>,
-    fate_strategies: Vec<i64>,
+    fate_strategies: RuntimeIds,
     /// FateStrategyFunctions.IsSwitchActive reads this fixture-owned map:
     /// missing/zero means active, non-zero means disabled.
     fate_strategy_temp_datas: BTreeMap<String, i64>,
-    talents: Vec<i64>,
+    /// XianMoStrategyFunctions.HasXianMoStrategy and GetFuMoGrid inputs.
+    xian_mo_strategies: RuntimeIds,
+    xian_mo_temp_datas: BTreeMap<String, i64>,
+    talents: RuntimeIds,
+    /// Card_19.UpdateCardInfo reads the copying actor's talentTempDatas[92].
+    sword_forging_attack: i64,
     talent_resonance_id: Option<i64>,
     talent_resonance_temp_flags: Vec<i64>,
     ke_yin_card_ids: Vec<i64>,
@@ -497,9 +720,11 @@ struct ReplayCoreVitals {
     lost_max_hp_count: i64,
 }
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
 struct ReplaySwordState {
     sword_intent: i64,
+    // Attack outside a card action leaves XiaoHaoJianYi until this actor's next card settlement.
+    pending_sword_intent_outside_card: i64,
     sword_energy: i64,
     sharpness: i64,
     metal_ring: i64,
@@ -539,7 +764,7 @@ struct ReplaySwordState {
     chain_sword_temporary_cursor: Option<usize>,
 }
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
 struct ReplayElementState {
     water_momentum: i64,
     water_formation: i64,
@@ -587,7 +812,7 @@ struct ReplayElementState {
     zhu_chen_bu: i64,
 }
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
 struct ReplayFormationState {
     turtle_formation: i64,
     turtle_formation_defense: i64,
@@ -623,7 +848,7 @@ struct ReplayFormationState {
     spirit_formation_echo_triggered: bool,
 }
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
 struct ReplayBengQuanState {
     next_beng_quan_hp_cost_damage: i64,
     beng_quan_double_shadow: i64,
@@ -661,7 +886,7 @@ struct ReplayBengQuanState {
     gun_stance: i64,
 }
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
 struct ReplayMusicState {
     music_cards_played: i64,
     immortal_binding_tune: i64,
@@ -676,7 +901,7 @@ struct ReplayMusicState {
     chaotic_mind_tune: i64,
 }
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
 struct ReplayAstrologyState {
     hexagram: i64,
     lost_hexagram: i64,
@@ -756,7 +981,7 @@ struct ReplayHpMutationState {
     immortal_egg_yolk_zongzi: i64,
 }
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
 struct ReplayFateTalentState {
     quiet_mindset: i64,
     reflect_mindset: i64,
@@ -787,6 +1012,23 @@ struct ReplayFateTalentState {
     /// TianYanFengLingDuanQu 771）：开局 5 层；每次加身法时消耗
     /// 1 层换 1 体魄（BattleCharacter.cs:8733-8737）。
     tian_yan_feng_ling_duan_qu: i64,
+    /// XiaCiJiaLingQiDuoJia: add before anima multipliers, then remove all stacks.
+    next_anima_gain_bonus: i64,
+    dragon_first_attack_stealth: i64,
+    normal_attack_copy_previous: i64,
+    normal_attack_guard_and_exhaust: i64,
+    normal_attack_bonus_and_exhaust: i64,
+    next_damage_internal_injury: i64,
+    next_card_downgrade: i64,
+    /// XianMo 13006 追击 once-per-battle marker (BuffType ZhuiJiKeWenYiChuFa 794).
+    xian_mo_13006_triggered: i64,
+    /// XianMo 5011 下次普攻消耗 marker (BuffType XiaCiPuGongXiaoHao 793).
+    xian_mo_5011_pending_pu_gong: i64,
+    /// XianMo 11003 五行秘卷升级 counter (BuffType WuXingMiJuanShengJi 792).
+    xian_mo_11003_wuxing_upgrades: i64,
+    /// BattleExecuter 跳牌链（仙魔 7116/5010）在取牌时产生的生命与灵气变化，按跳牌顺序，由取牌边界结算。
+    skip_hp_deltas: Vec<i64>,
+    skip_anima_deltas: Vec<i64>,
     /// 促局飞袭 FateStrategy 416 标记（原版 BuffType CuJuFeiXi 768）：
     /// 开局 otherParams[0]=5 层（FateStrategyFunctions.cs:571-573，
     /// OnBattleStart 内）；每张名字含「火灵」的牌（含 temp 执行）在
@@ -817,6 +1059,10 @@ struct ReplayFateTalentState {
     used_rear_move_check: i64,
     rear_move_succeeded: bool,
     exorcism: i64,
+    /// 鲜果宝粽 BuffType.XianGuoBaoZong 399（Hidden）：ModifyBuffValue 负面
+    /// 分支在 206 架势之后、辟邪之前检查；正 delta 且非 Min(367) 时耗 1 层
+    /// 转等量恢复并 return（BattleCharacter.cs:8803-8808）。
+    xian_guo_bao_zong: i64,
     heavenly_secret_reverse: i64,
     vitality_bloom: i64,
     first_strike: i64,
@@ -840,7 +1086,7 @@ struct ReplayFateTalentState {
     ke_yin_jing_lei: i64,
 }
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
 struct ReplayChanceState {
     cannot_revive: i64,
     po_kong_diao: i64,
@@ -863,7 +1109,7 @@ struct ReplayChanceState {
 /// `ReplayMirageRonghuiState`: both waves use the same original BuffType, so the
 /// resource and turn pipelines must observe one canonical value rather than
 /// duplicate ledgers that can drift or trigger twice.
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
 struct ReplayDreamMirageState {
     dream_unmoving_formation: i64,
     dream_dance_countdown: i64,
@@ -950,7 +1196,7 @@ struct ReplayDreamMirageState {
     action_again_limit: i64,
 }
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
 struct ReplayMirageRonghuiState {
     mirage_anima_attack_cards: i64,
     mirage_internal_injury_amplifier_turns: i64,
@@ -983,7 +1229,7 @@ struct ReplayMirageRonghuiState {
     cannot_gain_hp: i64,
 }
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
 struct ReplayRonghuiState {
     five_emperors_upgrade: i64,
     alchemy_pot: i64,
@@ -1004,6 +1250,12 @@ struct ReplayRonghuiState {
     dong_huang_copy_guard: i64,
     five_elements_dream_copy_guard: i64,
     five_elements_bottle_card_id: i64,
+    /// 灵玄不息（卡 416，BuffType LingXuanBuXi）：持续——每次使用牌后追加 buff 层数 + 自身负面层数/2 的攻击。
+    ling_xuan_bu_xi: i64,
+    /// 天髓逆克诀（卡 455，BuffType TianSuiNiKeJue）：五行牌与上一张五行牌存在克制时再次行动。
+    tian_sui_ni_ke_jue: i64,
+    /// 浮云连环步（卡 402，BuffType FuYunLianHuanBu）：下一张云剑完整再执行一次。
+    fu_yun_lian_huan_bu: i64,
 }
 
 #[derive(Debug, Clone, Default)]
@@ -1020,12 +1272,20 @@ struct ReplayTurnState {
     used_card_count: i64,
     adaptation: i64,
     ignore_defense_attacks: i64,
+    ignore_guard_attacks: i64,
     ignore_weakness_attacks: i64,
     next_attack_shatter_defense: i64,
     attack_segments_performed: i64,
     extra_actions: i64,
     agility: i64,
     action_again_count: i64,
+    /// Buff 561 本回合无法再次行动：each owner's turn end consumes one layer.
+    action_again_blocked_turns: i64,
+    /// Buff 738 再次行动次数 persists across owner turns within the battle.
+    successful_action_again_total: i64,
+    /// BuffType JiLuHuiHeShu (795) tracking player's own turn count within battle.
+    own_turn_count: i64,
+    keyin_shan_feng: i64,
     wind_spirit_body_forge_count: i64,
     battle_physique_gain_count: i64,
     lose_hp_count: i64,
@@ -1055,7 +1315,7 @@ struct ReplayTurnState {
 
 #[derive(Debug, Clone, Default)]
 struct ReplayDeckState {
-    slots: Vec<ReplayCardSlot>,
+    slots: deck_index::ReplaySlots,
     queue: Vec<usize>,
     active_slot_count: usize,
 }
@@ -1063,8 +1323,9 @@ struct ReplayDeckState {
 #[derive(Debug, Clone)]
 struct DrawnCard {
     source_slot: usize,
-    card: CardDefinition,
+    card: RuntimeCard,
     fallback_basic_attack: bool,
+    #[allow(dead_code)]
     skipped_slots: Vec<usize>,
     skipped_opening_slots: Vec<usize>,
     /// BattleExecuter.cs:1857-1864：FS398（老鼠偷油/星弈跳牌）的 while 循环
@@ -1148,14 +1409,14 @@ struct ReplayObservationRuntime {
 }
 
 #[derive(Debug)]
-struct ExecutedReplay {
-    state: ReplayState,
+struct ExecutedReplay<const OBSERVE: bool = true> {
+    state: Box<ReplayState<OBSERVE>>,
     summary: ReplaySummary,
 }
 
 /// Keeps analysis-only starting perturbations out of every exact-comparison path.
 ///
-/// `Events` is the observation mode the solver rule-impact / lambda pipeline uses,
+/// `Events` is the observation mode the solver counterfactual pipeline uses,
 /// and it is the only caller allowed to perturb the opening state. Parity feeds the
 /// golden `winner / actorTurn / hpDelta` comparison, `Ui` feeds the browser's
 /// parity-shaped timeline, `None` feeds the summary comparison and `Detailed`
@@ -1183,16 +1444,27 @@ fn reject_perturbations_outside_analysis(
     Ok(())
 }
 
-fn execute_replay_fixture(
+fn execute_replay_fixture<const OBSERVE: bool>(
     fixture: &BattleFixture,
     observation_mode: ReplayObservationMode,
-) -> std::result::Result<ExecutedReplay, BattleError> {
+) -> std::result::Result<ExecutedReplay<OBSERVE>, BattleError> {
+    execute_replay_view::<OBSERVE>(
+        &crate::fixture::BattleFixtureView::new(fixture),
+        observation_mode,
+    )
+}
+
+fn execute_replay_view<const OBSERVE: bool>(
+    fixture: &crate::fixture::BattleFixtureView<'_>,
+    observation_mode: ReplayObservationMode,
+) -> std::result::Result<ExecutedReplay<OBSERVE>, BattleError> {
     reject_perturbations_outside_analysis(fixture, observation_mode)?;
     // Do not expose a partially initialized state: an opening error must be
     // returned before a BattleStart event or the first actor turn can run.
     // `from_fixture_with_mode` opens Detailed observation before the opening
     // (receipt contract) and defers every other mode's observation to here.
-    let mut state = ReplayState::from_fixture_with_mode(fixture, true, observation_mode)?;
+    let mut state =
+        ReplayState::<OBSERVE>::from_fixture_view_with_mode(fixture, true, observation_mode)?;
     state.observation.mode = observation_mode;
     state.record_event(
         ReplayEventKind::BattleStart,
@@ -1228,7 +1500,7 @@ pub fn run_replay_fixture_file(path: impl AsRef<Path>) -> Result<ReplaySummary> 
 }
 
 pub fn run_replay_fixture(fixture: &BattleFixture) -> Result<ReplaySummary> {
-    execute_replay_fixture(fixture, ReplayObservationMode::None)
+    execute_replay_fixture::<false>(fixture, ReplayObservationMode::None)
         .map(|execution| execution.summary)
         .map_err(EngineError::Battle)
 }
@@ -1242,8 +1514,8 @@ pub fn run_replay_fixture_with_parity_events(fixture: &BattleFixture) -> Result<
 }
 
 pub fn run_replay_fixture_with_ui_events(fixture: &BattleFixture) -> Result<ReplayUiRun> {
-    let execution =
-        execute_replay_fixture(fixture, ReplayObservationMode::Ui).map_err(EngineError::Battle)?;
+    let execution = execute_replay_fixture::<true>(fixture, ReplayObservationMode::Ui)
+        .map_err(EngineError::Battle)?;
     let summary = execution.summary;
     let state = execution.state;
     let termination_cause = state.termination_cause.ok_or_else(|| {
@@ -1274,7 +1546,7 @@ fn run_replay_fixture_with_observation(
     observation_mode: ReplayObservationMode,
 ) -> Result<ReplayRun> {
     let execution =
-        execute_replay_fixture(fixture, observation_mode).map_err(EngineError::Battle)?;
+        execute_replay_fixture::<true>(fixture, observation_mode).map_err(EngineError::Battle)?;
     let summary = execution.summary;
     let state = execution.state;
     let termination_cause = state.termination_cause.ok_or_else(|| {
@@ -1313,7 +1585,7 @@ fn run_replay_fixture_with_observation(
 pub fn run_replay_fixture_with_detailed_events(
     fixture: &BattleFixture,
 ) -> Result<ReplayDetailedRun> {
-    let execution = execute_replay_fixture(fixture, ReplayObservationMode::Detailed)
+    let execution = execute_replay_fixture::<true>(fixture, ReplayObservationMode::Detailed)
         .map_err(EngineError::Battle)?;
     let summary = execution.summary;
     let state = execution.state;
@@ -1332,7 +1604,13 @@ pub fn run_replay_fixture_with_detailed_events(
 pub fn evaluate_replay_fixture_fallible(
     fixture: &BattleFixture,
 ) -> std::result::Result<ReplayEvaluationRun, String> {
-    let execution = execute_replay_fixture(fixture, ReplayObservationMode::None)
+    evaluate_replay_view_fallible(&crate::fixture::BattleFixtureView::new(fixture))
+}
+
+pub(crate) fn evaluate_replay_view_fallible(
+    fixture: &crate::fixture::BattleFixtureView<'_>,
+) -> std::result::Result<ReplayEvaluationRun, String> {
+    let execution = execute_replay_view::<false>(fixture, ReplayObservationMode::None)
         .map_err(|error| error.to_string())?;
     let summary = execution.summary;
     let state = execution.state;
@@ -1341,6 +1619,21 @@ pub fn evaluate_replay_fixture_fallible(
         p1: state.p1.snapshot(),
         p2: state.p2.snapshot(),
         decision_events: state.decision_events,
+    })
+}
+
+pub(crate) fn evaluate_replay_terminal_fallible(
+    fixture: &crate::fixture::BattleFixtureView<'_>,
+) -> std::result::Result<ReplayTerminalEvaluation, String> {
+    let execution = execute_replay_view::<false>(fixture, ReplayObservationMode::None)
+        .map_err(|error| error.to_string())?;
+    let state = execution.state;
+    Ok(ReplayTerminalEvaluation {
+        summary: execution.summary,
+        hp: [state.p1.core.hp, state.p2.core.hp],
+        physique: [state.p1.core.physique, state.p2.core.physique],
+        decision_events: state.decision_events,
+        uncaptured_synthetic_seeds: state.uncaptured_synthetic_seeds,
     })
 }
 
@@ -1371,6 +1664,13 @@ struct HpMutationReceipt {
 }
 
 impl HpMutationReceipt {
+    /// Original ModifyHp's num3, passed to AfterHpModifyEffect and returned
+    /// to the caller. ShengJiZhanFang + ShunYing can fill more HP than the
+    /// accepted healing delta; that extra fill is only a visible change.
+    fn effect_delta(self) -> i64 {
+        self.applied.min(self.resolved)
+    }
+
     fn prevented(requested: i64) -> Self {
         Self {
             requested,
@@ -1465,11 +1765,12 @@ struct ReviveReceipt {
     max_hp_after: i64,
 }
 
-#[derive(Debug, Clone)]
-struct ReplayState {
+#[derive(Clone)]
+struct ReplayState<const OBSERVE: bool = true> {
     p1: ReplayPlayer,
     p2: ReplayPlayer,
     first_player: PlayerSide,
+    battle_round: Option<i64>,
     current_actor: PlayerSide,
     actor_turn: i64,
     max_actor_turns: i64,
@@ -1483,6 +1784,8 @@ struct ReplayState {
     card_execution_occurrence: u64,
     current_card_execution: Option<ReplayCardExecution>,
     decision_events: Vec<ReplayDecisionEvent>,
+    capture_decision_events: bool,
+    uncaptured_synthetic_seeds: Vec<u32>,
     effect_invocation_stack: Vec<effect_invocation::EffectInvocationFrame>,
     /// Which explicit phase table is currently running, when no effect
     /// invocation is active. Receipts recorded inside a phase block are
@@ -1493,9 +1796,43 @@ struct ReplayState {
     observation: ReplayObservationRuntime,
     termination_cause: Option<ReplayTerminationCause>,
     completed_checkpoint_count: usize,
+    active_mechanisms: ActiveMechanisms,
 }
 
-/// One of the explicit phase tables from the PR-1 pipeline, used to attribute
+impl<const OBSERVE: bool> std::fmt::Debug for ReplayState<OBSERVE> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("ReplayState")
+            .field("p1", &self.p1)
+            .field("p2", &self.p2)
+            .field("first_player", &self.first_player)
+            .field("battle_round", &self.battle_round)
+            .field("current_actor", &self.current_actor)
+            .field("actor_turn", &self.actor_turn)
+            .field("max_actor_turns", &self.max_actor_turns)
+            .field("decision_tape", &self.decision_tape)
+            .field("random_fallback_tape", &self.random_fallback_tape)
+            .field("synthetic_decision_seed", &self.synthetic_decision_seed)
+            .field("synthetic_decision_sides", &self.synthetic_decision_sides)
+            .field("synthetic_decision_fallback_seed", &self.synthetic_decision_fallback_seed)
+            .field("robust_decisions", &self.robust_decisions)
+            .field("decision_occurrence", &self.decision_occurrence)
+            .field("card_execution_occurrence", &self.card_execution_occurrence)
+            .field("current_card_execution", &self.current_card_execution)
+            .field("decision_events", &self.decision_events)
+            .field("capture_decision_events", &self.capture_decision_events)
+            .field("uncaptured_synthetic_seeds", &self.uncaptured_synthetic_seeds)
+            .field("effect_invocation_stack", &self.effect_invocation_stack)
+            .field("attribution_block", &self.attribution_block)
+            .field("fail_on_missing_decision", &self.fail_on_missing_decision)
+            .field("evaluation_error", &self.evaluation_error)
+            .field("observation", &self.observation)
+            .field("termination_cause", &self.termination_cause)
+            .field("completed_checkpoint_count", &self.completed_checkpoint_count)
+            .finish()
+    }
+}
+
+/// Explicit phase table used to attribute
 /// mutations that run outside any card effect invocation.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum TraceAttributionBlock {
@@ -1505,7 +1842,12 @@ enum TraceAttributionBlock {
     TurnEnd,
 }
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
+    #[inline(always)]
+    pub(super) fn refresh_active_mechanisms(&mut self) {
+        self.active_mechanisms = active_mechanisms::detect_active_mechanisms(self);
+    }
+
     fn missing_card_effect(&mut self, card_id: i64, base_id: i64, reason: &str) {
         if self.evaluation_error.is_none() {
             self.evaluation_error = Some(BattleError::MissingRule {
@@ -1525,5 +1867,4 @@ impl ReplayState {
             });
         }
     }
-
 }

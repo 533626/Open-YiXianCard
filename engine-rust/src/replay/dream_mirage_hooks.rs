@@ -17,16 +17,38 @@ const HIGH_DREAM_FORGE_FIST_IDS: [i64; 2] = [10_030_087, 10_040_087];
 // CardActionBase.CheckAdjacentEffectsBeforeCard (CardActionBase.cs:2019-2027):
 // 相邻格为任意档梦•浑天印（7000075-7040075）时，先按本牌名字激活其所属
 // 五行（ActiveWuXingInName）。oracle 锚点：hf-32308000
-// 8a5572baa414efc1/round-12 cp8（土灵•扬尘邻 7040075，原版先激活土灵 →
+// pa_171a3297 cp8（土灵•扬尘邻 7040075，原版先激活土灵 →
 // 镇印心法 3 伤被护体 2→0 全挡；引擎未激活 → 护体剩 1）。
 const DREAM_HUN_TIAN_YIN_IDS: [i64; 5] = [7_000_075, 7_010_075, 7_020_075, 7_030_075, 7_040_075];
+
+/// Cache classification uses the exact predicates of the two adjacent hooks
+/// and the public 崩拳 helper; it does not classify cards by guessed names.
+pub(super) fn deck_hook_flags(card: &CardDefinition) -> u8 {
+    use super::deck_index::{ADJACENT_DREAM, PUBLIC_BENG, STAR_POINT_DREAM};
+    let id = card.id;
+    let mut flags = 0;
+    if LOW_DREAM_BENG_TIAN_IDS.contains(&id) || HIGH_DREAM_BENG_TIAN_IDS.contains(&id) {
+        flags |= PUBLIC_BENG;
+    }
+    if DREAM_HUN_TIAN_YIN_IDS.contains(&id)
+        || HIGH_DREAM_STAR_SHIFT_IDS.contains(&id)
+        || DREAM_GUARANTEED_WOUND_ADJACENT_IDS.contains(&id)
+        || normalized_base_id(card) == 1_000_069
+    {
+        flags |= ADJACENT_DREAM;
+    }
+    if HIGH_DREAM_STAR_POINT_IDS.contains(&id) {
+        flags |= STAR_POINT_DREAM;
+    }
+    flags
+}
 
 pub(super) struct DreamMirageAttackPreparation {
     pub(super) flat_bonus: i64,
     pub(super) replaces_percent_momentum: bool,
 }
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     /// BattleCharacter.Attack:11300-11471. Run exactly once before every
     /// attack segment and before the ordinary percentage-Momentum branch.
     pub(super) fn prepare_dream_mirage_attack_segment(
@@ -51,7 +73,11 @@ impl ReplayState {
         let multiplier = self.actor(actor_side).beng.momentum_multiplier.max(1);
         let mut flat_bonus = self.actor(actor_side).beng.momentum.max(0) * multiplier;
         if self.actor(actor_side).beng.momentum > 0 {
-            let retain_momentum = self.actor(actor_side).identity.fate_strategies.contains(&428)
+            let retain_momentum = (self
+                .actor(actor_side)
+                .identity
+                .fate_strategies
+                .contains(&428))
                 && self.active_effect_name().contains('掌');
             if !retain_momentum {
                 self.modify_momentum(actor_side, -1);
@@ -62,7 +88,7 @@ impl ReplayState {
         // mystic_soul）把自身负面状态总层数作为平值加攻
         // （num += GetDebuffCount() * QiShiBeiLv），与气势同走平值，不走
         // 11701-11706 的百分比分支（combat_core 里当 replaces 生效时跳过）。
-        // oracle 锚点：hf-latest-32308000-16f9c778 05875ccb9da9a58e/round-15
+        // oracle 锚点：hf-latest-32308000-16f9c778 pa_43aac68f
         // cp9（卡组含梦•威震四方 10040084 → GetCardBaseId=10000084：
         // 8+8 气势平值+10 负面层数 = 26 伤；原引擎 16×200% = 32 多 6）。
         if self.actor(actor_side).status.mystic_soul > 0 {
@@ -260,7 +286,7 @@ impl ReplayState {
             // isLianBeng（BattleCharacter.cs:12243-12252：base 10000035
             // 与 10030082/10040082）不 RemoveBuff(ChanPlus)——连崩触发的
             // 追加攻击保留给下一张崩拳。oracle 锚点：mirror-32299000
-            // b18d6644c37af418/round-13 t8 降龙仍继承 319 的 3×2 追加攻击
+            // pa_ba848eea t8 降龙仍继承 319 的 3×2 追加攻击
             // （气势 2→0，共 3 攻击段）。
             if !matches!(card.id, 10_030_082 | 10_040_082) && normalized_base_id(card) != 10_000_035
             {
@@ -472,8 +498,7 @@ impl ReplayState {
                 .actor(actor_side)
                 .deck
                 .slots
-                .iter()
-                .any(|entry| HIGH_DREAM_STAR_POINT_IDS.contains(&entry.card.id))
+                .has_hooks(super::deck_index::STAR_POINT_DREAM)
         {
             self.add_actor_negative_status(target_side, 100, 1);
         }
@@ -804,6 +829,14 @@ impl ReplayState {
         actor_side: PlayerSide,
         slot: usize,
     ) -> bool {
+        if !self
+            .actor(actor_side)
+            .deck
+            .slots
+            .has_hooks(super::deck_index::PUBLIC_BENG)
+        {
+            return false;
+        }
         let previous = self.dream_mirage_runtime_previous_grid(actor_side, slot);
         let next = self.dream_mirage_runtime_next_grid(actor_side, slot);
         let previous_id = self
@@ -824,13 +857,20 @@ impl ReplayState {
     }
 
     /// 相邻两格（前一格、后一格，顺序同原版 foreach）的 (牌 id, 规范 base id, otherParams[0])，出界的格跳过。
-    /// 两处相邻钩子只读这几项：先取快照再改状态（同原先整张克隆的语义），但不再每次出牌克隆两张
-    /// CardDefinition、分配一个 Vec（剖析里约 4%）。
+    /// 两处相邻钩子只读这几项：先取快照再改状态，语义与整张克隆一致。
     fn dream_mirage_adjacent_ids(
         &self,
         actor_side: PlayerSide,
         slot: usize,
     ) -> [Option<(i64, i64, Option<i64>)>; 2] {
+        if !self
+            .actor(actor_side)
+            .deck
+            .slots
+            .has_hooks(super::deck_index::ADJACENT_DREAM)
+        {
+            return [None, None];
+        }
         let slots = &self.actor(actor_side).deck.slots;
         [
             self.dream_mirage_runtime_previous_grid(actor_side, slot),
@@ -862,6 +902,19 @@ impl ReplayState {
         } else {
             1
         };
+        if grid < count && count <= i64::MAX as usize {
+            return if step == 1 {
+                if grid + 1 == count {
+                    0
+                } else {
+                    grid + 1
+                }
+            } else if grid == 0 {
+                count - 1
+            } else {
+                grid - 1
+            };
+        }
         (grid as i64 + step).rem_euclid(count as i64) as usize
     }
 
@@ -872,6 +925,19 @@ impl ReplayState {
         } else {
             -1
         };
+        if grid < count && count <= i64::MAX as usize {
+            return if step == 1 {
+                if grid + 1 == count {
+                    0
+                } else {
+                    grid + 1
+                }
+            } else if grid == 0 {
+                count - 1
+            } else {
+                grid - 1
+            };
+        }
         (grid as i64 + step).rem_euclid(count as i64) as usize
     }
 
@@ -903,5 +969,34 @@ impl ReplayState {
             before,
             self.actor(actor_side).dream_mirage.turn_hp_gained,
         );
+    }
+}
+
+#[cfg(test)]
+mod cyclic_index_tests {
+    use super::*;
+    #[test]
+    fn cyclic_fast_path_and_virtual_grid_fallback_match_signed_remainder() {
+        let fixture = crate::engine_contract_fixture().unwrap();
+        let mut state = ReplayState::test_from_fixture(&fixture);
+        for count in 0..=8 {
+            state.actor_mut(PlayerSide::P1).deck.active_slot_count = count;
+            for reversed in [0, 1] {
+                state.actor_mut(PlayerSide::P1).fate.reverse_card_direction = reversed;
+                let n = state.dream_mirage_runtime_active_slot_count(PlayerSide::P1);
+                for grid in (0..=12).chain([usize::MAX]) {
+                    let next = if reversed > 0 { -1 } else { 1 };
+                    let previous = -next;
+                    assert_eq!(
+                        state.dream_mirage_runtime_next_grid(PlayerSide::P1, grid),
+                        (grid as i64 + next).rem_euclid(n as i64) as usize
+                    );
+                    assert_eq!(
+                        state.dream_mirage_runtime_previous_grid(PlayerSide::P1, grid),
+                        (grid as i64 + previous).rem_euclid(n as i64) as usize
+                    );
+                }
+            }
+        }
     }
 }

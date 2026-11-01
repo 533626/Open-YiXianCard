@@ -6,18 +6,6 @@ use super::support::{
 use super::{Element, ReplayState};
 use crate::model::{CardDefinition, PlayerSide};
 
-fn regenerative_body_from_talents(talents: &[i64]) -> (i64, i64) {
-    talents
-        .iter()
-        .fold((0, 0), |(physique, hp), talent| match *talent {
-            149 => (physique + 1, hp + 1),    // 再生之躯
-            10_149 => (physique + 1, hp + 2), // 再生之躯
-            20_149 => (physique + 2, hp + 4), // 再生之躯
-            30_149 => (physique + 2, hp + 6), // 再生之躯
-            _ => (physique, hp),
-        })
-}
-
 fn triggers_five_element_formation(
     actor: &super::ReplayPlayer,
     card_element: Element,
@@ -26,7 +14,8 @@ fn triggers_five_element_formation(
 ) -> bool {
     card_element == formation_element
         || ((actor.identity.talents.contains(&130)
-            || actor.identity.fate_strategies.contains(&133))
+            || actor.identity.fate_strategies.contains(&133)
+            || actor.identity.xian_mo_strategies.contains(&23080))
             && card_element == generated_element)
 }
 
@@ -38,7 +27,7 @@ fn first_slot_max_hp_gain_from_talents(talents: &[i64]) -> i64 {
         .sum()
 }
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     /// CardActionBase.OnAfterExecuted: record the just-completed card's
     /// element as `lastElement` (five-elements generating-chain anchor), and
     /// when it is water, accumulate the persistent Steam build 24217566
@@ -61,7 +50,7 @@ impl ReplayState {
     /// 引擎不能汇总成一次加防：NiShi（逆施）与 HeBaHuang（合八荒）都挂在
     /// ModifyDef 上按次结算，汇总会改变反弹值（floor(7×50/100)=3 对
     /// 1+1+1）与八荒退款顺序。oracle 锚点：mirror-32299000
-    /// 2ae5ddcc93eaebab/round-15 cp12（游龙后 p2.def 16→4 = 15 伤 - 3
+    /// pa_0fa3de62 cp12（游龙后 p2.def 16→4 = 15 伤 - 3
     /// 退款；引擎汇总 +7 时 16→10）。
     fn cloud_way_defense_gains(actor: &super::ReplayPlayer) -> [i64; 4] {
         let mut gains = [0_i64; 4];
@@ -80,33 +69,6 @@ impl ReplayState {
         gains
     }
 
-    fn sword_formation_guard_defense_gain(actor: &super::ReplayPlayer) -> i64 {
-        (if actor.identity.talents.contains(&57) {
-            1
-        } else {
-            0
-        }) + (if actor.identity.talents.contains(&10_057) {
-            3
-        } else {
-            0
-        }) + (if actor.identity.talents.contains(&20_057) {
-            6
-        } else {
-            0
-        }) + (if actor.identity.talents.contains(&30_057) {
-            9
-        } else {
-            0
-        })
-    }
-
-    fn sword_formation_guard_trigger_count(actor: &super::ReplayPlayer) -> i64 {
-        [57, 10_057, 20_057, 30_057]
-            .iter()
-            .filter(|talent| actor.identity.talents.contains(talent))
-            .count() as i64
-    }
-
     #[cfg(test)]
     pub(super) fn apply_selected_card_hooks(
         &mut self,
@@ -118,6 +80,110 @@ impl ReplayState {
         self.apply_qi_xing_lian_zhu(actor_side, card, slot);
         self.apply_xing_yi_lian(actor_side, card, slot);
         self.apply_selected_card_hooks_after_start(actor_side, card, slot, false);
+        self.apply_selected_card_talent_loop_hooks(actor_side, card, slot, false);
+        self.apply_muling_healing_formation_on_play_card(actor_side, card);
+    }
+
+    /// CardActionBase.OnBeforeExecuted applies MuLingLiaoYuZhen after
+    /// XianMoStrategyFunctions.OnPlayCard, so its healing reads attack bonus
+    /// after first-use XianMo mutations such as 13018.
+    pub(super) fn apply_muling_healing_formation_on_play_card(
+        &mut self,
+        actor_side: PlayerSide,
+        card: &CardDefinition,
+    ) {
+        let Some(element) = element_from_card(card) else {
+            return;
+        };
+        if (element == Element::Wood
+            || (element == Element::Fire && self.actor(actor_side).identity.talents.contains(&130)))
+            && self.actor(actor_side).elements.wood_healing_formation > 0
+        {
+            let healing = self.actor(actor_side).core.attack_bonus
+                * self.actor(actor_side).elements.wood_healing_formation;
+            if healing > 0 {
+                self.modify_actor_hp(actor_side, healing, false, false);
+            }
+        }
+    }
+
+    /// CardActionBase.OnBeforeExecuted 的仙命天赋循环（talents 149 再生之躯、60 首格生命上限等）位于
+    /// FateStrategy/XianMo.OnPlayCard 之后（状态机 IL_0174 → IL_01e4 → … → IL_1b3a）：
+    /// 13014 先按旧体魄算防御，再叠天赋体魄（原版 oracle 防御 9，非 10）。
+    pub(super) fn apply_selected_card_talent_loop_hooks(
+        &mut self,
+        actor_side: PlayerSide,
+        card: &CardDefinition,
+        slot: usize,
+        temporary_replay: bool,
+    ) {
+        if !temporary_replay && slot == 0 {
+            // 原版 CardActionBase.OnBeforeExecuted:2913-2919:
+            // 逐个 talent 匹配 case 149（149/10149/20149/30149），每次独立调用
+            // src.ModifyTiPo(otherParams[0]) 与 src.ModifyHp(otherParams[1])。
+            // 独立调用体魄会分别触发 幻•锻骨（277）的溢出反弹伤害；若与金灵•铁骨
+            // （TieGu，受到的攻或伤害减 5 最低减至 1）相遇，多次反弹各自保底 1 伤，
+            // 合并会导致保底被折损（例如 3 个再生之躯 1+1+2 体魄原版各触发 1 伤共 3 伤，
+            // 合并为 4 体魄则只触发 (4-5).max(1) = 1 伤，少 2 伤）。
+            // oracle 锚点：hf-26315169-unverified pa_e0345f4f cp17 p2Hp 12 vs 14。
+            let raw_talents = &self.actor(actor_side).identity.talents;
+            if raw_talents.len() <= 16 {
+                let mut talent_buf = [0i64; 16];
+                talent_buf[..raw_talents.len()].copy_from_slice(raw_talents);
+                for &talent in &talent_buf[..raw_talents.len()] {
+                    let (physique, hp) = match talent {
+                        149 => (1, 1),
+                        10_149 => (1, 2),
+                        20_149 => (2, 4),
+                        30_149 => (2, 6),
+                        _ => (0, 0),
+                    };
+                    if physique > 0 {
+                        self.apply_physique_amount(actor_side, physique);
+                    }
+                    if hp > 0 {
+                        self.modify_actor_hp(actor_side, hp, false, false);
+                    }
+                }
+            } else {
+                let talents = raw_talents.clone();
+                for &talent in &talents {
+                    let (physique, hp) = match talent {
+                        149 => (1, 1),
+                        10_149 => (1, 2),
+                        20_149 => (2, 4),
+                        30_149 => (2, 6),
+                        _ => (0, 0),
+                    };
+                    if physique > 0 {
+                        self.apply_physique_amount(actor_side, physique);
+                    }
+                    if hp > 0 {
+                        self.modify_actor_hp(actor_side, hp, false, false);
+                    }
+                }
+            }
+        }
+        // talent 62 星弈：名字含「星弈」的牌 +1 卦象，同在天赋循环里（case 62），晚于 XianMo.OnPlayCard 的 13013 等。
+        if self.actor(actor_side).identity.talents.contains(&62) && card.name.contains("星弈") {
+            self.gain_hexagram(actor_side, 1);
+        }
+        if slot == 0 {
+            let max_hp_gain =
+                first_slot_max_hp_gain_from_talents(&self.actor(actor_side).identity.talents);
+            if max_hp_gain > 0 {
+                self.modify_actor_max_hp(actor_side, max_hp_gain);
+            }
+        }
+        // Talent 200 百草生息 activates wood for a non-five-element card.
+        // This belongs to CardActionBase.OnBeforeExecuted's talent loop, which
+        // follows FateStrategy/XianMo.OnPlayCard. Keep it here so first-use
+        // XianMo healing resolves against the pre-activation max HP.
+        if element_from_card(card).is_none()
+            && self.actor(actor_side).identity.talents.contains(&200)
+        {
+            self.activate_element(actor_side, Element::Wood);
+        }
     }
 
     pub(super) fn apply_selected_card_hooks_after_start(
@@ -128,222 +194,220 @@ impl ReplayState {
         temporary_replay: bool,
     ) {
         let base_id = normalized_base_id(card);
-        self.apply_ordinary_sword_action_again_before_card(actor_side, card);
-        if self
-            .actor(actor_side)
-            .identity
-            .fate_strategies
-            .contains(&337)
-            && base_id == 381
-        {
-            self.gain_anima(actor_side, 1);
+        let has_sword = self.active_mechanisms.has(super::ActiveMechanisms::SWORD_SECT);
+        let has_fate = self.active_mechanisms.has(super::ActiveMechanisms::FATE_STRATEGY);
+
+        if has_sword {
+            self.apply_ordinary_sword_action_again_before_card(actor_side, card);
         }
-        if self
-            .actor(actor_side)
-            .identity
-            .fate_strategies
-            .contains(&33)
-            && is_pu_tong_gong_ji_base_id(base_id)
-            && self
+        if has_fate {
+            if (self
                 .actor(actor_side)
-                .deck
-                .slots
-                .get(slot)
-                .is_some_and(|slot_state| !slot_state.used)
-        {
-            self.gain_guard(actor_side, 2);
-        }
-        if !temporary_replay && slot == 0 {
-            let defense_gain = Self::sword_formation_guard_defense_gain(self.actor(actor_side));
-            if defense_gain > 0 {
-                self.gain_defense(actor_side, defense_gain);
-                let triggers = Self::sword_formation_guard_trigger_count(self.actor(actor_side));
-                self.actor_mut(actor_side).sword.water_month_sword_formation += triggers;
+                .identity
+                .fate_strategies
+                .contains(&337))
+                && base_id == 381
+            {
+                self.gain_anima(actor_side, 1);
+            }
+            if (self
+                .actor(actor_side)
+                .identity
+                .fate_strategies
+                .contains(&33))
+                && is_pu_tong_gong_ji_base_id(base_id)
+                && self
+                    .actor(actor_side)
+                    .deck
+                    .slots
+                    .get(slot)
+                    .is_some_and(|slot_state| !slot_state.used)
+            {
+                self.gain_guard(actor_side, 2);
             }
         }
-        if is_cloud_sword(self.actor(actor_side), card) {
+        if !temporary_replay && slot == 0 {
+            // CardActionBase.cs:2875 case 57: per 57-series talent with gridNumber==0
+            // and not temp: ModifyDef(otherParams[0]) + ShuiYueJianZhen+1. Must NOT
+            // sum into one call: ModifyDef hooks (BattleCharacter.cs:10349: 7133 +1,
+            // fate 382, resonance 20/75, NiShi/HeBaHuang) settle per call.
+            // Oracle anchor r3check-7 b83d/round-14: talents 10057+20057 + 7133 give
+            // (3+1)+(6+1)=11; the summed call gave 9+1=10.
+            for (talent, amount) in [(57, 1), (10_057, 3), (20_057, 6), (30_057, 9)] {
+                if self.actor(actor_side).identity.talents.contains(&talent) {
+                    self.gain_defense(actor_side, amount);
+                    self.actor_mut(actor_side).sword.water_month_sword_formation += 1;
+                }
+            }
+        }
+        if has_sword && is_cloud_sword(self.actor(actor_side), card) {
             for defense_gain in Self::cloud_way_defense_gains(self.actor(actor_side)) {
                 if defense_gain > 0 {
                     self.gain_defense(actor_side, defense_gain);
                 }
             }
         }
-        if self
-            .actor(actor_side)
-            .identity
-            .fate_strategies
-            .contains(&97)
-            && is_cloud_sword(self.actor(actor_side), card)
-        {
-            self.actor_mut(actor_side).sword.cloud_sea += 1;
-        }
-        if self
-            .actor(actor_side)
-            .identity
-            .fate_strategies
-            .contains(&325)
-            && is_frenzy_sword_for_actor(self.actor(actor_side), card)
-        {
-            self.gain_anima(actor_side, 1);
-        }
-        if card.id == 19 {
-            if self
-                .actor(actor_side)
-                .identity
-                .fate_strategies
-                .contains(&100)
+        if has_fate {
+            if has_sword
+                && (self
+                    .actor(actor_side)
+                    .identity
+                    .fate_strategies
+                    .contains(&97))
+                && is_cloud_sword(self.actor(actor_side), card)
+            {
+                self.actor_mut(actor_side).sword.cloud_sea += 1;
+            }
+            if has_sword
+                && (self
+                    .actor(actor_side)
+                    .identity
+                    .fate_strategies
+                    .contains(&325))
+                && is_frenzy_sword_for_actor(self.actor(actor_side), card)
             {
                 self.gain_anima(actor_side, 1);
             }
+            if card.id == 19 {
+                if self
+                    .actor(actor_side)
+                    .identity
+                    .fate_strategies
+                    .contains(&100)
+                {
+                    self.gain_anima(actor_side, 1);
+                }
+                if self
+                    .actor(actor_side)
+                    .identity
+                    .fate_strategies
+                    .contains(&101)
+                {
+                    self.actor_mut(actor_side).sword.sword_energy += 2;
+                }
+                if self
+                    .actor(actor_side)
+                    .identity
+                    .fate_strategies
+                    .contains(&102)
+                {
+                    self.reduce_all_actor_negative_statuses(actor_side, 2);
+                }
+                if self
+                    .actor(actor_side)
+                    .identity
+                    .fate_strategies
+                    .contains(&103)
+                {
+                    self.actor_mut(actor_side).sword.water_month_sword_formation += 2;
+                }
+                if self
+                    .actor(actor_side)
+                    .identity
+                    .fate_strategies
+                    .contains(&324)
+                {
+                    self.actor_mut(actor_side).sword.cloud_sea += 5;
+                    self.gain_cloud_chain(actor_side, 1);
+                }
+            }
+            if (self
+                .actor(actor_side)
+                .identity
+                .fate_strategies
+                .contains(&121))
+                && slot == 7
+            {
+                self.add_actor_negative_status(opponent_side(actor_side), 100, 2);
+            }
             if self
                 .actor(actor_side)
                 .identity
                 .fate_strategies
-                .contains(&101)
+                .contains(&153)
             {
-                self.actor_mut(actor_side).sword.sword_energy += 2;
+                let damage = card.hp_cost.unwrap_or(0).max(0) * 40 / 100;
+                if damage > 0 {
+                    self.apply_damage(actor_side, damage, false, false, false);
+                }
             }
-            if self
+            if is_pu_tong_gong_ji_base_id(base_id) {
+                if self
+                    .actor(actor_side)
+                    .identity
+                    .fate_strategies
+                    .contains(&32)
+                {
+                    let target_side = opponent_side(actor_side);
+                    let attack_bonus = self.actor(target_side).core.attack_bonus;
+                    self.actor_mut(target_side).core.attack_bonus = (attack_bonus - 3).max(0);
+                    self.modify_guard(target_side, -3);
+                }
+                if self
+                    .actor(actor_side)
+                    .identity
+                    .fate_strategies
+                    .contains(&36)
+                {
+                    self.gain_attack_bonus(actor_side, 2);
+                }
+            }
+            if self.actor(actor_side).fate.sword_formation_guard > 0
+                && is_sword_formation_card(self.actor(actor_side), card)
+            {
+                self.actor_mut(actor_side).fate.sword_formation_guard -= 1;
+                self.gain_defense(actor_side, 5);
+                self.gain_guard(actor_side, 1);
+            }
+            if (self
                 .actor(actor_side)
                 .identity
                 .fate_strategies
-                .contains(&102)
+                .contains(&128))
+                && card.name.contains("金灵")
             {
-                self.reduce_all_actor_negative_statuses(actor_side, 2);
+                self.gain_anima(actor_side, 1);
             }
-            if self
+            if (self
                 .actor(actor_side)
                 .identity
                 .fate_strategies
-                .contains(&103)
+                .contains(&128))
+                && card.name.contains("水灵")
             {
-                self.actor_mut(actor_side).sword.water_month_sword_formation += 2;
+                self.gain_sharpness(actor_side, 1);
             }
-            if self
+            if has_sword
+                && (self
+                    .actor(actor_side)
+                    .identity
+                    .fate_strategies
+                    .contains(&320))
+                && is_cloud_sword(self.actor(actor_side), card)
+            {
+                self.actor_mut(actor_side).sword.water_month_sword_formation += 1;
+            }
+            if (self
                 .actor(actor_side)
                 .identity
                 .fate_strategies
-                .contains(&324)
+                .contains(&330))
+                && base_id == 22
             {
-                self.actor_mut(actor_side).sword.cloud_sea += 5;
-                self.gain_cloud_chain(actor_side, 1);
+                self.gain_temporary_guard(actor_side, 3);
             }
         }
-        if self
+        if (self
             .actor(actor_side)
             .identity
             .fate_strategies
-            .contains(&121)
-            && slot == 7
-        {
-            self.add_actor_negative_status(opponent_side(actor_side), 100, 2);
-        }
-        if self
-            .actor(actor_side)
-            .identity
-            .fate_strategies
-            .contains(&153)
-        {
-            let damage = card.hp_cost.unwrap_or(0).max(0) * 40 / 100;
-            if damage > 0 {
-                self.apply_damage(actor_side, damage, false, false, false);
-            }
-        }
-        if self
-            .actor(actor_side)
-            .identity
-            .fate_strategies
-            .contains(&32)
-            && is_pu_tong_gong_ji_base_id(base_id)
-        {
-            let target_side = opponent_side(actor_side);
-            let attack_bonus = self.actor(target_side).core.attack_bonus;
-            self.actor_mut(target_side).core.attack_bonus = (attack_bonus - 3).max(0);
-            self.modify_guard(target_side, -3);
-        }
-        if self
-            .actor(actor_side)
-            .identity
-            .fate_strategies
-            .contains(&36)
-            && is_pu_tong_gong_ji_base_id(base_id)
-        {
-            self.gain_attack_bonus(actor_side, 2);
-        }
-        if self.actor(actor_side).fate.sword_formation_guard > 0
-            && is_sword_formation_card(self.actor(actor_side), card)
-        {
-            self.actor_mut(actor_side).fate.sword_formation_guard -= 1;
-            self.gain_defense(actor_side, 5);
-            self.gain_guard(actor_side, 1);
-        }
-        if self
-            .actor(actor_side)
-            .identity
-            .fate_strategies
-            .contains(&128)
-            && card.name.contains("金灵")
-        {
-            self.gain_anima(actor_side, 1);
-        }
-        // build 25093011: FateStrategyFunctions.cs 新增 HasFateStrategy(128)
-        // && name.Contains("水灵") → ModifyBuffValue(FengRui, 1)，位于金灵分支之后、
-        // 320 云剑分支之前，顺序无关的独立 if。锋锐走 gain_sharpness 共享结算
-        // （与金灵→gain_anima 对称）。该 hunk 在 24963639→25093011 才引入，
-        // 旧 build 录制不存在此分支，按 fixture build 门控（阈值见 original_config）。
-        if self
-            .actor(actor_side)
-            .identity
-            .fate_strategies
-            .contains(&128)
-            && card.name.contains("水灵")
-        {
-            self.gain_sharpness(actor_side, 1);
-        }
-        if self
-            .actor(actor_side)
-            .identity
-            .fate_strategies
-            .contains(&320)
-            && is_cloud_sword(self.actor(actor_side), card)
-        {
-            self.actor_mut(actor_side).sword.water_month_sword_formation += 1;
-        }
-        if self
-            .actor(actor_side)
-            .identity
-            .fate_strategies
-            .contains(&330)
-            && base_id == 22
-        {
-            self.gain_temporary_guard(actor_side, 3);
-        }
-        if self
-            .actor(actor_side)
-            .identity
-            .fate_strategies
-            .contains(&345)
+            .contains(&345))
             && base_id == 7_000_069
         {
             let damage = self.actor(actor_side).core.anima.max(0);
             if damage > 0 {
                 self.modify_target_hp(actor_side, -damage);
                 self.modify_target_max_hp(actor_side, -damage);
-            }
-        }
-        if !temporary_replay && slot == 0 {
-            let (physique, hp) =
-                regenerative_body_from_talents(&self.actor(actor_side).identity.talents);
-            if physique > 0 || hp > 0 {
-                self.apply_physique_amount(actor_side, physique);
-                self.modify_actor_hp(actor_side, hp, false, false);
-            }
-        }
-        if slot == 0 {
-            let max_hp_gain =
-                first_slot_max_hp_gain_from_talents(&self.actor(actor_side).identity.talents);
-            if max_hp_gain > 0 {
-                self.modify_actor_max_hp(actor_side, max_hp_gain);
             }
         }
         if !temporary_replay
@@ -360,36 +424,8 @@ impl ReplayState {
             self.actor_mut(actor_side).turn.next_card_action_again -= 1;
             self.modify_extra_actions(actor_side, 1);
         }
-        if is_cloud_sword(self.actor(actor_side), card) {
-            if self.actor(actor_side).identity.talents.contains(&15) {
-                self.gain_anima(actor_side, 1);
-            }
-            let healing = self.actor(actor_side).sword.cloud_sword_soft_heart;
-            if healing > 0 {
-                self.modify_actor_hp(actor_side, healing, false, false);
-            }
-            if self.actor(actor_side).sword.cloud_sword_heart > 0 {
-                self.actor_mut(actor_side).sword.cloud_sword_heart -= 1;
-                self.modify_extra_actions(actor_side, 1);
-            }
-        }
         // CardActionBase.OnBeforeExecuted reads the effective post-transform
         // card once per ExecuteEffect. Unlike the Cloud Sword hooks above,
-        // 崩灭心法 explicitly excludes isTempCard executions.
-        if !temporary_replay
-            && card.hp_cost.unwrap_or(0) > 0
-            && self.actor(actor_side).beng.beng_mei_mindset > 0
-        {
-            self.modify_momentum(actor_side, self.actor(actor_side).beng.beng_mei_mindset);
-        }
-        if self.actor(actor_side).identity.talents.contains(&62) && card.name.contains("星弈") {
-            self.gain_hexagram(actor_side, 1);
-        }
-        if element_from_card(card).is_none()
-            && self.actor(actor_side).identity.talents.contains(&200)
-        {
-            self.activate_element(actor_side, Element::Wood);
-        }
         let Some(element) = element_from_card(card) else {
             return;
         };
@@ -455,19 +491,6 @@ impl ReplayState {
                 self.modify_actor_hp(actor_side, wood_array, false, false);
             }
         }
-        if (element == Element::Wood
-            || (element == Element::Fire && self.actor(actor_side).identity.talents.contains(&130)))
-            && self.actor(actor_side).elements.wood_healing_formation > 0
-        {
-            // CardActionBase3180: 木灵疗愈阵 heals attack-bonus times its layers.
-            // Talent_130 extends only the fire-card predicate; Card_201 remains out of scope.
-            let healing = self.actor(actor_side).core.attack_bonus
-                * self.actor(actor_side).elements.wood_healing_formation;
-            if healing > 0 {
-                self.modify_actor_hp(actor_side, healing, false, false);
-            }
-        }
-
         let generated = self
             .actor(actor_side)
             .elements
@@ -517,14 +540,14 @@ impl ReplayState {
 /// invariant: the element kernel must never claim another sect's ids.
 #[cfg(test)]
 pub(super) const ELEMENT_HANDLED_IDS: &[i64] = &[
-    7_000_110, 7_000_115, 7_000_116,7_000_112, 7_000_113,
-    13, 134, 413, 7_000_001, 7_000_002, 7_000_003, 7_000_004, 7_000_006, 7_000_007, 7_000_009,
-    7_000_010, 7_000_011, 7_000_012, 7_000_013, 7_000_017, 7_000_018, 7_000_019, 7_000_022,
-    7_000_023, 7_000_024, 7_000_027, 7_000_028, 7_000_029, 7_000_030, 7_000_031, 7_000_037,
-    7_000_059, 7_000_060, 7_000_068, 7_000_104,
+    7_000_110, 7_000_115, 7_000_116, 7_000_112, 7_000_113, 13, 134, 413, 7_000_001, 7_000_002,
+    7_000_003, 7_000_004, 7_000_006, 7_000_007, 7_000_009, 7_000_010, 7_000_011, 7_000_012,
+    7_000_013, 7_000_017, 7_000_018, 7_000_019, 7_000_022, 7_000_023, 7_000_024, 7_000_027,
+    7_000_028, 7_000_029, 7_000_030, 7_000_031, 7_000_037, 7_000_059, 7_000_060, 7_000_068,
+    7_000_104,
 ];
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn apply_element_card_effect(
         &mut self,
         actor_side: PlayerSide,
@@ -591,7 +614,7 @@ impl ReplayState {
                 // Card_7000017.cs:80-82（木灵•疏影）[木灵] 分支走完整
                 // CheckWuXing(src, JiHuoMuLing)（激活 / 上次使用五行及相生链 /
                 // 龙马精神 / 卡组含 7030077|7040077 五行刺恒真），非仅木灵激活。
-                // oracle 锚点：95fa8fdf614cb5d4/round-10 cp[8]（卡组含
+                // oracle 锚点：pa_903779ae cp[8]（卡组含
                 // 7030077、lastElement=火灵，加攻 +1 原版触发引擎漏判）。
                 attacked |= self.attack_by_config(actor_side, card, 0, slot);
                 if self.check_wu_xing(actor_side, Element::Wood) {
@@ -605,7 +628,7 @@ impl ReplayState {
                 // 302 是攻击者身上跨卡持久计数（BattleCharacter.cs:10858-10861
                 // 累加，CardActionBase.cs:4743-4745 出牌完成才清零），自身攻击
                 // 循环之后读到的值 = 残留 + 本卡，故读 turn.actual_damage_carry。
-                // oracle 锚点：95fa8fdf614cb5d4/round-10 cp[10]（卡组含
+                // oracle 锚点：pa_903779ae cp[10]（卡组含
                 // 7030077，实际伤害 32/3=10 回血原版触发引擎漏判）。
                 let attack = card.attack.unwrap_or(0);
                 let attack_count = card
@@ -657,7 +680,7 @@ impl ReplayState {
                 // Card_7000030.cs 读 CardActionBase.CheckWuXing(src,
                 // JiHuoShuiLing)（激活 / 龙马精神 / UsedWuXing 相生链 /
                 // 卡组含 7030077|7040077 五行刺恒真），不是仅看水灵激活。
-                // oracle 锚点：hf-32308000 d7d6da3ccefac976/round-13 cp[6]
+                // oracle 锚点：hf-32308000 pa_903ecc8a cp[6]
                 // p2.waterMomentum 9（引擎 4：卡组含 7040077 时原版恒真，
                 // 引擎 last_element=木 漏判）。
                 if self.check_wu_xing(actor_side, Element::Water) {
@@ -750,8 +773,8 @@ impl ReplayState {
                 // Card_7000012.cs 读 CardActionBase.CheckWuXing(src,
                 // JiHuoTuLing)（激活 / 龙马精神 / UsedWuXing 相生链 /
                 // 卡组含 7030077|7040077 五行刺恒真），不是仅看土灵激活。
-                // oracle 锚点：hf-32308000 551810ea5efcf995/round-16 cp[8]
-                // p2.defense 15（引擎 0）、965c5de8251a0f66/round-16 cp[9]
+                // oracle 锚点：hf-32308000 pa_864e8601 cp[8]
+                // p2.defense 15（引擎 0）、pa_f5b33cd2 cp[9]
                 // p2.defense 7（引擎 0）：两局卡组均含 7040077。
                 if self.check_wu_xing(actor_side, Element::Earth) {
                     let divisor = other_param(card, 0).max(1);

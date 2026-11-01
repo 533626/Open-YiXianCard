@@ -4,7 +4,7 @@ use super::support::{
 use super::{Element, ReplayState};
 use crate::model::{CardDefinition, PlayerSide};
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn apply_fate_strategy_element_card_effect(
         &mut self,
         actor_side: PlayerSide,

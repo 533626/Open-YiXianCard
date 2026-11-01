@@ -4,7 +4,7 @@ use super::support::{
 use super::ReplayState;
 use crate::model::{CardDefinition, PlayerSide, DECK_SIZE};
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn apply_hexagram_card_effect(
         &mut self,
         actor_side: PlayerSide,

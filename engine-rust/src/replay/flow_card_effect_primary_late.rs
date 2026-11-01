@@ -4,9 +4,10 @@ use crate::replay::original_config::{
 };
 use crate::replay::support::{has_cloud_chain, normalized_base_id, opponent_side, other_param};
 
+use super::super::flow_card_effect::{param0, param1, param2};
 use crate::model::{CardDefinition, PlayerSide};
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn apply_card_effect_primary_late(
         &mut self,
         actor_side: PlayerSide,
@@ -22,7 +23,7 @@ impl ReplayState {
             }
             2_000_011 => {
                 self.apply_elixir_base(actor_side, card);
-                let gain = other_param(card, 0).max(0);
+                let gain = param0(card);
                 if gain > 0 {
                     self.modify_actor_max_hp(actor_side, gain);
                     self.modify_actor_hp(actor_side, gain, false, false);
@@ -31,19 +32,19 @@ impl ReplayState {
             }
             2_000_013 => {
                 self.apply_elixir_base(actor_side, card);
-                self.gain_guard(actor_side, other_param(card, 0).max(0));
+                self.gain_guard(actor_side, param0(card));
                 Some(false)
             }
             99_000_106 => {
                 self.apply_configured_defense(actor_side, card);
-                self.gain_guard(actor_side, other_param(card, 0).max(0));
+                self.gain_guard(actor_side, param0(card));
                 Some(false)
             }
             28 => {
                 if let Some(hexagram) = card.hexagram.filter(|value| *value > 0) {
                     self.gain_hexagram(actor_side, hexagram);
                 } else {
-                    let hexagram = other_param(card, 0).max(0);
+                    let hexagram = param0(card);
                     if hexagram > 0 {
                         self.gain_hexagram(actor_side, hexagram);
                     }
@@ -54,26 +55,17 @@ impl ReplayState {
             29 => {
                 // Card_29.cs（build 25796222）：先 ModifyAnima(anima) 再给对方破绽。
                 self.apply_configured_anima(actor_side, card);
-                self.add_actor_negative_status(
-                    opponent_side(actor_side),
-                    102,
-                    other_param(card, 0).max(0),
-                );
+                self.add_actor_negative_status(opponent_side(actor_side), 102, param0(card));
                 Some(false)
             }
             37 => {
                 let sword_intent = self.actor(actor_side).sword.sword_intent.max(0);
-                let defense =
-                    card.defense.unwrap_or(0).max(0) + sword_intent * other_param(card, 0).max(0);
+                let defense = card.defense.unwrap_or(0).max(0) + sword_intent * param0(card);
                 self.gain_defense(actor_side, defense);
                 Some(false)
             }
             4_000_056 => {
-                self.add_actor_negative_status(
-                    opponent_side(actor_side),
-                    100,
-                    other_param(card, 0).max(0),
-                );
+                self.add_actor_negative_status(opponent_side(actor_side), 100, param0(card));
                 let debuff_count = self.known_negative_status_count(opponent_side(actor_side));
                 let mut attacked = false;
                 for _ in 0..debuff_count.max(0) {
@@ -83,21 +75,26 @@ impl ReplayState {
                 Some(attacked)
             }
             4_000_060 => {
-                let hp_gain = other_param(card, 0).max(0);
+                let hp_gain = param0(card);
                 if hp_gain > 0 {
                     self.modify_actor_max_hp(actor_side, hp_gain);
                 }
                 if self.check_rear_move(actor_side, was_used_before_effect) {
-                    self.modify_actor_hp(actor_side, other_param(card, 1).max(0), false, false);
+                    self.modify_actor_hp(actor_side, param1(card), false, false);
                 }
                 Some(false)
             }
             6_000_006 => {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
-                self.gain_defense(opponent_side(actor_side), other_param(card, 0).max(0));
+                self.gain_defense(opponent_side(actor_side), param0(card));
                 Some(attacked)
             }
             8_000_012 => {
+                // Card_8000012: unconditional gain precedes the sustain check
+                // and the temporary card, including when the first slot fails it.
+                let hp_gain = param1(card);
+                self.modify_actor_max_hp(actor_side, hp_gain);
+                self.modify_actor_hp(actor_side, hp_gain, false, false);
                 let first_card = self.actor(actor_side).deck.slots.first()?.card.clone();
                 let is_sustain = first_card
                     .card_type
@@ -106,12 +103,14 @@ impl ReplayState {
                 if !is_sustain {
                     return Some(false);
                 }
-                let upgrade_times = other_param(card, 0).max(0);
+                let upgrade_times = param0(card);
                 // Card_8000012.cs walks the first battle-deck card id +10000 per
                 // level for otherParams[0] steps (noUpgrade-gated), then executes
                 // that id as a temporary card.
                 let upgraded_id = original_card_echo_upgrade_id(first_card.id, upgrade_times);
-                let echoed = original_card_definition(upgraded_id).unwrap_or(first_card);
+                let echoed = original_card_definition(upgraded_id)
+                    .map(crate::replay::RuntimeCard::from)
+                    .unwrap_or(first_card);
                 if self.apply_temporary_card_effect(actor_side, &echoed, slot) {
                     self.modify_extra_actions(actor_side, 1);
                 }
@@ -120,42 +119,44 @@ impl ReplayState {
             10_000_019 => {
                 self.actor_mut(actor_side).turn.current_turn_ignore_defense += 1;
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
-                self.add_actor_negative_status(actor_side, 101, other_param(card, 0).max(0));
+                self.add_actor_negative_status(actor_side, 101, param0(card));
                 Some(attacked)
             }
             10_000_020 => {
                 self.apply_configured_anima(actor_side, card);
-                self.modify_momentum(actor_side, other_param(card, 0).max(0));
-                self.actor_mut(actor_side).beng.momentum_before_attack +=
-                    other_param(card, 1).max(0);
+                self.modify_momentum(actor_side, param0(card));
+                self.actor_mut(actor_side).beng.momentum_before_attack += param1(card);
                 Some(false)
             }
             10_000_030 => {
-                let internal = other_param(card, 0).max(0);
-                let external = other_param(card, 1).max(0);
+                let internal = param0(card);
+                let external = param1(card);
+                // Card_10000030 的源码顺序：src 内伤 → dst 内伤 → src 外伤 → dst 外伤（不是按侧分组）。
                 for side in [actor_side, opponent_side(actor_side)] {
                     self.add_actor_negative_status(side, 100, internal);
+                }
+                for side in [actor_side, opponent_side(actor_side)] {
                     self.add_actor_negative_status(side, 105, external);
                 }
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
                 Some(attacked)
             }
             10_000_033 => {
-                let cost = other_param(card, 0).max(0);
+                let cost = param0(card);
                 let spent = self.spend_anima_up_to(actor_side, cost);
-                let momentum_gain = spent * other_param(card, 1).max(0);
-                let attack_bonus = spent * other_param(card, 2).max(0);
+                let momentum_gain = spent * param1(card);
+                let attack_bonus = spent * param2(card);
                 self.modify_momentum(actor_side, momentum_gain);
                 let attacked = self.attack_by_config(actor_side, card, attack_bonus, slot);
                 Some(attacked)
             }
             10_000_034 => {
-                self.modify_momentum(actor_side, other_param(card, 0).max(0));
-                self.gain_agility(actor_side, other_param(card, 1).max(0));
+                self.modify_momentum(actor_side, param0(card));
+                self.gain_agility(actor_side, param1(card));
                 Some(false)
             }
             10_000_041 => {
-                let amount = other_param(card, 0).max(0);
+                let amount = param0(card);
                 self.add_actor_negative_status(actor_side, 100, amount);
                 self.add_actor_negative_status(opponent_side(actor_side), 100, amount);
                 let gain =
@@ -168,9 +169,9 @@ impl ReplayState {
             }
             10_000_052 => {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
-                self.modify_actor_hp(actor_side, other_param(card, 0).max(0), false, false);
-                let agility_gain = other_param(card, 1).max(0)
-                    + self.actor(actor_side).beng.momentum.max(0) * other_param(card, 2).max(0);
+                self.modify_actor_hp(actor_side, param0(card), false, false);
+                let agility_gain =
+                    param1(card) + self.actor(actor_side).beng.momentum.max(0) * param2(card);
                 self.gain_agility(actor_side, agility_gain);
                 Some(attacked)
             }
@@ -187,7 +188,7 @@ impl ReplayState {
                 let fallback_extra = if queued_extra >= 0 {
                     queued_extra
                 } else if reads_hand_count {
-                    let cap = other_param(card, 1).max(0);
+                    let cap = param1(card);
                     if cap > 0 {
                         self.actor(actor_side)
                             .deck
@@ -206,55 +207,46 @@ impl ReplayState {
                     0
                 };
                 self.actor_mut(actor_side).beng.dream_beng_quan_chain +=
-                    other_param(card, 0).max(0) + fallback_extra;
+                    param0(card) + fallback_extra;
                 Some(attacked)
             }
             11_000_013 => {
-                self.actor_mut(actor_side).astrology.all_goes_well += other_param(card, 1).max(0);
+                self.actor_mut(actor_side).astrology.all_goes_well += param1(card);
                 Some(false)
             }
             11_000_018 => {
-                self.add_actor_negative_status(
-                    opponent_side(actor_side),
-                    100,
-                    other_param(card, 0).max(0),
-                );
+                self.add_actor_negative_status(opponent_side(actor_side), 100, param0(card));
                 Some(false)
             }
             11_000_019 => {
                 // 天机•顺应 anima 三档 2/4/6 → 3/5/7（25099105→25206201
                 // diff）。战斗内升阶档（11010019/11020019）由升阶路径按 ID
                 // 重查 catalog 生成，读到 stale 值。oracle 锚点：hf-latest-
-                // 33206000 ad0c5a4d17fd630e/round-14 checkpoint[2] p2.anima
+                // 33206000 pa_8f0f3282 checkpoint[2] p2.anima
                 // original=5 rust=4（11010019 catalog 旧值 4）。
                 self.apply_configured_anima(actor_side, card);
-                self.actor_mut(actor_side).turn.adaptation += other_param(card, 1).max(0);
+                self.actor_mut(actor_side).turn.adaptation += param1(card);
                 Some(false)
             }
             11_000_024 => {
-                self.add_actor_negative_status(
-                    opponent_side(actor_side),
-                    100,
-                    other_param(card, 0).max(0),
-                );
+                self.add_actor_negative_status(opponent_side(actor_side), 100, param0(card));
                 Some(false)
             }
             11_000_026 => {
                 self.apply_configured_defense(actor_side, card);
-                self.modify_actor_hp(actor_side, other_param(card, 2).max(0), false, false);
+                self.modify_actor_hp(actor_side, param2(card), false, false);
                 self.trigger_nearby_openings(
                     actor_side,
                     slot,
                     -1,
-                    other_param(card, 0).max(0),
+                    param0(card),
                     other_param(card, 1).max(1),
                 );
                 Some(false)
             }
             11_000_020 => {
                 self.apply_configured_anima(actor_side, card);
-                self.actor_mut(actor_side).fate.heavenly_secret_reverse +=
-                    other_param(card, 1).max(0);
+                self.actor_mut(actor_side).fate.heavenly_secret_reverse += param1(card);
                 Some(false)
             }
             11_000_025 => {
@@ -263,7 +255,7 @@ impl ReplayState {
                     actor_side,
                     slot,
                     1,
-                    other_param(card, 0).max(0),
+                    param0(card),
                     other_param(card, 1).max(1),
                 );
                 Some(false)
@@ -272,7 +264,7 @@ impl ReplayState {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
                 self.apply_configured_anima(actor_side, card);
                 let recovery_before = self.actor(actor_side).status.recovery;
-                self.actor_mut(actor_side).status.recovery += other_param(card, 0).max(0);
+                self.actor_mut(actor_side).status.recovery += param0(card);
                 self.record_counter_transition(
                     actor_side,
                     "状态",
@@ -281,7 +273,7 @@ impl ReplayState {
                     recovery_before,
                     self.actor(actor_side).status.recovery,
                 );
-                let convert_limit = other_param(card, 1).max(0);
+                let convert_limit = param1(card);
                 if has_cloud_chain(self.actor(actor_side))
                     && !self.actor(actor_side).identity.talents.contains(&222)
                 {
@@ -311,20 +303,20 @@ impl ReplayState {
             }
             16 => {
                 self.apply_configured_defense(actor_side, card);
-                self.gain_guard(actor_side, other_param(card, 0).max(0));
+                self.gain_guard(actor_side, param0(card));
                 Some(false)
             }
             218 => {
-                let hp_gain = other_param(card, 0).max(0)
-                    + self.actor(actor_side).elements.activated_wood.max(0) * 2;
+                let hp_gain =
+                    param0(card) + self.actor(actor_side).elements.activated_wood.max(0) * 2;
                 if hp_gain > 0 {
                     self.modify_actor_max_hp(actor_side, hp_gain);
                     self.modify_actor_hp(actor_side, hp_gain, false, false);
                 }
-                let guard_gain = other_param(card, 1).max(0);
+                let guard_gain = param1(card);
                 self.gain_guard(actor_side, guard_gain);
                 self.gain_guard(opponent_side(actor_side), guard_gain);
-                let clear = other_param(card, 2).max(0);
+                let clear = param2(card);
                 self.reduce_all_actor_negative_statuses(actor_side, clear);
                 self.reduce_all_actor_negative_statuses(opponent_side(actor_side), clear);
                 self.actor_mut(actor_side).status.cannot_act += 1;
@@ -353,7 +345,7 @@ impl ReplayState {
                 .card
                 .clone();
             let base_id = normalized_base_id(&card);
-            if !ReplayState::card_has_opening_effect(base_id) {
+            if !Self::card_triggers_opening(base_id) {
                 index += direction;
                 continue;
             }

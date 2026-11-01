@@ -10,7 +10,7 @@ fn attack_trace_enabled() -> bool {
     *ENABLED.get_or_init(|| std::env::var_os("YIXIAN_RUST_REPLAY_TRACE_ATTACK").is_some())
 }
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn attack_by_config(
         &mut self,
         actor_side: PlayerSide,
@@ -18,12 +18,15 @@ impl ReplayState {
         bonus: i64,
         slot: usize,
     ) -> bool {
-        let xiaoyao_bonus = if card.id == super::BASIC_ATTACK_ID {
+        // 与 Card_0 相同：基础 id 0 或 286 都吃逍遥曲，缺印面攻击时用普通攻击伤害。
+        let basic_attack =
+            super::support::is_pu_tong_gong_ji_base_id(super::support::normalized_base_id(card));
+        let xiaoyao_bonus = if basic_attack {
             self.actor(actor_side).music.xiaoyao_tune.max(0)
         } else {
             0
         };
-        let attack = card.attack.unwrap_or(if card.id == super::BASIC_ATTACK_ID {
+        let attack = card.attack.unwrap_or(if basic_attack {
             super::BASIC_ATTACK_DAMAGE
         } else {
             0
@@ -68,6 +71,11 @@ impl ReplayState {
             None => Some(self.active_effect_segment_source()).filter(|source| !source.is_empty()),
         };
         let target_side = opponent_side(actor_side);
+        // 26125017: 惊雷 (KeYinJingLei) moved to CalculateAttack: every attack
+        // segment checks the currently executing card for 雷 first.
+        if self.active_mechanisms.has(super::ActiveMechanisms::THUNDER_MINDSET) {
+            self.apply_jing_lei_on_attack_segment(actor_side);
+        }
         // Per-hit sampling: record the target's hp/def before this hit lands,
         // then again after the whole attack settles, so the browser can show
         // per-hit damage the way the original client's TmpFloatingText does.
@@ -79,15 +87,15 @@ impl ReplayState {
         let segment_hp_before = self.actor(target_side).core.hp;
         let segment_def_before = self.actor(target_side).core.defense;
         let reverse_gu_flat_bonus = self.apply_reverse_gu_before_attack(actor_side);
-        let earth_fiend_active_before_attack =
-            self.actor(actor_side).ronghui.earth_fiend_defense > 0;
+        let earth_fiend_active_before_attack = self.active_mechanisms.has(super::ActiveMechanisms::RONGHUI)
+            && self.actor(actor_side).ronghui.earth_fiend_defense > 0;
         self.apply_delayed_attack_status_triggers(actor_side, target_side);
         let fire_blade_wound = self.actor(actor_side).identity.talents.contains(&67);
-        if fire_blade_wound {
-            self.modify_actor_max_hp(target_side, -1);
-        }
         let actor = self.actor(actor_side);
-        let sword_intent = if ignore_sword_energy {
+        let suppress_sword_intent = self.effect_invocation_stack.last().is_some_and(|frame| {
+            frame.physical.actor_side == actor_side && frame.local.borrow().suppress_sword_intent
+        });
+        let sword_intent = if ignore_sword_energy || suppress_sword_intent {
             0
         } else {
             actor.sword.sword_intent
@@ -95,6 +103,12 @@ impl ReplayState {
         let attack_bonus = actor.core.attack_bonus;
         let ignore_defense =
             actor.turn.ignore_defense_attacks > 0 || actor.turn.current_turn_ignore_defense > 0;
+        // 原版 WuShiHuTi（171 首山定岳剑 Card_171.cs:46）只旁路护体格挡
+        // （:9961 检查攻击者标），目标护体保留、击伤/锋锐门（:11075）照常
+        // 看到护体，实现以 segment 计次标透传
+        // （oracle pa_8a46963b：护体 3 保留、
+        // 锋锐 6 不触发不消耗）。
+        let ignore_guard = actor.turn.ignore_guard_attacks > 0;
         let in_star_slot = actor.astrology.star_slots.contains(&slot);
         let star_power = actor.astrology.star_power;
         let staff_stance_bonus =
@@ -124,9 +138,9 @@ impl ReplayState {
         // （11378-11381）都带 !HasBuff(AfterCardAciton) 门控：周天剑阵/
         // 察体等 OnAfterExecuted 追击（原版 AfterCardAciton 窗口内）不享受
         // 这两项加成，只吃加攻/气势等无门控平值。oracle 锚点：
-        // hf-latest-32308000-16f9c778 d2ac90a8094fe7e4/round-09 cp7 p1.hp
+        // hf-latest-32308000-16f9c778 pa_e57f6c74 cp7 p1.hp
         // 57（原版 11+6冥夜+5追击=22 两段；引擎 17+11=28：追击段重复吃
-        // 冥夜 6）、dba3e283b85c91e7/round-08 cp8 p2.hp 45（原版 12+3加攻
+        // 冥夜 6）、pa_eeac753d cp8 p2.hp 45（原版 12+3加攻
         // +8追击=23；引擎 15+15=30：追击段重复吃降龙 +7 戳加成）。
         let min_night_bonus = if is_card_segment
             && actor.status.min_night > 0
@@ -151,7 +165,7 @@ impl ReplayState {
         // 孤夜狼（卡 99000209 持续）：BattleCharacter.cs:11492-11494 ——
         // HasBuff(GuYeLang) && hp×2 < maxHp 即加攻，无出牌/段源门控
         // （猛攻之姿 talent 173 追击等非牌体攻击同样享受）。oracle 锚点：
-        // hf-latest-32308000-16f9c778 b0311c048df1dfae/round-13 cp7 p2.hp
+        // hf-latest-32308000-16f9c778 pa_030ed784 cp7 p2.hp
         // 71（原版 14 = 3 猛攻 + 4 加攻 + 3 锻骨 + 4 孤夜狼；引擎 75 =
         // 漏孤夜狼 4）。
         let lone_night_wolf_bonus =
@@ -160,22 +174,37 @@ impl ReplayState {
             } else {
                 0
             };
-        let spirit_claw_attack_bonus = if actor.identity.fate_strategies.contains(&152)
+        let spirit_claw_attack_bonus = if (actor.identity.fate_strategies.contains(&152))
             && self.active_effect_has_anima_desc()
         {
             3
         } else {
             0
         };
+        let mut xian_mo_attack_bonus = if actor.identity.xian_mo_strategies.contains(&7101)
+            && self.active_effect_has_anima_desc()
+        {
+            3
+        } else {
+            0
+        };
+        if is_card_segment && !self.active_effect_after_action() {
+            if slot == 7 && actor.identity.xian_mo_strategies.contains(&7088) {
+                xian_mo_attack_bonus += self.negative_status_stack_count(actor_side) / 3;
+            }
+            if slot >= 4 && actor.identity.xian_mo_strategies.contains(&3003) {
+                xian_mo_attack_bonus += 1;
+            }
+        }
         // 月魂爪 FateStrategy 424（otherParams=[3]，断玄宗 4000003）：
         // BattleCharacter.CalculateAttack 11413-11421 —— 使用卡组第 8 格
         // （gridNumber == 7，0-based）的牌攻击且非后招阶段时，
         // 自身每有 otherParams[0]=3 层负面状态就多 1 攻（每段攻击各自
         // 读取 GetDebuffCount()，整数除法；oracle 锚点：
-        // mirror-32219000-human-01 2995be139404d0ed/round-10 cp14 迎风掌
-        // 26 vs 22、fcb156fa3df7dbe1/round-13 cp13 百杀破境掌 32 vs 16）。
+        // mirror-32219000-human-01 pa_f9d9294f cp14 迎风掌
+        // 26 vs 22、pa_e52bcaae cp13 百杀破境掌 32 vs 16）。
         let month_claw_attack_bonus = if is_card_segment
-            && actor.identity.fate_strategies.contains(&424)
+            && (actor.identity.fate_strategies.contains(&424))
             && slot == 7
             && !self.active_effect_after_action()
         {
@@ -189,7 +218,9 @@ impl ReplayState {
         // the existing percentage factor (for example momentum), and the
         // original explicitly excludes the AfterCardAciton window.
         let beng_quan_anima_attack_bonus = if is_card_segment
-            && actor.identity.fate_strategies.contains(&432)
+            // CalculateAttack:11770 仙魔 7092 与 FS432 同效（otherParams 同为 [2,4]）。
+            && (actor.identity.fate_strategies.contains(&432)
+                || actor.identity.xian_mo_strategies.contains(&7092))
             && self.active_effect_is_beng_quan()
             && !self.active_effect_after_action()
         {
@@ -222,6 +253,9 @@ impl ReplayState {
 
         // BattleCharacter.ApplyDamage gives the turn-wide source precedence;
         // persistent ignore-defense charges are consumed only by the else-if.
+        if self.actor(actor_side).turn.ignore_guard_attacks > 0 {
+            self.actor_mut(actor_side).turn.ignore_guard_attacks -= 1;
+        }
         if self.actor(actor_side).turn.current_turn_ignore_defense <= 0
             && self.actor(actor_side).turn.ignore_defense_attacks > 0
         {
@@ -247,7 +281,9 @@ impl ReplayState {
             self.modify_momentum(actor_side, 1);
         }
         let dream_mirage_attack = self.prepare_dream_mirage_attack_segment(actor_side);
-        let previous_card_debuff_bonus = if is_card_segment {
+        // BattleCharacter.CalculateAttack:11740 梦•冥影身法同样要求 !AfterCardAciton：
+        // 周天剑阵等后招追加攻击不吃这份加攻（oracle pa_02859c8e）。
+        let previous_card_debuff_bonus = if is_card_segment && !self.active_effect_after_action() {
             self.dream_mirage_previous_card_debuff_attack_bonus(actor_side, slot)
         } else {
             0
@@ -274,6 +310,7 @@ impl ReplayState {
             + shatter_bonus
             + forge_bone_bonus
             + spirit_claw_attack_bonus
+            + xian_mo_attack_bonus
             + month_claw_attack_bonus
             + beng_quan_anima_attack_bonus
             + min_night_bonus
@@ -305,7 +342,11 @@ impl ReplayState {
                 amount,
             );
         }
-        self.update_active_effect_pending_sword_intent(sword_intent);
+        if self.effect_invocation_stack.is_empty() && sword_intent > 0 {
+            self.actor_mut(actor_side).sword.pending_sword_intent_outside_card = sword_intent;
+        } else {
+            self.update_active_effect_pending_sword_intent(sword_intent);
+        }
         if amount > 0
             && self.actor(target_side).identity.talents.contains(&206)
             && self.actor(target_side).beng.quan_stance > 0
@@ -354,12 +395,14 @@ impl ReplayState {
                 40
             };
         }
-        factor_percent +=
-            super::cards_synthetic_oracle_verified_secret_misc::thunder_mindset_attack_bonus_percent(
-                actor,
-                self.active_effect_name(),
-                self.active_effect_after_action(),
-            );
+        if self.active_mechanisms.has(super::ActiveMechanisms::THUNDER_MINDSET) {
+            factor_percent +=
+                super::cards_synthetic_oracle_verified_secret_misc::thunder_mindset_attack_bonus_percent(
+                    actor,
+                    self.active_effect_name(),
+                    self.active_effect_after_action(),
+                );
+        }
         if actor.status.mystic_soul > 0 && !dream_mirage_attack.replaces_percent_momentum {
             let debuff_count = self.negative_status_stack_count(actor_side);
             if debuff_count > 0 {
@@ -370,9 +413,9 @@ impl ReplayState {
                 // QiShiBeiLv 由崩拳寸劲被下一张牌消耗时置 2
                 // （CardActionBase.cs:3059-3065，崩拳寸劲标记不计入连崩），
                 // AfterCardAction 清除（CardActionBase.cs:3743-3745）。
-                // oracle 锚点：28b5e2bbb01dabca/round-14 cp13 p1.hp 86 vs 88
+                // oracle 锚点：pa_56a3efec cp13 p1.hp 86 vs 88
                 // （(8+2)*1.4=14，减防 7 + 外伤 2 = 9）、
-                // d18a47dfdf4cff04/round-14 cp13 p2.hp 70 vs 82
+                // pa_20db30f1 cp13 p2.hp 70 vs 82
                 // （(8+2)*3.4=34，负面 12 层 ×10% ×2 倍率）。
                 let multiplier = actor.beng.momentum_multiplier.max(1);
                 factor_percent += debuff_count * 10 * multiplier;
@@ -384,6 +427,12 @@ impl ReplayState {
         if self.actor(target_side).elements.water_stealth > 0 {
             factor_percent -= 40;
         }
+        if self.actor(actor_side).turn.own_turn_count == 3
+            && (self.is_xian_mo_switch_active(actor_side, 1010)
+                || self.is_xian_mo_switch_active(target_side, 1010))
+        {
+            factor_percent -= 40;
+        }
         factor_percent += self.qi_sinks_attack_factor_percent(actor_side);
         let dream_mirage_reflection = self.dream_mirage_reflection_active(target_side);
         if dream_mirage_reflection {
@@ -393,7 +442,16 @@ impl ReplayState {
         if momentum > 0 && !dream_mirage_attack.replaces_percent_momentum {
             let momentum_multiplier = self.actor(actor_side).beng.momentum_multiplier.max(1);
             factor_percent += momentum * 10 * momentum_multiplier;
-            let retain_momentum = self.actor(actor_side).identity.fate_strategies.contains(&428)
+            let retain_momentum = (self
+                .actor(actor_side)
+                .identity
+                .fate_strategies
+                .contains(&428)
+                || self
+                    .actor(actor_side)
+                    .identity
+                    .xian_mo_strategies
+                    .contains(&7120))
                 && self.active_effect_name().contains('掌');
             if !retain_momentum {
                 self.modify_momentum(actor_side, -1);
@@ -435,11 +493,15 @@ impl ReplayState {
             };
             self.gain_defense(actor_side, defense_gain);
         }
+        // CalculateAttack: talent 68 defense and its NiShi reflection precede 67.
+        if fire_blade_wound {
+            self.modify_actor_max_hp(target_side, -1);
+        }
         // 原版每段攻击管道顺序（BattleCharacter.cs:11757-11775，
         // decompiled build-24646245）：万魔噬心曲（幽绪乱心曲 5010013）
         // 自伤先于木刺/吸血/木灵回血 —— 先自伤让出 maxHp 余量，木刺等量
         // 回血才不会被上限截断。oracle 锚点：mirror-32299000
-        // e55579d1d2fd6ce1/round-15 cp4（p1.hp 91 → 87：乱心曲 -5×2 +
+        // pa_d5cfbea3 cp4（p1.hp 91 → 87：乱心曲 -5×2 +
         // 木刺 +1×2 + 木灵 +2×2；引擎原 91 → 86，首段木刺回血被
         // maxHp 91 截断）。
         let chaotic_mind = self.actor(actor_side).music.chaotic_mind_tune.max(0);
@@ -450,10 +512,9 @@ impl ReplayState {
         // 原版攻击管道（BattleCharacter.Attack:11757-11775 → ApplyDamage:10787）：
         // 万魔噬心曲自伤 → 木刺/吸血等段前钩子 → ApplyDamage 内 wound 判定
         // （含锋锐加成）才读取目标护体。木刺可能先吃掉护体：护体 1 被木刺
-        // 消耗后，本段攻击应照常触发 wound 并附加锋锐。引擎原先在木刺之前
-        // 用旧护体状态判 would_wound，首段攻击丢失锋锐（oracle 锚点：
-        // hf-latest-32308000-16f9c778 3e38402e6f96ebd6/round-12 cp8：
-        // 原版 44+30+木刺 1=75、锋锐 36→22→14；引擎 8+44+1=53、锋锐 36→22）。
+        // 消耗后，本段攻击应照常触发 wound 并附加锋锐（oracle 锚点：
+        // hf-latest-32308000-16f9c778 pa_4387f365 cp8：
+        // 原版 44+30+木刺 1=75、锋锐 36→22→14）。
         let target_guard = self.actor(target_side).core.guard;
         let would_wound_without_force = if final_without_sharpness <= 0
             || target_guard > 0
@@ -524,13 +585,14 @@ impl ReplayState {
         }
         let target_hp_before = self.actor(target_side).core.hp;
         let target_defense_before = self.actor(target_side).core.defense;
-        self.apply_attack_damage(
+        let hp_lost = self.apply_attack_damage(
             actor_side,
             final_without_sharpness,
             sharpness,
             if water_blade_seal { 150 } else { 100 },
             ignore_defense,
             shatter_defense,
+            ignore_guard,
         );
         // 梦•反震心法：反弹值在 CalculateAttack 按入伤算好（BattleCharacter.cs:11727-11733
         // SetBuffValue MengFanZhenFanTan），扣攻击者生命要到 ApplyDamage :11006，
@@ -552,12 +614,11 @@ impl ReplayState {
                 factor_percent,
             );
         }
-        let hp_lost = (target_hp_before - self.actor(target_side).core.hp).max(0);
         // BattleCharacter.cs:10787-10855：四个「必定击伤」旁路（talent 67 /
         // 下次攻击后减生命 536 / 必定使击伤 693 / 龙马精神 708）直接进入击伤
         // 分支，IL_034a-03a4 只有默认分支（num>0 且非 skipWoundCheck）才检查
         // 目标护体与移花接木；旁路分支两者都不检查。因此被护体全挡的伤害
-        // 在旁路下仍计 WoundedCount。oracle 锚点：ed3ca57eb75f856f/round-11
+        // 在旁路下仍计 WoundedCount。oracle 锚点：pa_ff5009de
         // cp[8]（形意剑 1010011 邻接梦•灵气灌注 1040067 → 必定使击伤，
         // 护体 1 全挡 12 伤仍计击伤 → 剑意 1-1+4=4，原版 4 引擎 0）。
         let forced_wounded_count = force_wound;
@@ -626,6 +687,9 @@ impl ReplayState {
         // 截拳式（Fate 430）在原版 ApplyDamage 中位于梦断拳/猫系天赋共振
         // （:10960-10979）之后、反震心法（:10998-11005）之前；引擎侧反震
         // 在 apply_post_attack_buff_hooks 末尾结算，故此处先于该钩子链触发。
+        // 天机•地煞（TianJiDiSha，ApplyDamage:11180）按击伤加防，在截拳式与反震心法
+        // （:11295）之前：反震伤害先吃到这层防（oracle pa_aca1b4aa）。
+        self.apply_ronghui_post_attack(actor_side, hp_lost, earth_fiend_active_before_attack);
         self.apply_jie_quan_shi_after_attack(actor_side, target_side, hp_lost);
         self.apply_post_attack_buff_hooks(
             actor_side,
@@ -633,8 +697,7 @@ impl ReplayState {
             hp_lost,
             dream_reflection_incoming,
         );
-        self.apply_ronghui_post_attack(actor_side, hp_lost, earth_fiend_active_before_attack);
-        if self.observation.mode.is_detailed() {
+        if OBSERVE && self.observation.mode.is_detailed() {
             if let Some(event_index) = self.observation.current_card_event_index {
                 let hit_index = self.observation.current_attack_segment_index;
                 self.observation.current_attack_segment_index += 1;
@@ -666,6 +729,13 @@ impl ReplayState {
         if self.actor(actor_side).status.strike_void > 0 {
             self.actor_mut(actor_side).status.strike_void -= 1;
             self.add_actor_negative_status(target_side, 102, 1);
+        }
+        // Original Attack consumes 龙影潜遁 after 背孤/击虚 and before
+        // damage calculation, including attacks fully absorbed by defense.
+        let stealth = self.actor(target_side).fate.dragon_first_attack_stealth;
+        if stealth > 0 {
+            self.actor_mut(target_side).fate.dragon_first_attack_stealth = 0;
+            self.actor_mut(target_side).elements.water_stealth += stealth;
         }
     }
 
@@ -717,8 +787,8 @@ impl ReplayState {
         // 反编译顺序一致（历史行为）。反震（FanZhenXinFa，:10998-11005）
         // 仍在吸血之后、本钩子链末尾。
         if hp_lost > 0
-            && self.active_effect_is_frenzy_sword()
             && self.actor(actor_side).sword.frenzy_sword_zero > 0
+            && self.active_effect_is_frenzy_sword()
             && !self.active_effect_after_action()
         {
             let heal = hp_lost * self.actor(actor_side).sword.frenzy_sword_zero / 100;
@@ -728,10 +798,10 @@ impl ReplayState {
         }
         let reflect = self.actor(target_side).fate.reflect_mindset.max(0);
         if reflect > 0 {
-            self.apply_damage(target_side, reflect, false, false, false);
+            self.apply_reflect_damage(target_side, reflect);
         }
         // ApplyDamage :11006 梦•反震心法 → :11013 拆招（ChaiZhao+棍架势）反伤，均在反震心法之后。
-        // oracle：hf-latest-33331000 67dd94826528fc59/round-17（满血时狂剑吸血先溢出、反弹后掉血）。
+        // oracle：hf-latest-33331000 pa_c8f209b8（满血时狂剑吸血先溢出、反弹后掉血）。
         if let Some(incoming) = dream_reflection_incoming {
             self.apply_dream_mirage_reflected_life_loss(actor_side, incoming);
         }
@@ -743,7 +813,7 @@ impl ReplayState {
             0
         };
         if dismantle_reflect > 0 {
-            self.apply_damage(target_side, dismantle_reflect, false, false, false);
+            self.apply_reflect_damage(target_side, dismantle_reflect);
         }
         // BattleCharacter.ApplyDamage（build 24666769:10882-11033）：
         // 狂剑零式吸血、反震先结算，摘花飞叶与伤魂咒阵随后才施加内伤。
@@ -778,9 +848,10 @@ impl ReplayState {
                 .soul_injury_curse_formation -= 1;
             self.add_actor_negative_status(actor_side, 100, 1);
         }
+        self.apply_verified_xian_mo_after_damage(actor_side, target_side);
     }
 }
 
 #[cfg(test)]
-#[path = "tests_fate_strategy_432.rs"]
+#[path = "testkit/tests_fate_strategy_432.rs"]
 mod fate_432_tests;

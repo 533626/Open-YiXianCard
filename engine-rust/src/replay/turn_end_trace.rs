@@ -3,7 +3,7 @@ use crate::model::PlayerSide;
 /// Observation-only receipt for one stable phase inside original OnTurnEnded.
 /// Kept separate from ReplayDetailedStep so existing hook/event indices remain
 /// unchanged while tail mismatches can identify the exact shared hook.
-#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ReplayTurnEndHookReceipt {
     pub turn: i64,
@@ -13,14 +13,14 @@ pub struct ReplayTurnEndHookReceipt {
     pub after: ReplayTurnEndHookPair,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ReplayTurnEndHookPair {
     pub p1: ReplayTurnEndHookSnapshot,
     pub p2: ReplayTurnEndHookSnapshot,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ReplayTurnEndHookSnapshot {
     pub hp: i64,

@@ -2,7 +2,7 @@ use super::support::{opponent_side, other_param};
 use super::ReplayState;
 use crate::model::{CardDefinition, PlayerSide};
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn apply_mechanic_card_effect_extra(
         &mut self,
         actor_side: PlayerSide,

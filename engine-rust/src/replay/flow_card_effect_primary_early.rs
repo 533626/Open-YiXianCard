@@ -1,11 +1,12 @@
+use super::super::flow_card_effect::{param0, param1, param2, param3};
 use super::ReplayState;
 use crate::model::{CardDefinition, PlayerSide};
 use crate::replay::{
-    support::{card_rarity, opponent_side, other_param},
-    Element, BASIC_ATTACK_DAMAGE, BASIC_ATTACK_ID,
+    support::{card_rarity, is_pu_tong_gong_ji_base_id, opponent_side, other_param},
+    Element, BASIC_ATTACK_DAMAGE,
 };
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn apply_card_effect_primary_early(
         &mut self,
         actor_side: PlayerSide,
@@ -14,10 +15,17 @@ impl ReplayState {
         was_used_before_effect: bool,
         base_id: i64,
     ) -> Option<bool> {
+        // Card_286 继承 Card_0。BattleCharacter.IsPuTongGongJi 把基础 id
+        // 0 与 286 都当普通攻击：逍遥曲、醉卧逍遥、返璞归真都加在这段攻击上。
+        // 印面回退只打 attack，隐藏普通攻击因此吃不到逍遥曲。
+        // oracle 锚点：hf-latest-33912000-ai pa_5dc49f56
+        // 疗愈后 p2 打出 286，p1.hp 原版 34、引擎 43（3+9−1 对 3−1）。
+        if is_pu_tong_gong_ji_base_id(base_id) {
+            return Some(self.apply_basic_attack_effect(actor_side, card, slot));
+        }
         match base_id {
-            BASIC_ATTACK_ID => Some(self.apply_basic_attack_effect(actor_side, card, slot)),
             11 => {
-                let damage = other_param(card, 0).max(0);
+                let damage = param0(card);
                 if damage > 0 {
                     self.modify_target_hp(actor_side, -damage);
                 }
@@ -32,20 +40,20 @@ impl ReplayState {
                     // Card_12: upgraded ranks pay HP before CheckHouZhao.
                     // The check can grant max HP and arm 雁栖 healing, so moving
                     // it ahead of the loss wastes that recovery at full HP.
-                    self.modify_actor_hp(actor_side, -other_param(card, 1).max(0), false, false);
+                    self.modify_actor_hp(actor_side, -param1(card), false, false);
                     if self.check_rear_move(actor_side, was_used_before_effect) {
-                        self.modify_actor_hp(actor_side, other_param(card, 0).max(0), false, false);
+                        self.modify_actor_hp(actor_side, param0(card), false, false);
                     }
                 }
                 Some(false)
             }
             17 => {
-                let hp_gain = other_param(card, 0).max(0);
+                let hp_gain = param0(card);
                 if hp_gain > 0 {
                     self.modify_actor_max_hp(actor_side, hp_gain);
                     self.modify_actor_hp(actor_side, hp_gain, false, false);
                 }
-                self.actor_mut(actor_side).fate.tide += other_param(card, 1).max(0);
+                self.actor_mut(actor_side).fate.tide += param1(card);
                 Some(false)
             }
             428 => {
@@ -56,14 +64,14 @@ impl ReplayState {
                 // otherParams[0]、海潮+otherParams[1]」。卡 17 保持旧行为
                 // （Card_17.cs: ModifyMaxHp/ModifyHp + HaiChao）。10428/20428
                 // 数值由配置档位提供（[4,1]/[6,1]）。
-                self.gain_water_momentum(actor_side, other_param(card, 0).max(0));
-                self.actor_mut(actor_side).fate.tide += other_param(card, 1).max(0);
+                self.gain_water_momentum(actor_side, param0(card));
+                self.actor_mut(actor_side).fate.tide += param1(card);
                 Some(false)
             }
             10 => {
                 let bonus = if self.actor(actor_side).astrology.star_power > 0 {
                     self.modify_star_power(actor_side, -1);
-                    other_param(card, 0).max(0)
+                    param0(card)
                 } else {
                     0
                 };
@@ -125,22 +133,21 @@ impl ReplayState {
             2_000_007 => {
                 self.apply_configured_anima(actor_side, card);
                 self.apply_configured_physique(actor_side, card);
-                let heal = other_param(card, 0).max(0)
-                    + self.actor(actor_side).core.anima.max(0) * other_param(card, 1).max(0);
+                let heal = param0(card) + self.actor(actor_side).core.anima.max(0) * param1(card);
                 if heal > 0 {
                     self.modify_actor_hp(actor_side, heal, false, false);
                 }
                 Some(false)
             }
             2_000_001 => {
-                self.modify_actor_hp(actor_side, other_param(card, 0).max(0), false, false);
+                self.modify_actor_hp(actor_side, param0(card), false, false);
                 Some(false)
             }
             2_000_004 => {
                 self.apply_configured_anima(actor_side, card);
                 self.apply_configured_defense(actor_side, card);
-                let count = other_param(card, 0).max(0);
-                let amount = other_param(card, 1).max(0);
+                let count = param0(card);
+                let amount = param1(card);
                 for ordinal in 0..count {
                     let options = self.negative_status_types_present(actor_side);
                     let status = self
@@ -154,11 +161,11 @@ impl ReplayState {
                 Some(false)
             }
             2_000_008 => {
-                self.gain_attack_bonus(actor_side, other_param(card, 0).max(0));
+                self.gain_attack_bonus(actor_side, param0(card));
                 Some(false)
             }
             11_000_021 => {
-                let hp_gain = other_param(card, 0).max(0);
+                let hp_gain = param0(card);
                 self.modify_actor_max_hp(actor_side, hp_gain);
                 if hp_gain > 0 {
                     self.modify_actor_hp(actor_side, hp_gain, false, false);
@@ -166,18 +173,21 @@ impl ReplayState {
                 let actor = self.actor_mut(actor_side);
                 // Card_11000021.cs:82 用 ModifyBuffValue(DongZhuJiXian, ...)
                 // 累加次数：重复打出/多张命运轮回叠加跳过次数，不是覆盖。
-                actor.fate.fate_cycle += other_param(card, 1).max(0);
-                actor.fate.fate_cycle_slots[0] = other_param(card, 2).max(0);
-                actor.fate.fate_cycle_slots[1] = other_param(card, 3).max(0);
+                actor.fate.fate_cycle += param1(card);
+                actor.fate.fate_cycle_slots[0] = param2(card);
+                actor.fate.fate_cycle_slots[1] = param3(card);
                 Some(false)
             }
             22 => {
-                // Card_22.cs (build 25621897)：星位 → 星力 → 灵气 → 生命及上限；
-                // 卦象由通用印刷效果在牌体之后发放，与原版末尾的 GuaXiang 同序。
-                self.add_following_star_slots(actor_side, slot, 1);
-                self.modify_star_power(actor_side, other_param(card, 0).max(0));
+                // Card_22.cs（25621897–25981480 逐字节一致）：灵气 → 卦象 → 星位 → 星力 → 生命及上限。
+                // 卦象先于星力：卦象+1 触发仙命 61 时尚无星力，故与牌面星力叠加（原版 oracle 2 对 1）。
                 self.apply_configured_anima(actor_side, card);
-                let hp_gain = other_param(card, 1).max(0);
+                if let Some(hexagram) = card.hexagram.filter(|value| *value > 0) {
+                    self.gain_hexagram(actor_side, hexagram);
+                }
+                self.add_following_star_slots(actor_side, slot, 1);
+                self.modify_star_power(actor_side, param0(card));
+                let hp_gain = param1(card);
                 if hp_gain > 0 {
                     self.modify_actor_max_hp(actor_side, hp_gain);
                     self.modify_actor_hp(actor_side, hp_gain, false, false);
@@ -189,7 +199,7 @@ impl ReplayState {
                 attacked |= self.attack_by_config(actor_side, card, 0, slot);
                 let target_side = opponent_side(actor_side);
                 if self.known_negative_status_count(target_side) > 0 {
-                    self.add_actor_negative_status(target_side, 100, other_param(card, 0).max(0));
+                    self.add_actor_negative_status(target_side, 100, param0(card));
                 }
                 Some(attacked)
             }
@@ -197,22 +207,17 @@ impl ReplayState {
                 self.apply_configured_anima(actor_side, card);
                 let hexagram = self.actor(actor_side).astrology.hexagram.max(0);
                 if hexagram > 0 {
-                    self.gain_defense(actor_side, other_param(card, 0).max(0) * hexagram);
-                    self.modify_actor_hp(
-                        actor_side,
-                        other_param(card, 1).max(0) * hexagram,
-                        false,
-                        false,
-                    );
+                    self.gain_defense(actor_side, param0(card) * hexagram);
+                    self.modify_actor_hp(actor_side, param1(card) * hexagram, false, false);
                 }
                 Some(false)
             }
             4_000_043 => {
                 let mut attacked = false;
                 attacked |= self.attack_by_config(actor_side, card, 0, slot);
-                self.modify_actor_hp(actor_side, other_param(card, 0).max(0), false, false);
+                self.modify_actor_hp(actor_side, param0(card), false, false);
                 if self.check_rear_move(actor_side, was_used_before_effect) {
-                    self.apply_attack(actor_side, other_param(card, 1).max(0), slot);
+                    self.apply_attack(actor_side, param1(card), slot);
                     attacked = true;
                 }
                 Some(attacked)
@@ -223,7 +228,7 @@ impl ReplayState {
                 // 再 Attack(attack, attackCount)（后招与主攻击同数值同段数，
                 // 独立于主攻击是否命中）。4010101/4020101 数值由配置档位提供。
                 let mut attacked = self.attack_by_config(actor_side, card, 0, slot);
-                self.gain_attack_bonus(actor_side, other_param(card, 0).max(0));
+                self.gain_attack_bonus(actor_side, param0(card));
                 if self.check_rear_move(actor_side, was_used_before_effect) {
                     attacked |= self.attack_by_config(actor_side, card, 0, slot);
                 }
@@ -233,15 +238,15 @@ impl ReplayState {
                 self.apply_configured_anima(actor_side, card);
                 // Card_214.cs（build 25796222）：先 ModifyMaxHp / ModifyHp(otherParams[3])，
                 // 再虚弱、破绽，最后设阴符玉简。
-                let hp_gain = other_param(card, 3).max(0);
+                let hp_gain = param3(card);
                 if hp_gain > 0 {
                     self.modify_actor_max_hp(actor_side, hp_gain);
                     self.modify_actor_hp(actor_side, hp_gain, false, false);
                 }
                 let target_side = opponent_side(actor_side);
-                self.add_actor_negative_status(target_side, 101, other_param(card, 0).max(0));
-                self.add_actor_negative_status(target_side, 102, other_param(card, 1).max(0));
-                let target_yin_fu = other_param(card, 2).max(0);
+                self.add_actor_negative_status(target_side, 101, param0(card));
+                self.add_actor_negative_status(target_side, 102, param1(card));
+                let target_yin_fu = param2(card);
                 self.actor_mut(target_side).status.yin_fu = target_yin_fu;
                 Some(false)
             }
@@ -253,7 +258,7 @@ impl ReplayState {
                 // gain_sharpness，对应 BattleCharacter.cs:8572-8574 / 10088-10090）。
                 self.activate_element(actor_side, Element::Earth);
                 self.activate_element(actor_side, Element::Metal);
-                self.actor_mut(actor_side).sword.metal_ring += other_param(card, 0).max(0);
+                self.actor_mut(actor_side).sword.metal_ring += param0(card);
                 Some(false)
             }
             415 => {
@@ -262,7 +267,7 @@ impl ReplayState {
                 // add/remove_actor_negative_status hook 中承担，见 combat.rs
                 // apply_feng_mo_stance_physique。Min 的扣血副作用由
                 // apply_meditation_hp_delta 承担（BattleCharacter.cs:8715-8730）。
-                let amount = other_param(card, 0).max(0);
+                let amount = param0(card);
                 if amount > 0 {
                     self.add_actor_negative_status(actor_side, 367, amount);
                 }
@@ -274,9 +279,9 @@ impl ReplayState {
                 // ModifyHp(otherParams[1])。与卡 12 不同：无 rarity 分支，
                 // 后招固定回血 otherParams[1]（10425/20425 数值由配置档位提供）。
                 self.apply_configured_anima(actor_side, card);
-                self.gain_agility(actor_side, other_param(card, 0).max(0));
+                self.gain_agility(actor_side, param0(card));
                 if self.check_rear_move(actor_side, was_used_before_effect) {
-                    self.modify_actor_hp(actor_side, other_param(card, 1).max(0), false, false);
+                    self.modify_actor_hp(actor_side, param1(card), false, false);
                 }
                 Some(false)
             }
@@ -290,8 +295,8 @@ impl ReplayState {
                 // modify_momentum_limit（超限）调用 apply_sheng_qi_ling_ren_damage
                 // （对应 BattleCharacter.cs:8818-8820 / 9079-9081）。与卡 70
                 // 气势如虹同 buff（fate.sheng_qi_ling_ren）。
-                self.gain_agility(actor_side, other_param(card, 0).max(0));
-                self.actor_mut(actor_side).fate.sheng_qi_ling_ren += other_param(card, 1).max(0);
+                self.gain_agility(actor_side, param0(card));
+                self.actor_mut(actor_side).fate.sheng_qi_ling_ren += param1(card);
                 Some(false)
             }
             423 => {
@@ -311,8 +316,8 @@ impl ReplayState {
                 // 结算 combat.rs add_actor_negative_status 承担
                 // （BattleCharacter.cs:8644-8648，BuffConfig 759 YinFuJueZhen）。
                 let target_side = opponent_side(actor_side);
-                self.add_actor_negative_status(target_side, 101, other_param(card, 0).max(0));
-                self.actor_mut(target_side).status.yin_fu_jue_zhen += other_param(card, 1).max(0);
+                self.add_actor_negative_status(target_side, 101, param0(card));
+                self.actor_mut(target_side).status.yin_fu_jue_zhen += param1(card);
                 Some(false)
             }
             7_000_107 => {
@@ -321,7 +326,7 @@ impl ReplayState {
                 // 灵气减免（卡组每有 1 种不同五行少耗 1 灵气）由统一费用结算
                 // support.rs effective_anima_cost 承担（CardActionBase.cs:5026，
                 // 与 7000095 同分支）。7010107/7020107 数值由配置档位提供。
-                let bonus = self.actor(actor_side).core.anima.max(0) * other_param(card, 0).max(0);
+                let bonus = self.actor(actor_side).core.anima.max(0) * param0(card);
                 Some(self.attack_by_config(actor_side, card, bonus, slot))
             }
             403 => {
@@ -331,12 +336,12 @@ impl ReplayState {
                 // （持续：每次使用云剑后追加该层数攻击，见 cards_ronghui.rs
                 // apply_ronghui_after_card_effect）。10403/20403 数值由配置
                 // 档位提供（[6,4]/[10,5]）。
-                let hp_gain = other_param(card, 0).max(0);
+                let hp_gain = param0(card);
                 if hp_gain > 0 {
                     self.modify_actor_max_hp(actor_side, hp_gain);
                     self.modify_actor_hp(actor_side, hp_gain, false, false);
                 }
-                self.actor_mut(actor_side).sword.yun_jian_mao_ying += other_param(card, 1).max(0);
+                self.actor_mut(actor_side).sword.yun_jian_mao_ying += param1(card);
                 Some(false)
             }
             407 => {
@@ -358,7 +363,7 @@ impl ReplayState {
                 // 分支、resources.rs modify_star_power_inner 加攻转换、
                 // combat_core_status.rs 卦象消耗先扣星力三处触发点均以
                 // buff 773 判定。10422/20422 星力由配置档位提供（2/3）。
-                self.modify_star_power(actor_side, other_param(card, 0).max(0));
+                self.modify_star_power(actor_side, param0(card));
                 self.actor_mut(actor_side).astrology.zi_mang_xing_bao += 1;
                 Some(false)
             }
@@ -372,7 +377,7 @@ impl ReplayState {
                 // 金灵阵分支，BattleCharacter.cs:2741-2743 OnBeforeExecuted）。
                 // 7010108/7020108 数值由配置档位提供（2/3）。
                 self.activate_element(actor_side, Element::Metal);
-                self.actor_mut(actor_side).elements.metal_formation += other_param(card, 0).max(0);
+                self.actor_mut(actor_side).elements.metal_formation += param0(card);
                 Some(false)
             }
             221 => {
@@ -388,8 +393,7 @@ impl ReplayState {
                     before,
                     after,
                 );
-                self.actor_mut(actor_side).fate.dismantle_move_reflect =
-                    other_param(card, 1).max(0);
+                self.actor_mut(actor_side).fate.dismantle_move_reflect = param1(card);
                 Some(false)
             }
             // Early talisman cards.
@@ -420,7 +424,7 @@ impl ReplayState {
                 Some(false)
             }
             3_000_005 => {
-                let amount = other_param(card, 0).max(0);
+                let amount = param0(card);
                 if amount > 0 {
                     self.modify_target_hp(actor_side, -amount);
                     self.modify_target_max_hp(actor_side, -amount);
@@ -429,40 +433,27 @@ impl ReplayState {
             }
             3_000_006 => {
                 self.apply_configured_anima(actor_side, card);
-                let amount = other_param(card, 0).max(0);
+                let amount = param0(card);
                 self.reduce_all_actor_negative_statuses(actor_side, amount);
                 Some(false)
             }
             3_000_007 => {
                 self.apply_configured_anima(actor_side, card);
-                self.reduce_anima_unchecked(opponent_side(actor_side), other_param(card, 0).max(0));
+                self.reduce_anima_unchecked(opponent_side(actor_side), param0(card));
                 Some(false)
             }
             3_000_008 => {
-                self.add_actor_negative_status(
-                    opponent_side(actor_side),
-                    100,
-                    other_param(card, 0).max(0),
-                );
+                self.add_actor_negative_status(opponent_side(actor_side), 100, param0(card));
                 Some(false)
             }
             3_000_009 => {
-                for _ in 0..other_param(card, 0).max(0) {
-                    self.modify_actor_hp(
-                        opponent_side(actor_side),
-                        -other_param(card, 1).max(0),
-                        false,
-                        false,
-                    );
+                for _ in 0..param0(card) {
+                    self.modify_actor_hp(opponent_side(actor_side), -param1(card), false, false);
                 }
                 Some(false)
             }
             3_000_012 => {
-                self.add_actor_negative_status(
-                    opponent_side(actor_side),
-                    101,
-                    other_param(card, 0).max(0),
-                );
+                self.add_actor_negative_status(opponent_side(actor_side), 101, param0(card));
                 Some(false)
             }
             5_000_001 => {
@@ -477,7 +468,7 @@ impl ReplayState {
                 Some(attacked)
             }
             5_000_002 => {
-                let defense = other_param(card, 0).max(0);
+                let defense = param0(card);
                 if defense > 0 {
                     self.gain_defense(actor_side, defense);
                     self.gain_defense(opponent_side(actor_side), defense);
@@ -500,7 +491,7 @@ impl ReplayState {
             }
             6_000_003 => {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
-                self.gain_anima(actor_side, other_param(card, 0).max(0));
+                self.gain_anima(actor_side, param0(card));
                 Some(attacked)
             }
             6_000_004 => {
@@ -529,30 +520,26 @@ impl ReplayState {
                     self.gain_hexagram(actor_side, hexagram);
                 }
                 let target_side = opponent_side(actor_side);
-                let damage = other_param(card, 0).max(0);
+                let damage = param0(card);
                 if damage > 0 {
                     self.modify_actor_hp(target_side, -damage, false, false);
                 }
-                self.reduce_anima_unchecked(target_side, other_param(card, 1).max(0));
+                self.reduce_anima_unchecked(target_side, param1(card));
                 Some(false)
             }
             3_000_011 => {
-                self.add_actor_negative_status(
-                    opponent_side(actor_side),
-                    102,
-                    other_param(card, 0).max(0),
-                );
+                self.add_actor_negative_status(opponent_side(actor_side), 102, param0(card));
                 Some(false)
             }
             5_000_004 => {
-                let amount = other_param(card, 0).max(0);
+                let amount = param0(card);
                 self.gain_anima(actor_side, amount);
                 self.gain_anima(opponent_side(actor_side), amount);
                 self.actor_mut(actor_side).music.music_cards_played += 1;
                 Some(false)
             }
             5_000_005 => {
-                let value = other_param(card, 0).max(0);
+                let value = param0(card);
                 self.actor_mut(actor_side).music.illusory_tune += value;
                 self.actor_mut(opponent_side(actor_side))
                     .music
@@ -561,7 +548,7 @@ impl ReplayState {
                 Some(false)
             }
             5_000_007 => {
-                let value = other_param(card, 0).max(0);
+                let value = param0(card);
                 self.actor_mut(actor_side).music.heartbreak_tune += value;
                 self.actor_mut(opponent_side(actor_side))
                     .music
@@ -570,7 +557,7 @@ impl ReplayState {
                 Some(false)
             }
             5_000_008 => {
-                let value = other_param(card, 0).max(0);
+                let value = param0(card);
                 self.actor_mut(actor_side).music.wild_dance_tune += value;
                 self.actor_mut(opponent_side(actor_side))
                     .music
@@ -579,7 +566,7 @@ impl ReplayState {
                 Some(false)
             }
             5_000_010 => {
-                let value = other_param(card, 0).max(0);
+                let value = param0(card);
                 self.actor_mut(actor_side).music.rejuvenation_tune += value;
                 self.actor_mut(opponent_side(actor_side))
                     .music
@@ -588,7 +575,7 @@ impl ReplayState {
                 Some(false)
             }
             5_000_011 => {
-                let amount = other_param(card, 0).max(0);
+                let amount = param0(card);
                 self.spend_anima_unchecked(actor_side, amount);
                 self.spend_anima_unchecked(opponent_side(actor_side), amount);
                 self.actor_mut(actor_side).music.music_cards_played += 1;
@@ -601,7 +588,7 @@ impl ReplayState {
             }
             57 => {
                 let gain = card.defense.unwrap_or(0).max(0)
-                    + self.actor(actor_side).turn.used_card_count * other_param(card, 0).max(0);
+                    + self.actor(actor_side).turn.used_card_count * param0(card);
                 self.gain_defense(actor_side, gain);
                 Some(false)
             }

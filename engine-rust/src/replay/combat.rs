@@ -5,7 +5,111 @@ use super::support::{
 use super::{NegativeStatusMutationReceipt, ReplayState};
 use crate::model::{CardDefinition, PlayerSide};
 
-impl ReplayState {
+/// Typed descriptor for a single damage resolution pipeline transaction.
+/// Encapsulates the 10 parameters previously passed separately to `apply_damage_to_inner`,
+/// maintaining zero behavioral drift, exact sequence of defense/wound/reflect hooks,
+/// and full backward-compatible convenience methods.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) struct DamageIntent {
+    pub actor_side: PlayerSide,
+    pub target: PlayerSide,
+    pub amount: i64,
+    pub apply_wound_bonus: bool,
+    pub ignore_defense: bool,
+    pub shatter_defense: bool,
+    pub post_defense_wound_bonus: i64,
+    pub post_wound_multiplier_percent: i64,
+    pub reflect: bool,
+    pub ignore_guard: bool,
+}
+
+impl DamageIntent {
+    #[inline(always)]
+    pub const fn new(actor_side: PlayerSide, target: PlayerSide, amount: i64) -> Self {
+        Self {
+            actor_side,
+            target,
+            amount,
+            apply_wound_bonus: false,
+            ignore_defense: false,
+            shatter_defense: false,
+            post_defense_wound_bonus: 0,
+            post_wound_multiplier_percent: 100,
+            reflect: false,
+            ignore_guard: false,
+        }
+    }
+
+    #[inline(always)]
+    pub const fn attack(actor_side: PlayerSide, target: PlayerSide, amount: i64) -> Self {
+        Self {
+            actor_side,
+            target,
+            amount,
+            apply_wound_bonus: true,
+            ignore_defense: false,
+            shatter_defense: false,
+            post_defense_wound_bonus: 0,
+            post_wound_multiplier_percent: 100,
+            reflect: false,
+            ignore_guard: false,
+        }
+    }
+
+    #[inline(always)]
+    pub const fn reflect(actor_side: PlayerSide, target: PlayerSide, amount: i64) -> Self {
+        Self {
+            actor_side,
+            target,
+            amount,
+            apply_wound_bonus: false,
+            ignore_defense: false,
+            shatter_defense: false,
+            post_defense_wound_bonus: 0,
+            post_wound_multiplier_percent: 100,
+            reflect: true,
+            ignore_guard: false,
+        }
+    }
+
+    #[inline(always)]
+    pub const fn with_wound_bonus(mut self, apply_wound_bonus: bool) -> Self {
+        self.apply_wound_bonus = apply_wound_bonus;
+        self
+    }
+
+    #[inline(always)]
+    pub const fn with_ignore_defense(mut self, ignore_defense: bool) -> Self {
+        self.ignore_defense = ignore_defense;
+        self
+    }
+
+    #[inline(always)]
+    pub const fn with_shatter_defense(mut self, shatter_defense: bool) -> Self {
+        self.shatter_defense = shatter_defense;
+        self
+    }
+
+    #[inline(always)]
+    pub const fn with_post_defense_wound_bonus(mut self, bonus: i64) -> Self {
+        self.post_defense_wound_bonus = bonus;
+        self
+    }
+
+    #[inline(always)]
+    pub const fn with_post_wound_multiplier_percent(mut self, percent: i64) -> Self {
+        self.post_wound_multiplier_percent = percent;
+        self
+    }
+
+    #[inline(always)]
+    pub const fn with_ignore_guard(mut self, ignore_guard: bool) -> Self {
+        self.ignore_guard = ignore_guard;
+        self
+    }
+}
+
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     /// Detail-entry identity for a negative-status stack, matching
     /// snapshot.rs's detail_entries keys; unknown statuses stay unrecorded and
     /// fall back to the sampling diff.
@@ -48,13 +152,13 @@ impl ReplayState {
             let Some(status) = self.consume_optional_negative_status_decision() else {
                 continue;
             };
-            if self
-                .remove_actor_negative_status(actor_side, status, 1)
-                .applied
-                != 0
-            {
-                self.add_actor_negative_status(opponent_side(actor_side), status, 1);
-            }
+            // Card_10000024 and CardActionBase's BengQuanJieMai hook issue two
+            // independent ModifyBuffValue calls: decrement the selected status
+            // on src, then increment it on dst. The second call is unconditional
+            // even when src had no stack to remove (Steam build 25981480,
+            // Card_10000024.cs:81-85 and CardActionBase.cs:3416-3420).
+            self.remove_actor_negative_status(actor_side, status, 1);
+            self.add_actor_negative_status(opponent_side(actor_side), status, 1);
         }
     }
 
@@ -133,11 +237,7 @@ impl ReplayState {
                 let actor = self.actor_mut(actor_side);
                 let before = actor.status.meditation;
                 actor.status.meditation = (actor.status.meditation - amount).max(0);
-                let removed = before - actor.status.meditation;
-                if removed > 0 {
-                    self.apply_meditation_hp_delta(actor_side, -removed);
-                }
-                removed
+                before - actor.status.meditation
             }
             393 => {
                 let actor = self.actor_mut(actor_side);
@@ -149,6 +249,14 @@ impl ReplayState {
         };
         if removed > 0 {
             self.apply_feng_mo_stance_physique(actor_side, removed);
+            if status == 367 {
+                // BattleCharacter.ModifyBuffValue applies the generic negative
+                // status hooks (including card 415's ModifyTiPo) before the
+                // Min-specific HP effect (BattleCharacter.cs:8960-8972).
+                // The order matters when the physique gain raises max HP before
+                // meditation heals character 4000003.
+                self.apply_meditation_hp_delta(actor_side, -removed);
+            }
         }
         let after = self.negative_status_stack_value(actor_side, status);
         NegativeStatusMutationReceipt {
@@ -240,6 +348,21 @@ impl ReplayState {
         {
             amount -= 1;
         }
+        // BattleCharacter.ModifyBuffValue:8803-8808（26125017/26156693 同文）：
+        // 206 架势之后、辟邪之前，鲜果宝粽把任何 Negative 类正增量（豁免
+        // Min 367）转为等量恢复并 return（跳过辟邪与后续全部钩子）。
+        // 本管线只处理 Negative 状态，category 检查由漏斗位置保证。
+        if amount > 0 && status != 367 && self.actor(actor_side).fate.xian_guo_bao_zong > 0 {
+            self.actor_mut(actor_side).fate.xian_guo_bao_zong -= 1;
+            self.actor_mut(actor_side).status.recovery += amount;
+            return NegativeStatusMutationReceipt {
+                status,
+                requested,
+                applied: 0,
+                before,
+                after: before,
+            };
+        }
         let exorcism = self.actor(actor_side).fate.exorcism.max(0);
         if exorcism > 0 && amount > 0 {
             let prevented = amount.min(exorcism);
@@ -296,7 +419,7 @@ impl ReplayState {
                 // YinFuJueZhen 反伤（豁免 Min）→ 415 疯魔架势
                 // ModifyTiPo(abs(delta)) → Min 分支 ModifyHp(abs(delta)*3)。
                 // 415 先涨体魄/生命上限，Min 回血按更高上限截断
-                // （oracle 锚点：a94331ac41eb745f/round-09 cp2 p1.hp 80：
+                // （oracle 锚点：pa_713c1d34 cp2 p1.hp 80：
                 // maxHp 77→80 后回 9 截断到 80；引擎原 77 = 先回 9 被 77
                 // 截断再涨上限）。整段自带尾钩并 return，避免共享尾部
                 // 重复触发 415。
@@ -327,11 +450,22 @@ impl ReplayState {
         // by 阴符绝阵 (card 429); apply it after the weakness actually lands.
         if status == 101
             && actual > 0
-            && self
+            && (self
                 .actor(opponent_side(actor_side))
                 .identity
                 .fate_strategies
-                .contains(&405)
+                .contains(&405))
+        {
+            self.gain_anima(opponent_side(actor_side), 1);
+        }
+        // BattleCharacter.ModifyBuffValue:9082 仙魔 7080 (内伤 100 / 虚弱 101 / 破绽 102).
+        if matches!(status, 100 | 101 | 102)
+            && actual > 0
+            && self
+                .actor(opponent_side(actor_side))
+                .identity
+                .xian_mo_strategies
+                .contains(&7080)
         {
             self.gain_anima(opponent_side(actor_side), 1);
         }
@@ -377,7 +511,7 @@ impl ReplayState {
             // gained the negative status and holds YinFuJueZhen.  Do not use
             // the ordinary source->opponent helper here; that would assign
             // the reflect to the wrong side.
-            self.apply_damage(opponent_side(actor_side), damage, false, false, false);
+            self.apply_reflect_damage(opponent_side(actor_side), damage);
         }
     }
 
@@ -403,7 +537,13 @@ impl ReplayState {
         if amount <= 0 {
             return;
         }
-        let hp_delta = if self.actor(actor_side).identity.character_id == Some(4_000_003) {
+        let hp_delta = if self.actor(actor_side).identity.character_id == Some(4_000_003)
+            || self
+                .actor(actor_side)
+                .identity
+                .xian_mo_strategies
+                .contains(&27021)
+        {
             amount
         } else {
             -amount
@@ -580,37 +720,15 @@ impl ReplayState {
         }
         self.increment_element_activation_count(actor_side, element);
         self.apply_talent_79_element_activation_reward(actor_side);
-        let activation_count = match element {
-            super::Element::Metal => self.actor(actor_side).elements.activated_metal,
-            super::Element::Water => self.actor(actor_side).elements.activated_water,
-            super::Element::Wood => self.actor(actor_side).elements.activated_wood,
-            super::Element::Fire => self.actor(actor_side).elements.activated_fire,
-            super::Element::Earth => self.actor(actor_side).elements.activated_earth,
-        };
-        if self
-            .actor(actor_side)
-            .identity
-            .fate_strategies
-            .contains(&310)
-            && self
-                .actor(actor_side)
-                .fate
-                .five_elements_gathering_triggered
-                <= 0
-            && activation_count > 1
-        {
-            self.actor_mut(actor_side)
-                .fate
-                .five_elements_gathering_triggered = 1;
-            self.gain_anima(actor_side, 1);
-        }
         if self
             .actor(actor_side)
             .elements
             .primordial_infinity_formation
             > 0
             && self.actor(actor_side).turn.extra_actions <= 0
-            && self.actor(actor_side).turn.action_again_count < 1
+            // ModifyBuffValue:9100 的门槛是 ZaiCiXingDong < battleTempData.actionAgainPerRound（逍遥游 435 等会把它加到 2+）。
+            && self.actor(actor_side).turn.action_again_count
+                < self.dream_mirage_action_again_limit(actor_side)
         {
             self.actor_mut(actor_side)
                 .elements
@@ -632,9 +750,9 @@ impl ReplayState {
         // (FateStrategyConfig(411).otherParams[0]，24666769=2、24705509=4、
         // 24811621=8)。原版位置在 talent 138/202 之后、ModifyBuffValue 尾部，
         // 重入的土激活走完整语义路径（talent 79/112 等钩子照常触发）。
-        // 24705509 数值迁移证据：客户端首方 oracle 078c7b858762da9d/round-13
-        // cp0（p2.defense original=4 rust=2）、7a1dc7adf37b2472/round-09 cp3；
-        // 旧值锚点 mirror-32299000 dcc66e8dfc226124/round-10 cp0（24666769，
+        // 24705509 数值迁移证据：客户端首方 oracle pa_136b9a48
+        // cp0（p2.defense original=4 rust=2）、pa_5d1090cc cp3；
+        // 旧值锚点 mirror-32299000 pa_2ede11b6 cp0（24666769，
         // p2 def=1 = (0+2) 经 turn1 防御减半）。
         self.apply_fate_strategy_411_element_hook(actor_side, element);
         self.apply_synthetic_ding_feng_bo_activation_damage(actor_side);
@@ -646,26 +764,34 @@ impl ReplayState {
         actor_side: PlayerSide,
         element: super::Element,
     ) {
-        if !self
-            .actor(actor_side)
-            .identity
-            .fate_strategies
-            .contains(&411)
-        {
-            return;
-        }
-        match element {
-            super::Element::Water => {
-                // 重入走完整语义路径，原版 ModifyBuffValue(JiHuoTuLing, 1)
-                // 同样跑全部激活钩子（包括本函数的土分支 → ModifyDef(otherParams[0])）。
-                self.activate_element(actor_side, super::Element::Earth);
+        // ModifyBuffValue 激活钩子里 FS411 之后紧跟仙魔 7084，同一 switch（水灵激活 → 再激活土灵；
+        // 土灵激活 → +otherParams[0]=8 防御），两者互相独立。
+        let hooks = [
+            self.actor(actor_side)
+                .identity
+                .fate_strategies
+                .contains(&411),
+            self.actor(actor_side)
+                .identity
+                .xian_mo_strategies
+                .contains(&7084),
+        ];
+        for enabled in hooks {
+            if !enabled {
+                continue;
             }
-            super::Element::Earth => {
-                // 土灵激活时 ModifyDef(FateStrategyConfig(411).otherParams[0])；
-                // 24811621 起 otherParams=[8]（24705509 为 [4]，24666769 为 [2]）。
-                self.gain_defense(actor_side, 8);
+            match element {
+                super::Element::Water => {
+                    // 重入走完整语义路径，原版 ModifyBuffValue(JiHuoTuLing, 1)
+                    // 同样跑全部激活钩子（包括本函数的土分支 → ModifyDef(otherParams[0])）。
+                    self.activate_element(actor_side, super::Element::Earth);
+                }
+                super::Element::Earth => {
+                    // 土灵激活时 ModifyDef(otherParams[0])；FS411 24811621 起 [8]，仙魔 7084 [8]。
+                    self.gain_defense(actor_side, 8);
+                }
+                _ => {}
             }
-            _ => {}
         }
     }
 
@@ -731,6 +857,31 @@ impl ReplayState {
             super::Element::Earth => self.actor_mut(actor_side).elements.activated_earth = after,
         }
         self.record_counter_transition(actor_side, "五行", key, label, before, after);
+        // ModifyBuffValue(JiHuo*) owns this reward, so direct activation
+        // buffs and ActiveWuXing both enter it. Fate 310 and strategy 7048
+        // share the original per-turn trigger marker and do not double pay.
+        if after > 1
+            && self
+                .actor(actor_side)
+                .fate
+                .five_elements_gathering_triggered
+                <= 0
+            && (self
+                .actor(actor_side)
+                .identity
+                .fate_strategies
+                .contains(&310)
+                || self
+                    .actor(actor_side)
+                    .identity
+                    .xian_mo_strategies
+                    .contains(&7048))
+        {
+            self.actor_mut(actor_side)
+                .fate
+                .five_elements_gathering_triggered = 1;
+            self.gain_anima(actor_side, 1);
+        }
     }
 
     /// Direct `ModifyBuffValue(JiHuo*)` writes still make the element active
@@ -741,26 +892,11 @@ impl ReplayState {
         actor_side: PlayerSide,
         element: super::Element,
     ) {
-        if !self
-            .actor(actor_side)
-            .elements
-            .activated_elements
-            .contains(&element)
-        {
-            self.actor_mut(actor_side)
-                .elements
-                .activated_elements
-                .push(element);
-        }
-        self.increment_element_activation_count(actor_side, element);
-        // Card_136.cs writes JiHuoShuiLing/JiHuoHuoLing directly.  The
-        // ModifyBuffValue path still invokes Talent 138, but deliberately
-        // skips ActiveWuXing's generated-element and other callbacks.
-        self.apply_talent_138_element_activation(actor_side);
-        // fate 411 钩子在原版位于 ModifyBuffValue 内，直接写入同样触发
-        // （与 6_000_... 直接写 JiHuo* 的路径一致）；重入的土激活走完整
-        // 语义路径（原版重入 ModifyBuffValue(JiHuoTuLing, 1) 同样完整）。
-        self.apply_fate_strategy_411_element_hook(actor_side, element);
+        // 原版 ActiveWuXingInName / 各卡 / 仙魔·天衍开局都只是 ModifyBuffValue(JiHuoXLing, 1)：五行激活的全部钩子
+        // （202、79 系奖励、138、112、镇印、200、411/7084 …）都在 ModifyBuffValue 同一段里，与写入方无关
+        // （BattleCharacter.cs:8987–9250；oracle pa_56f0083e：仙魔 7028 直写火灵后 112 五行元灵
+        // 对对手造成 7）。因此直写与 activate_element 完全等价。
+        self.activate_element(actor_side, element);
     }
 
     pub(super) fn apply_talent_138_element_activation(&mut self, actor_side: PlayerSide) {
@@ -834,6 +970,7 @@ impl ReplayState {
             super::Element::Earth => actor.elements.activated_earth,
         };
         self.is_element_activated(actor_side, required)
+            || actor.identity.xian_mo_strategies.contains(&11003)
             || activation_count > 0
             || actor.elements.long_ma_spirit > 0
             || super::support::active_deck_cards(actor)
@@ -935,19 +1072,14 @@ impl ReplayState {
         ignore_defense: bool,
         shatter_defense: bool,
     ) {
-        let target = opponent_side(actor_side);
-        self.apply_damage_to_inner(
-            actor_side,
-            target,
-            amount,
-            apply_wound_bonus,
-            ignore_defense,
-            shatter_defense,
-            0,
-            100,
-        );
+        let intent = DamageIntent::new(actor_side, opponent_side(actor_side), amount)
+            .with_wound_bonus(apply_wound_bonus)
+            .with_ignore_defense(ignore_defense)
+            .with_shatter_defense(shatter_defense);
+        self.apply_damage_to_inner(intent);
     }
 
+    #[allow(clippy::too_many_arguments)] // hot-path damage API; grouping would hide the call contract
     pub(super) fn apply_attack_damage(
         &mut self,
         actor_side: PlayerSide,
@@ -956,17 +1088,15 @@ impl ReplayState {
         post_wound_multiplier_percent: i64,
         ignore_defense: bool,
         shatter_defense: bool,
-    ) {
-        self.apply_damage_to_inner(
-            actor_side,
-            opponent_side(actor_side),
-            amount,
-            true,
-            ignore_defense,
-            shatter_defense,
-            post_defense_wound_bonus,
-            post_wound_multiplier_percent,
-        );
+        ignore_guard: bool,
+    ) -> i64 {
+        let intent = DamageIntent::attack(actor_side, opponent_side(actor_side), amount)
+            .with_post_defense_wound_bonus(post_defense_wound_bonus)
+            .with_post_wound_multiplier_percent(post_wound_multiplier_percent)
+            .with_ignore_defense(ignore_defense)
+            .with_shatter_defense(shatter_defense)
+            .with_ignore_guard(ignore_guard);
+        self.apply_damage_to_inner(intent)
     }
 
     pub(super) fn apply_damage_to(
@@ -978,61 +1108,73 @@ impl ReplayState {
         ignore_defense: bool,
         shatter_defense: bool,
     ) {
-        self.apply_damage_to_inner(
-            actor_side,
-            target,
-            amount,
-            apply_wound_bonus,
-            ignore_defense,
-            shatter_defense,
-            0,
-            100,
-        );
+        let intent = DamageIntent::new(actor_side, target, amount)
+            .with_wound_bonus(apply_wound_bonus)
+            .with_ignore_defense(ignore_defense)
+            .with_shatter_defense(shatter_defense);
+        self.apply_damage_to_inner(intent);
     }
 
-    #[allow(clippy::too_many_arguments)]
-    fn apply_damage_to_inner(
+    /// `DamageInfo.Create(this, DamageType.ReflectDamage, n, skipWoundCheck: true)`：
+    /// 与 Damage 共用非攻击伤害管线（铁骨/拆招/防御/护体，ApplyDamage:11005-11046），
+    /// 唯一差别是 OnHit:11627 只对非反伤求值 `hp > 0 || CanRevive() || CheckSiZhan()`，
+    /// 反伤致死不当场把死战之志转为死战不倒，留给 DeathCheck。
+    pub(super) fn apply_reflect_damage(&mut self, actor_side: PlayerSide, amount: i64) {
+        self.apply_reflect_damage_to(actor_side, opponent_side(actor_side), amount);
+    }
+
+    pub(super) fn apply_reflect_damage_to(
         &mut self,
         actor_side: PlayerSide,
         target: PlayerSide,
         amount: i64,
-        apply_wound_bonus: bool,
-        ignore_defense: bool,
-        shatter_defense: bool,
-        post_defense_wound_bonus: i64,
-        post_wound_multiplier_percent: i64,
     ) {
-        let actor = self.actor(actor_side);
+        let intent = DamageIntent::reflect(actor_side, target, amount);
+        self.apply_damage_to_inner(intent);
+    }
+
+    fn apply_damage_to_inner(&mut self, intent: DamageIntent) -> i64 {
+        let actor = self.actor(intent.actor_side);
         let metal_cauldron_drop = actor.elements.metal_cauldron_drop;
-        let shatter_defense =
-            shatter_defense || (apply_wound_bonus && actor.status.leaf_blade_flower > 0);
-        let force_wound = apply_wound_bonus
+        let shatter_defense = intent.shatter_defense
+            || (intent.apply_wound_bonus && actor.status.leaf_blade_flower > 0);
+        let force_wound = intent.apply_wound_bonus
             && (actor.identity.talents.contains(&67)
                 || actor.turn.next_attack_wound_bonus > 0
                 || actor.turn.guaranteed_wound > 0
                 || actor.elements.long_ma_spirit > 0);
-        let mut remaining = amount.max(0);
-        let dream_mirage_reflected_incoming =
-            if !apply_wound_bonus && remaining > 0 && self.dream_mirage_reflection_active(target) {
-                let incoming = remaining;
-                remaining = (remaining * 75 / 100).max(1);
-                incoming
-            } else {
-                0
-            };
-        if !apply_wound_bonus && remaining > 0 && self.actor(target).elements.metal_iron_bone > 0 {
+        let mut remaining = intent.amount.max(0);
+        let dream_mirage_reflected_incoming = if !intent.apply_wound_bonus
+            && remaining > 0
+            && self.dream_mirage_reflection_active(intent.target)
+        {
+            let incoming = remaining;
+            remaining = (remaining * 75 / 100).max(1);
+            incoming
+        } else {
+            0
+        };
+        if !intent.apply_wound_bonus && self.actor(intent.target).elements.metal_iron_bone > 0 {
             remaining = (remaining - 5).max(1);
         }
-        if !apply_wound_bonus
+        if !intent.apply_wound_bonus
             && remaining > 0
-            && self.actor(target).fate.dismantle_move > 0
-            && self.actor(target).beng.quan_stance > 0
+            && self.actor(intent.target).fate.dismantle_move > 0
+            && self.actor(intent.target).beng.quan_stance > 0
         {
             remaining = (remaining / 2).max(1);
         }
+        if !intent.apply_wound_bonus
+            && remaining > 0
+            && self.actor(intent.actor_side).turn.own_turn_count == 3
+            && (self.is_xian_mo_switch_active(intent.actor_side, 1010)
+                || self.is_xian_mo_switch_active(intent.target, 1010))
+        {
+            remaining = (remaining * 60 / 100).max(1);
+        }
         let mut defense_absorbed = 0;
-        if !ignore_defense {
-            let target_defense = self.actor(target).core.defense;
+        if !intent.ignore_defense {
+            let target_defense = self.actor(intent.target).core.defense;
             if shatter_defense && target_defense > 0 && remaining > 0 {
                 remaining = if remaining * 2 >= target_defense {
                     remaining + div_ceil(target_defense, 2)
@@ -1042,10 +1184,12 @@ impl ReplayState {
             }
             let absorbed = target_defense.min(remaining);
             if absorbed > 0 {
-                self.lose_defense(target, absorbed);
-                self.actor_mut(target)
-                    .prevention
-                    .hp_loss_prevented_by_defense += absorbed;
+                self.lose_defense(intent.target, absorbed);
+                if OBSERVE {
+                    self.actor_mut(intent.target)
+                        .prevention
+                        .hp_loss_prevented_by_defense += absorbed;
+                }
             }
             defense_absorbed = absorbed;
             remaining -= absorbed;
@@ -1054,81 +1198,86 @@ impl ReplayState {
         // next-Attack converter: consume on any attack hit (even when defense absorbs
         // the whole hit). Defense gain is evaluated post-hit from actual HP damage dealt (num / 3).
         let consume_zhu_chen_bu =
-            apply_wound_bonus && self.actor(actor_side).elements.zhu_chen_bu > 0;
+            intent.apply_wound_bonus && self.actor(intent.actor_side).elements.zhu_chen_bu > 0;
         if consume_zhu_chen_bu {
-            self.actor_mut(actor_side).elements.zhu_chen_bu -= 1;
+            self.actor_mut(intent.actor_side).elements.zhu_chen_bu -= 1;
         }
         if remaining <= 0 && !force_wound {
             if dream_mirage_reflected_incoming > 0 {
                 self.apply_dream_mirage_reflected_life_loss(
-                    actor_side,
+                    intent.actor_side,
                     dream_mirage_reflected_incoming,
                 );
             }
-            return;
+            return 0;
         }
-        let wound_triggered = apply_wound_bonus
+        let wound_triggered = intent.apply_wound_bonus
             && (force_wound
                 || (remaining > 0
-                    && self.actor(target).core.guard <= 0
-                    && self.actor(target).fate.graft_flowers_to_tree <= 0));
+                    && self.actor(intent.target).core.guard <= 0
+                    && self.actor(intent.target).fate.graft_flowers_to_tree <= 0));
         let wound = if wound_triggered {
-            self.actor(target).status.external_injury.max(0)
+            self.actor(intent.target).status.external_injury.max(0)
         } else {
             0
         };
         let next_attack_wound_bonus = if wound_triggered {
-            self.actor(actor_side).turn.next_attack_wound_bonus.max(0)
+            self.actor(intent.actor_side).turn.next_attack_wound_bonus.max(0)
         } else {
             0
         };
         if next_attack_wound_bonus > 0 {
-            self.actor_mut(actor_side).turn.next_attack_wound_bonus = 0;
+            self.actor_mut(intent.actor_side).turn.next_attack_wound_bonus = 0;
         }
         remaining += wound
             + if wound_triggered {
-                post_defense_wound_bonus.max(0) + next_attack_wound_bonus
+                intent.post_defense_wound_bonus.max(0) + next_attack_wound_bonus
             } else {
                 0
             };
         if wound_triggered && metal_cauldron_drop > 0 {
             remaining *= 2;
         }
-        if wound_triggered && post_wound_multiplier_percent != 100 {
-            remaining = remaining * post_wound_multiplier_percent.max(0) / 100;
+        if wound_triggered && intent.post_wound_multiplier_percent != 100 {
+            remaining = remaining * intent.post_wound_multiplier_percent.max(0) / 100;
         }
-        let hp_receipt = self.mutate_actor_hp(target, -remaining, false, false);
-        if consume_zhu_chen_bu && hp_receipt.prevention != Some(super::HpMutationPrevention::Guard) {
+        let hp_receipt = self.mutate_actor_hp(intent.target, -remaining, false, intent.ignore_guard);
+        if consume_zhu_chen_bu && hp_receipt.prevention != Some(super::HpMutationPrevention::Guard)
+        {
             let actual_wound = (-hp_receipt.applied).max(0);
             if actual_wound > 0 {
-                self.gain_defense(actor_side, actual_wound / 3);
+                self.gain_defense(intent.actor_side, actual_wound / 3);
             }
         }
-        // BattleCharacter.ApplyDamage:11627-11638：非反伤、伤害 > 0 且未被护体挡下时求值
+        // BattleCharacter.OnHit:11627-11635：非反伤、伤害 > 0 且未被护体挡下时求值
         // `hp > 0 || CanRevive() || CheckSiZhan()`——致命一击（Attack 与 Damage）当下即把死战之志转为死战不倒，
-        // 不等 DeathCheck。
-        if remaining > 0
+        // 不等 DeathCheck；ReflectDamage 不求值。
+        if !intent.reflect
+            && remaining > 0
             && hp_receipt.prevention != Some(super::HpMutationPrevention::Guard)
-            && self.actor(target).core.hp <= 0
-            && !self.can_revive(target)
+            && self.actor(intent.target).core.hp <= 0
+            && !self.can_revive(intent.target)
         {
-            self.check_last_stand(target);
+            self.check_last_stand(intent.target);
         }
-        if hp_receipt.prevention == Some(super::HpMutationPrevention::Guard) && defense_absorbed > 0
+        if OBSERVE
+            && hp_receipt.prevention == Some(super::HpMutationPrevention::Guard)
+            && defense_absorbed > 0
         {
             // Defense is still spent before guard in the original pipeline, but it
             // has no marginal HP value on this hit: without that defense, the same
             // guard layer would cancel the entire remaining loss. Keep the battle
             // mutation untouched and only retract the derived prevention telemetry.
-            self.actor_mut(target)
+            self.actor_mut(intent.target)
                 .prevention
                 .hp_loss_prevented_by_defense -= defense_absorbed;
         }
         if dream_mirage_reflected_incoming > 0 {
             self.apply_dream_mirage_reflected_life_loss(
-                actor_side,
+                intent.actor_side,
                 dream_mirage_reflected_incoming,
             );
         }
+        (-hp_receipt.applied).max(0)
     }
 }

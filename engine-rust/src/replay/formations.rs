@@ -3,37 +3,41 @@ use super::ReplayState;
 use crate::model::{CardDefinition, PlayerSide};
 
 /// BattleCharacter.OnTurnEnded formations block, in current-build source order.
+/// 后三相位的源码顺序以 async state 编号为准：生机绽放（states 21-23）
+/// → 不动金刚阵（state 28）→ 万花迷魂阵（state 34），不是反编译行号顺序。
+/// oracle 强制：pa_ee3e7add（及镜像 round-16）卡#6 窗口，
+/// 生机须先抬上限+15/治疗+15/反噬-15，万花后吸（减攻+1→按减攻 2 吸血+2），
+/// 否则 +2 被旧上限截断、天赋 64 少触发一次防（引擎 144/防3，原版 147/防4）。
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(super) enum TurnEndFormationPhase {
     Thunder,
     Turtle,
     RejuvenationTune,
-    FlowerMaze,
-    Immovable,
     MirageVitalityBloom,
+    Immovable,
+    FlowerMaze,
 }
 
 pub(super) const TURN_END_FORMATION_PHASES: [TurnEndFormationPhase; 6] = [
     TurnEndFormationPhase::Thunder,
     TurnEndFormationPhase::Turtle,
     TurnEndFormationPhase::RejuvenationTune,
-    TurnEndFormationPhase::FlowerMaze,
-    TurnEndFormationPhase::Immovable,
     TurnEndFormationPhase::MirageVitalityBloom,
+    TurnEndFormationPhase::Immovable,
+    TurnEndFormationPhase::FlowerMaze,
 ];
 
 /// Base ids handled by `apply_formation_card_effect` (kept in sync with
 /// the match arms below). `card_routing` uses this to pin the sect-routing
 /// invariant: the formation kernel is reachable from the shared chain and
 /// the WuXing chain (7_000_058 / 7_000_073), never from the other sects.
-#[cfg(test)]
 pub(super) const FORMATION_HANDLED_IDS: &[i64] = &[
     7_000_058, 7_000_073, 8_000_001, 8_000_002, 8_000_003, 8_000_004, 8_000_005, 8_000_006,
     8_000_007, 8_000_008, 8_000_009, 8_000_010, 8_000_011, 8_000_013, 8_000_014, 8_000_016,
     11_000_003, 11_000_004, 11_000_022,
 ];
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn apply_formation_card_effect(
         &mut self,
         actor_side: PlayerSide,
@@ -158,6 +162,7 @@ impl ReplayState {
                 Some(false)
             }
             8_000_014 => {
+                self.apply_configured_defense(actor_side, card);
                 self.modify_star_chess_break(actor_side, other_param(card, 0).max(0));
                 Some(false)
             }
@@ -197,20 +202,25 @@ impl ReplayState {
                 // talent199），不是简单的元素种类数 == 1：
                 //   KeYinType(104) 且 count <= 2 → otherParams[0] * 2
                 //   count == 1 或（fate 408 且 count == 2）→ otherParams[0]
-                // oracle 锚点：f5d6ca391895cdaa/round-13 cp[1] p2 272=2
-                // （土+金=2 且 fate 408 → 授予）；b3135e34464fb802/round-15
+                // oracle 锚点：pa_5b7b4c29 cp[1] p2 272=2
+                // （土+金=2 且 fate 408 → 授予）；pa_ce71a9a6
                 // cp[2] p1 无 272（全火 deck + fate 147 → count=2，无 408
-                // → 不授予，引擎原先误授导致火灵阵后错误再次行动）。
+                // → 不授予）。
                 let count = wu_xing_count_in_deck(self.actor(actor_side));
                 let grant = if has_ke_yin_type(self.actor(actor_side), 104) && count <= 2 {
                     other_param(card, 0).max(0) * 2
                 } else if count == 1
-                    || (self
-                        .actor(actor_side)
-                        .identity
-                        .fate_strategies
-                        .contains(&408)
-                        && count == 2)
+                    || (count == 2
+                        && (self
+                            .actor(actor_side)
+                            .identity
+                            .fate_strategies
+                            .contains(&408)
+                            || self
+                                .actor(actor_side)
+                                .identity
+                                .xian_mo_strategies
+                                .contains(&7082)))
                 {
                     other_param(card, 0).max(0)
                 } else {
@@ -251,9 +261,9 @@ impl ReplayState {
                 // Card_1000094.cs:63 设置、CardActionBase.cs:4734 才移除）
                 // 仍生效期间执行——追击同样不触发剑意，与溟空剑阵诀/察体
                 // 追击同构。oracle 锚点：hf-32308000
-                // 2b3d798972192efc/round-16 cp4（迅影飞剑剑意 2→3 后
+                // pa_68c47be8 cp4（迅影飞剑剑意 2→3 后
                 // 周天剑阵追击不消耗 → 3，原引擎 0）、
-                // 7f2ce1909636f3af/round-13 cp19（剑意 0→1 保留；流云乱剑
+                // pa_cd8ae468 cp19（剑意 0→1 保留；流云乱剑
                 // 无 729 时追击正常消耗 12 → 0）。
                 let suppress_sword_intent = self.active_effect_base_id() == 1_000_094;
                 self.apply_attack_with_options(
@@ -293,7 +303,7 @@ impl ReplayState {
             // （迅影飞剑 Card_1000094.cs:63 设置、CardActionBase.cs:4734 才
             // 移除）仍生效期间执行——追击同样不触发剑意，与溟空剑阵诀追击
             // 同构（oracle 锚点：hf-latest-32308000-16f9c778
-            // d2a4070fa6f2934f/round-17 cp13：原版 11 攻无剑意 → 破防后
+            // pa_1715e8ae cp13：原版 11 攻无剑意 → 破防后
             // 11-7=4 伤、剑意 9→10；引擎 11+10 剑意=21 → 14 伤、剑意被清 0，
             // 连锁导致澄心剑胚 51 伤 vs 原版 101 伤、胜负翻转）。
             let suppress_sword_intent = self.active_effect_base_id() == 1_000_094;
@@ -352,7 +362,7 @@ impl ReplayState {
         // BattleCharacter.OnTurnStarted (BattleCharacter.cs:4482-4484):
         // JiaGong += GetBuffValue(WanWuShengZhang) — the STACKED buff value
         // (each 万物生 adds otherParams[1] to the buff), not a flat one-shot.
-        // oracle 锚点: mirror-32219000 04bcf167c7fe26d7/round-13 checkpoint[3]
+        // oracle 锚点: mirror-32219000 pa_cbd30daa checkpoint[3]
         // 木灵•暗香 p1.attackBonus 3 (t1 五行流转链 万物生×2 → 万物生长 2 →
         // turn-3 开始 +2，引擎按 op[1] 只 +1); round-16 checkpoint[4]
         // 千里神行符 attackBonus 2 (引擎 1)。
@@ -416,7 +426,7 @@ impl ReplayState {
     }
 
     pub(super) fn trigger_turn_end_formations(&mut self, actor_side: PlayerSide) {
-        for phase in TURN_END_FORMATION_PHASES {
+        static_phases! { phase in TURN_END_FORMATION_PHASES [0, 1, 2, 3, 4, 5] {
             match phase {
                 TurnEndFormationPhase::Thunder => {
                     if self.actor(actor_side).formations.thunder_formation > 0 {
@@ -438,8 +448,8 @@ impl ReplayState {
                     // 原版 oracle 在妙手回春+迷魂阵+回春曲的近满血边界中，
                     // 回春曲先把上限撑开，再让迷魂阵的大段治疗结算；
                     // 否则会有 3 点治疗被旧上限截断。
-                    // oracle 锚点：c0f73571469dd090/round-14 turn35 p1 263/275
-                    // -> 285/285（引擎原先 282/285）。
+                    // oracle 锚点：pa_df775d8d turn35 p1 263/275
+                    // -> 285/285。
                     let rejuvenation_tune = self.actor(actor_side).music.rejuvenation_tune.max(0);
                     if rejuvenation_tune > 0 {
                         self.modify_actor_max_hp(actor_side, rejuvenation_tune);
@@ -474,24 +484,27 @@ impl ReplayState {
                 }
                 TurnEndFormationPhase::MirageVitalityBloom => {
                     if self.actor(actor_side).fate.mirage_vitality_bloom > 0 {
+                        // BattleCharacter.OnTurnEnded（26125017 起）：
+                        // addHp=GetBuffValue(HuanShengJiZhanFang) 后全额
+                        // ModifyMaxHp(addHp)+ModifyHp(addHp)，再
+                        // ModifyHp(-addHp)（:5747-5750 + IL_1019），三者相邻。
+                        // 旧 build 只抬溢出部分；新语义下上限每轮涨全额。
+                        // oracle 锚点：hf-34040000 pa_f9cb62aa
+                        // cp[4] 起 p1.maxHp 原版 step+20、引擎只涨溢出。
                         let value = self
                             .actor(actor_side)
                             .fate
                             .mirage_vitality_bloom_heal
                             .max(0);
                         if value > 0 {
-                            let actor = self.actor(actor_side);
-                            let overheal = (actor.core.hp + value - actor.core.max_hp).max(0);
-                            if overheal > 0 {
-                                self.modify_actor_max_hp(actor_side, overheal);
-                            }
+                            self.modify_actor_max_hp(actor_side, value);
                             self.modify_actor_hp(actor_side, value, false, false);
                             self.modify_actor_hp(actor_side, -value, false, false);
                         }
                     }
                 }
             }
-        }
+        } }
     }
 
     pub(super) fn apply_eight_gates_action_again_damage(&mut self, actor_side: PlayerSide) {

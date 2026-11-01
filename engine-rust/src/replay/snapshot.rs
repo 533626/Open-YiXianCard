@@ -5,8 +5,8 @@
 //! change battle state: they only read what the kernel already settled.
 
 use super::{
-    Element, ReplayDetailEntry, ReplayDetailedSideState, ReplayPlayer, ReplayQueuedCard, ReplayPlayerSnapshot, ReplayUiCardSlotSnapshot,
-    ReplayUiPlayerSnapshot,
+    Element, ReplayDetailEntry, ReplayDetailedSideState, ReplayPlayer, ReplayPlayerSnapshot,
+    ReplayQueuedCard, ReplayUiCardSlotSnapshot, ReplayUiPlayerSnapshot,
 };
 
 impl ReplayPlayer {
@@ -151,8 +151,15 @@ impl ReplayPlayer {
         ReplayDetailedSideState {
             action_again_per_round: self.dream_mirage.action_again_limit,
             active_slot_count: self.deck.active_slot_count,
-            physical_deck: (0..self.deck.active_slot_count).filter_map(queued).collect(),
-            card_queue: self.deck.queue.iter().filter_map(|&index| queued(index)).collect(),
+            physical_deck: (0..self.deck.active_slot_count)
+                .filter_map(queued)
+                .collect(),
+            card_queue: self
+                .deck
+                .queue
+                .iter()
+                .filter_map(|&index| queued(index))
+                .collect(),
         }
     }
 
@@ -865,6 +872,13 @@ impl ReplayPlayer {
             "actionAgainCount",
             "再次行动次数",
             self.turn.action_again_count,
+        );
+        push_nonzero(
+            &mut entries,
+            "回合",
+            "keYinShanFeng",
+            "刻印山风",
+            self.turn.keyin_shan_feng,
         );
         push_nonzero(
             &mut entries,

@@ -1,3 +1,4 @@
+use crate::id_hash::BaseIdFlags;
 use crate::model::CardDefinition;
 use serde::Deserialize;
 use std::collections::BTreeSet;
@@ -29,11 +30,13 @@ struct CardEffectCatalog {
 }
 
 static EXECUTABLE_BASE_IDS: OnceLock<BTreeSet<i64>> = OnceLock::new();
+static EXECUTABLE_FLAGS: OnceLock<BaseIdFlags> = OnceLock::new();
 
 // Machine-readable mirror of the TS scope policy's exceptional whole-card
 // exclusions. Refine/Change are classified from canonical CardType below.
 pub(super) const RECORD_ONLY_CARD_BASE_IDS: &[i64] = &[
     1,          // 云泉道茶
+    293,        // 幻•灵犀剑阵（obsolete: true，被 325 替代）
     9_000_006,  // 神秘种子
     99_000_006, // 再试一次
 ];
@@ -52,8 +55,8 @@ pub(super) const VERIFIED_PRINTED_FALLBACK_BASE_IDS: &[i64] = &[
     148, // 四段攻击
     149, // 五段攻击
     150, // 七段攻击
-    286, // 隐藏普通攻击
     367, // 马蹄
+    432, // 鼠之力：无 Card_432；CardFactory → FallbackCardAction（灵气、防御）。
     1_000_001, // 云剑·探云
     1_000_005, // 护身灵气
     1_000_007, // 巨虎灵剑
@@ -99,6 +102,16 @@ fn executable_base_ids() -> &'static BTreeSet<i64> {
     })
 }
 
+fn executable_flags() -> &'static BaseIdFlags {
+    EXECUTABLE_FLAGS.get_or_init(|| {
+        let mut flags = BaseIdFlags::default();
+        for &id in executable_base_ids() {
+            flags.insert(id, 1);
+        }
+        flags
+    })
+}
+
 /// Pure capability lookup. This function never opens an invocation, advances
 /// decisions/RNG, or touches battle state.
 pub(super) fn resolve_card_effect(card: &CardDefinition, base_id: i64) -> CardEffectResolution {
@@ -110,7 +123,7 @@ pub(super) fn resolve_card_effect(card: &CardDefinition, base_id: i64) -> CardEf
         CardEffectResolution::RecordOnly
     } else if VERIFIED_PRINTED_FALLBACK_BASE_IDS.contains(&base_id) {
         CardEffectResolution::VerifiedPrintedFallback
-    } else if executable_base_ids().contains(&base_id) {
+    } else if executable_flags().get(base_id) != 0 {
         CardEffectResolution::Executable
     } else {
         CardEffectResolution::Missing

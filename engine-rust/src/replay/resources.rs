@@ -11,10 +11,10 @@ enum CombatResource {
     Momentum,
 }
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     /// Single clamped counter mutation with receipt recording. The named
     /// `modify_*` wrappers below are the documented entry points; this generic
-    /// holds the before/after/clamp/record template they used to duplicate.
+    /// holds the before/after/clamp/record template.
     pub(super) fn modify_counter(
         &mut self,
         actor_side: PlayerSide,
@@ -50,7 +50,7 @@ macro_rules! counter_writer {
     };
 }
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     counter_writer!(
         modify_extra_actions,
         "回合",
@@ -85,6 +85,13 @@ impl ReplayState {
         "paintFinishingTouch",
         "画龙点睛",
         fate.paint_finishing_touch
+    );
+    counter_writer!(
+        modify_keyin_shan_feng,
+        "回合",
+        "keYinShanFeng",
+        "刻印山风",
+        turn.keyin_shan_feng
     );
     counter_writer!(
         modify_star_chess_break,
@@ -133,7 +140,7 @@ impl ReplayState {
         }
         let damage = positive_delta / 2;
         if damage > 0 {
-            self.apply_damage(actor_side, damage, false, false, false);
+            self.apply_reflect_damage(actor_side, damage);
         }
     }
 
@@ -391,7 +398,7 @@ impl ReplayState {
         // 原版 BattleCharacter.AddMengEJieSkipPos：MengEJie 是位掩码 buff，
         // 同一格重复 Add 必须幂等（buffValue |= 1 << grid）。通用 += 会在
         // 重复 Add 时进位（8 + 8 = 16），把跳过位搬到错误的格。
-        // oracle 锚点：hf-latest-33065000 f2a0644b9355511f/round-11——
+        // oracle 锚点：hf-latest-33065000 pa_cc424d2a——
         // P1 T5 命运轮回跳过 10369 梦•厄劫缠身再次触发开局，原版 mask
         // 保持 0x8（P2 T6 跳过 7000027 打出 7000022），引擎算成 0x10
         // 导致 P2 T6 打出 7000027，终局 hpDelta -17 vs 原版 -14。
@@ -442,11 +449,11 @@ impl ReplayState {
         // 每次正向生命上限请求额外 +1。tempData 缺失/0 表示开启，非零关闭；
         // 只在共享上限入口加成，避免由此触发的回血再次被当作上限变化。
         if delta > 0
-            && self
+            && (self
                 .actor(actor_side)
                 .identity
                 .fate_strategies
-                .contains(&394)
+                .contains(&394))
             && self
                 .actor(actor_side)
                 .identity
@@ -455,6 +462,15 @@ impl ReplayState {
                 .copied()
                 .unwrap_or(0)
                 == 0
+        {
+            delta += 1;
+        }
+        if delta > 0
+            && self
+                .actor(actor_side)
+                .identity
+                .xian_mo_strategies
+                .contains(&7076)
         {
             delta += 1;
         }
@@ -586,11 +602,11 @@ impl ReplayState {
             return 0;
         }
         if delta > 0
-            && self
+            && (self
                 .actor(actor_side)
                 .identity
                 .fate_strategies
-                .contains(&399)
+                .contains(&399))
             && self
                 .actor(actor_side)
                 .identity
@@ -604,6 +620,25 @@ impl ReplayState {
             // redirects positive XingLi to the opponent's NeiShang before
             // Star Power is committed; IsSwitchActive treats missing/zero
             // tempData as active and any non-zero value as disabled.
+            self.add_actor_negative_status(opponent_side(actor_side), 100, delta);
+            return 0;
+        }
+        // BattleCharacter.ModifyBuffValue:8842 仙魔 23069 紧随 FS399：开关开启时正向星力改为对手内伤。
+        if delta > 0
+            && self
+                .actor(actor_side)
+                .identity
+                .xian_mo_strategies
+                .contains(&23069)
+            && self
+                .actor(actor_side)
+                .identity
+                .xian_mo_temp_datas
+                .get("23069")
+                .copied()
+                .unwrap_or(0)
+                == 0
+        {
             self.add_actor_negative_status(opponent_side(actor_side), 100, delta);
             return 0;
         }
@@ -667,7 +702,7 @@ impl ReplayState {
             }
             let multiplier = self.actor(actor_side).turn.agility_gain_damage.max(0);
             if multiplier > 0 {
-                self.apply_damage(actor_side, actual_delta * multiplier, false, false, false);
+                self.apply_reflect_damage(actor_side, actual_delta * multiplier);
             }
             if self.actor(actor_side).fate.tian_yan_feng_ling_duan_qu > 0 {
                 // 风灵锻躯（Fate 431）：BattleCharacter.cs:8733-8737 —
@@ -725,6 +760,20 @@ impl ReplayState {
         after - before
     }
 
+    pub(super) fn modify_action_again_per_round(&mut self, actor_side: PlayerSide, delta: i64) {
+        let before = self.actor(actor_side).dream_mirage.action_again_limit;
+        let after = (before + delta).max(1);
+        self.actor_mut(actor_side).dream_mirage.action_again_limit = after;
+        self.record_counter_transition(
+            actor_side,
+            "回合",
+            "actionAgainPerRound",
+            "本回合再次行动上限",
+            before,
+            after,
+        );
+    }
+
     pub(super) fn dream_mirage_action_again_limit(&self, actor_side: PlayerSide) -> i64 {
         self.actor(actor_side).dream_mirage.action_again_limit
     }
@@ -749,7 +798,7 @@ impl ReplayState {
             0
         };
         if flat > 0 {
-            self.apply_damage(actor_side, flat, false, false, false);
+            self.apply_reflect_damage(actor_side, flat);
         }
         let percent = self
             .dream_mirage_value(actor_side, DreamMirageValue::DreamDefenseGainDamage)
@@ -769,7 +818,7 @@ impl ReplayState {
             DreamMirageValue::DreamDefenseGainDamageGuard,
             1,
         );
-        self.apply_damage(actor_side, damage, false, false, false);
+        self.apply_reflect_damage(actor_side, damage);
         self.modify_dream_mirage_value(
             actor_side,
             DreamMirageValue::DreamDefenseGainDamageGuard,
@@ -837,6 +886,13 @@ impl ReplayState {
         if amount <= 0 {
             return;
         }
+        // BattleCharacter.ModifyAnima:9629-9633, before all multipliers and
+        // reductions. The first positive request consumes the entire bonus.
+        let bonus = self.actor(actor_side).fate.next_anima_gain_bonus;
+        if bonus > 0 {
+            self.actor_mut(actor_side).fate.next_anima_gain_bonus = 0;
+            amount += bonus;
+        }
         let multiplier = self.actor(actor_side).chance.qi_cai_ling_he.max(0);
         if multiplier > 0 {
             amount *= multiplier;
@@ -854,7 +910,8 @@ impl ReplayState {
         let identity = &self.actor(actor_side).identity;
         if identity.talents.contains(&204)
             && !identity.talents.contains(&208)
-            && identity.talent_resonance_id != Some(137)
+            && (identity.talent_resonance_id != Some(137))
+            && !identity.xian_mo_strategies.contains(&17071)
         {
             self.apply_physique_amount(actor_side, amount);
             return;
@@ -1093,7 +1150,7 @@ impl ReplayState {
         let mut delta = amount;
         // BattleCharacter.ModifyDef (BattleCharacter.cs:10075): every positive
         // defense gain gets +1 while fate strategy 382 (霜华守护) is active.
-        // oracle 锚点: mirror-32219000 3cba3714dc255204/round-12 checkpoint[2]
+        // oracle 锚点: mirror-32219000 pa_f920d356 checkpoint[2]
         // 云剑•点星 p2.defense 3 (def 0+2+1；引擎缺 +1 为 2)。
         if self
             .actor(actor_side)
@@ -1104,6 +1161,28 @@ impl ReplayState {
             delta += 1;
         }
         let metal_ring = self.actor(actor_side).sword.metal_ring.max(0);
+        // BattleCharacter.ModifyDef 7133 (霜华守护): 26125017 起加
+        // IsXianMoStrategyEffective 门 (effectRound=13)。
+        if self
+            .actor(actor_side)
+            .identity
+            .xian_mo_strategies
+            .contains(&7133)
+        {
+            match self.battle_round {
+                Some(round) if round >= 13 => {
+                    delta += 1;
+                }
+                Some(_) => {}
+                None => {
+                    self.missing_card_effect(
+                        0,
+                        0,
+                        "xianMo strategy 7133 missing original round",
+                    );
+                }
+            }
+        }
         if metal_ring > 0 {
             delta += metal_ring;
         }
@@ -1186,7 +1265,7 @@ impl ReplayState {
         );
         if self.actor(actor_side).elements.earth_cliff_counter > 0 {
             self.actor_mut(actor_side).elements.earth_cliff_counter -= 1;
-            self.apply_damage(actor_side, actual_loss, false, false, false);
+            self.apply_reflect_damage(actor_side, actual_loss);
         }
         if self.dream_mirage_value(actor_side, DreamMirageValue::DreamCliff) > 0 {
             let before = self.actor(actor_side).turn.next_turn_defense;
@@ -1294,7 +1373,7 @@ impl ReplayState {
                     .dream_mirage_value(actor_side, DreamMirageValue::ExcessPhysiqueDamage)
                     .max(0);
             if extra_damage > 0 {
-                self.apply_damage(actor_side, extra_damage, false, false, false);
+                self.apply_reflect_damage(actor_side, extra_damage);
             }
         }
         let healing = (after - limit).max(0) - (before - limit).max(0);
@@ -1315,11 +1394,17 @@ impl ReplayState {
             if self.actor(actor_side).identity.talents.contains(&184) {
                 self.gain_defense(actor_side, actual_delta.min(5));
             }
-            if self
+            // ModifyTiPo:10518/10523 天衍 163 与仙魔 7042 共用 ChanXinJuLingYiChuFa 标记，每场首次体魄增加 +1 灵气。
+            if (self
                 .actor(actor_side)
                 .identity
                 .fate_strategies
                 .contains(&163)
+                || self
+                    .actor(actor_side)
+                    .identity
+                    .xian_mo_strategies
+                    .contains(&7042))
                 && self.actor(actor_side).fate.chan_xin_ju_ling_triggered <= 0
             {
                 self.actor_mut(actor_side).fate.chan_xin_ju_ling_triggered = 1;

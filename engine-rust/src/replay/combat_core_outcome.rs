@@ -1,7 +1,7 @@
 use super::{ReplayPlayer, ReplayState, ReplaySummary, ReviveKind, ReviveReceipt};
 use crate::model::PlayerSide;
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn summary(&self, winner_side: PlayerSide) -> ReplaySummary {
         ReplaySummary {
             winner_side,
@@ -11,6 +11,10 @@ impl ReplayState {
     }
 
     pub(super) fn death_winner(&mut self) -> Option<PlayerSide> {
+        // Every resurrection entry already returns immediately for positive HP.
+        if self.p1.core.hp > 0 && self.p2.core.hp > 0 {
+            return None;
+        }
         // Revive checks run in the original client's order and return typed
         // receipts; the outcome loop only needs the final alive/dead result
         // (the mutation-contract tests assert the receipts).
@@ -78,10 +82,9 @@ impl ReplayState {
             return None;
         }
         let hp_before = self.actor(side).core.hp;
-        {
-            let actor = self.actor_mut(side);
-            actor.core.max_hp += revive_hp;
-        }
+        // BattleExecuter.CharacterResurrectionCheckAsync 走 ModifyMaxHp，
+        // 顺应等上限增益钩子也作用于浴火凤凰的复活上限。
+        self.modify_actor_max_hp(side, revive_hp);
         let healing = revive_hp - self.actor(side).core.hp;
         self.modify_actor_hp(side, healing, false, false);
         self.actor_mut(side).fate.fire_phoenix_revive_hp = 0;
@@ -139,7 +142,7 @@ impl ReplayState {
     /// IL_0855 起）：战斗中首次生命 ≤ 0 且持有 QiXingJieMing 标记时，失去所有
     /// 卦象与星力，每失去 1 点按标记值（otherParams[0]=3）加生命及上限；
     /// 若转换后生命 > 0 则继续战斗（oracle 锚点：mirror-32219000-human-01
-    /// 2995be139404d0ed/round-10 cp14→15：p1 星力 5 → 生命 -3 → +15 上限/生命
+    /// pa_f9d9294f cp14→15：p1 星力 5 → 生命 -3 → +15 上限/生命
     /// → 12，随后内伤 -2 → 10，turn15 七星定魂继续）。
     pub(super) fn check_qi_xing_jie_ming(&mut self, side: PlayerSide) -> Option<ReviveReceipt> {
         if self.actor(side).core.hp > 0
@@ -214,6 +217,7 @@ impl ReplayState {
         }
     }
 
+    #[inline(always)]
     pub(super) fn actor(&self, side: PlayerSide) -> &ReplayPlayer {
         match side {
             PlayerSide::P1 => &self.p1,
@@ -221,6 +225,7 @@ impl ReplayState {
         }
     }
 
+    #[inline(always)]
     pub(super) fn actor_mut(&mut self, side: PlayerSide) -> &mut ReplayPlayer {
         match side {
             PlayerSide::P1 => &mut self.p1,

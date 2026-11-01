@@ -12,7 +12,7 @@ struct CompletedCardTransaction {
 
 struct PreparedCardTransaction {
     drawn: super::DrawnCard,
-    physical_card: CardDefinition,
+    physical_card: super::RuntimeCard,
     public_adjacent_beng_quan: bool,
     was_slot_used: bool,
     event_index: usize,
@@ -23,8 +23,8 @@ struct PreparedCardTransaction {
 /// invocation kind vary between the ordered repeat sources, the primary play
 /// and the trailing 灵阵回响 echo, so those stay as call arguments.
 struct EffectRepetitionContext<'card> {
-    physical_card: &'card CardDefinition,
-    origin_card: &'card CardDefinition,
+    physical_card: &'card super::RuntimeCard,
+    origin_card: &'card super::RuntimeCard,
     source_slot: usize,
     was_slot_used: bool,
     public_adjacent_beng_quan: bool,
@@ -40,16 +40,19 @@ enum RepeatSource {
     SecretSwordDoubleDragon,
     LeiShanErDu,
     BengQuanDoubleShadow,
+    FuYunLianHuanBu,
     DreamMirageFireEarth,
 }
 
-const REPEAT_SOURCES: [RepeatSource; 5] = [
+const REPEAT_SOURCES: [RepeatSource; 6] = [
     RepeatSource::PlumBlossom,
     RepeatSource::SecretSwordDoubleDragon,
     // 原版 Execute 顺序（CardActionBase.cs:1304-1521）：双龙（IL_2118）→
     // 雷闪二度（IL_2281）→ 崩拳双影（IL_2555）。
     RepeatSource::LeiShanErDu,
     RepeatSource::BengQuanDoubleShadow,
+    // CardActionBase.cs:1897（IL_29b5）：浮云连环步的 FuYunLianHuanBu 紧随崩拳双影之后。
+    RepeatSource::FuYunLianHuanBu,
     RepeatSource::DreamMirageFireEarth,
 ];
 
@@ -82,11 +85,14 @@ fn repetition_context(prepared: &PreparedCardTransaction) -> EffectRepetitionCon
     }
 }
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     /// Builds the initial state and executes the complete battle-start phase.
     /// Strictness must be selected before that phase because opening effects
     /// can consume decisions or require referenced card definitions.
     pub(super) fn run(&mut self) -> super::ReplaySummary {
+        self.refresh_active_mechanisms();
+        #[cfg(all(feature = "perf-ceiling", not(target_arch = "wasm32")))]
+        let _timer = crate::performance::Timer::new(1);
         while self.actor_turn < self.max_actor_turns {
             self.execute_actor_turn();
             if self.evaluation_error.is_some() {
@@ -105,17 +111,19 @@ impl ReplayState {
     pub(super) fn execute_actor_turn(&mut self) {
         self.actor_turn += 1;
         let actor_side = self.current_actor;
-        let raw_turn_start_event_index = if self.observation.mode.is_parity() {
+        let raw_turn_start_event_index = if OBSERVE && self.observation.mode.is_parity() {
             None
         } else {
             self.record_event(super::ReplayEventKind::TurnStart, actor_side, None, None);
             Some(self.observation.events.len().saturating_sub(1))
         };
         self.apply_turn_start_phases(actor_side);
-        self.completed_checkpoint_count += 1;
+        if OBSERVE {
+            self.completed_checkpoint_count += 1;
+        }
         // Parity snapshots AFTER turn-start hooks (original post-injury/heal checkpoint);
         // event/detailed streams snapshot BEFORE them. Only parity feeds exact comparison.
-        if self.observation.mode.is_parity() {
+        if OBSERVE && self.observation.mode.is_parity() {
             self.record_event(super::ReplayEventKind::TurnStart, actor_side, None, None);
         }
         self.record_detail_step(
@@ -153,9 +161,11 @@ impl ReplayState {
         }
         if completed_turn {
             self.apply_turn_end_phases(actor_side);
-            self.completed_checkpoint_count += 1;
+            if OBSERVE {
+                self.completed_checkpoint_count += 1;
+            }
         }
-        if completed_turn || !self.observation.mode.is_parity() {
+        if completed_turn || !(OBSERVE && self.observation.mode.is_parity()) {
             self.record_event(super::ReplayEventKind::TurnEnd, actor_side, None, None);
         }
         if completed_turn {
@@ -176,10 +186,20 @@ impl ReplayState {
     /// is snapshotted in `MarkSpiritTurtleFootwork` because the buff-duration
     /// ticks immediately after decrement the formation counter itself; the
     /// decay decision must read the pre-tick value.
-    fn apply_turn_start_phases(&mut self, actor_side: PlayerSide) {
-        self.attribution_block = Some(super::TraceAttributionBlock::TurnStart);
+    pub(super) fn apply_turn_start_phases(&mut self, actor_side: PlayerSide) {
+        #[cfg(all(feature = "perf-ceiling", not(target_arch = "wasm32")))]
+        let _timer = crate::performance::Timer::new(5);
+        // Production replay must see mechanisms gained after battle start.
+        // Unit tests already refreshed here; leaving the call test-only skipped
+        // those hooks in replay_slice and diverged on the HF corpus.
+        self.refresh_active_mechanisms();
+        if OBSERVE {
+            self.attribution_block = Some(super::TraceAttributionBlock::TurnStart);
+        }
+        // BattleCharacter.cs:3664 OnTurnStarted increments JiLuHuiHeShu (795) and ZiShenHuiHe.
+        self.actor_mut(actor_side).turn.own_turn_count += 1;
         let mut water_month_sword_formation = 0;
-        for phase in TURN_START_PHASES {
+        static_phases! { phase in TURN_START_PHASES [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26] {
             match phase {
                 TurnStartPhase::ResetActionAgain => {
                     let before = self.actor(actor_side).turn.action_again_count;
@@ -197,13 +217,19 @@ impl ReplayState {
                     self.clear_turn_hp_gained_ledgers(actor_side);
                 }
                 TurnStartPhase::MirageRonghuiTurnStart => {
-                    self.apply_mirage_ronghui_turn_start(actor_side);
+                    if self.active_mechanisms.has(super::ActiveMechanisms::MIRAGE | super::ActiveMechanisms::RONGHUI) {
+                        self.apply_mirage_ronghui_turn_start(actor_side);
+                    }
                 }
                 TurnStartPhase::RonghuiTurnStart => {
-                    self.apply_ronghui_turn_start(actor_side);
+                    if self.active_mechanisms.has(super::ActiveMechanisms::RONGHUI) {
+                        self.apply_ronghui_turn_start(actor_side);
+                    }
                 }
                 TurnStartPhase::DreamMirageDurationTicks => {
-                    self.apply_dream_mirage_turn_start_duration_ticks(actor_side);
+                    if self.active_mechanisms.has(super::ActiveMechanisms::MIRAGE) {
+                        self.apply_dream_mirage_turn_start_duration_ticks(actor_side);
+                    }
                 }
                 TurnStartPhase::ResetTurnStartFlags => {
                     self.actor_mut(actor_side).turn.current_turn_ignore_defense = 0;
@@ -227,8 +253,11 @@ impl ReplayState {
                     self.apply_turn_start_buff_decrements(actor_side);
                 }
                 TurnStartPhase::ResetFateTurnFlags => {
+                    // BattleCharacter.cs:3958-3961：回合开始 ChaiZhao 只减 1；
+                    // 崩拳•双影重复执行拆招叠到 2 层时会多留一回合
+                    // （oracle pa_f67bc450）。
                     let dismantle_before = self.actor(actor_side).fate.dismantle_move;
-                    self.actor_mut(actor_side).fate.dismantle_move = 0;
+                    self.actor_mut(actor_side).fate.dismantle_move = (dismantle_before - 1).max(0);
                     self.record_counter_transition(
                         actor_side,
                         "仙命",
@@ -245,10 +274,28 @@ impl ReplayState {
                     self.actor_mut(actor_side).turn.turn_attack_segments = 0;
                 }
                 TurnStartPhase::VermilionBirdTearGuard => {
+                    let has_effective_7064 = self
+                        .actor(actor_side)
+                        .identity
+                        .xian_mo_strategies
+                        .contains(&7064)
+                        && match self.battle_round {
+                            Some(round) => round >= 13,
+                            None => true,
+                        };
+                    let has_344 = self
+                        .actor(actor_side)
+                        .identity
+                        .fate_strategies
+                        .contains(&344);
                     if self.actor(actor_side).fate.vermilion_bird_tear > 0
                         && self.actor(actor_side).core.hp <= 20
+                        && (has_344 || has_effective_7064)
                     {
-                        self.actor_mut(actor_side).fate.vermilion_bird_tear -= 1;
+                        // Both current-build source branches RemoveBuff, including
+                        // the shared stacks from fate 344 and strategy 7064.
+                        // Strategy 7064 requires IsXianMoStrategyEffective (effectRound = 13).
+                        self.actor_mut(actor_side).fate.vermilion_bird_tear = 0;
                         self.gain_guard(actor_side, 1);
                     }
                 }
@@ -325,6 +372,9 @@ impl ReplayState {
                         };
                         self.modify_actor_hp(actor_side, recovery * multiplier, false, false);
                     }
+                    // BattleCharacter.OnTurnStarted IL_139a settles HuiFu before
+                    // IL_144c applies NvWaShi (Card 175's doubled turn-start HP).
+                    self.apply_mirage_ronghui_double_hp_at_turn_start(actor_side);
                 }
                 TurnStartPhase::DreamGreatReturnPill => {
                     // 原版 OnTurnStarted IL_1448：梦•大还丹在常规治疗后、
@@ -334,16 +384,16 @@ impl ReplayState {
                 TurnStartPhase::TurnStartChanceHooks => {
                     // 原版 OnTurnStarted：吞天赤眼兽吸血（IL_0a8a）在内伤 tick
                     // （IL_1a4c）之前。满血开局时吸血被 maxHp 封顶浪费，再被内伤
-                    // 扣血；引擎原先反过来导致满血+内伤+吸血构型多 2 hp。
-                    // oracle 锚点：4bac1c815f4268db/round-09 cp[10] p1.hp 66 vs 68。
+                    // 扣血。
+                    // oracle 锚点：pa_33b6512e cp[10] p1.hp 66 vs 68。
                     self.apply_turn_start_chance_hooks(actor_side);
                 }
                 TurnStartPhase::NextTurnDefense => {
                     // 原版 OnTurnStarted：“下回合加防”到 IL_0c42 才兑现，晚于
                     // 断肠曲（IL_0701）与吞天赤眼兽等回合开始效果（IL_0a8a）。
                     // 该顺序使断肠曲新增负面状态触发的伤害不会提前消耗这批防。
-                    // oracle 锚点：355d309d0bd7ed33/round-09 cp13 p2 hp/def
-                    // 42/15（引擎原先 44/13）。
+                    // oracle 锚点：pa_eff05f76 cp13 p2 hp/def
+                    // 42/15。
                     let next_turn_defense = self.actor(actor_side).turn.next_turn_defense;
                     if next_turn_defense > 0 {
                         self.gain_defense(actor_side, next_turn_defense);
@@ -360,6 +410,22 @@ impl ReplayState {
                     }
                 }
                 TurnStartPhase::InternalInjuryTick => {
+                    // OnTurnStarted IL_19a6 precedes the internal-injury tick.
+                    // 26125017: defDelta = otherParams[0]=2, effective (round>=13) => otherParams[1]=4.
+                    if self.actor(actor_side).identity.xian_mo_strategies.contains(&3012) {
+                        match self.battle_round {
+                            Some(round) => {
+                                self.gain_defense(actor_side, if round >= 13 { 4 } else { 2 });
+                            }
+                            None => {
+                                self.missing_card_effect(
+                                    0,
+                                    0,
+                                    "xianMo strategy 3012 missing original round",
+                                );
+                            }
+                        }
+                    }
                     // 原版 OnTurnStarted：内伤 tick 在 IL_1a4c，晚于回合开始
                     // 治疗与吞天赤眼兽吸血（IL_0a8a）。
                     let internal_injury_trigger_count =
@@ -384,6 +450,26 @@ impl ReplayState {
                                 false,
                             );
                         }
+                        // BattleCharacter.OnTurnStarted IL_1d1e-1da6 checks
+                        // resonance 83 after the internal-injury tick and heals
+                        // min(otherParams[0], the tick amount). Build 25981480
+                        // configures 共鸣·冥心烙印 (id 83) with otherParams [2]
+                        // and effectRound 10. The fixture carries the selected
+                        // resonance explicitly; an absent selection must not be
+                        // inferred from the talent alone.
+                        if self.battle_round.unwrap_or_default() >= 10
+                            && self.actor(actor_side).identity.talent_resonance_id == Some(83)
+                        {
+                            let resonance_healing = (internal_injury * multiplier).clamp(0, 2);
+                            if resonance_healing > 0 {
+                                self.modify_actor_hp(
+                                    actor_side,
+                                    resonance_healing,
+                                    false,
+                                    false,
+                                );
+                            }
+                        }
                         let transient = self
                             .actor(actor_side)
                             .status
@@ -399,41 +485,67 @@ impl ReplayState {
                 }
                 TurnStartPhase::SpiritGatheringFormation => {
                     // BattleCharacter.OnTurnStarted IL_0e56, before NeiShang.
-                    self.apply_turn_start_spirit_gathering_formation(actor_side);
+                    if self.active_mechanisms.has(super::ActiveMechanisms::FORMATION) {
+                        self.apply_turn_start_spirit_gathering_formation(actor_side);
+                    }
                 }
                 TurnStartPhase::PostInjuryFormations => {
-                    self.apply_turn_start_post_injury_formations(actor_side);
+                    if self.active_mechanisms.has(super::ActiveMechanisms::FORMATION) {
+                        self.apply_turn_start_post_injury_formations(actor_side);
+                    }
                 }
                 TurnStartPhase::SpiritGatheringAnima => {
-                    let spirit_gathering =
-                        self.actor(actor_side).fate.spirit_gathering_mindset.max(0);
-                    if spirit_gathering > 0 {
-                        let mut anima_gain = spirit_gathering / 2;
-                        if spirit_gathering % 2 == 1 {
-                            if self.actor(actor_side).fate.half_anima > 0 {
-                                anima_gain += 1;
-                                self.actor_mut(actor_side).fate.half_anima -= 1;
-                            } else {
-                                self.actor_mut(actor_side).fate.half_anima = 1;
+                    if self.active_mechanisms.has(super::ActiveMechanisms::FATE_STRATEGY) {
+                        let spirit_gathering =
+                            self.actor(actor_side).fate.spirit_gathering_mindset.max(0);
+                        if spirit_gathering > 0 {
+                            let mut anima_gain = spirit_gathering / 2;
+                            if spirit_gathering % 2 == 1 {
+                                if self.actor(actor_side).fate.half_anima > 0 {
+                                    anima_gain += 1;
+                                    self.actor_mut(actor_side).fate.half_anima -= 1;
+                                } else {
+                                    self.actor_mut(actor_side).fate.half_anima = 1;
+                                }
                             }
-                        }
-                        if anima_gain > 0 {
-                            self.gain_anima(actor_side, anima_gain);
+                            if anima_gain > 0 {
+                                self.gain_anima(actor_side, anima_gain);
+                            }
                         }
                     }
                 }
                 TurnStartPhase::DreamMirageTurnStartLate => {
-                    self.apply_dream_mirage_turn_start_late(actor_side);
+                    if self.active_mechanisms.has(super::ActiveMechanisms::MIRAGE) {
+                        self.apply_dream_mirage_turn_start_late(actor_side);
+                    }
+                }
+                TurnStartPhase::SpiritDrain => {
+                    if self.active_mechanisms.has(super::ActiveMechanisms::CHANCE) {
+                        let opponent = opponent_side(actor_side);
+                        let drain = self.actor(actor_side).chance.shi_xu_ling_shou.max(0)
+                            .min(self.actor(opponent).core.anima.max(0));
+                        if drain > 0 {
+                            self.reduce_anima_unchecked(opponent, drain);
+                            self.gain_anima(actor_side, drain);
+                        }
+                    }
                 }
             }
+        } }
+        if OBSERVE {
+            self.attribution_block = None;
         }
-        self.attribution_block = None;
     }
 
     /// Executes `TURN_END_PHASES` in table order. The `statusDecay` receipt
     /// feeds the `fengMoPhysique` phase that immediately follows it.
-    fn apply_turn_end_phases(&mut self, actor_side: PlayerSide) {
-        self.attribution_block = Some(super::TraceAttributionBlock::TurnEnd);
+    pub(super) fn apply_turn_end_phases(&mut self, actor_side: PlayerSide) {
+        #[cfg(all(feature = "perf-ceiling", not(target_arch = "wasm32")))]
+        let _timer = crate::performance::Timer::new(6);
+        self.refresh_active_mechanisms();
+        if OBSERVE {
+            self.attribution_block = Some(super::TraceAttributionBlock::TurnEnd);
+        }
         // BattleCharacter.OnTurnEnded:6501-6504.
         // SiZhanBuDao is cleared at the very beginning of the actor's turn end,
         // before any end-of-turn damage (TuLingZhen, ShuiShi, etc.).
@@ -441,7 +553,7 @@ impl ReplayState {
             self.actor_mut(actor_side).fate.last_stand_unyielding = 0;
         }
         let mut decayed = 0;
-        for phase in TURN_END_PHASES {
+        static_phases! { phase in TURN_END_PHASES [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18] {
             match phase {
                 TurnEndPhase::Talent66Defense => {
                     if self.actor(actor_side).identity.talents.contains(&66)
@@ -451,11 +563,12 @@ impl ReplayState {
                     }
                 }
                 TurnEndPhase::FateStrategy84SwordIntent => {
-                    if self
-                        .actor(actor_side)
-                        .identity
-                        .fate_strategies
-                        .contains(&84)
+                    if self.active_mechanisms.has(super::ActiveMechanisms::FATE_STRATEGY)
+                        && (self
+                            .actor(actor_side)
+                            .identity
+                            .fate_strategies
+                            .contains(&84))
                         && self.actor(actor_side).turn.turn_attack_segments == 0
                     {
                         self.modify_sword_intent(actor_side, 1);
@@ -463,26 +576,40 @@ impl ReplayState {
                 }
                 TurnEndPhase::Ronghui => {
                     self.observe_turn_end_hook(actor_side, "ronghui", |state| {
+                        if !state.active_mechanisms.has(super::ActiveMechanisms::RONGHUI | super::ActiveMechanisms::XIAN_MO) {
+                            return;
+                        }
+                        if state.actor(actor_side).identity.xian_mo_strategies.contains(&7002)
+                            && state.actor(actor_side).turn.turn_attack_segments == 0
+                        {
+                            state.modify_sword_intent(actor_side, 1);
+                        }
                         state.apply_ronghui_turn_end(actor_side);
                     });
                 }
                 TurnEndPhase::MirageRonghui => {
                     self.observe_turn_end_hook(actor_side, "mirageRonghui", |state| {
-                        state.apply_mirage_ronghui_turn_end(actor_side);
+                        if state.active_mechanisms.has(super::ActiveMechanisms::MIRAGE | super::ActiveMechanisms::RONGHUI) {
+                            state.apply_mirage_ronghui_turn_end(actor_side);
+                        }
                     });
                 }
                 TurnEndPhase::DreamBeforeWater => {
                     self.observe_turn_end_hook(actor_side, "dreamBeforeWater", |state| {
-                        state.apply_dream_mirage_turn_end_before_water(actor_side);
+                        if state.active_mechanisms.has(super::ActiveMechanisms::MIRAGE) {
+                            state.apply_dream_mirage_turn_end_before_water(actor_side);
+                        }
                     });
                 }
                 TurnEndPhase::Formations => {
                     // 原版 OnTurnEnded：万花迷魂阵吸取（BattleCharacter.cs:6000-6105）
                     // 先于水势伤害（:6231-6245）。护体整段抵挡只消耗 1 层，
                     // 顺序反了会把护体耗在错误那一击上，级联到七星解命。
-                    // oracle 锚点：873d4eaec9236f24/round-17 cp[24] 起 t18 差 7。
+                    // oracle 锚点：pa_01bdda58 cp[24] 起 t18 差 7。
                     self.observe_turn_end_hook(actor_side, "formations", |state| {
-                        state.trigger_turn_end_formations(actor_side);
+                        if state.active_mechanisms.has(super::ActiveMechanisms::FORMATION) {
+                            state.trigger_turn_end_formations(actor_side);
+                        }
                     });
                 }
                 TurnEndPhase::WaterMomentum => {
@@ -490,6 +617,21 @@ impl ReplayState {
                         let water_momentum = state.actor(actor_side).elements.water_momentum;
                         if water_momentum > 0 {
                             state.apply_turn_end_water_momentum_damage(actor_side, water_momentum);
+                        }
+                        // Card_317's water-to-defense conversion is after the
+                        // ShuiShi damage loop in BattleCharacter.OnTurnEnded
+                        // (IL_1e18 after IL_1bf8). ModifyDef callbacks can
+                        // reflect damage, so applying this before water changes
+                        // which defense absorbs the hit.
+                        state.apply_mirage_water_defense_after_turn_end_water_damage(actor_side);
+                        // XianMoStrategy 7138 (BattleCharacter.cs:6339-6346):
+                        // ShuiShi / otherParams[0] (2) added to defense.
+                        if state.actor(actor_side).identity.xian_mo_strategies.contains(&7138) {
+                            let water = state.actor(actor_side).elements.water_momentum.max(0);
+                            let defense = water / 2;
+                            if defense > 0 {
+                                state.gain_defense(actor_side, defense);
+                            }
                         }
                     });
                 }
@@ -511,6 +653,14 @@ impl ReplayState {
                             let damage = (state.actor(actor_side).core.defense
                                 / defense_per_damage)
                                 * hard_branch_bamboo;
+                            if damage > 0 {
+                                state.apply_damage(actor_side, damage, false, false, false);
+                            }
+                        }
+                        // 紧随 YingZhiZhu（BattleCharacter.OnTurnEnded IL_2022）：卡组含流沙秘印 441 时，
+                        // 每回合末按当前防 / otherParams[0]=4 造成伤害（不叠加）。
+                        if super::support::has_base_card_in_deck(state.actor(actor_side), 441) {
+                            let damage = state.actor(actor_side).core.defense / 4;
                             if damage > 0 {
                                 state.apply_damage(actor_side, damage, false, false, false);
                             }
@@ -558,6 +708,14 @@ impl ReplayState {
                 }
                 TurnEndPhase::ClearDreamThunderRoundLimit => {
                     self.clear_dream_thunder_round_limit(actor_side);
+                    // BattleCharacter.OnTurnEnded:6491-6495: subtract every
+                    // KeYinShanFeng stack from actionAgainPerRound, then clear
+                    // the buff. This restores the base limit after 逍遥游.
+                    let temporary_again_limit = self.actor(actor_side).turn.keyin_shan_feng;
+                    if temporary_again_limit > 0 {
+                        self.modify_action_again_per_round(actor_side, -temporary_again_limit);
+                        self.modify_keyin_shan_feng(actor_side, -temporary_again_limit);
+                    }
                 }
                 TurnEndPhase::ResetActionAgain => {
                     let before = self.actor(actor_side).turn.action_again_count;
@@ -594,23 +752,31 @@ impl ReplayState {
                     });
                 }
             }
+        } }
+        if OBSERVE {
+            self.attribution_block = None;
         }
-        self.attribution_block = None;
     }
 
     pub(super) fn execute_card_transaction(&mut self, actor_side: PlayerSide) -> bool {
+        self.refresh_active_mechanisms();
+        // Preflight only evaluates a detached preview and a pure capability
+        // lookup. On success the real decks are unchanged, so selection and
+        // preview share this read-only scan; shadow hooks still rescan their
+        // own modified deck before drawing.
+        let skip_limit = self.nameless_white_deer_skip_limit();
         let mut prepared: Option<PreparedCardTransaction> = None;
         let mut effects_executed = 0_i64;
         let mut primary_card_action_again = false;
-        for phase in CARD_PLAY_PHASES {
+        static_phases! { phase in CARD_PLAY_PHASES [0, 1, 2, 3, 4, 5] {
             match phase {
                 CardPlayPhase::PreflightResolution => {
-                    if !self.preflight_card_transaction(actor_side) {
+                    if !self.preflight_card_transaction(actor_side, skip_limit) {
                         return false;
                     }
                 }
                 CardPlayPhase::PrepareTransaction => {
-                    prepared = match self.prepare_card_transaction(actor_side) {
+                    prepared = match self.prepare_card_transaction(actor_side, skip_limit) {
                         Some(transaction) => Some(transaction),
                         None => return false,
                     };
@@ -623,9 +789,43 @@ impl ReplayState {
                     // CardActionBase.Execute checks each external repeat source only when
                     // control reaches that branch. Do not aggregate a count up front: an
                     // earlier complete effect may create the buff consumed by a later
-                    // source. Source order is 梅开 -> 双龙 -> 崩拳双影 -> 聚焰 ->
-                    // primary -> 灵阵回响.
+                    // source. Source order is 梅开 -> 双龙 -> 雷闪二度 -> 崩拳双影 ->
+                    // 浮云连环步 -> 聚焰 -> primary -> 灵阵回响.
                     for source in REPEAT_SOURCES {
+                        match source {
+                            RepeatSource::PlumBlossom => {}
+                            RepeatSource::SecretSwordDoubleDragon => {
+                                if !self.active_mechanisms.has(super::ActiveMechanisms::SWORD_SECT) {
+                                    continue;
+                                }
+                            }
+                            RepeatSource::LeiShanErDu => {
+                                if !self.active_mechanisms.has(
+                                    super::ActiveMechanisms::THUNDER_MINDSET
+                                        | super::ActiveMechanisms::ASTROLOGY,
+                                ) {
+                                    continue;
+                                }
+                            }
+                            RepeatSource::BengQuanDoubleShadow => {
+                                if !self.active_mechanisms.has(super::ActiveMechanisms::BENG_QUAN) {
+                                    continue;
+                                }
+                            }
+                            RepeatSource::FuYunLianHuanBu => {
+                                // The counter is ronghui.fu_yun_lian_huan_bu (card 402).
+                                // Fate strategy 402 (星渊) is a different mechanic and does
+                                // not own this repeat.
+                                if !self.active_mechanisms.has(super::ActiveMechanisms::RONGHUI) {
+                                    continue;
+                                }
+                            }
+                            RepeatSource::DreamMirageFireEarth => {
+                                if !self.active_mechanisms.has(super::ActiveMechanisms::MIRAGE) {
+                                    continue;
+                                }
+                            }
+                        }
                         if self.consume_repeat_source(
                             source,
                             actor_side,
@@ -665,10 +865,11 @@ impl ReplayState {
                     let prepared_ref = prepared
                         .as_ref()
                         .expect("prepare phase must precede spirit-formation echo");
-                    if self.apply_spirit_formation_echo_setup(actor_side, &prepared_ref.drawn.card)
+                    if self.active_mechanisms.has(super::ActiveMechanisms::FORMATION)
+                        && self.apply_spirit_formation_echo_setup(actor_side, &prepared_ref.drawn.card)
                     {
                         let echo_card =
-                            self.spirit_formation_echo_card(actor_side, &prepared_ref.drawn.card);
+                            super::RuntimeCard::from(self.spirit_formation_echo_card(actor_side, &prepared_ref.drawn.card));
                         let repetition_ctx = repetition_context(prepared_ref);
                         self.execute_selected_card_effect_repetition(
                             actor_side,
@@ -678,7 +879,28 @@ impl ReplayState {
                             EffectInvocationKind::Repeated,
                         );
                     }
-                    self.clear_spirit_formation_echo_triggered(actor_side);
+                    // 伏魔 5009 在灵阵回响之后：原版 1344-流程（灵阵回响经
+                    // IL_322b→IL_32d6→IL_33b6 落子）先于 1470-流程（伏魔格经
+                    // IL_3658→IL_3703→IL_37d2 落子）。同卡同参再执行一次。
+                    if self.active_mechanisms.has(super::ActiveMechanisms::XIAN_MO)
+                        && self.fu_mo_grid_repeats_card(
+                            actor_side,
+                            prepared_ref.drawn.card.id,
+                            prepared_ref.drawn.source_slot,
+                        )
+                    {
+                        let repetition_ctx = repetition_context(prepared_ref);
+                        self.execute_selected_card_effect_repetition(
+                            actor_side,
+                            &repetition_ctx,
+                            &prepared_ref.drawn.card,
+                            effects_executed,
+                            EffectInvocationKind::Repeated,
+                        );
+                    }
+                    if self.active_mechanisms.has(super::ActiveMechanisms::FORMATION) {
+                        self.clear_spirit_formation_echo_triggered(actor_side);
+                    }
                     debug_assert!(self.effect_invocation_stack.is_empty());
                 }
                 CardPlayPhase::FinishTransaction => {
@@ -694,7 +916,7 @@ impl ReplayState {
                     );
                 }
             }
-        }
+        } }
         unreachable!("FinishTransaction is the terminal card-play phase")
     }
 
@@ -705,45 +927,63 @@ impl ReplayState {
     fn prepare_card_transaction(
         &mut self,
         actor_side: PlayerSide,
+        skip_limit: i64,
     ) -> Option<PreparedCardTransaction> {
+        #[cfg(all(feature = "perf-ceiling", not(target_arch = "wasm32")))]
+        let _timer = crate::performance::Timer::new(8);
         self.actor_mut(actor_side).fate.rear_move_succeeded = false;
-        let skip_limit = self.nameless_white_deer_skip_limit();
-        let mut drawn = self.actor_mut(actor_side).draw_next_card(skip_limit)?;
-        // FateStrategy 398 applies its +5 only when the FS398 skip loop itself
-        // skipped the fifth grid (and that grid holds a 星弈 card). If a prior
-        // mechanism in the original's skip chain (星弈断 XingYi_Duan, 梦EJie…)
-        // already consumed the fifth grid, the FS398 while loop re-enters on the
-        // next card and never heals — see BattleExecuter.cs:1857-1864.
-        // Keep this at the BattleExecuter selection boundary so the HP gain
-        // precedes the next card's cost/effect hooks.
-        if drawn.fate_398_skipped_fifth_grid
-            && self
-                .actor(actor_side)
-                .identity
-                .fate_strategies
-                .contains(&398)
-            && self
-                .actor(actor_side)
-                .identity
-                .fate_strategy_temp_datas
-                .get("398")
-                .copied()
-                .unwrap_or(0)
-                == 0
-            && self
-                .actor(actor_side)
-                .deck
-                .slots
-                .get(4)
-                .is_some_and(|slot| slot.card.name.contains("星弈"))
-        {
-            self.modify_actor_hp(actor_side, 5, false, false);
-        }
-        while self.should_skip_card_with_instant_shadow_strike(actor_side, &drawn) {
-            self.trigger_skipped_opening_effects(actor_side, &drawn);
-            self.apply_instant_shadow_strike_skip(actor_side, &drawn);
-            drawn = self.actor_mut(actor_side).draw_next_card(skip_limit)?;
-        }
+        let mut drawn = loop {
+            let mut drawn = self.actor_mut(actor_side).draw_next_card(skip_limit)?;
+            self.settle_xian_mo_skip_hp(actor_side);
+            // FateStrategy 398 applies its +5 only when the FS398 skip loop itself
+            // skipped the fifth grid (and that grid holds a 星弈 card). If a prior
+            // mechanism in the original's skip chain (星弈断 XingYi_Duan, 梦EJie…)
+            // already consumed the fifth grid, the FS398 while loop re-enters on the
+            // next card and never heals — see BattleExecuter.cs:1857-1864.
+            // Keep this at the BattleExecuter selection boundary so the HP gain
+            // precedes the next card's cost/effect hooks.
+            if drawn.fate_398_skipped_fifth_grid
+                && (self
+                    .actor(actor_side)
+                    .identity
+                    .fate_strategies
+                    .contains(&398))
+                && self
+                    .actor(actor_side)
+                    .identity
+                    .fate_strategy_temp_datas
+                    .get("398")
+                    .copied()
+                    .unwrap_or(0)
+                    == 0
+                && self
+                    .actor(actor_side)
+                    .deck
+                    .slots
+                    .get(4)
+                    .is_some_and(|slot| slot.card.name.contains("星弈"))
+            {
+                self.modify_actor_hp(actor_side, 5, false, false);
+            }
+            if self.should_skip_card_with_instant_shadow_strike(actor_side, &drawn) {
+                while self.should_skip_card_with_instant_shadow_strike(actor_side, &drawn) {
+                    self.trigger_skipped_opening_effects(actor_side, &drawn);
+                    self.apply_instant_shadow_strike_skip(actor_side, &drawn);
+                    match self.actor_mut(actor_side).shift_next_raw_card() {
+                        Some(next) => drawn = next,
+                        None => break,
+                    }
+                }
+                if !drawn.fallback_basic_attack {
+                    self.actor_mut(actor_side)
+                        .deck
+                        .queue
+                        .insert(0, drawn.source_slot);
+                }
+                continue;
+            }
+            break drawn;
+        };
         self.trigger_skipped_opening_effects(actor_side, &drawn);
         let physical_card = drawn.card.clone();
         let public_adjacent_beng_quan =
@@ -761,7 +1001,6 @@ impl ReplayState {
                 Some(drawn.source_slot),
             ),
         );
-        self.clear_next_card_anima_cost_reduction(actor_side);
         // CardActionBase.CheckAnima：fate 412（慕虎专属）把名字含「木灵」
         // 的牌的灵气消耗改为支付 otherParams[0] 倍生命（isCost），与
         // resonance 43 同款分支（CardActionBase.cs:5108-5114）。24811621
@@ -769,14 +1008,26 @@ impl ReplayState {
         // num=0 不再触发剑气/星力/灵气不足。
         let mut wood_spirit_hp_cost = 0;
         if anima_cost > 0
-            && self
+            && (self
                 .actor(actor_side)
                 .identity
                 .fate_strategies
-                .contains(&412)
+                .contains(&412))
             && drawn.card.name.contains("木灵")
         {
             wood_spirit_hp_cost = anima_cost * 2;
+            anima_cost = 0;
+        }
+        // CheckAnima:5647 仙魔 23066：名字含「木灵」的牌，灵气消耗改付 otherParams[0]=3 倍生命。
+        if anima_cost > 0
+            && self
+                .actor(actor_side)
+                .identity
+                .xian_mo_strategies
+                .contains(&23066)
+            && drawn.card.name.contains("木灵")
+        {
+            wood_spirit_hp_cost = anima_cost * 3;
             anima_cost = 0;
         }
         let anima_before = self.actor(actor_side).core.anima;
@@ -787,7 +1038,7 @@ impl ReplayState {
         // 途中新增的灵气（如灵龟迷踪步在 talent-153 生命支付触发时 +1 灵气）
         // 不再被本卡消耗吃掉。oracle 锚点：hf-32299000 3b1d40886e1b4004/
         // round-13 cp[5]（玄心斩魄 0 灵气 + talent 153 支付 → 原版 1 / 旧引擎 0）、
-        // 892e465f16556a9e/round-15 cp[6]。
+        // pa_8695360d cp[6]。
         let mut remaining_anima_cost = anima_cost;
         if anima_deficit > 0
             && self.try_pay_ling_yong_bu_jue_anima_shortage(actor_side, anima_deficit)
@@ -821,9 +1072,9 @@ impl ReplayState {
         }
         // 紫芒星爆（buff 773）只要卡有灵气消耗且持有星力就把消耗转给星力，
         // 与灵气是否充足无关（原版 `num < 0` 即走星力支付，并非缺口分支）。
-        // oracle 锚点：hf-32299000 1fdb74686d58c9b6/round-15 cp[11]-[12]
+        // oracle 锚点：hf-32299000 pa_d605f7ed cp[11]-[12]
         // （五雷轰顶/星弈•断灵气不减、星力递减、星力流失转等量加攻）、
-        // 30f844209b92f905/round-13 cp[8]-[9]。
+        // pa_0b24f26c cp[8]-[9]。
         if remaining_anima_cost > 0
             && self.actor(actor_side).astrology.zi_mang_xing_bao > 0
             && self.actor(actor_side).astrology.star_power > 0
@@ -842,6 +1093,8 @@ impl ReplayState {
         if anima_payment > 0 {
             self.spend_anima_unchecked(actor_side, anima_payment);
         }
+        // CheckAnima:5740-5749：灵气不足直接返回，成功付款后才移除减耗。
+        self.clear_next_card_anima_cost_reduction(actor_side);
 
         let effective_hp_cost =
             super::support::effective_hp_cost(&drawn.card, self.actor(actor_side))
@@ -859,13 +1112,21 @@ impl ReplayState {
 
         // BattleExecuter pays the selected physical card's cost before
         // CardActionBase.Execute. The verified transforms run in source order:
-        // 复刻 -> 连音曲 -> 虚魂犬 -> 五帝 -> 相生 -> 仙蛋黄粽 -> 画龙 -> 狂剑升阶 -> 化生壶.
+        // 复刻 -> 连音曲 -> 虚魂犬 -> 五帝 -> 相生 -> 仙蛋黄粽 -> 13003首次使用 -> 画龙 -> 狂剑升阶 -> 化生壶.
         self.apply_synthetic_full_scope_replica_transform(actor_side, &mut drawn);
+        self.apply_verified_xian_mo_normal_attack_copy(actor_side, &mut drawn);
         self.apply_ronghui_free_and_easy_tune_transform(actor_side, &mut drawn);
         self.apply_you_ming_xu_hun_quan_replacement(actor_side, &mut drawn);
         self.apply_ronghui_five_emperors_upgrade_transform(actor_side, &mut drawn);
         self.apply_generating_interaction_upgrade(actor_side, &mut drawn);
         self.apply_immortal_egg_yolk_zongzi_upgrade(actor_side, &mut drawn);
+        // Execute：13003 检查（IL_1816）在前，画龙检查（IL_1a01）在后，
+        // 两条失败边都汇入画龙检查。13003 先升阶可使画龙检查失效
+        // （oracle pa_35904983 3aba0f1d/round-08：原版首打出 4020027
+        // 且保留画龙=1；旧顺序误耗画龙，t4 打不出 4010033）。
+        // 狂剑升阶（IL_1d74，要求当前 rarity == 0）晚于两者：13003 先升阶后
+        // 狂剑升阶不再触发（oracle 05f6470c：原版打出 1010102 且不扣血）。
+        self.apply_verified_xian_mo_first_use_upgrade(actor_side, &mut drawn);
         let pre_paint_card_id = drawn.card.id;
         self.apply_paint_finishing_touch_upgrade(actor_side, &mut drawn);
         if drawn.card.id != pre_paint_card_id {
@@ -878,7 +1139,9 @@ impl ReplayState {
             );
         }
         self.apply_upgrade_next_frenzy_sword(actor_side, &mut drawn);
+        self.apply_verified_xian_mo_wuxing_mijuan_upgrade(actor_side, &mut drawn);
         self.apply_ronghui_alchemy_pot_transform(actor_side, &mut drawn);
+        self.apply_verified_xian_mo_pending_downgrade(actor_side, &mut drawn);
         let transformed_was_used = self
             .actor(actor_side)
             .deck
@@ -916,9 +1179,9 @@ impl ReplayState {
         })
     }
 
-    fn preflight_card_transaction(&mut self, actor_side: PlayerSide) -> bool {
+    fn preflight_card_transaction(&mut self, actor_side: PlayerSide, skip_limit: i64) -> bool {
         let Some((card, source_slot, was_used_before_effect)) =
-            self.preview_selected_card_for_resolution(actor_side)
+            self.preview_selected_card_for_resolution(actor_side, skip_limit)
         else {
             return true;
         };
@@ -937,6 +1200,8 @@ impl ReplayState {
         actor_side: PlayerSide,
         transaction: CompletedCardTransaction,
     ) -> bool {
+        #[cfg(all(feature = "perf-ceiling", not(target_arch = "wasm32")))]
+        let _timer = crate::performance::Timer::new(11);
         let CompletedCardTransaction {
             drawn,
             was_slot_used,
@@ -958,7 +1223,7 @@ impl ReplayState {
             && (card_type == super::CARD_TYPE_CONSUME || card_type == super::CARD_TYPE_SUSTAIN);
         let should_skip = should_skip || marked_skipped_by_effect;
         let jump_distance = self.actor(actor_side).turn.jump_to_previous_card.max(0);
-        if self.observation.mode.is_detailed() {
+        if OBSERVE && self.observation.mode.is_detailed() {
             let queue = self.actor(actor_side).detailed_side_state().card_queue;
             self.observation.card_completed_queue = Some((actor_side, queue));
         }
@@ -973,7 +1238,9 @@ impl ReplayState {
             self.actor_mut(actor_side)
                 .complete_drawn_card(&drawn, should_skip);
         }
-        self.completed_checkpoint_count += 1;
+        if OBSERVE {
+            self.completed_checkpoint_count += 1;
+        }
         self.record_detail_step(
             card_completed_event_index,
             super::ReplayHookCategory::AfterCard,
@@ -1038,7 +1305,9 @@ impl ReplayState {
             return false;
         }
 
-        self.attribution_block = Some(super::TraceAttributionBlock::ActionAgain);
+        if OBSERVE {
+            self.attribution_block = Some(super::TraceAttributionBlock::ActionAgain);
+        }
         let continue_acting = self.consume_action_again(
             actor_side,
             &drawn.card,
@@ -1047,7 +1316,9 @@ impl ReplayState {
             false,
             primary_card_action_again,
         );
-        self.attribution_block = None;
+        if OBSERVE {
+            self.attribution_block = None;
+        }
         if self.death_winner().is_some() {
             self.termination_cause = Some(super::ReplayTerminationCause::ActionAgainLethal);
         }
@@ -1068,13 +1339,15 @@ impl ReplayState {
     fn preview_selected_card_for_resolution(
         &mut self,
         actor_side: PlayerSide,
-    ) -> Option<(CardDefinition, usize, bool)> {
+        skip_limit: i64,
+    ) -> Option<(super::RuntimeCard, usize, bool)> {
+        #[cfg(all(feature = "perf-ceiling", not(target_arch = "wasm32")))]
+        let _timer = crate::performance::Timer::new(7);
         // 快路径：常见情况下预演只是在出牌方身上 draw_next_card（只读写 ReplayPlayer 自身），
         // 只克隆出牌方即可。以下两种情况会触及对局状态，退回整局克隆的原路径：
         //   - 瞬影击层数 > 0 且抽到带生命消耗的牌（跳过循环会扣血、造成伤害）；
         //   - 抽牌跳过的槽位里有开局效果牌（trigger_skipped_opening_effects 会执行效果）。
         // 两条路径对同一输入给出相同的 (牌, 槽位, 是否已用)。
-        let skip_limit = self.nameless_white_deer_skip_limit();
         // 最快路径：队首牌不会被任何跳过机制跳过 → 就是它，连出牌方都不用克隆。
         // 瞬影击只看抽到的牌有没有生命消耗；抽牌没有跳过任何槽位，自然没有开局效果要补。
         if let Some(source_slot) = self.actor(actor_side).peek_unskipped_next_slot(skip_limit) {
@@ -1097,9 +1370,13 @@ impl ReplayState {
                         "peek_unskipped_next_slot disagrees with draw_next_card"
                     );
                 }
+                #[cfg(all(feature = "perf-ceiling", not(target_arch = "wasm32")))]
+                crate::performance::preview_path(0);
                 return Some(peeked);
             }
         }
+        #[cfg(all(feature = "perf-ceiling", not(target_arch = "wasm32")))]
+        crate::performance::preview_path(1);
         let mut player = self.actor(actor_side).clone();
         player.fate.rear_move_succeeded = false;
         let drawn = player.draw_next_card(skip_limit)?;
@@ -1108,7 +1385,7 @@ impl ReplayState {
         let skipped_opening = drawn.skipped_opening_slots.iter().any(|&skipped_slot| {
             player.deck.slots.get(skipped_slot).is_some_and(|slot| {
                 let base_id = super::support::normalized_base_id(&slot.card);
-                Self::card_has_opening_effect(base_id) && base_id != 56
+                Self::card_triggers_opening_on_skip(base_id)
             })
         });
         if !shadow_strike_skip && !skipped_opening {
@@ -1131,6 +1408,8 @@ impl ReplayState {
         let detailed_steps = std::mem::take(&mut self.observation.detailed_steps);
         let mutation_receipts = std::mem::take(&mut self.observation.mutation_receipts);
         let decision_events = std::mem::take(&mut self.decision_events);
+        #[cfg(all(feature = "perf-ceiling", not(target_arch = "wasm32")))]
+        crate::performance::preview_path(2);
         let mut preview = self.clone();
         self.observation.events = events;
         self.observation.detailed_events = detailed_events;
@@ -1141,12 +1420,28 @@ impl ReplayState {
         preview.effect_invocation_stack.clear();
         preview.actor_mut(actor_side).fate.rear_move_succeeded = false;
         let skip_limit = preview.nameless_white_deer_skip_limit();
-        let mut drawn = preview.actor_mut(actor_side).draw_next_card(skip_limit)?;
-        while preview.should_skip_card_with_instant_shadow_strike(actor_side, &drawn) {
-            preview.trigger_skipped_opening_effects(actor_side, &drawn);
-            preview.apply_instant_shadow_strike_skip(actor_side, &drawn);
-            drawn = preview.actor_mut(actor_side).draw_next_card(skip_limit)?;
-        }
+        let drawn = loop {
+            let mut drawn = preview.actor_mut(actor_side).draw_next_card(skip_limit)?;
+            if preview.should_skip_card_with_instant_shadow_strike(actor_side, &drawn) {
+                while preview.should_skip_card_with_instant_shadow_strike(actor_side, &drawn) {
+                    preview.trigger_skipped_opening_effects(actor_side, &drawn);
+                    preview.apply_instant_shadow_strike_skip(actor_side, &drawn);
+                    match preview.actor_mut(actor_side).shift_next_raw_card() {
+                        Some(next) => drawn = next,
+                        None => break,
+                    }
+                }
+                if !drawn.fallback_basic_attack {
+                    preview
+                        .actor_mut(actor_side)
+                        .deck
+                        .queue
+                        .insert(0, drawn.source_slot);
+                }
+                continue;
+            }
+            break drawn;
+        };
         preview.trigger_skipped_opening_effects(actor_side, &drawn);
         let was_used_before_effect = preview
             .actor(actor_side)
@@ -1205,6 +1500,16 @@ impl ReplayState {
                     false
                 }
             }
+            RepeatSource::FuYunLianHuanBu => {
+                if self.actor(actor_side).ronghui.fu_yun_lian_huan_bu > 0
+                    && super::support::is_cloud_sword(self.actor(actor_side), card)
+                {
+                    self.actor_mut(actor_side).ronghui.fu_yun_lian_huan_bu -= 1;
+                    true
+                } else {
+                    false
+                }
+            }
             RepeatSource::DreamMirageFireEarth => {
                 self.consume_dream_mirage_repeat_fire_or_earth(actor_side, card)
             }
@@ -1215,7 +1520,7 @@ impl ReplayState {
         &mut self,
         actor_side: PlayerSide,
         ctx: &EffectRepetitionContext,
-        effect_card: &CardDefinition,
+        effect_card: &super::RuntimeCard,
         repetition: i64,
         invocation_kind: EffectInvocationKind,
     ) -> bool {
@@ -1239,12 +1544,13 @@ impl ReplayState {
         // effect's OnAfterExecuted may establish it for this effect.
         let cloud_chain_before_effect = has_cloud_chain(self.actor(actor_side));
         let effective_is_beng_quan = public_beng_for_effect
-            || self.is_dream_mirage_intrinsic_beng_quan(actor_side, effect_card);
+            || (self.active_mechanisms.has(super::ActiveMechanisms::MIRAGE)
+                && self.is_dream_mirage_intrinsic_beng_quan(actor_side, effect_card));
         let mut card_action_again = false;
-        for phase in CARD_EFFECT_PHASES {
+        static_phases! { phase in CARD_EFFECT_PHASES [0, 1, 2, 3, 4, 5, 6] {
             match phase {
                 CardEffectPhase::OpenInvocation => {
-                    self.begin_effect_invocation(
+                    self.begin_effect_invocation_shared(
                         actor_side,
                         ctx.origin_card,
                         effect_card,
@@ -1265,7 +1571,9 @@ impl ReplayState {
                     self.set_active_effect_phase(EffectInvocationPhase::Body);
                 }
                 CardEffectPhase::PreBodyHooks => {
-                    self.apply_dream_mirage_before_effect_hooks(actor_side, effect_card);
+                    if self.active_mechanisms.has(super::ActiveMechanisms::MIRAGE) {
+                        self.apply_dream_mirage_before_effect_hooks(actor_side, effect_card);
+                    }
                     // Set the current card's event index so every attack segment from this
                     // execution -- both the printed body and shared AfterCard follow-ups --
                     // joins onto the matching MainEffect step. Reset the per-card segment
@@ -1315,7 +1623,7 @@ impl ReplayState {
                     self.end_effect_invocation(actor_side, invocation_kind);
                 }
             }
-        }
+        } }
         card_action_again
     }
 
@@ -1326,7 +1634,6 @@ impl ReplayState {
         slot: usize,
     ) {
         self.apply_card_completed_hooks(actor_side, card, slot);
-        self.settle_wan_shi_ru_yi_card_19(actor_side, card);
         if card.hp_cost.unwrap_or(0) > 0 {
             self.actor_mut(actor_side).turn.hp_cost_cards_used += 1;
         }
@@ -1382,7 +1689,7 @@ impl ReplayState {
                 continue;
             };
             let base_id = super::support::normalized_base_id(&card);
-            if !Self::card_has_opening_effect(base_id) || base_id == 56 {
+            if !Self::card_triggers_opening_on_skip(base_id) {
                 continue;
             }
             self.apply_opening_effect_for_card(actor_side, &card, skipped_slot);
@@ -1426,9 +1733,9 @@ impl ReplayState {
             .slots
             .get_mut(drawn.source_slot)
         {
-            slot.card = upgraded.clone();
+            slot.card = upgraded.clone().into();
         }
-        drawn.card = upgraded;
+        drawn.card = upgraded.into();
     }
 
     fn apply_paint_finishing_touch_upgrade(
@@ -1456,9 +1763,9 @@ impl ReplayState {
             .slots
             .get_mut(drawn.source_slot)
         {
-            slot.card = upgraded.clone();
+            slot.card = upgraded.clone().into();
         }
-        drawn.card = upgraded;
+        drawn.card = upgraded.into();
     }
 
     /// CardActionBase.cs:1187-1193（Execute 状态机 IL_17ac）。执行顺序在画龙点睛
@@ -1467,7 +1774,7 @@ impl ReplayState {
     /// 扣固定生命后把当前这张 rarity=0 的狂剑升一阶；原版 IL_18d4 会回写
     /// cardActionBase.cardConfig，所以升阶对**本次出牌**立即生效。rarity 读的是
     /// 画龙点睛回写之后的配置：已被画龙升阶（rarity≥1）的狂剑不再触发
-    /// （oracle：hf-latest-33331000 3dfe77e1e41cabd9/round-13）。
+    /// （oracle：hf-latest-33331000 pa_b895dd98）。
     fn apply_upgrade_next_frenzy_sword(
         &mut self,
         actor_side: PlayerSide,
@@ -1500,9 +1807,9 @@ impl ReplayState {
             .slots
             .get_mut(drawn.source_slot)
         {
-            slot.card = upgraded.clone();
+            slot.card = upgraded.clone().into();
         }
-        drawn.card = upgraded;
+        drawn.card = upgraded.into();
     }
 
     /// CardActionBase.cs:1588-1605,1638-1660; immediately after 相生相成.
@@ -1532,9 +1839,23 @@ impl ReplayState {
             .slots
             .get_mut(drawn.source_slot)
         {
-            slot.card = upgraded.clone();
+            slot.card = upgraded.clone().into();
         }
-        drawn.card = upgraded;
+        drawn.card = upgraded.into();
+    }
+
+    /// 仙魔 7116/5010 的跳牌生命与灵气变化（BattleExecuter 跳牌链内 ModifyHp / ModifyAnima），在取牌边界按跳牌顺序结算。
+    fn settle_xian_mo_skip_hp(&mut self, actor_side: PlayerSide) {
+        if !self.actor(actor_side).fate.skip_hp_deltas.is_empty() {
+            for delta in std::mem::take(&mut self.actor_mut(actor_side).fate.skip_hp_deltas) {
+                self.modify_actor_hp(actor_side, delta, false, false);
+            }
+        }
+        if !self.actor(actor_side).fate.skip_anima_deltas.is_empty() {
+            for delta in std::mem::take(&mut self.actor_mut(actor_side).fate.skip_anima_deltas) {
+                self.gain_anima(actor_side, delta);
+            }
+        }
     }
 
     fn nameless_white_deer_skip_limit(&self) -> i64 {
@@ -1551,12 +1872,6 @@ impl ReplayState {
 
     fn apply_turn_start_chance_hooks(&mut self, actor_side: PlayerSide) {
         let opponent = opponent_side(actor_side);
-        let spirit_drain = self.actor(actor_side).chance.shi_xu_ling_shou.max(0);
-        if spirit_drain > 0 && self.actor(opponent).core.anima > 0 {
-            let drain = spirit_drain.min(self.actor(opponent).core.anima);
-            self.reduce_anima_unchecked(opponent, drain);
-            self.gain_anima(actor_side, drain);
-        }
         let sky_eagle = self.actor(actor_side).chance.po_kong_diao.max(0);
         if sky_eagle > 0 {
             self.apply_damage(actor_side, sky_eagle, false, false, false);

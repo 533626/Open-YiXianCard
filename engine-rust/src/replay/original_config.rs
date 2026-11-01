@@ -1,5 +1,5 @@
-use crate::id_hash::{IdMap, IdSet};
 use super::support::normalize_base_id;
+use crate::id_hash::{IdMap, IdSet};
 use crate::model::{CardDefinition, OriginalEnumValue};
 use serde::Deserialize;
 use std::sync::OnceLock;
@@ -16,6 +16,8 @@ struct OriginalCardConfigRaw {
     hidden: Option<bool>,
     #[serde(default)]
     subcategory: Option<OriginalEnumValue>,
+    #[serde(default)]
+    sect: Option<OriginalEnumValue>,
     #[serde(default)]
     rarity: Option<i64>,
     #[serde(default)]
@@ -58,10 +60,14 @@ struct OriginalCardConfigRaw {
 struct OriginalCardMeta {
     hidden: bool,
     subcategory_name: Option<String>,
+    sect_name: Option<String>,
     rarity: i64,
     realm_level: Option<i64>,
     no_upgrade: bool,
     charge_qi: i64,
+    spirit_or_hexagram_desc: bool,
+    action_again_desc: bool,
+    wounded_desc: bool,
 }
 
 #[derive(Debug)]
@@ -69,6 +75,7 @@ struct OriginalCardCatalog {
     cards: IdMap<CardDefinition>,
     meta: IdMap<OriginalCardMeta>,
     anima_desc_card_ids: IdSet,
+    anima_desc_base_ids: IdSet,
     action_again_desc_card_ids: IdSet,
     wounded_desc_card_ids: IdSet,
     rear_move_desc_card_ids: IdSet,
@@ -78,6 +85,10 @@ static ORIGINAL_CARD_CATALOG: OnceLock<OriginalCardCatalog> = OnceLock::new();
 
 fn catalog() -> &'static OriginalCardCatalog {
     ORIGINAL_CARD_CATALOG.get_or_init(load_original_card_catalog)
+}
+
+pub(super) fn original_card_definition_ref(card_id: i64) -> Option<&'static CardDefinition> {
+    catalog().cards.get(&card_id)
 }
 
 pub(super) fn original_card_definition(card_id: i64) -> Option<CardDefinition> {
@@ -111,9 +122,14 @@ pub(super) fn original_base_card_definitions() -> Vec<CardDefinition> {
 }
 
 pub(super) fn original_card_desc_contains_anima(card: &CardDefinition) -> bool {
+    // 原版 CalculateAttack 看当前档位 config 本身：desc 含「灵气」或
+    // anima<0。天音困仙曲 5000015/5010015 的 anima 为 -2/-1、5020015 无
+    // anima 且 desc 无灵气：anima<0 只认精确档位 id，不能经 base_id 归并到
+    // 高星档（否则 5020015 误吃 7101/152 的 +3 攻，HF 4c317c5aa0aaed8a/
+    // round-20 cp2 灵玄追击 6 vs 原版 3）；desc 分支才按 base 归并。
     let base_id = card.base_id.unwrap_or_else(|| normalize_base_id(card.id));
     catalog().anima_desc_card_ids.contains(&card.id)
-        || catalog().anima_desc_card_ids.contains(&base_id)
+        || catalog().anima_desc_base_ids.contains(&base_id)
 }
 
 pub(super) fn original_card_desc_contains_action_again(card: &CardDefinition) -> bool {
@@ -158,11 +174,31 @@ pub(super) fn original_card_realm_level(card_id: i64) -> Option<i64> {
     original_card_meta(card_id).and_then(|meta| meta.realm_level)
 }
 
+pub(super) fn original_card_no_upgrade(card_id: i64) -> Option<bool> {
+    original_card_meta(card_id).map(|meta| meta.no_upgrade)
+}
+
+pub(super) fn original_card_is_hidden(card_id: i64) -> Option<bool> {
+    original_card_meta(card_id).map(|meta| meta.hidden)
+}
+
+pub(super) fn original_card_desc_has_spirit_or_hexagram(card_id: i64) -> bool {
+    original_card_meta(card_id).is_some_and(|meta| meta.spirit_or_hexagram_desc)
+}
+
+pub(super) fn original_card_current_desc_contains_action_again(card_id: i64) -> bool {
+    original_card_meta(card_id).is_some_and(|meta| meta.action_again_desc)
+}
+
+pub(super) fn original_card_current_desc_contains_wounded(card_id: i64) -> bool {
+    original_card_meta(card_id).is_some_and(|meta| meta.wounded_desc)
+}
+
 pub(super) fn complete_with_original_card(card: &CardDefinition) -> CardDefinition {
-    let Some(original) = original_card_definition(card.id) else {
+    let Some(original) = catalog().cards.get(&card.id) else {
         return card.clone();
     };
-    merge_card_with_original(card, &original)
+    merge_card_with_original(card, original)
 }
 
 pub(super) fn upgrade_original_card(card: &CardDefinition, upgrade_times: i64) -> CardDefinition {
@@ -201,14 +237,28 @@ pub(super) fn original_card_echo_upgrade_id(card_id: i64, upgrade_times: i64) ->
 
 pub(super) fn can_upgrade_original_card(card_id: i64) -> bool {
     original_card_meta(card_id).is_some_and(|meta| {
-        !meta.no_upgrade && meta.rarity == 0 && original_card_definition(card_id + 10_000).is_some()
+        !meta.no_upgrade && meta.rarity == 0 && catalog().cards.contains_key(&(card_id + 10_000))
     })
 }
 
 pub(super) fn can_upgrade_original_battle_deck_card(card_id: i64) -> bool {
-    original_card_meta(card_id).is_some_and(|meta| {
-        !meta.no_upgrade && original_card_definition(card_id + 10_000).is_some()
-    })
+    original_card_meta(card_id)
+        .is_some_and(|meta| !meta.no_upgrade && catalog().cards.contains_key(&(card_id + 10_000)))
+}
+
+/// CardConfig.sect name (e.g. "WuXingDaoMeng"), falling back to the base id
+/// for upgraded ranks whose own config row omits it.
+pub(super) fn original_card_sect_name(card_id: i64) -> Option<String> {
+    let base_id = normalize_base_id(card_id);
+    original_card_meta(card_id)
+        .or_else(|| {
+            if base_id == card_id {
+                None
+            } else {
+                original_card_meta(base_id)
+            }
+        })
+        .and_then(|meta| meta.sect_name.clone())
 }
 
 pub(super) fn original_card_is_hidden_or_mi_shu(card_id: i64) -> bool {
@@ -224,8 +274,8 @@ pub(super) fn original_card_is_hidden_or_mi_shu(card_id: i64) -> bool {
         .is_some_and(|meta| meta.hidden || meta.subcategory_name.as_deref() == Some("MiShu"))
 }
 
-fn original_card_meta(card_id: i64) -> Option<OriginalCardMeta> {
-    catalog().meta.get(&card_id).cloned()
+fn original_card_meta(card_id: i64) -> Option<&'static OriginalCardMeta> {
+    catalog().meta.get(&card_id)
 }
 
 fn merge_card_with_original(card: &CardDefinition, original: &CardDefinition) -> CardDefinition {
@@ -261,24 +311,17 @@ fn merge_card_with_original(card: &CardDefinition, original: &CardDefinition) ->
 }
 
 fn load_original_card_catalog() -> OriginalCardCatalog {
-    let source = include_str!("../../../shared/data/original-card-configs.ts");
-    let marker = "JSON.parse(\"";
-    let start = source
-        .find(marker)
-        .expect("ORIGINAL_CARD_CONFIGS marker missing")
-        + marker.len();
-    let end = source
-        .rfind("\")")
-        .expect("ORIGINAL_CARD_CONFIGS terminator missing");
-    let json_text = unescape_ts_json_string(&source[start..end]);
+    // The committed JSON is the single data owner shared by the browser, Python
+    // tools and this engine; never re-introduce a TS JSON.parse wrapper here.
+    let json_text = include_str!("../../../shared/data/original-card-configs.json");
     let configs: Vec<OriginalCardConfigRaw> =
-        serde_json::from_str(&json_text).expect("original card configs parse");
-    // shared/data/original-card-configs.ts 提取时丢了 randomDef 字段
+        serde_json::from_str(json_text).expect("original card configs parse");
+    // shared/data/original-card-configs.json 提取时丢了 randomDef 字段
     // （客户端 CardConfig.json build-24610558 有 9 张带 randomDef）。缺字段
     // 会让 [防]+{def}～{randomDef} 的随机防御退化为固定下限，且不再消耗
     // battleParams 队列 → 后续随机卡错位。oracle 锚点：mirror-32299000
-    // 8a0d0312f8c5a67c/round-12 cp18（神来之笔→一掷乾坤 4000055 防御骰
-    // 20：原版 p1.def=24 = 4+20，引擎 6 = 4+2）、d9fedb72578eb9c0/round-14
+    // pa_9bfd647f cp18（神来之笔→一掷乾坤 4000055 防御骰
+    // 20：原版 p1.def=24 = 4+20，引擎 6 = 4+2）、pa_1af7345a
     // cp10（4020055 防御骰 17：原版 25 = 8+17，引擎 22 = 8+14）。
     const MISSING_RANDOM_DEFENSE: &[(i64, i64)] = &[
         (4000006, 10), // 野马分鬃 randomDef
@@ -296,6 +339,7 @@ fn load_original_card_catalog() -> OriginalCardCatalog {
     let mut cards = IdMap::default();
     let mut meta = IdMap::default();
     let mut anima_desc_card_ids = IdSet::default();
+    let mut anima_desc_base_ids = IdSet::default();
     let mut action_again_desc_card_ids = IdSet::default();
     let mut wounded_desc_card_ids = IdSet::default();
     let mut rear_move_desc_card_ids = IdSet::default();
@@ -306,7 +350,7 @@ fn load_original_card_catalog() -> OriginalCardCatalog {
         // cardConfig.anima < 0` 二选一即 +otherParams[0] 攻。desc 分支沿用
         // 既有基牌收录语义；anima<0 分支只收录当前档位 id——升级档可能改变
         // 灵气消耗符号，不能按基牌归并（oracle 锚点：mirror-32219000-human-01
-        // 5d19850f298ccfce/round-12 cp8 双鬼拍门 anima=-1 15 vs 11）。
+        // pa_d592bbb0 cp8 双鬼拍门 anima=-1 15 vs 11）。
         let desc_has_anima = config
             .desc
             .as_deref()
@@ -314,7 +358,7 @@ fn load_original_card_catalog() -> OriginalCardCatalog {
         if desc_has_anima || config.anima.is_some_and(|anima| anima < 0) {
             anima_desc_card_ids.insert(config.id);
             if desc_has_anima {
-                anima_desc_card_ids.insert(base_id);
+                anima_desc_base_ids.insert(base_id);
             }
         }
         if config
@@ -371,11 +415,30 @@ fn load_original_card_catalog() -> OriginalCardCatalog {
             config.id,
             OriginalCardMeta {
                 hidden: config.hidden.unwrap_or(false),
-                subcategory_name: config.subcategory.map(|subcategory| subcategory.name).map(|value| value.to_string()),
+                subcategory_name: config
+                    .subcategory
+                    .map(|subcategory| subcategory.name)
+                    .map(|value| value.to_string()),
+                sect_name: config
+                    .sect
+                    .map(|sect| sect.name)
+                    .map(|value| value.to_string()),
                 rarity: config.rarity.unwrap_or(0),
                 realm_level: config.level.map(|level| level.value),
                 no_upgrade: config.no_upgrade.unwrap_or(false),
                 charge_qi: config.charge_qi.unwrap_or(0),
+                spirit_or_hexagram_desc: config
+                    .desc
+                    .as_deref()
+                    .is_some_and(|desc| desc.contains("灵气") || desc.contains("卦象")),
+                wounded_desc: config
+                    .desc
+                    .as_deref()
+                    .is_some_and(|desc| desc.contains("[击伤]")),
+                action_again_desc: config
+                    .desc
+                    .as_deref()
+                    .is_some_and(|desc| desc.contains("再次行动")),
             },
         );
         cards.insert(config.id, card);
@@ -384,30 +447,10 @@ fn load_original_card_catalog() -> OriginalCardCatalog {
         cards,
         meta,
         anima_desc_card_ids,
+        anima_desc_base_ids,
         action_again_desc_card_ids,
         wounded_desc_card_ids,
         rear_move_desc_card_ids,
     }
 }
 
-fn unescape_ts_json_string(value: &str) -> String {
-    let mut out = String::with_capacity(value.len());
-    let mut chars = value.chars();
-    while let Some(ch) = chars.next() {
-        if ch == '\\' {
-            match chars.next() {
-                Some('"') => out.push('"'),
-                Some('\\') => out.push('\\'),
-                Some('n') => out.push('\n'),
-                Some(other) => {
-                    out.push('\\');
-                    out.push(other);
-                }
-                None => out.push('\\'),
-            }
-        } else {
-            out.push(ch);
-        }
-    }
-    out
-}

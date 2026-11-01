@@ -6,10 +6,10 @@
     "battleCount": 968,
     "recordOnlyCount": 56,
     "hiddenCount": 643,
-    "obsoleteCount": 0,
-    "registeredCount": 818,
+    "obsoleteCount": 1,
+    "registeredCount": 846,
     "unverifiedRegistrationCount": 0,
-    "missingRegistrationCount": 150
+    "missingRegistrationCount": 122
   },
   "groups": [
     {
@@ -22,9 +22,9 @@
       "recordOnlyCount": 0,
       "hiddenCount": 1,
       "obsoleteCount": 0,
-      "registeredCount": 52,
+      "registeredCount": 53,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 1
+      "missingRegistrationCount": 0
     },
     {
       "kind": "sect",
@@ -50,9 +50,9 @@
       "recordOnlyCount": 0,
       "hiddenCount": 5,
       "obsoleteCount": 0,
-      "registeredCount": 54,
+      "registeredCount": 56,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 2
+      "missingRegistrationCount": 0
     },
     {
       "kind": "sect",
@@ -64,9 +64,9 @@
       "recordOnlyCount": 0,
       "hiddenCount": 1,
       "obsoleteCount": 0,
-      "registeredCount": 52,
+      "registeredCount": 53,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 1
+      "missingRegistrationCount": 0
     },
     {
       "kind": "career",
@@ -932,9 +932,9 @@
       "recordOnlyCount": 0,
       "hiddenCount": 16,
       "obsoleteCount": 0,
-      "registeredCount": 9,
+      "registeredCount": 16,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 7
+      "missingRegistrationCount": 0
     },
     {
       "kind": "season",
@@ -1002,9 +1002,9 @@
       "recordOnlyCount": 0,
       "hiddenCount": 19,
       "obsoleteCount": 0,
-      "registeredCount": 1,
+      "registeredCount": 2,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 18
+      "missingRegistrationCount": 17
     },
     {
       "kind": "season",
@@ -1016,9 +1016,9 @@
       "recordOnlyCount": 0,
       "hiddenCount": 20,
       "obsoleteCount": 0,
-      "registeredCount": 0,
+      "registeredCount": 3,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 20
+      "missingRegistrationCount": 17
     },
     {
       "kind": "season",
@@ -1827,10 +1827,10 @@
       "battleCount": 11,
       "recordOnlyCount": 0,
       "hiddenCount": 11,
-      "obsoleteCount": 0,
-      "registeredCount": 11,
+      "obsoleteCount": 1,
+      "registeredCount": 10,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 0
+      "missingRegistrationCount": 1
     },
     {
       "kind": "season",
@@ -2052,9 +2052,9 @@
       "recordOnlyCount": 13,
       "hiddenCount": 89,
       "obsoleteCount": 0,
-      "registeredCount": 32,
+      "registeredCount": 46,
       "unverifiedRegistrationCount": 0,
-      "missingRegistrationCount": 44
+      "missingRegistrationCount": 30
     }
   ],
   "cards": [
@@ -2076,11 +2076,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000006",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000001,
@@ -2124,11 +2120,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000003",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000002,
@@ -2148,11 +2140,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000002",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000011,
@@ -2172,11 +2160,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000011",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000004,
@@ -2196,11 +2180,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000004",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000008,
@@ -2220,11 +2200,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000008",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000005,
@@ -2244,11 +2220,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000005",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000007,
@@ -2268,11 +2240,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000007",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000010,
@@ -2292,11 +2260,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000010",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000009,
@@ -2316,11 +2280,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000009",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000012,
@@ -2364,11 +2324,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000014",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000013,
@@ -2388,11 +2344,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000013",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000015,
@@ -2412,11 +2364,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000015",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000016,
@@ -2436,11 +2384,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000016",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000018,
@@ -2460,11 +2404,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000018",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000023,
@@ -2484,11 +2424,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000023",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000021,
@@ -2508,11 +2444,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000021",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000032,
@@ -2532,11 +2464,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000032",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000022,
@@ -2556,11 +2484,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000022",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000017,
@@ -2580,11 +2504,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000017",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000019,
@@ -2604,11 +2524,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000019",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000036,
@@ -2628,11 +2544,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000036",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000024,
@@ -2652,11 +2564,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000024",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000026,
@@ -2676,11 +2584,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000026",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000027,
@@ -2700,11 +2604,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000027",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000029,
@@ -2724,11 +2624,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000029",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000031,
@@ -2748,11 +2644,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000031",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000020,
@@ -2772,11 +2664,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000020",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000033,
@@ -2796,11 +2684,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000033",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000030,
@@ -2820,11 +2704,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000030",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000034,
@@ -2844,11 +2724,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000034",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000028,
@@ -2868,11 +2744,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000028",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000043,
@@ -2892,11 +2764,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000043",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000044,
@@ -2916,11 +2784,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000044",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000025,
@@ -2940,11 +2804,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000025",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000035,
@@ -2964,11 +2824,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000035",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000042,
@@ -2988,11 +2844,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000042",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000037,
@@ -3012,11 +2864,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000037",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000038,
@@ -3036,11 +2884,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000038",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000050,
@@ -3060,11 +2904,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000050",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000039,
@@ -3084,11 +2924,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000039",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000040,
@@ -3108,11 +2944,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000040",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000047,
@@ -3132,11 +2964,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000047",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000046,
@@ -3156,11 +2984,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000046",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000045,
@@ -3180,11 +3004,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000045",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000048,
@@ -3204,11 +3024,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000048",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000110,
@@ -3227,8 +3043,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_10000110",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000052,
@@ -3248,11 +3064,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000052",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000051,
@@ -3272,11 +3084,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000051",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000041,
@@ -3320,11 +3128,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000068",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000005,
@@ -3632,11 +3436,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000024",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000016,
@@ -3656,11 +3456,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000016",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000020,
@@ -3680,11 +3476,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000020",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000027,
@@ -3704,11 +3496,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000027",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000015,
@@ -3728,11 +3516,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000015",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000021,
@@ -3752,11 +3536,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000021",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000030,
@@ -3776,11 +3556,7 @@
       "variantCount": 3,
       "effectClass": null,
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000018,
@@ -3800,11 +3576,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000018",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000028,
@@ -3824,11 +3596,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000028",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000009,
@@ -3848,11 +3616,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000009",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000019,
@@ -3872,11 +3636,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000019",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000031,
@@ -3896,11 +3656,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000031",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000025,
@@ -3920,11 +3676,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000025",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000033,
@@ -3944,11 +3696,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000033",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000042,
@@ -3968,11 +3716,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000042",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000040,
@@ -3992,11 +3736,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000040",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000022,
@@ -4016,11 +3756,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000022",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000017,
@@ -4040,11 +3776,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000017",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000043,
@@ -4064,11 +3796,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000043",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000029,
@@ -4088,11 +3816,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000029",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000068,
@@ -4112,11 +3836,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000068",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000032,
@@ -4136,11 +3856,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000032",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000059,
@@ -4160,11 +3876,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000059",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000037,
@@ -4184,11 +3896,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000037",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000063,
@@ -4208,11 +3916,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000063",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000036,
@@ -4232,11 +3936,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000036",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000034,
@@ -4256,11 +3956,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000034",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000014,
@@ -4280,11 +3976,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000014",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000035,
@@ -4304,11 +3996,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000035",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000062,
@@ -4328,11 +4016,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000062",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000038,
@@ -4352,11 +4036,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000038",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000039,
@@ -4376,11 +4056,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000039",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000066,
@@ -4400,11 +4076,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000066",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000041,
@@ -4424,11 +4096,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000041",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000060,
@@ -4448,11 +4116,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000060",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000026,
@@ -4472,11 +4136,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000026",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000045,
@@ -4496,11 +4156,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000045",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000046,
@@ -4520,11 +4176,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000046",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000044,
@@ -4544,11 +4196,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000044",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000067,
@@ -4568,11 +4216,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000067",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000054,
@@ -4644,11 +4288,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000009",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000002,
@@ -4668,11 +4308,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000002",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000001,
@@ -4740,11 +4376,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000003",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000008,
@@ -4840,11 +4472,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000013",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000011,
@@ -4912,11 +4540,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000014",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000022,
@@ -4936,11 +4560,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000022",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000021,
@@ -4960,11 +4580,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000021",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000015,
@@ -4984,11 +4600,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000015",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000016,
@@ -5008,11 +4620,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000016",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000018,
@@ -5080,11 +4688,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000019",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000037,
@@ -5128,11 +4732,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000024",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000023,
@@ -5152,11 +4752,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000023",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000032,
@@ -5176,11 +4772,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000032",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000031,
@@ -5200,11 +4792,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000031",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000026,
@@ -5224,11 +4812,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000026",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000025,
@@ -5248,11 +4832,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000025",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000028,
@@ -5272,11 +4852,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000028",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000036,
@@ -5296,11 +4872,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000036",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000059,
@@ -5320,11 +4892,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000059",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000029,
@@ -5368,11 +4936,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000062",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000041,
@@ -5420,11 +4984,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000012",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000067,
@@ -5468,11 +5028,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000066",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000038,
@@ -5492,11 +5048,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000038",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000039,
@@ -5516,11 +5068,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000039",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000034,
@@ -5540,11 +5088,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000034",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000035,
@@ -5564,11 +5108,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000035",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000061,
@@ -5588,11 +5128,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000061",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000027,
@@ -5612,11 +5148,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000027",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000020,
@@ -5684,11 +5216,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000040",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000033,
@@ -5708,11 +5236,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000033",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000058,
@@ -5732,11 +5256,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000058",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000056,
@@ -5779,8 +5299,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_7000117",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000106,
@@ -5799,8 +5319,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_7000106",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000042,
@@ -5820,11 +5340,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000042",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000043,
@@ -5844,11 +5360,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000043",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000057,
@@ -5868,11 +5380,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000057",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000053,
@@ -5892,11 +5400,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000053",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000073,
@@ -6108,11 +5612,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000002",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000003,
@@ -6156,11 +5656,7 @@
       "variantCount": 3,
       "effectClass": null,
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000009,
@@ -6228,11 +5724,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000030",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000018,
@@ -6252,11 +5744,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000018",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000019,
@@ -6276,11 +5764,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000019",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000022,
@@ -6300,11 +5784,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000022",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000033,
@@ -6324,11 +5804,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000033",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000017,
@@ -6348,11 +5824,7 @@
       "variantCount": 3,
       "effectClass": null,
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000011,
@@ -6372,11 +5844,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000011",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000024,
@@ -6396,11 +5864,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000024",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000016,
@@ -6420,11 +5884,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000016",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000015,
@@ -6444,11 +5904,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000015",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000014,
@@ -6468,11 +5924,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000014",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000020,
@@ -6492,11 +5944,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000020",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000008,
@@ -6516,11 +5964,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000008",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000046,
@@ -6540,11 +5984,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000046",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000029,
@@ -6564,11 +6004,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000029",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000023,
@@ -6588,11 +6024,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000023",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000032,
@@ -6612,11 +6044,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000032",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000027,
@@ -6636,11 +6064,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000027",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000063,
@@ -6660,11 +6084,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000063",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000026,
@@ -6684,11 +6104,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000026",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000028,
@@ -6732,11 +6148,7 @@
       "variantCount": 3,
       "effectClass": null,
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000059,
@@ -6756,11 +6168,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000059",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000065,
@@ -6780,11 +6188,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000065",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000036,
@@ -6804,11 +6208,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000036",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000034,
@@ -6828,11 +6228,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000034",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000035,
@@ -6876,11 +6272,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000038",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000037,
@@ -6900,11 +6292,7 @@
       "variantCount": 3,
       "effectClass": null,
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000041,
@@ -6924,11 +6312,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000041",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000039,
@@ -6948,11 +6332,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000039",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000040,
@@ -6996,11 +6376,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000043",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000044,
@@ -7020,11 +6396,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000044",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000066,
@@ -7092,11 +6464,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000045",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000025,
@@ -7116,11 +6484,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000025",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000060,
@@ -7140,11 +6504,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000060",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000042,
@@ -7164,11 +6524,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000042",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000093,
@@ -7187,8 +6543,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_1000093",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 3000001,
@@ -7208,11 +6564,7 @@
       "variantCount": 3,
       "effectClass": "Card_3000001",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 3000002,
@@ -7232,11 +6584,7 @@
       "variantCount": 3,
       "effectClass": "Card_3000002",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 3000003,
@@ -7256,11 +6604,7 @@
       "variantCount": 3,
       "effectClass": "Card_3000003",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 3000005,
@@ -7280,11 +6624,7 @@
       "variantCount": 3,
       "effectClass": "Card_3000005",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 3000006,
@@ -7304,11 +6644,7 @@
       "variantCount": 3,
       "effectClass": "Card_3000006",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 3000004,
@@ -7328,11 +6664,7 @@
       "variantCount": 3,
       "effectClass": "Card_3000004",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 3000009,
@@ -7352,11 +6684,7 @@
       "variantCount": 3,
       "effectClass": "Card_3000009",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 3000007,
@@ -7376,11 +6704,7 @@
       "variantCount": 3,
       "effectClass": "Card_3000007",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 3000008,
@@ -7400,11 +6724,7 @@
       "variantCount": 3,
       "effectClass": "Card_3000008",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 3000010,
@@ -7424,11 +6744,7 @@
       "variantCount": 3,
       "effectClass": "Card_3000010",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 3000011,
@@ -7448,11 +6764,7 @@
       "variantCount": 3,
       "effectClass": "Card_3000011",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 3000012,
@@ -7472,11 +6784,7 @@
       "variantCount": 3,
       "effectClass": "Card_3000012",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 3000013,
@@ -7520,11 +6828,7 @@
       "variantCount": 3,
       "effectClass": "Card_3000015",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 3000014,
@@ -7544,11 +6848,7 @@
       "variantCount": 3,
       "effectClass": "Card_3000014",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 6000001,
@@ -7568,11 +6868,7 @@
       "variantCount": 3,
       "effectClass": null,
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 6000002,
@@ -7613,11 +6909,7 @@
       "variantCount": 3,
       "effectClass": "Card_6000003",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 6000004,
@@ -7637,11 +6929,7 @@
       "variantCount": 3,
       "effectClass": null,
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 6000005,
@@ -7661,11 +6949,7 @@
       "variantCount": 3,
       "effectClass": "Card_6000005",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 6000006,
@@ -7685,11 +6969,7 @@
       "variantCount": 3,
       "effectClass": "Card_6000006",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 6000007,
@@ -7709,11 +6989,7 @@
       "variantCount": 3,
       "effectClass": "Card_6000007",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 6000008,
@@ -7733,11 +7009,7 @@
       "variantCount": 3,
       "effectClass": "Card_6000008",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 6000009,
@@ -7799,11 +7071,7 @@
       "variantCount": 3,
       "effectClass": "Card_6000014",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 6000011,
@@ -7823,11 +7091,7 @@
       "variantCount": 3,
       "effectClass": "Card_6000011",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 6000013,
@@ -7847,11 +7111,7 @@
       "variantCount": 3,
       "effectClass": "Card_6000013",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 6000015,
@@ -7892,11 +7152,7 @@
       "variantCount": 3,
       "effectClass": "Card_6000012",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 2000003,
@@ -7916,11 +7172,7 @@
       "variantCount": 3,
       "effectClass": "Card_2000003",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 2000002,
@@ -7964,11 +7216,7 @@
       "variantCount": 3,
       "effectClass": "Card_2000001",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 2000006,
@@ -8009,11 +7257,7 @@
       "variantCount": 3,
       "effectClass": "Card_2000005",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 2000004,
@@ -8033,11 +7277,7 @@
       "variantCount": 3,
       "effectClass": "Card_2000004",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 2000009,
@@ -8078,11 +7318,7 @@
       "variantCount": 3,
       "effectClass": "Card_2000007",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 2000008,
@@ -8102,11 +7338,7 @@
       "variantCount": 3,
       "effectClass": "Card_2000008",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 2000011,
@@ -8126,11 +7358,7 @@
       "variantCount": 3,
       "effectClass": "Card_2000011",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 2000010,
@@ -8150,11 +7378,7 @@
       "variantCount": 3,
       "effectClass": "Card_2000010",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 2000012,
@@ -8195,11 +7419,7 @@
       "variantCount": 3,
       "effectClass": "Card_2000013",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 2000014,
@@ -8282,11 +7502,7 @@
       "variantCount": 3,
       "effectClass": null,
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 9000002,
@@ -8432,11 +7648,7 @@
       "variantCount": 3,
       "effectClass": "Card_9000009",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 9000018,
@@ -8456,11 +7668,7 @@
       "variantCount": 3,
       "effectClass": "Card_9000018",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 9000027,
@@ -8542,11 +7750,7 @@
       "variantCount": 3,
       "effectClass": "Card_9000005",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 9000017,
@@ -8566,11 +7770,7 @@
       "variantCount": 3,
       "effectClass": "Card_9000017",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 9000004,
@@ -8611,11 +7811,7 @@
       "variantCount": 3,
       "effectClass": "Card_9000013",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 9000020,
@@ -8750,11 +7946,7 @@
       "variantCount": 3,
       "effectClass": "Card_9000011",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 9000015,
@@ -8819,11 +8011,7 @@
       "variantCount": 3,
       "effectClass": "Card_9000019",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 9000014,
@@ -8864,11 +8052,7 @@
       "variantCount": 3,
       "effectClass": "Card_11000001",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 11000022,
@@ -8888,11 +8072,7 @@
       "variantCount": 3,
       "effectClass": "Card_11000022",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 11000004,
@@ -8912,11 +8092,7 @@
       "variantCount": 3,
       "effectClass": "Card_11000004",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 11000003,
@@ -8936,11 +8112,7 @@
       "variantCount": 3,
       "effectClass": "Card_11000003",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 11000009,
@@ -8960,11 +8132,7 @@
       "variantCount": 3,
       "effectClass": "Card_11000009",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 11000007,
@@ -8984,11 +8152,7 @@
       "variantCount": 3,
       "effectClass": "Card_11000007",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 11000008,
@@ -9028,11 +8192,7 @@
       "variantCount": 3,
       "effectClass": "Card_11000023",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 11000005,
@@ -9052,11 +8212,7 @@
       "variantCount": 3,
       "effectClass": "Card_11000005",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 11000011,
@@ -9076,11 +8232,7 @@
       "variantCount": 3,
       "effectClass": "Card_11000011",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 11000012,
@@ -9100,11 +8252,7 @@
       "variantCount": 3,
       "effectClass": "Card_11000012",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 11000024,
@@ -9124,11 +8272,7 @@
       "variantCount": 3,
       "effectClass": "Card_11000024",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 11000025,
@@ -9148,11 +8292,7 @@
       "variantCount": 3,
       "effectClass": "Card_11000025",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 11000026,
@@ -9192,11 +8332,7 @@
       "variantCount": 3,
       "effectClass": "Card_11000013",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 11000014,
@@ -9216,11 +8352,7 @@
       "variantCount": 3,
       "effectClass": "Card_11000014",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 11000018,
@@ -9240,11 +8372,7 @@
       "variantCount": 3,
       "effectClass": "Card_11000018",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 11000021,
@@ -9264,11 +8392,7 @@
       "variantCount": 3,
       "effectClass": "Card_11000021",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 11000020,
@@ -9308,11 +8432,7 @@
       "variantCount": 3,
       "effectClass": "Card_11000019",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 5000001,
@@ -9332,11 +8452,7 @@
       "variantCount": 3,
       "effectClass": "Card_5000001",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 5000002,
@@ -9356,11 +8472,7 @@
       "variantCount": 3,
       "effectClass": "Card_5000002",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 5000003,
@@ -9380,11 +8492,7 @@
       "variantCount": 3,
       "effectClass": "Card_5000003",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 5000006,
@@ -9404,11 +8512,7 @@
       "variantCount": 3,
       "effectClass": "Card_5000006",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 5000005,
@@ -9428,11 +8532,7 @@
       "variantCount": 3,
       "effectClass": "Card_5000005",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 5000004,
@@ -9452,11 +8552,7 @@
       "variantCount": 3,
       "effectClass": "Card_5000004",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 5000007,
@@ -9476,11 +8572,7 @@
       "variantCount": 3,
       "effectClass": "Card_5000007",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 5000008,
@@ -9500,11 +8592,7 @@
       "variantCount": 3,
       "effectClass": "Card_5000008",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 5000009,
@@ -9524,11 +8612,7 @@
       "variantCount": 3,
       "effectClass": "Card_5000009",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 5000010,
@@ -9548,11 +8632,7 @@
       "variantCount": 3,
       "effectClass": "Card_5000010",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 5000011,
@@ -9572,11 +8652,7 @@
       "variantCount": 3,
       "effectClass": "Card_5000011",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 5000012,
@@ -9596,11 +8672,7 @@
       "variantCount": 3,
       "effectClass": "Card_5000012",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 5000015,
@@ -9620,11 +8692,7 @@
       "variantCount": 3,
       "effectClass": "Card_5000015",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 5000013,
@@ -9692,11 +8760,7 @@
       "variantCount": 3,
       "effectClass": "Card_8000003",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 8000002,
@@ -9716,11 +8780,7 @@
       "variantCount": 3,
       "effectClass": "Card_8000002",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 8000001,
@@ -9740,11 +8800,7 @@
       "variantCount": 3,
       "effectClass": "Card_8000001",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 8000004,
@@ -9764,11 +8820,7 @@
       "variantCount": 3,
       "effectClass": "Card_8000004",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 8000006,
@@ -9788,11 +8840,7 @@
       "variantCount": 3,
       "effectClass": "Card_8000006",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 8000005,
@@ -9812,11 +8860,7 @@
       "variantCount": 3,
       "effectClass": "Card_8000005",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 8000007,
@@ -9836,11 +8880,7 @@
       "variantCount": 3,
       "effectClass": "Card_8000007",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 8000009,
@@ -9860,11 +8900,7 @@
       "variantCount": 3,
       "effectClass": "Card_8000009",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 8000008,
@@ -9884,11 +8920,7 @@
       "variantCount": 3,
       "effectClass": "Card_8000008",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 8000010,
@@ -9908,11 +8940,7 @@
       "variantCount": 3,
       "effectClass": "Card_8000010",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 8000016,
@@ -9932,11 +8960,7 @@
       "variantCount": 3,
       "effectClass": "Card_8000016",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 8000011,
@@ -9956,11 +8980,7 @@
       "variantCount": 3,
       "effectClass": "Card_8000011",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 8000012,
@@ -9980,11 +9000,7 @@
       "variantCount": 3,
       "effectClass": "Card_8000012",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 8000013,
@@ -10004,11 +9020,7 @@
       "variantCount": 3,
       "effectClass": "Card_8000013",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 8000014,
@@ -10028,11 +9040,7 @@
       "variantCount": 3,
       "effectClass": "Card_8000014",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 32,
@@ -10051,11 +9059,7 @@
       "variantCount": 3,
       "effectClass": "Card_32",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 214,
@@ -10074,11 +9078,7 @@
       "variantCount": 3,
       "effectClass": "Card_214",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 216,
@@ -10116,11 +9116,7 @@
       "variantCount": 3,
       "effectClass": "Card_215",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 217,
@@ -10158,11 +9154,7 @@
       "variantCount": 3,
       "effectClass": "Card_20",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 17,
@@ -10181,11 +9173,7 @@
       "variantCount": 3,
       "effectClass": "Card_17",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 81,
@@ -10204,11 +9192,7 @@
       "variantCount": 3,
       "effectClass": "Card_81",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 82,
@@ -10227,11 +9211,7 @@
       "variantCount": 3,
       "effectClass": "Card_82",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10,
@@ -10250,11 +9230,7 @@
       "variantCount": 3,
       "effectClass": "Card_10",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 11,
@@ -10292,11 +9268,7 @@
       "variantCount": 3,
       "effectClass": "Card_213",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 219,
@@ -10315,11 +9287,7 @@
       "variantCount": 3,
       "effectClass": "Card_219",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 221,
@@ -10338,11 +9306,7 @@
       "variantCount": 3,
       "effectClass": "Card_221",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 222,
@@ -10361,11 +9325,7 @@
       "variantCount": 3,
       "effectClass": "Card_222",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 220,
@@ -10384,11 +9344,7 @@
       "variantCount": 3,
       "effectClass": "Card_220",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 35,
@@ -10447,11 +9403,7 @@
       "variantCount": 3,
       "effectClass": "Card_37",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 33,
@@ -10513,11 +9465,7 @@
       "variantCount": 3,
       "effectClass": "Card_8",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 9,
@@ -10536,11 +9484,7 @@
       "variantCount": 3,
       "effectClass": "Card_9",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 381,
@@ -10559,11 +9503,7 @@
       "variantCount": 3,
       "effectClass": "Card_381",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 382,
@@ -10582,11 +9522,7 @@
       "variantCount": 3,
       "effectClass": "Card_382",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 383,
@@ -10605,11 +9541,7 @@
       "variantCount": 3,
       "effectClass": "Card_383",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 331,
@@ -10666,11 +9598,7 @@
       "variantCount": 3,
       "effectClass": "Card_15",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 16,
@@ -10689,11 +9617,7 @@
       "variantCount": 3,
       "effectClass": "Card_16",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 19,
@@ -10712,11 +9636,7 @@
       "variantCount": 5,
       "effectClass": "Card_19",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1,
@@ -10755,11 +9675,7 @@
       "variantCount": 3,
       "effectClass": "Card_38",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 18,
@@ -10778,11 +9694,7 @@
       "variantCount": 3,
       "effectClass": "Card_18",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 21,
@@ -10801,11 +9713,7 @@
       "variantCount": 3,
       "effectClass": "Card_21",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 259,
@@ -10844,11 +9752,7 @@
       "variantCount": 3,
       "effectClass": "Card_218",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 12,
@@ -10867,11 +9771,7 @@
       "variantCount": 3,
       "effectClass": "Card_12",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 70,
@@ -10932,11 +9832,7 @@
       "variantCount": 3,
       "effectClass": "Card_23",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 371,
@@ -10955,11 +9851,7 @@
       "variantCount": 3,
       "effectClass": "Card_371",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 258,
@@ -11005,11 +9897,7 @@
       "variantCount": 3,
       "effectClass": "Card_13",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 374,
@@ -11109,11 +9997,7 @@
       "variantCount": 3,
       "effectClass": "Card_377",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 375,
@@ -11206,11 +10090,7 @@
       "variantCount": 3,
       "effectClass": "Card_45",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 28,
@@ -11229,11 +10109,7 @@
       "variantCount": 3,
       "effectClass": "Card_28",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 5,
@@ -11252,11 +10128,7 @@
       "variantCount": 3,
       "effectClass": "Card_5",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 29,
@@ -11275,11 +10147,7 @@
       "variantCount": 3,
       "effectClass": "Card_29",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 3,
@@ -11298,11 +10166,7 @@
       "variantCount": 3,
       "effectClass": "Card_3",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 2,
@@ -11321,11 +10185,7 @@
       "variantCount": 3,
       "effectClass": "Card_2",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 6,
@@ -11344,11 +10204,7 @@
       "variantCount": 3,
       "effectClass": "Card_6",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7,
@@ -11367,11 +10223,7 @@
       "variantCount": 3,
       "effectClass": "Card_7",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 73,
@@ -11390,11 +10242,7 @@
       "variantCount": 3,
       "effectClass": "Card_73",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 74,
@@ -11413,11 +10261,7 @@
       "variantCount": 3,
       "effectClass": "Card_74",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 75,
@@ -11436,11 +10280,7 @@
       "variantCount": 3,
       "effectClass": "Card_75",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000107,
@@ -11476,11 +10316,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000100",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000215,
@@ -11498,11 +10334,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000215",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000108,
@@ -11520,11 +10352,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000108",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000101,
@@ -11542,11 +10370,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000101",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000112,
@@ -11564,11 +10388,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000112",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000102,
@@ -11586,11 +10406,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000102",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000109,
@@ -11608,11 +10424,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000109",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000103,
@@ -11648,11 +10460,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000110",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000113,
@@ -11670,11 +10478,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000113",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000104,
@@ -11692,11 +10496,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000104",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000114,
@@ -11714,11 +10514,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000114",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000106,
@@ -11736,11 +10532,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000106",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000105,
@@ -11869,11 +10661,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000208",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000200,
@@ -11891,11 +10679,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000200",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000201,
@@ -11931,11 +10715,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000209",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000202,
@@ -11953,11 +10733,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000202",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000216,
@@ -11993,11 +10769,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000203",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000212,
@@ -12015,11 +10787,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000212",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000205,
@@ -12055,11 +10823,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000207",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000204,
@@ -12077,11 +10841,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000204",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000210,
@@ -12099,11 +10859,7 @@
       "variantCount": 3,
       "effectClass": "Card_99000210",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 99000206,
@@ -12306,11 +11062,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000060",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000057,
@@ -12330,11 +11082,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000057",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000067,
@@ -12374,11 +11122,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000064",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000062,
@@ -12821,11 +11565,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000069",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000071,
@@ -12845,11 +11585,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000071",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000068,
@@ -12869,11 +11605,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000068",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000072,
@@ -12893,11 +11625,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000072",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000070,
@@ -12917,11 +11645,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000070",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000049,
@@ -13029,11 +11753,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000064",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000055,
@@ -13289,11 +12009,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000048",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000062,
@@ -13313,11 +12029,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000062",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000049,
@@ -13565,11 +12277,7 @@
       "variantCount": 3,
       "effectClass": "Card_337",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 336,
@@ -13645,11 +12353,7 @@
       "variantCount": 3,
       "effectClass": "Card_339",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 51,
@@ -13689,11 +12393,7 @@
       "variantCount": 3,
       "effectClass": "Card_52",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 54,
@@ -13741,11 +12441,7 @@
       "variantCount": 3,
       "effectClass": "Card_53",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 56,
@@ -13765,11 +12461,7 @@
       "variantCount": 3,
       "effectClass": "Card_56",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 55,
@@ -13789,11 +12481,7 @@
       "variantCount": 3,
       "effectClass": "Card_55",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 57,
@@ -13813,11 +12501,7 @@
       "variantCount": 3,
       "effectClass": "Card_57",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 58,
@@ -13949,11 +12633,7 @@
       "variantCount": 3,
       "effectClass": "Card_50",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 133,
@@ -14133,11 +12813,7 @@
       "variantCount": 3,
       "effectClass": "Card_275",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 319,
@@ -14157,11 +12833,7 @@
       "variantCount": 3,
       "effectClass": "Card_319",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 308,
@@ -14181,11 +12853,7 @@
       "variantCount": 3,
       "effectClass": "Card_308",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 310,
@@ -14393,11 +13061,7 @@
       "variantCount": 5,
       "effectClass": "Card_10000089",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000074,
@@ -15251,11 +13915,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000099",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000097,
@@ -15277,11 +13937,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000097",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000090,
@@ -15303,11 +13959,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000090",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000092,
@@ -15329,11 +13981,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000092",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000091,
@@ -15381,11 +14029,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000093",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000096,
@@ -15407,11 +14051,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000096",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000094,
@@ -15433,11 +14073,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000094",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000095,
@@ -15459,11 +14095,7 @@
       "variantCount": 3,
       "effectClass": "Card_10000095",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 10000102,
@@ -15919,11 +14551,7 @@
       "variantCount": 3,
       "effectClass": "Card_415",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 416,
@@ -15940,8 +14568,8 @@
       "realmLabel": "元婴",
       "variantCount": 3,
       "effectClass": "Card_416",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 441,
@@ -15958,8 +14586,8 @@
       "realmLabel": "元婴",
       "variantCount": 3,
       "effectClass": "Card_441",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 405,
@@ -15976,8 +14604,8 @@
       "realmLabel": "元婴",
       "variantCount": 3,
       "effectClass": "Card_405",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 429,
@@ -16013,11 +14641,7 @@
       "variantCount": 3,
       "effectClass": "Card_403",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 413,
@@ -16052,8 +14676,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_400",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 407,
@@ -16106,8 +14730,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_455",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 417,
@@ -16142,8 +14766,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_419",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 401,
@@ -16161,11 +14785,7 @@
       "variantCount": 3,
       "effectClass": "Card_401",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 311,
@@ -16182,8 +14802,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_311",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 422,
@@ -16877,8 +15497,8 @@
       "realmLabel": "元婴",
       "variantCount": 3,
       "effectClass": "Card_94",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 95,
@@ -17012,8 +15632,8 @@
       "realmLabel": "炼气",
       "variantCount": 3,
       "effectClass": "Card_100",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 98,
@@ -17066,8 +15686,8 @@
       "realmLabel": "筑基",
       "variantCount": 3,
       "effectClass": "Card_103",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 102,
@@ -17084,8 +15704,8 @@
       "realmLabel": "筑基",
       "variantCount": 3,
       "effectClass": "Card_102",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 101,
@@ -17508,11 +16128,7 @@
       "variantCount": 3,
       "effectClass": "Card_388",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 391,
@@ -17855,11 +16471,7 @@
       "variantCount": 3,
       "effectClass": "Card_392",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 124,
@@ -18659,11 +17271,7 @@
       "variantCount": 5,
       "effectClass": "Card_4000072",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000074,
@@ -19371,11 +17979,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000090",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000091,
@@ -19397,11 +18001,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000091",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000092,
@@ -19423,11 +18023,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000092",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000093,
@@ -19449,11 +18045,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000093",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000095,
@@ -19475,11 +18067,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000095",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000097,
@@ -19501,11 +18089,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000097",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000094,
@@ -19527,11 +18111,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000094",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000096,
@@ -19553,11 +18133,7 @@
       "variantCount": 3,
       "effectClass": "Card_4000096",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 4000102,
@@ -20053,11 +18629,7 @@
       "variantCount": 3,
       "effectClass": "Card_132",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 198,
@@ -21323,11 +19895,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000104",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000107,
@@ -21376,11 +19944,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000094",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000095,
@@ -21402,11 +19966,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000095",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000096,
@@ -21428,11 +19988,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000096",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000101,
@@ -21480,11 +20036,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000098",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000099,
@@ -21506,11 +20058,7 @@
       "variantCount": 3,
       "effectClass": "Card_7000099",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 7000097,
@@ -21977,11 +20525,7 @@
       "variantCount": 3,
       "effectClass": "Card_263",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 323,
@@ -22077,11 +20621,7 @@
       "variantCount": 3,
       "effectClass": "Card_312",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 293,
@@ -22089,7 +20629,7 @@
       "type": "normal",
       "simulationScope": "battle",
       "hidden": true,
-      "obsolete": false,
+      "obsolete": true,
       "sect": "YunLingJianZong",
       "sectLabel": "云灵剑宗",
       "seasonMechanics": [],
@@ -22100,8 +20640,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_293",
-      "registered": true,
-      "registrationStatus": "verified",
+      "registered": false,
+      "registrationStatus": "missing",
       "verificationEvidence": {
         "kind": "synthetic-original-oracle",
         "legality": "client-executable",
@@ -22157,11 +20697,7 @@
       "variantCount": 3,
       "effectClass": "Card_264",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 288,
@@ -22453,11 +20989,7 @@
       "variantCount": 5,
       "effectClass": "Card_1000067",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000077,
@@ -23171,11 +21703,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000096",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000088,
@@ -23197,11 +21725,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000088",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000089,
@@ -23223,11 +21747,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000089",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000090,
@@ -23249,11 +21769,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000090",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000091,
@@ -23301,11 +21817,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000095",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000092,
@@ -23327,11 +21839,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000092",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000094,
@@ -23353,11 +21861,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000094",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000098,
@@ -23379,11 +21883,7 @@
       "variantCount": 3,
       "effectClass": "Card_1000098",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 1000101,
@@ -24546,8 +23046,8 @@
       "realmLabel": "炼气",
       "variantCount": 3,
       "effectClass": "Card_431",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 430,
@@ -24564,8 +23064,8 @@
       "realmLabel": "炼气",
       "variantCount": 3,
       "effectClass": "Card_430",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 433,
@@ -24582,8 +23082,8 @@
       "realmLabel": "炼气",
       "variantCount": 3,
       "effectClass": "Card_433",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 71,
@@ -24730,8 +23230,8 @@
       "realmLabel": "炼气",
       "variantCount": 3,
       "effectClass": null,
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 148,
@@ -24985,8 +23485,8 @@
       "realmLabel": "炼气",
       "variantCount": 3,
       "effectClass": "Card_435",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 155,
@@ -25040,8 +23540,8 @@
       "realmLabel": "炼气",
       "variantCount": 3,
       "effectClass": "Card_434",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 78,
@@ -25322,8 +23822,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_402",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 30,
@@ -25411,8 +23911,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_448",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 436,
@@ -25429,8 +23929,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_436",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 437,
@@ -25447,8 +23947,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_437",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 425,
@@ -25466,11 +23966,7 @@
       "variantCount": 3,
       "effectClass": "Card_425",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 426,
@@ -25488,11 +23984,7 @@
       "variantCount": 3,
       "effectClass": "Card_426",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 440,
@@ -25509,8 +24001,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_440",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 439,
@@ -25527,8 +24019,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_439",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 418,
@@ -25563,8 +24055,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_438",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 424,
@@ -25582,11 +24074,7 @@
       "variantCount": 3,
       "effectClass": "Card_424",
       "registered": true,
-      "registrationStatus": "verified",
-      "verificationEvidence": {
-        "kind": "original-replay",
-        "legality": "server-recorded"
-      }
+      "registrationStatus": "verified"
     },
     {
       "baseId": 44,
@@ -25946,8 +24434,8 @@
       "realmLabel": "化神",
       "variantCount": 3,
       "effectClass": "Card_456",
-      "registered": false,
-      "registrationStatus": "missing"
+      "registered": true,
+      "registrationStatus": "verified"
     },
     {
       "baseId": 69,

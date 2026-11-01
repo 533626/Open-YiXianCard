@@ -6,7 +6,7 @@ const NEGATIVE_STATUS_DECISION_TAG: u32 = 0x6e65_6773;
 const PERCENT_ROLL_DECISION_TAG: u32 = 0x7065_7263;
 const RANDOM_RANGE_DECISION_TAG: u32 = 0x7261_6e67;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "kebab-case")]
 pub enum ReplayDecisionKind {
     NegativeStatus,
@@ -24,7 +24,7 @@ impl ReplayDecisionKind {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "kebab-case")]
 pub enum ReplayDecisionProvider {
     ReplayTape,
@@ -36,14 +36,14 @@ pub enum ReplayDecisionProvider {
     Robust,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ReplayDecisionIntegerRange {
     pub min_inclusive: i64,
     pub max_inclusive: i64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, schemars::JsonSchema)]
 #[serde(untagged)]
 pub enum ReplayDecisionDomain {
     Discrete {
@@ -56,7 +56,7 @@ pub enum ReplayDecisionDomain {
     },
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ReplayDecisionEvent {
     pub provider: ReplayDecisionProvider,
@@ -101,7 +101,23 @@ pub(super) enum PercentRollDecisionResolution {
     Missing,
 }
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
+    // Event domains can allocate per decision. When the caller discards those
+    // events, retain only the distinct seeds needed by seedAggregate metadata.
+    fn note_uncaptured_synthetic_seed(
+        &mut self,
+        provider: ReplayDecisionProvider,
+        seed: Option<u32>,
+    ) {
+        if !self.capture_decision_events && provider == ReplayDecisionProvider::SeededSynthetic {
+            if let Some(seed) = seed {
+                if !self.uncaptured_synthetic_seeds.contains(&seed) {
+                    self.uncaptured_synthetic_seeds.push(seed);
+                }
+            }
+        }
+    }
+
     pub(super) fn begin_card_execution(
         &mut self,
         side: PlayerSide,
@@ -198,21 +214,24 @@ impl ReplayState {
             }
         };
 
-        self.decision_events.push(ReplayDecisionEvent {
-            provider,
-            seed,
-            side,
-            actor_turn: self.actor_turn,
-            card_id,
-            decision_kind: ReplayDecisionKind::NegativeStatus,
-            card_execution_occurrence,
-            decision_occurrence,
-            ordinal,
-            domain: ReplayDecisionDomain::Discrete {
-                legal_options: legal_options.to_vec(),
-            },
-            selected_option,
-        });
+        self.note_uncaptured_synthetic_seed(provider, seed);
+        if self.capture_decision_events {
+            self.decision_events.push(ReplayDecisionEvent {
+                provider,
+                seed,
+                side,
+                actor_turn: self.actor_turn,
+                card_id,
+                decision_kind: ReplayDecisionKind::NegativeStatus,
+                card_execution_occurrence,
+                decision_occurrence,
+                ordinal,
+                domain: ReplayDecisionDomain::Discrete {
+                    legal_options: legal_options.to_vec(),
+                },
+                selected_option,
+            });
+        }
         if let Some(selected) = selected_option.filter(|value| !is_negative_status_id(*value)) {
             if self.evaluation_error.is_none() {
                 self.evaluation_error = Some(BattleError::InvalidDecision {
@@ -259,7 +278,11 @@ impl ReplayState {
         let (provider, seed, selected_option) = if synthetic_seed.is_some() && used_hexagram {
             (ReplayDecisionProvider::Hexagram, None, Some(max))
         } else if synthetic_seed.is_some() && self.robust_decisions {
-            (ReplayDecisionProvider::Robust, None, Some(min + (max - min) / 2))
+            (
+                ReplayDecisionProvider::Robust,
+                None,
+                Some(min + (max - min) / 2),
+            )
         } else if let Some(seed) = synthetic_seed {
             let index = seeded_decision_choice_index(
                 seed,
@@ -290,7 +313,11 @@ impl ReplayState {
                 if used_hexagram {
                     (ReplayDecisionProvider::Hexagram, None, Some(max))
                 } else if self.robust_decisions {
-                    (ReplayDecisionProvider::Robust, None, Some(min + (max - min) / 2))
+                    (
+                        ReplayDecisionProvider::Robust,
+                        None,
+                        Some(min + (max - min) / 2),
+                    )
                 } else {
                     let index = seeded_decision_choice_index(
                         seed,
@@ -331,24 +358,27 @@ impl ReplayState {
                 return RandomRangeDecisionResolution::Missing;
             }
         };
-        self.decision_events.push(ReplayDecisionEvent {
-            provider,
-            seed,
-            side,
-            actor_turn: self.actor_turn,
-            card_id: execution.card_id,
-            decision_kind: ReplayDecisionKind::RandomRange,
-            card_execution_occurrence: execution.occurrence,
-            decision_occurrence,
-            ordinal,
-            domain: ReplayDecisionDomain::IntegerRange {
-                legal_range: ReplayDecisionIntegerRange {
-                    min_inclusive: min,
-                    max_inclusive: max,
+        self.note_uncaptured_synthetic_seed(provider, seed);
+        if self.capture_decision_events {
+            self.decision_events.push(ReplayDecisionEvent {
+                provider,
+                seed,
+                side,
+                actor_turn: self.actor_turn,
+                card_id: execution.card_id,
+                decision_kind: ReplayDecisionKind::RandomRange,
+                card_execution_occurrence: execution.occurrence,
+                decision_occurrence,
+                ordinal,
+                domain: ReplayDecisionDomain::IntegerRange {
+                    legal_range: ReplayDecisionIntegerRange {
+                        min_inclusive: min,
+                        max_inclusive: max,
+                    },
                 },
-            },
-            selected_option,
-        });
+                selected_option,
+            });
+        }
         selected_option.map_or(
             RandomRangeDecisionResolution::Missing,
             RandomRangeDecisionResolution::Selected,
@@ -408,10 +438,14 @@ impl ReplayState {
                 Some(self.decision_tape.remove(0))
             };
             match replay_value {
-                Some(value @ 0..=99) => Some((ReplayDecisionProvider::ReplayTape, None, value)),
-                Some(value) if value >= 100 => {
-                    self.missing_decision("percent roll replay out of range");
-                    return PercentRollDecisionResolution::Missing;
+                // BattleCharacter.GetNextRandomValue -> GetNextParam
+                // （BattleCharacter.cs:9592-9610）：百分骰与战斗参数读同一
+                // battleParamsQueue，原版不做 0-99 上限检查，读到什么比什么。
+                // 实测 hf-34040000 pa_f9cb62aa turn16 后招判定
+                // 读到 3000010（< 1 不成立）——调用方阈值比较，不在此设门。
+                // 与 resolve_random_range_decision 的回放分支同口径（>= 0 即收）。
+                Some(value) if value >= 0 => {
+                    Some((ReplayDecisionProvider::ReplayTape, None, value))
                 }
                 Some(_) | None if self.synthetic_decision_fallback_seed.is_some() => {
                     if used_hexagram {
@@ -462,24 +496,27 @@ impl ReplayState {
         let Some((provider, seed, selected_option)) = resolved else {
             return PercentRollDecisionResolution::Missing;
         };
-        self.decision_events.push(ReplayDecisionEvent {
-            provider,
-            seed,
-            side,
-            actor_turn: self.actor_turn,
-            card_id: execution.card_id,
-            decision_kind: ReplayDecisionKind::PercentRoll,
-            card_execution_occurrence: execution.occurrence,
-            decision_occurrence,
-            ordinal,
-            domain: ReplayDecisionDomain::IntegerRange {
-                legal_range: ReplayDecisionIntegerRange {
-                    min_inclusive: 0,
-                    max_inclusive: 99,
+        self.note_uncaptured_synthetic_seed(provider, seed);
+        if self.capture_decision_events {
+            self.decision_events.push(ReplayDecisionEvent {
+                provider,
+                seed,
+                side,
+                actor_turn: self.actor_turn,
+                card_id: execution.card_id,
+                decision_kind: ReplayDecisionKind::PercentRoll,
+                card_execution_occurrence: execution.occurrence,
+                decision_occurrence,
+                ordinal,
+                domain: ReplayDecisionDomain::IntegerRange {
+                    legal_range: ReplayDecisionIntegerRange {
+                        min_inclusive: 0,
+                        max_inclusive: 99,
+                    },
                 },
-            },
-            selected_option: Some(selected_option),
-        });
+                selected_option: Some(selected_option),
+            });
+        }
         PercentRollDecisionResolution::Selected(selected_option)
     }
 }
@@ -535,4 +572,71 @@ fn mix_seeded_decision(input: u32) -> u32 {
     value = (value ^ (value >> 16)).wrapping_mul(0x7feb_352d);
     value = (value ^ (value >> 15)).wrapping_mul(0x846c_a68b);
     value ^ (value >> 16)
+}
+
+#[cfg(test)]
+mod capture_tests {
+    use super::*;
+    use crate::fixture::{BattleFixtureView, FixtureSource};
+    use crate::replay::ReplayObservationMode;
+
+    #[test]
+    fn uncaptured_typed_domains_preserve_choices_occurrences_and_both_seeds() {
+        let mut fixture = crate::engine_contract_fixture().unwrap();
+        for player in [&mut fixture.players.p1, &mut fixture.players.p2] {
+            player.cards = vec![crate::replay::support::basic_attack_card(); 8];
+            player.talents.clear();
+            player.fate_strategies.clear();
+        }
+        fixture.decision_tape.clear();
+        fixture.random_fallback_tape.clear();
+        fixture.source = Some(FixtureSource {
+            synthetic_decision_seed: Some(17),
+            synthetic_decision_sides: vec![PlayerSide::P1],
+            synthetic_decision_fallback_seed: Some(31),
+            ..Default::default()
+        });
+        let run = |capture| {
+            let mut view = BattleFixtureView::new(&fixture);
+            view.capture_decision_events = capture;
+            let mut state = ReplayState::<true>::from_fixture_view_with_mode(
+                &view,
+                true,
+                ReplayObservationMode::None,
+            )
+            .unwrap();
+            let mut selected = Vec::new();
+            for side in [PlayerSide::P1, PlayerSide::P2] {
+                let previous = state.begin_card_execution(side, 193);
+                selected.push(
+                    state
+                        .resolve_negative_status_decision(side, 193, 0, &[100, 101, 102])
+                        .unwrap(),
+                );
+                match state.resolve_percent_roll_decision(side, false, false) {
+                    PercentRollDecisionResolution::Selected(value) => selected.push(value),
+                    _ => panic!("scoped percent choice missing"),
+                }
+                match state.resolve_random_range_decision(side, 1, 4, false, None) {
+                    RandomRangeDecisionResolution::Selected(value) => selected.push(value),
+                    _ => panic!("scoped integer choice missing"),
+                }
+                state.finish_card_execution(previous);
+            }
+            (selected, state)
+        };
+        let (captured, old) = run(true);
+        let (uncaptured, new) = run(false);
+        assert_eq!(captured, uncaptured);
+        assert_eq!(old.decision_occurrence, new.decision_occurrence);
+        assert_eq!(old.card_execution_occurrence, new.card_execution_occurrence);
+        assert_eq!(old.decision_events.len(), 6);
+        assert_eq!(
+            old.decision_events[0].legal_options(),
+            Some([100, 101, 102].as_slice())
+        );
+        assert!(new.decision_events.is_empty());
+        assert_eq!(new.uncaptured_synthetic_seeds, vec![17, 31]);
+        assert!(old.uncaptured_synthetic_seeds.is_empty());
+    }
 }

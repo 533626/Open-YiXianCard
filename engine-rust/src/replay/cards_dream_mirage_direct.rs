@@ -1,8 +1,9 @@
+use super::flow_card_effect::{param0, param1, param2};
 use super::support::{div_ceil, opponent_side, other_param};
 use super::{Element, ReplayState};
 use crate::model::{CardDefinition, PlayerSide};
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn apply_dream_mirage_direct_card_effect(
         &mut self,
         actor_side: PlayerSide,
@@ -21,9 +22,9 @@ impl ReplayState {
                 let anima = self.actor(actor_side).core.anima.max(0);
                 let hexagram = self.actor(actor_side).astrology.hexagram.max(0);
                 let max_hp_loss = target_missing_hp
-                    + other_param(card, 0).max(0)
-                    + anima * other_param(card, 1).max(0)
-                    + hexagram * other_param(card, 2).max(0);
+                    + param0(card)
+                    + anima * param1(card)
+                    + hexagram * param2(card);
                 self.reduce_anima_unchecked(actor_side, anima);
                 // Card_265.cs:83-88 uses ModifyBuffValue, not SetBuffValue.
                 self.modify_hexagram(actor_side, -hexagram);
@@ -43,14 +44,12 @@ impl ReplayState {
                 self.reduce_all_actor_negative_statuses(target_side, i64::MAX);
                 self.add_actor_negative_status(target_side, 105, debuff_count);
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
-                self.actor_mut(actor_side).turn.ignore_defense_attacks +=
-                    other_param(card, 0).max(0);
                 Some(attacked)
             }
             298 => {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
                 let recovery_before = self.actor(actor_side).status.recovery;
-                self.actor_mut(actor_side).status.recovery += other_param(card, 0).max(0);
+                self.actor_mut(actor_side).status.recovery += param0(card);
                 self.record_counter_transition(
                     actor_side,
                     "状态",
@@ -59,8 +58,7 @@ impl ReplayState {
                     recovery_before,
                     self.actor(actor_side).status.recovery,
                 );
-                let hp_gain =
-                    other_param(card, 1).max(0) + self.actor(actor_side).status.recovery.max(0);
+                let hp_gain = param1(card) + self.actor(actor_side).status.recovery.max(0);
                 self.modify_actor_max_hp(actor_side, hp_gain);
                 if self.check_rear_move(actor_side, was_used_before_effect) {
                     self.modify_actor_hp(actor_side, hp_gain, false, false);
@@ -83,7 +81,7 @@ impl ReplayState {
                 self.apply_configured_anima(actor_side, card);
                 let current_anima = self.actor(actor_side).core.anima.max(0);
                 let current_hexagram = self.actor(actor_side).astrology.hexagram.max(0);
-                let gain = (current_anima + current_hexagram) * other_param(card, 0).max(0);
+                let gain = (current_anima + current_hexagram) * param0(card);
                 self.gain_defense(actor_side, gain);
                 self.modify_actor_hp(actor_side, gain, false, false);
 
@@ -100,10 +98,10 @@ impl ReplayState {
                 Some(false)
             }
             343 => {
-                self.add_actor_negative_status(target_side, 105, other_param(card, 0).max(0));
-                self.modify_next_attack_shatter_defense(actor_side, other_param(card, 1).max(0));
+                self.add_actor_negative_status(target_side, 105, param0(card));
+                self.modify_next_attack_shatter_defense(actor_side, param1(card));
                 if !was_used_before_effect {
-                    self.add_actor_negative_status(target_side, 104, other_param(card, 2).max(0));
+                    self.add_actor_negative_status(target_side, 104, param2(card));
                 }
                 Some(false)
             }
@@ -128,9 +126,8 @@ impl ReplayState {
             }
             1_000_073 => {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
-                let drain =
-                    self.actor(actor_side).sword.frenzy_sword.max(0) * other_param(card, 1).max(0);
-                self.modify_actor_max_hp(actor_side, other_param(card, 0).max(0));
+                let drain = self.actor(actor_side).sword.frenzy_sword.max(0) * param1(card);
+                self.modify_actor_max_hp(actor_side, param0(card));
                 if drain > 0 {
                     self.modify_actor_hp(target_side, -drain, false, false);
                     self.modify_actor_hp(actor_side, drain, false, false);

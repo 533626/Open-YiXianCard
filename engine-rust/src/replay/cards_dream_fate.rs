@@ -1,10 +1,11 @@
+use super::flow_card_effect::{param0, param1};
 use super::support::{
     is_spirit_sword_for_actor, is_sword_formation_card, opponent_side, other_param,
 };
 use super::{DrawnCard, Element, ReplayState};
 use crate::model::{CardDefinition, PlayerSide};
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn apply_dream_fate_card_effect(
         &mut self,
         actor_side: PlayerSide,
@@ -28,42 +29,36 @@ impl ReplayState {
                     self.negative_status_stack_count(target_side) > 0,
                 );
                 if self.check_rear_move(actor_side, was_used_before_effect) {
-                    self.add_actor_negative_status(target_side, 100, other_param(card, 0).max(0));
+                    self.add_actor_negative_status(target_side, 100, param0(card));
                 }
                 Some(attacked)
             }
             58 => {
                 self.apply_configured_anima(actor_side, card);
-                let sharpness =
-                    self.actor(actor_side).core.anima.max(0) * other_param(card, 0).max(0);
+                let sharpness = self.actor(actor_side).core.anima.max(0) * param0(card);
                 self.gain_sharpness(actor_side, sharpness);
                 Some(false)
             }
             333 => {
                 self.apply_configured_defense(actor_side, card);
-                self.gain_guard(actor_side, other_param(card, 0).max(0));
+                self.gain_guard(actor_side, param0(card));
                 if card.id == 10_333 && !was_used_before_effect {
                     self.gain_guard(actor_side, 1);
                 }
                 Some(false)
             }
             338 => {
-                self.gain_agility(actor_side, other_param(card, 0).max(0));
-                self.actor_mut(actor_side).fate.instant_shadow_strike +=
-                    other_param(card, 1).max(0);
+                self.gain_agility(actor_side, param0(card));
+                self.actor_mut(actor_side).fate.instant_shadow_strike += param1(card);
                 Some(false)
             }
             342 => {
                 self.apply_configured_anima(actor_side, card);
                 let statuses = self.negative_status_types_present(actor_side);
                 for status in statuses {
-                    self.remove_actor_negative_status(
-                        actor_side,
-                        status,
-                        other_param(card, 0).max(0),
-                    );
+                    self.remove_actor_negative_status(actor_side, status, param0(card));
                 }
-                self.actor_mut(actor_side).fate.exorcism += other_param(card, 1).max(0);
+                self.actor_mut(actor_side).fate.exorcism += param1(card);
                 Some(false)
             }
             379 => {
@@ -71,13 +66,13 @@ impl ReplayState {
                 if self.actor(target_side).core.hp <= other_param(card, 1) {
                     self.actor_mut(target_side).core.hp = -100;
                 } else {
-                    self.apply_damage(actor_side, other_param(card, 0).max(0), false, false, false);
+                    self.apply_damage(actor_side, param0(card), false, false, false);
                 }
                 Some(false)
             }
             4_000_080 => {
                 let hexagram = self.actor(actor_side).astrology.hexagram.max(0);
-                let hp_loss = other_param(card, 0).max(0) + hexagram * other_param(card, 1).max(0);
+                let hp_loss = param0(card) + hexagram * param1(card);
                 // Card_4000080.cs:82-85 uses ModifyBuffValue, so losing all
                 // current Hexagram must still update the loss ledger and run
                 // 梦御雷's refund hook.
@@ -102,7 +97,7 @@ impl ReplayState {
             10_000_075 => {
                 self.apply_configured_physique(actor_side, card);
                 let defense = if card.id >= 10_030_075 {
-                    self.actor(actor_side).core.max_hp.max(0) * other_param(card, 0).max(0) / 100
+                    self.actor(actor_side).core.max_hp.max(0) * param0(card) / 100
                 } else {
                     card.defense.unwrap_or(0).max(0)
                 };

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "steamBuild": "25796222",
+  "steamBuild": "26315169",
   "strategies": [
     {
       "id": 1001,
@@ -56,6 +56,26 @@
       "sources": [
         "XianMoStrategyConfig.isBattleEffect",
         "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 1009,
+      "sources": [
+        "BattleExecuter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 1010,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 2011,
+      "sources": [
+        "BattleExecuter.cs"
       ]
     },
     {
@@ -165,6 +185,13 @@
       "sources": [
         "BattleExecuter.cs",
         "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
+      "id": 5011,
+      "sources": [
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
       ]
     },
     {
@@ -350,8 +377,8 @@
     {
       "id": 7057,
       "sources": [
-        "CardActionBase.cs",
-        "XianMoStrategyConfig.isBattleEffect"
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
       ]
     },
     {
@@ -798,6 +825,13 @@
       ]
     },
     {
+      "id": 7138,
+      "sources": [
+        "BattleCharacter.cs",
+        "XianMoStrategyConfig.isBattleEffect"
+      ]
+    },
+    {
       "id": 11001,
       "sources": [
         "BattleCharacter.cs",
@@ -815,7 +849,8 @@
       "id": 11003,
       "sources": [
         "CardActionBase.cs",
-        "XianMoStrategyConfig.isBattleEffect"
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
       ]
     },
     {
@@ -966,6 +1001,12 @@
       ]
     },
     {
+      "id": 17071,
+      "sources": [
+        "BattleCharacter.cs"
+      ]
+    },
+    {
       "id": 23045,
       "sources": [
         "XianMoStrategyFunctions.cs"
@@ -1018,6 +1059,24 @@
       "sources": [
         "XianMoStrategyConfig.isBattleEffect",
         "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 27021,
+      "sources": [
+        "BattleCharacter.cs"
+      ]
+    },
+    {
+      "id": 27023,
+      "sources": [
+        "BattleCharacter.cs"
+      ]
+    },
+    {
+      "id": 28001,
+      "sources": [
+        "BattleExecuter.cs"
       ]
     }
   ]

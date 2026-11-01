@@ -12,7 +12,6 @@ pub(in crate::replay) enum TurnStartPhase {
     ClearTurnHpGainedLedgers,
     MarkSpiritTurtleFootwork,
     MirageRonghuiTurnStart,
-    RonghuiTurnStart,
     DreamMirageDurationTicks,
     ResetTurnStartFlags,
     BuffDurationTicks,
@@ -21,29 +20,30 @@ pub(in crate::replay) enum TurnStartPhase {
     DefenseDecay,
     TideWaterMomentum,
     InfiniteHexagramPlate,
+    SpiritDrain,
     SecretSwordMindset,
     TurnStartTuneEffects,
     WoodSpiritAllGrowth,
     MysticHeartRecovery,
-    TurnStartHealing,
-    DreamGreatReturnPill,
     TurnStartChanceHooks,
     NextTurnDefense,
-    InternalInjuryTick,
-    PostInjuryFormations,
     SpiritGatheringAnima,
     SpiritGatheringFormation,
+    RonghuiTurnStart,
+    TurnStartHealing,
+    DreamGreatReturnPill,
+    InternalInjuryTick,
+    PostInjuryFormations,
     DreamMirageTurnStartLate,
 }
 
-pub(in crate::replay) const TURN_START_PHASES: [TurnStartPhase; 26] = [
+pub(in crate::replay) const TURN_START_PHASES: [TurnStartPhase; 27] = [
     TurnStartPhase::ResetActionAgain,
     TurnStartPhase::ClearTurnHpGainedLedgers,
     // BattleCharacter.OnTurnStarted marks the opponent's 灵玄迷踪步 before
     // any later turn-start hook can make that opponent lose HP.
     TurnStartPhase::MarkSpiritTurtleFootwork,
     TurnStartPhase::MirageRonghuiTurnStart,
-    TurnStartPhase::RonghuiTurnStart,
     TurnStartPhase::DreamMirageDurationTicks,
     TurnStartPhase::ResetTurnStartFlags,
     TurnStartPhase::BuffDurationTicks,
@@ -51,22 +51,27 @@ pub(in crate::replay) const TURN_START_PHASES: [TurnStartPhase; 26] = [
     TurnStartPhase::VermilionBirdTearGuard,
     TurnStartPhase::DefenseDecay,
     TurnStartPhase::TideWaterMomentum,
-    TurnStartPhase::InfiniteHexagramPlate,
     TurnStartPhase::SecretSwordMindset,
     TurnStartPhase::TurnStartTuneEffects,
     TurnStartPhase::WoodSpiritAllGrowth,
     TurnStartPhase::MysticHeartRecovery,
-    TurnStartPhase::TurnStartHealing,
-    TurnStartPhase::DreamGreatReturnPill,
     TurnStartPhase::TurnStartChanceHooks,
     TurnStartPhase::NextTurnDefense,
-    // OnTurnStarted IL_0d84 precedes the IL_1a4c internal-injury tick.
-    // 静气回血 near the HP cap must occur before that HP loss.
     TurnStartPhase::SpiritGatheringAnima,
     TurnStartPhase::SpiritGatheringFormation,
+    // Card_208 OnTurnStarted IL_0f04 follows defense decay and the two
+    // spirit-gathering hooks (IL_0d84/IL_0e56), preserving new overflow defense.
+    TurnStartPhase::RonghuiTurnStart,
+    TurnStartPhase::TurnStartHealing,
+    TurnStartPhase::DreamGreatReturnPill,
+    // OnTurnStarted IL_1655 follows recovery IL_139a and 梦•大还丹 IL_14f3.
+    TurnStartPhase::InfiniteHexagramPlate,
+    // OnTurnStarted IL_0d84/IL_0e56/IL_0f04/IL_1448 all precede this
+    // internal-injury tick at IL_1a4c.
     TurnStartPhase::InternalInjuryTick,
     TurnStartPhase::PostInjuryFormations,
     TurnStartPhase::DreamMirageTurnStartLate,
+    TurnStartPhase::SpiritDrain,
 ];
 
 /// BattleCharacter.OnTurnEnded turn-end sequence, in current-build source
@@ -109,13 +114,14 @@ pub(in crate::replay) const TURN_END_PHASES: [TurnEndPhase; 19] = [
     TurnEndPhase::HardBranchBamboo,
     TurnEndPhase::SanWeiHuan,
     TurnEndPhase::PoisonImmunity,
-    TurnEndPhase::ResetSpiritTurtleFootwork,
     TurnEndPhase::PendingHexagram,
     TurnEndPhase::ResetHundredBeastSpiritSwordMarker,
     TurnEndPhase::ClearDreamThunderRoundLimit,
     TurnEndPhase::ResetActionAgain,
     TurnEndPhase::StatusDecay,
     TurnEndPhase::FengMoPhysique,
+    // OnTurnEnded:6350-6401 decays negative statuses before clearing 350.
+    TurnEndPhase::ResetSpiritTurtleFootwork,
     TurnEndPhase::LedgerReset,
 ];
 
@@ -131,6 +137,9 @@ pub(in crate::replay) enum CardPlayPhase {
     FinishTransaction,
 }
 
+// 伏魔 5009 不是纯装饰：CardActionBase.cs:1470 块经 IL_3658→IL_3703→IL_37d2
+// 把伏魔格上的筑基及以下非隐藏牌再执行一次（R-855f195a 取证）。再执行并入
+// SpiritFormationEcho 阶段尾部（原版 1470-流程落子晚于灵阵回响），不另增阶段。
 pub(in crate::replay) const CARD_PLAY_PHASES: [CardPlayPhase; 6] = [
     CardPlayPhase::PreflightResolution,
     CardPlayPhase::PrepareTransaction,

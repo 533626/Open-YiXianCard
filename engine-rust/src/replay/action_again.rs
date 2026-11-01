@@ -1,6 +1,7 @@
 use super::support::{
     active_neighbor_card, card_rarity, element_from_card, is_five_element_control,
-    is_sword_formation_card, neighbor_card, normalized_base_id, opponent_side, other_param,
+    is_pu_tong_gong_ji_base_id, is_sword_formation_card, neighbor_card, normalized_base_id,
+    opponent_side, other_param,
 };
 use super::{Element, ReplayState};
 use crate::model::{CardDefinition, PlayerSide};
@@ -16,7 +17,7 @@ enum ActionAgainSource {
     Agility,
 }
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn resolve_card_action_again(
         &self,
         actor_side: PlayerSide,
@@ -85,6 +86,12 @@ impl ReplayState {
             143 => self.check_wu_xing(actor_side, Element::Metal),
             214 => card_rarity(card) == 0 && actor.fate.rear_move_succeeded,
             294 => !actor.astrology.star_slots.contains(&slot),
+            // Card_405：cardConfig.actionAgain = CheckHouZhao || CheckXingWei(gridNumber)（星位或龙马精神）。
+            405 => {
+                actor.fate.rear_move_succeeded
+                    || actor.astrology.star_slots.contains(&slot)
+                    || actor.elements.long_ma_spirit > 0
+            }
             4_000_033 => actor.fate.rear_move_succeeded,
             4_000_038 => actor.astrology.star_slots.contains(&slot),
             4_000_054 => actor.fate.rear_move_succeeded,
@@ -159,7 +166,12 @@ impl ReplayState {
 
         let binding_bypass = self.has_binding_bypass(actor_side)
             || self.dream_mirage_action_again_prevention_bypass(actor_side);
-        if self.actor(actor_side).music.immortal_binding_tune > 0 && !binding_bypass {
+        // BattleExecuter.cs:2096 gates both 215 天音困仙曲 and 561
+        // 本回合无法再次行动 with the same bypass and extra-action removal.
+        if (self.actor(actor_side).music.immortal_binding_tune > 0
+            || self.actor(actor_side).turn.action_again_blocked_turns > 0)
+            && !binding_bypass
+        {
             if self.actor(actor_side).turn.extra_actions > 0 {
                 let amount = self.actor(actor_side).turn.extra_actions;
                 self.modify_extra_actions(actor_side, -amount);
@@ -232,6 +244,14 @@ impl ReplayState {
             self.modify_actor_hp(actor_side, 2, false, false);
         }
         let shadow_owl_rabbit = self.actor(actor_side).chance.ying_xiao_tu.max(0);
+        if self
+            .actor(actor_side)
+            .identity
+            .xian_mo_strategies
+            .contains(&7112)
+        {
+            self.modify_actor_hp(actor_side, 3, false, false);
+        }
         if shadow_owl_rabbit > 0 {
             self.modify_actor_hp(actor_side, -shadow_owl_rabbit, false, false);
         }
@@ -240,7 +260,7 @@ impl ReplayState {
         // KunFu/MengKunXian 阻挡检查（:2050-2068）与再次行动奖励
         // （FateStrategy340 / YingXiaoTu）之后、ShiXianGuTeng 之前结算；
         // 被困缚挡下的再次行动不会触发八门金锁阵。
-        // oracle 锚点：hf-latest-32308000-16f9c778 97000b0bc234817a/round-12
+        // oracle 锚点：hf-latest-32308000-16f9c778 pa_0f778f37
         // （T17 冥月蟾光 身法 10 → 再次行动被荷重前行自缚的困缚挡下：
         // 原版 256 八门层数保持 2、T18 星弈虎 3×4 打在防御 5 上净 7 伤
         // （0+3+4 两段）；引擎先前先结算八门 → 防御 5 被提前打穿、
@@ -266,6 +286,11 @@ impl ReplayState {
         }
 
         self.apply_dream_mirage_successful_action_again_hooks(actor_side);
+        // BattleExecuter IL_3e00, after successful-action rewards; unlike
+        // ZaiCiXingDong, ZaiCiXingDongCiShu is never cleared at turn start.
+        self.actor_mut(actor_side)
+            .turn
+            .successful_action_again_total += 1;
 
         true
     }
@@ -279,7 +304,7 @@ impl ReplayState {
         if card.action_again.unwrap_or(false) || repetition_card_action_again {
             return Some(ActionAgainSource::Card);
         }
-        if normalized_base_id(card) == 0 && self.actor(actor_side).music.xiaoyao_guqin > 0 {
+        if self.card_zero_xiaoyao_guqin_action_again(actor_side, card) {
             return Some(ActionAgainSource::XiaoYaoGuQin);
         }
         if self.actor(actor_side).chance.ying_xiao_tu > 0 {
@@ -300,12 +325,26 @@ impl ReplayState {
         None
     }
 
+    // Card_0.OnExecuted 末尾：cardConfig.actionAgain = HasBuff(XiaoYaoGuQin)。
+    // Card_286 直接调用 Card_0.OnExecuted，隐藏普通攻击同样再次行动；临时执行
+    // （如 Card_99000216 IL_03a8 复制对方普通攻击）随后读同一 cardConfig.actionAgain。
+    pub(super) fn card_zero_xiaoyao_guqin_action_again(
+        &self,
+        actor_side: PlayerSide,
+        card: &CardDefinition,
+    ) -> bool {
+        is_pu_tong_gong_ji_base_id(normalized_base_id(card))
+            && self.actor(actor_side).music.xiaoyao_guqin > 0
+    }
+
     fn agility_action_again_cost(&self, actor_side: PlayerSide) -> i64 {
         if self
             .actor(actor_side)
             .identity
             .fate_strategies
             .contains(&348)
+            // BattleExecuter:2128 仙魔 7065 与 FS348 同样把身法换再动的门槛由 10 降为 9。
+            || self.actor(actor_side).identity.xian_mo_strategies.contains(&7065)
         {
             9
         } else {

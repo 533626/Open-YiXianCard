@@ -3,11 +3,16 @@
 //! This crate is the canonical battle implementation used by native tooling
 //! and the browser through its raw WebAssembly ABI.
 
+pub mod contracts;
 pub mod data;
 pub mod fixture;
-pub mod identity;
 pub(crate) mod id_hash;
+pub mod identity;
 pub mod model;
+pub mod oracle;
+pub mod oracle_trace;
+#[cfg(all(feature = "perf-ceiling", not(target_arch = "wasm32")))]
+pub mod performance;
 pub mod replay;
 pub mod solver;
 #[cfg(target_arch = "wasm32")]
@@ -27,12 +32,12 @@ pub use replay::{
     run_replay_fixture_with_ui_events, trace_replay_fixture_hooks, BattleError,
     ReplayAttackSegment, ReplayDecisionDomain, ReplayDecisionEvent, ReplayDecisionIntegerRange,
     ReplayDecisionKind, ReplayDecisionProvider, ReplayDetailEntry, ReplayDetailedEvent,
-    ReplayDetailedRun, ReplayDetailedSideState, ReplayQueuedCard, ReplayDetailedStep, ReplayEvaluationRun, ReplayEvent, ReplayEventKind,
-    ReplayHookCategory, ReplayHookTrace, ReplayHookTraceChange, ReplayHookTraceStep,
-    ReplayPlayerSnapshot, ReplayPreventionPair, ReplayPreventionState, ReplayRun, ReplaySummary,
-    ReplayTerminationCause, ReplayTurnEndHookPair, ReplayTurnEndHookReceipt,
-    ReplayTurnEndHookSnapshot, ReplayUiCardSlotSnapshot, ReplayUiEvent, ReplayUiPlayerSnapshot,
-    ReplayUiRun,
+    ReplayDetailedRun, ReplayDetailedSideState, ReplayDetailedStep, ReplayEvaluationRun,
+    ReplayEvent, ReplayEventKind, ReplayHookCategory, ReplayHookTrace, ReplayHookTraceChange,
+    ReplayHookTraceStep, ReplayPlayerSnapshot, ReplayPreventionPair, ReplayPreventionState,
+    ReplayQueuedCard, ReplayRun, ReplaySummary, ReplayTerminationCause, ReplayTurnEndHookPair,
+    ReplayTurnEndHookReceipt, ReplayTurnEndHookSnapshot, ReplayUiCardSlotSnapshot, ReplayUiEvent,
+    ReplayUiPlayerSnapshot, ReplayUiRun,
 };
 
 #[derive(Debug, thiserror::Error)]

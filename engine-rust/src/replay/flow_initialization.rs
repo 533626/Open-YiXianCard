@@ -3,7 +3,7 @@ use super::*;
 use crate::fixture::{BattleFixture, FixturePlayer};
 use std::result::Result;
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     /// Test entry point: build the full battle state with observation off.
     #[cfg(test)]
     pub(super) fn from_fixture(fixture: &BattleFixture, strict: bool) -> Result<Self, BattleError> {
@@ -17,17 +17,36 @@ impl ReplayState {
     /// mutations; every other mode keeps the established construction path
     /// (observation starts after the opening, so the opening produces no
     /// events/receipts for them).
+    #[cfg(test)]
     pub(super) fn from_fixture_with_mode(
         fixture: &BattleFixture,
         strict: bool,
         mode: super::ReplayObservationMode,
     ) -> Result<Self, BattleError> {
+        Self::from_fixture_view_with_mode(
+            &crate::fixture::BattleFixtureView::new(fixture),
+            strict,
+            mode,
+        )
+        .map(|state| *state)
+    }
+
+    pub(super) fn from_fixture_view_with_mode(
+        fixture: &crate::fixture::BattleFixtureView<'_>,
+        strict: bool,
+        mode: super::ReplayObservationMode,
+    ) -> Result<Box<Self>, BattleError> {
+        #[cfg(all(feature = "perf-ceiling", not(target_arch = "wasm32")))]
+        let _timer = crate::performance::Timer::new(0);
+        assert!(OBSERVE || mode == super::ReplayObservationMode::None);
         let mut state = Self::build_pre_opening_state(fixture, strict)?;
-        if mode.is_detailed() {
+        if OBSERVE && mode.is_detailed() {
             state.observation.mode = mode;
         }
         state.apply_battle_start_phase(fixture)?;
-        state.completed_checkpoint_count += 1;
+        if OBSERVE {
+            state.completed_checkpoint_count += 1;
+        }
         if strict {
             if let Some(error) = state.evaluation_error.as_ref() {
                 return Err(error.clone());
@@ -44,30 +63,35 @@ impl ReplayState {
         fixture: &BattleFixture,
         strict: bool,
     ) -> Result<Self, BattleError> {
-        Self::build_pre_opening_state(fixture, strict)
+        Self::build_pre_opening_state(&crate::fixture::BattleFixtureView::new(fixture), strict)
+            .map(|state| *state)
     }
 
-    fn build_pre_opening_state(fixture: &BattleFixture, strict: bool) -> Result<Self, BattleError> {
+    fn build_pre_opening_state(
+        fixture: &crate::fixture::BattleFixtureView<'_>,
+        strict: bool,
+    ) -> Result<Box<Self>, BattleError> {
         let xian_mo_error = super::xian_mo::unimplemented_xian_mo_strategy(fixture);
         if strict {
             if let Some(error) = xian_mo_error {
                 return Err(error);
             }
         }
-        let p1 = super::ReplayPlayer::from_fixture(
+        let p1 = super::ReplayPlayer::from_fixture_view(
             PlayerSide::P1,
             &fixture.players.p1,
             &fixture.historical_card_overrides,
         );
-        let p2 = super::ReplayPlayer::from_fixture(
+        let p2 = super::ReplayPlayer::from_fixture_view(
             PlayerSide::P2,
             &fixture.players.p2,
             &fixture.historical_card_overrides,
         );
-        let state = Self {
+        let mut state = Box::new(Self {
             p1,
             p2,
             first_player: fixture.first_player_side,
+            battle_round: fixture.source.as_ref().and_then(|source| source.round),
             current_actor: fixture.first_player_side,
             actor_turn: 0,
             max_actor_turns: fixture
@@ -84,10 +108,12 @@ impl ReplayState {
                 .as_ref()
                 .map(|source| source.synthetic_decision_sides.clone())
                 .unwrap_or_default(),
-            synthetic_decision_fallback_seed: fixture
-                .source
-                .as_ref()
-                .and_then(|source| source.synthetic_decision_fallback_seed),
+            synthetic_decision_fallback_seed: fixture.fallback_seed_override.or_else(|| {
+                fixture
+                    .source
+                    .as_ref()
+                    .and_then(|source| source.synthetic_decision_fallback_seed)
+            }),
             robust_decisions: fixture
                 .source
                 .as_ref()
@@ -96,6 +122,8 @@ impl ReplayState {
             card_execution_occurrence: 0,
             current_card_execution: None,
             decision_events: Vec::new(),
+            capture_decision_events: fixture.capture_decision_events,
+            uncaptured_synthetic_seeds: Vec::new(),
             effect_invocation_stack: Vec::new(),
             attribution_block: None,
             fail_on_missing_decision: strict,
@@ -103,7 +131,9 @@ impl ReplayState {
             observation: super::ReplayObservationRuntime::default(),
             termination_cause: None,
             completed_checkpoint_count: 0,
-        };
+            active_mechanisms: super::ActiveMechanisms::NONE,
+        });
+        state.refresh_active_mechanisms();
         Ok(state)
     }
 
@@ -117,12 +147,22 @@ impl ReplayState {
     /// instead of silently folding it into an empty baseline.
     pub(super) fn apply_battle_start_phase(
         &mut self,
-        fixture: &BattleFixture,
+        fixture: &crate::fixture::BattleFixtureView<'_>,
     ) -> Result<(), BattleError> {
-        self.attribution_block = Some(super::TraceAttributionBlock::BattleStart);
+        if OBSERVE {
+            self.attribution_block = Some(super::TraceAttributionBlock::BattleStart);
+        }
+        // BattleCharacter.Init sets LastTurnStartHp before either actor's
+        // OnBattleStarted, including HP changes made by the first actor.
+        self.initialize_last_turn_start_hp(PlayerSide::P1);
+        self.initialize_last_turn_start_hp(PlayerSide::P2);
+        self.apply_verified_xian_mo_before_battle_start();
         self.apply_battle_start_opening_effects(fixture);
         self.apply_battle_start_phase_perturbations(fixture)?;
-        self.attribution_block = None;
+        self.refresh_active_mechanisms();
+        if OBSERVE {
+            self.attribution_block = None;
+        }
         Ok(())
     }
 
@@ -262,14 +302,21 @@ impl ReplayState {
         // 原版 ModifyBuffValue(Min, +X) 的钩子顺序（BattleCharacter.cs:
         // 8711-8729）：先 415 疯魔架势 ModifyTiPo(abs(delta))，后 Min 分支
         // ModifyHp(abs(delta)*3)。先涨体魄/生命上限再回血，回血按更高上限
-        // 截断（oracle 锚点：e170262525adf8c7/round-09 cp0 p2.hp 81 = 79+3
+        // 截断（oracle 锚点：pa_b761a63c cp0 p2.hp 81 = 79+3
         // 被 81 截断；引擎原 80 = 先回 3 被 80 截断再涨上限）。
         if player_fixture.talents.contains(&179) {
+            // ModifyBuffValue:8878 talent 177 修玄不泯对每次负面类 buff（含 Min 冥想）先回 |delta|×otherParams[0]=1，
+            // 早于 415 的 ModifyTiPo 与 Min 分支回血（oracle pa_94277641：p2 hp 130，非 129）。
+            if player_fixture.talents.contains(&177) {
+                self.modify_actor_hp(actor_side, 1, false, false);
+            }
             self.apply_feng_mo_stance_physique(actor_side, 1);
             // 冥副作用（BattleCharacter.cs:8715-8730）：4000003 角色回
             // abs(delta)*3；非 4000003 的扣血在 from_fixture 直接扣除
             // （保持既有装配语义），此处只做 4000003 的正向转换。
-            if player_fixture.character_id == Some(4_000_003) {
+            if player_fixture.character_id == Some(4_000_003)
+                || player_fixture.xian_mo_strategies.contains(&27021)
+            {
                 self.modify_actor_hp(actor_side, 3, false, false);
             }
         }
@@ -283,14 +330,19 @@ impl ReplayState {
         // FateStrategy 161（天衍-入冥，叶冥冥专属）：FateStrategyFunctions
         // .OnBattleStart 的 IL_088b 块 —— 在 FS 140/27（IL_00f1/IL_01c1）
         // 之后执行 ModifyBuffValue(Min, otherParams[0])。顺序敏感：FS 27 的
-        // hp×12/100 采样先于本冥 +2（oracle 锚点：9eed310c78cd1b40/round-09
+        // hp×12/100 采样先于本冥 +2（oracle 锚点：pa_d33ea233
         // cp0 p1 峰值 98：83×12/100=9 → 92 → +6 = 98；引擎原 89×12/100=10
         // → 99）。钩子顺序同 ModifyBuffValue：415 先 ModifyTiPo(2)。
         if !player_fixture.fate_strategies.contains(&161) {
             return;
         }
+        if player_fixture.talents.contains(&177) {
+            self.modify_actor_hp(actor_side, 2, false, false);
+        }
         self.apply_feng_mo_stance_physique(actor_side, 2);
-        if player_fixture.character_id == Some(4_000_003) {
+        if player_fixture.character_id == Some(4_000_003)
+            || player_fixture.xian_mo_strategies.contains(&27021)
+        {
             self.modify_actor_hp(actor_side, 6, false, false);
         }
     }
@@ -300,10 +352,10 @@ impl ReplayState {
     /// 时 Attack(水势)（CalculateAttack ×1.5），否则 ApplyDamage(水势)。
     /// 波澜（幻•水灵波澜 484）的额外触发段走完全相同的路径，不能退化成
     /// 裸 ApplyDamage（漏 415 外的加攻与 ×1.5）。oracle 锚点：
-    /// hf-latest-32308000-16f9c778 56f1c06b0530592f/round-14 cp7 p2.hp
+    /// hf-latest-32308000-16f9c778 pa_aff5f8f1 cp7 p2.hp
     /// 102（原版 2×10 = 7 水势×1.5×2 段；引擎 105 = 主段 10 + 额外段 7）、
-    /// 8f95021d967dff1e/round-13 cp17 p2.hp 50（原版 2×12 = (4+4加攻)×1.5
-    /// ×2 段；引擎 45 = 主段 12 + 额外段 4）、e1eb5c51c3f179d9/round-16
+    /// pa_0467b9ff cp17 p2.hp 50（原版 2×12 = (4+4加攻)×1.5
+    /// ×2 段；引擎 45 = 主段 12 + 额外段 4）、pa_4b5cb9a0
     /// cp7（原版 2×10 vs 引擎 7+10）。
     pub(super) fn apply_turn_end_water_momentum_damage(
         &mut self,
@@ -318,6 +370,11 @@ impl ReplayState {
             .identity
             .fate_strategies
             .contains(&137)
+            || self
+                .actor(actor_side)
+                .identity
+                .xian_mo_strategies
+                .contains(&7032)
         {
             self.actor_mut(actor_side).elements.water_blade_seal += 1;
             self.apply_attack(actor_side, water_momentum, usize::MAX);

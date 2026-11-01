@@ -8,6 +8,40 @@ publish = false
 
 [features]
 private-fixtures = []
+perf-ceiling = []
+
+[[bin]]
+name = "export_contracts"
+path = "src/bin/export_contracts.rs"
+
+[[bin]]
+name = "ceiling_probe"
+path = "src/bin/ceiling_probe.rs"
+required-features = ["perf-ceiling"]
+
+[[bin]]
+name = "triage_build_diff"
+path = "src/bin/triage_build_diff.rs"
+
+[[bin]]
+name = "oracle_trace_slice"
+path = "src/bin/oracle_trace_slice.rs"
+
+[[bin]]
+name = "oracle_full_state_projection"
+path = "src/bin/oracle_full_state_projection.rs"
+
+[[bin]]
+name = "original_oracle_diff_core"
+path = "src/bin/original_oracle_diff_core.rs"
+
+[[bin]]
+name = "oracle_full_state_diff"
+path = "src/bin/oracle_full_state_diff.rs"
+
+[[bin]]
+name = "synthetic_oracle_rust_diff"
+path = "src/bin/synthetic_oracle_rust_diff.rs"
 
 [lib]
 name = "yixian_engine"
@@ -16,7 +50,11 @@ crate-type = ["rlib", "cdylib"]
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }
-serde_json = "1"
+# preserve_order：oracle 对照层（src/oracle/）要与 TS JSON.parse 一致的插入序
+# （trace buffs / modeledBuffs 等记录逐字节对拍依赖它）；引擎线协议全部是
+# 定序 struct，序列化顺序不受 Map 行为影响。
+serde_json = { version = "1", features = ["preserve_order"] }
+schemars = "1"
 thiserror = "2"
 
 # 常驻批评估（solve_deck_batch）的工作线程池；WASM 构建不带

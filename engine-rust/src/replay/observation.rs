@@ -35,7 +35,7 @@ pub struct ReplayDetailedSideState {
     pub physical_deck: Vec<ReplayQueuedCard>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ReplayQueuedCard {
     pub id: i64,
@@ -85,7 +85,7 @@ pub struct ReplayDetailedStep {
 }
 
 /// One hit of a multi-hit attack card, sampled for the hook trace.
-#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ReplayAttackSegment {
     /// The event index of the cardCompleted event this hit belongs to, for
@@ -148,7 +148,7 @@ pub struct ReplayMutationReceipt {
     pub applied: i64,
 }
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     /// Records a counter-field transition as a `Counter` receipt, skipping
     /// no-op transitions. This is the convenience wrapper over
     /// `record_mutation_receipt` for scalar counters; resource fields with
@@ -185,7 +185,7 @@ impl ReplayState {
         slot: Option<usize>,
         card: Option<&CardDefinition>,
     ) {
-        if !self.observation.mode.emits_events() {
+        if !(OBSERVE && self.observation.mode.emits_events()) {
             return;
         }
         let event = ReplayEvent {
@@ -198,7 +198,7 @@ impl ReplayState {
             p1: self.p1.snapshot(),
             p2: self.p2.snapshot(),
         };
-        if self.observation.mode.is_ui() {
+        if OBSERVE && self.observation.mode.is_ui() {
             self.observation.ui_events.push(ReplayUiEvent {
                 turn: event.turn,
                 kind: event.kind,
@@ -210,7 +210,7 @@ impl ReplayState {
                 p2: self.p2.ui_snapshot(),
             });
         }
-        if self.observation.mode.is_detailed() {
+        if OBSERVE && self.observation.mode.is_detailed() {
             let mut p1_state = self.p1.detailed_side_state();
             let mut p2_state = self.p2.detailed_side_state();
             if kind == ReplayEventKind::CardCompleted {
@@ -245,7 +245,7 @@ impl ReplayState {
         slot: Option<usize>,
         card: Option<&CardDefinition>,
     ) {
-        if !self.observation.mode.is_detailed() {
+        if !(OBSERVE && self.observation.mode.is_detailed()) {
             return;
         }
         let p1_snapshot = self.p1.snapshot();
@@ -290,7 +290,7 @@ impl ReplayState {
         after: i64,
         applied: i64,
     ) {
-        if !self.observation.mode.is_detailed() {
+        if !(OBSERVE && self.observation.mode.is_detailed()) {
             return;
         }
         let (card_id, card_name, category) = match self.effect_invocation_stack.last() {

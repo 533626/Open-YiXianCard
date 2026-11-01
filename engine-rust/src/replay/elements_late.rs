@@ -5,7 +5,7 @@ use super::support::{
 use super::{Element, ReplayState};
 use crate::model::{CardDefinition, PlayerSide};
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn apply_qi_xing_lian_zhu(
         &mut self,
         actor_side: PlayerSide,
@@ -15,14 +15,40 @@ impl ReplayState {
         if self.actor(actor_side).fate.qi_xing_lian_zhu <= 0 || !card.name.contains("星弈") {
             return;
         }
-        self.actor_mut(actor_side).fate.qi_xing_lian_zhu -= 1;
-        let Some(next) = active_neighbor_slot_index(self.actor(actor_side), slot, 1) else {
-            return;
-        };
-        if self.actor(actor_side).astrology.star_slots.contains(&next) {
-            self.gain_anima(actor_side, 1);
-        } else {
-            self.actor_mut(actor_side).astrology.star_slots.push(next);
+        // CardActionBase.cs:3227,3242 runs FateStrategyFunctions.OnPlayCard,
+        // then XianMoStrategyFunctions.OnPlayCard, even in season 9. Both
+        // consume QiXingLianZhu (746) and call AddXingWei on the same grid
+        // (FateStrategyFunctions.cs:775; XianMoStrategyFunctions.cs:1405).
+        // 26125017: the Fate branch requires fate 331, the XianMo branch
+        // requires xianmo 7056. Each checks the remaining charge
+        // independently; an existing star grid gains 1 anima through
+        // AddXingWei (BattleCharacter.cs:10658).
+        let gates = [
+            self.actor(actor_side)
+                .identity
+                .fate_strategies
+                .contains(&331),
+            self.actor(actor_side)
+                .identity
+                .xian_mo_strategies
+                .contains(&7056),
+        ];
+        for gate in gates {
+            if !gate {
+                continue;
+            }
+            if self.actor(actor_side).fate.qi_xing_lian_zhu <= 0 {
+                break;
+            }
+            self.actor_mut(actor_side).fate.qi_xing_lian_zhu -= 1;
+            let Some(next) = active_neighbor_slot_index(self.actor(actor_side), slot, 1) else {
+                continue;
+            };
+            if self.actor(actor_side).astrology.star_slots.contains(&next) {
+                self.gain_anima(actor_side, 1);
+            } else {
+                self.actor_mut(actor_side).astrology.star_slots.push(next);
+            }
         }
     }
 
@@ -58,8 +84,14 @@ impl ReplayState {
         card: &CardDefinition,
         _slot: usize,
     ) {
+        self.refresh_active_mechanisms();
+
+        #[cfg(all(feature = "perf-ceiling", not(target_arch = "wasm32")))]
+        let _timer = crate::performance::Timer::new(9);
         self.apply_card_classification_completed_hooks(actor_side, card);
-        if self.actor(actor_side).beng.triggered_startled_touch > 0 {
+        if self.active_mechanisms.has(super::ActiveMechanisms::BENG_QUAN)
+            && self.actor(actor_side).beng.triggered_startled_touch > 0
+        {
             self.actor_mut(actor_side).beng.triggered_startled_touch = 0;
         }
     }
@@ -74,23 +106,29 @@ impl ReplayState {
         let mut attacked = false;
         match base_id {
             7_000_111 => {
-                // The original invokes the first eligible hand card through the
-                // normal temporary-card path. The replay fixture carries that
-                // selected id in the decision tape; missing selection stays strict.
+                // Card_7000111：每次 GetNextParam 选中的手牌作为临时牌完整执行（isTempCard），
+                // 之后若该牌配置 actionAgain 则 ExActionAgain+1（IL_01c1/IL_0419）。奇数格（1 基）自身减
+                // otherParams[1] 生命并再次行动；偶数格再取一个参数执行第二张。
                 let selected = self.consume_card_param(actor_side);
                 if selected >= 0 {
                     if let Some(card) = super::original_config::original_card_definition(selected) {
-                        self.apply_temporary_card_effect(actor_side, &card, slot);
+                        if self.apply_temporary_card_effect(actor_side, &card, slot) {
+                            self.modify_extra_actions(actor_side, 1);
+                        }
                     }
                 }
-                if slot % 2 == 0 {
+                if slot.is_multiple_of(2) {
                     self.modify_actor_hp(actor_side, -other_param(card, 1).max(0), false, false);
                     self.modify_extra_actions(actor_side, 1);
                 } else {
                     let selected = self.consume_card_param(actor_side);
                     if selected >= 0 {
-                        if let Some(card) = super::original_config::original_card_definition(selected) {
-                            self.apply_temporary_card_effect(actor_side, &card, slot);
+                        if let Some(card) =
+                            super::original_config::original_card_definition(selected)
+                        {
+                            if self.apply_temporary_card_effect(actor_side, &card, slot) {
+                                self.modify_extra_actions(actor_side, 1);
+                            }
                         }
                     }
                 }
@@ -98,19 +136,45 @@ impl ReplayState {
             7_000_114 => {
                 self.gain_defense(actor_side, card.defense.unwrap_or(0));
                 self.actor_mut(actor_side).elements.zhu_chen_bu += 1;
-                if self.check_wu_xing(actor_side, Element::Earth) { self.gain_agility(actor_side, other_param(card, 0)); }
+                if self.check_wu_xing(actor_side, Element::Earth) {
+                    self.gain_agility(actor_side, other_param(card, 0));
+                }
             }
             7_000_110 => {
                 attacked |= self.attack_by_config(actor_side, card, 0, slot);
-                let Some(first_slot) = active_neighbor_slot_index(self.actor(actor_side), slot, 1) else { return Some(attacked); };
+                let Some(first_slot) = active_neighbor_slot_index(self.actor(actor_side), slot, 1)
+                else {
+                    return Some(attacked);
+                };
                 let first = element_from_card(&self.actor(actor_side).deck.slots[first_slot].card);
-                if let Some(element) = first { self.activate_element(actor_side, element); }
-                let Some(second_slot) = active_neighbor_slot_index(self.actor(actor_side), first_slot, 1) else { return Some(attacked); };
-                let second = element_from_card(&self.actor(actor_side).deck.slots[second_slot].card);
-                if let Some(element) = second { self.activate_element(actor_side, element); }
-                let generates = matches!((first, second), (Some(Element::Metal),Some(Element::Water)) | (Some(Element::Water),Some(Element::Wood)) | (Some(Element::Wood),Some(Element::Fire)) | (Some(Element::Fire),Some(Element::Earth)) | (Some(Element::Earth),Some(Element::Metal)))
-                    || (self.actor(actor_side).identity.talents.contains(&137) && first != second && first.is_some() && second.is_some() && (first == Some(Element::Fire) || second == Some(Element::Fire)));
-                if generates { self.gain_defense(actor_side, other_param(card, 1)); }
+                if let Some(element) = first {
+                    self.activate_element(actor_side, element);
+                }
+                let Some(second_slot) =
+                    active_neighbor_slot_index(self.actor(actor_side), first_slot, 1)
+                else {
+                    return Some(attacked);
+                };
+                let second =
+                    element_from_card(&self.actor(actor_side).deck.slots[second_slot].card);
+                if let Some(element) = second {
+                    self.activate_element(actor_side, element);
+                }
+                let generates = matches!(
+                    (first, second),
+                    (Some(Element::Metal), Some(Element::Water))
+                        | (Some(Element::Water), Some(Element::Wood))
+                        | (Some(Element::Wood), Some(Element::Fire))
+                        | (Some(Element::Fire), Some(Element::Earth))
+                        | (Some(Element::Earth), Some(Element::Metal))
+                ) || (self.actor(actor_side).identity.talents.contains(&137)
+                    && first != second
+                    && first.is_some()
+                    && second.is_some()
+                    && (first == Some(Element::Fire) || second == Some(Element::Fire)));
+                if generates {
+                    self.gain_defense(actor_side, other_param(card, 1));
+                }
             }
             7_000_115 => {
                 self.gain_water_momentum(actor_side, other_param(card, 0));
@@ -128,14 +192,17 @@ impl ReplayState {
             7_000_116 => {
                 self.apply_configured_anima(actor_side, card);
                 self.gain_sharpness(actor_side, other_param(card, 0));
-                if self.check_wu_xing(actor_side, Element::Metal) || self.check_wu_xing(actor_side, Element::Water) {
+                if self.check_wu_xing(actor_side, Element::Metal)
+                    || self.check_wu_xing(actor_side, Element::Water)
+                {
                     self.modify_extra_actions(actor_side, 1);
                 }
             }
             7_000_112 => {
                 self.apply_configured_anima(actor_side, card);
                 if self.check_wu_xing(actor_side, Element::Wood) {
-                    self.actor_mut(actor_side).elements.wood_scattered_branches += other_param(card, 0).max(0);
+                    self.actor_mut(actor_side).elements.wood_scattered_branches +=
+                        other_param(card, 0).max(0);
                 }
                 return Some(false);
             }
@@ -261,9 +328,9 @@ impl ReplayState {
                 // CardActionBase.CheckWuXing（激活 / 龙马精神 / UsedWuXing
                 // 相生链 / 卡组含 7030077|7040077 五行刺恒真），不是仅看
                 // 土灵激活。oracle 锚点：hf-latest-32308000-16f9c778
-                // 62935cbae85c5db2/round-14 cp13 p2.hp 84（原版 21 = 9 +
+                // pa_97e3e9df cp13 p2.hp 84（原版 21 = 9 +
                 // 72 失去防御/6：卡组含 7040077 恒真；引擎 96 = 无加成 9）、
-                // 98c1b2dae5fcfb69/round-14 cp15（同构 -3）。
+                // pa_c7c28408 cp15（同构 -3）。
                 let bonus = if self.check_wu_xing(actor_side, Element::Earth) {
                     let divisor = other_param(card, 0).max(1);
                     self.actor(actor_side).turn.lost_defense_count / divisor
@@ -281,7 +348,7 @@ impl ReplayState {
                 // JiHuoJinLing) 完整语义（激活 / 上次使用五行及相生链 /
                 // 龙马精神 / 卡组含 7030077|7040077 五行刺时恒真），不是
                 // 仅看金灵激活。oracle 锚点：hf-latest-32308000-16f9c778
-                // 032a9c253d375d03/round-12 cp41（卡组含 7040077 梦•五行刺
+                // pa_fc47614e cp41（卡组含 7040077 梦•五行刺
                 // → 原版铁骨 0→2；引擎 is_element_activated 假 → 0）。
                 if self.check_wu_xing(actor_side, Element::Metal) {
                     self.actor_mut(actor_side).elements.metal_iron_bone +=
@@ -393,9 +460,8 @@ impl ReplayState {
                 attacked |= self.attack_by_config(actor_side, card, 0, slot);
                 // Card_7000056（火灵•烈燎原）[火灵] 分支走完整 CheckWuXing
                 // （与 Card_7000053/7000096 同款），包含卡组含 7040077
-                // 五行刺时恒真。oracle 锚点：6687c7e1ce03cb49/round-12
-                // cp[13]（p1 maxHp 97→44；引擎原先 is_element_activated
-                // 漏判导致 maxHp 不降）。
+                // 五行刺时恒真。oracle 锚点：pa_13915a8f
+                // cp[13]（p1 maxHp 97→44）。
                 if self.check_wu_xing(actor_side, Element::Fire) {
                     let target_side = opponent_side(actor_side);
                     let delta = self.actor(target_side).core.max_hp
@@ -414,7 +480,7 @@ impl ReplayState {
                 // Card_7000057.cs 读 CardActionBase.CheckWuXing(src,
                 // JiHuoShuiLing)（激活 / 龙马精神 / UsedWuXing 相生链 /
                 // 卡组含 7030077|7040077 五行刺恒真），不是仅看水灵激活。
-                // oracle 锚点：hf-32308000 d7d6da3ccefac976/round-13 cp[9]
+                // oracle 锚点：hf-32308000 pa_903ecc8a cp[9]
                 // p2.maxHp 125（引擎 107：卡组含 7040077 时原版恒真，
                 // 引擎 last_element 非水漏判 +18/+18）。
                 if self.check_wu_xing(actor_side, Element::Water) {
@@ -430,7 +496,7 @@ impl ReplayState {
                 // Card_7000061.cs（木灵•暗香）:CheckWuXing(src, JiHuoMuLing)
                 // —— 完整 CheckWuXing（激活 / 上次使用五行及相生链 / 龙马精神 /
                 // 卡组含 7030077|7040077 五行刺恒真），不是仅看木灵激活。
-                // oracle 锚点：95fa8fdf614cb5d4/round-10 cp[4]（p1 卡组含
+                // oracle 锚点：pa_903779ae cp[4]（p1 卡组含
                 // 7030077、未激活木灵，anima 7/3=2 加攻原版 2 引擎 0）。
                 self.apply_configured_anima(actor_side, card);
                 self.modify_actor_hp(actor_side, other_param(card, 0), false, false);
@@ -508,7 +574,7 @@ impl ReplayState {
         slot: usize,
     ) -> bool {
         // 已证伪的假设（2026-08-08，DIAG_20260808_hf_32219000 采集 B A-2）：
-        // cae463212f8c4c43/round-15 cp[5] 五行流转 temp 执行 烈燎原 原版承伤
+        // pa_0a7d7655 cp[5] 五行流转 temp 执行 烈燎原 原版承伤
         // 44 vs 引擎 36，曾假设「temp 执行在激活火灵分支后追加一段基础攻击
         // （attack，不加加攻）」。全批次验证：该追加在 mirror-32219000 批次
         // 回归 165 例（含全部 五行流转→烈燎原 temp 场景），仅 r15 1 例吻合，
@@ -552,11 +618,11 @@ impl ReplayState {
         // （nextCardConfig.rarity vs card_.cardConfig.rarity），无 rarity
         // 字段的牌按 0 处理——不能沿用 id 档位推断（card_rarity）：梦•
         // 火灵聚炎（7020089/7040089 等，配置无 rarity）不会被钳制，按整卡
-        // 执行（anima 3/4）。oracle 锚点：7a0da91b97b4d1e9/round-07
+        // 执行（anima 3/4）。oracle 锚点：pa_d9bdc8ee
         // cp[0] p2.anima 3=0+3、t17u1 p1 15→5（2+8×1）；ac9dacde7087f49d/
         // round-13 cp[8] p1.anima 18=14+4、p2 81→43（2+18×2）、maxHp-38。
         // 普通牌 7020022（配置 rarity 2）仍钳制到 7000022（锚点：
-        // cae463212f8c4c43/round-12 t7u1 承伤 29）。
+        // pa_c6ac176d t7u1 承伤 29）。
         let max_rarity = super::original_config::original_config_rarity(card.id);
         let next_rarity = super::original_config::original_config_rarity(next_card.id);
         if next_rarity <= max_rarity {
@@ -569,7 +635,7 @@ impl ReplayState {
             .slots
             .iter()
             .find(|slot| slot.card.id == target_id)
-            .map(|slot| slot.card.clone())
+            .map(|slot| slot.card.definition().clone())
             .or_else(|| super::original_config::original_card_definition(target_id))
     }
 }

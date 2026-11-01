@@ -1,8 +1,9 @@
+use super::flow_card_effect::{param0, param1, param2, param3};
 use super::support::{opponent_side, other_param};
 use super::ReplayState;
 use crate::model::{CardDefinition, PlayerSide};
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn apply_dream_direct_card_effect(
         &mut self,
         actor_side: PlayerSide,
@@ -31,7 +32,7 @@ impl ReplayState {
                 if wounded_count > 0 && actual_damage > 0 && divisor > 0 {
                     let mut internal_injury = actual_damage / divisor;
                     if realm <= 4 {
-                        internal_injury = internal_injury.min(other_param(card, 0).max(0));
+                        internal_injury = internal_injury.min(param0(card));
                     }
                     if internal_injury > 0 {
                         self.add_actor_negative_status(target_side, 100, internal_injury);
@@ -40,13 +41,13 @@ impl ReplayState {
                 Some(attacked)
             }
             4_000_074 => {
-                self.add_actor_negative_status(target_side, 100, other_param(card, 0).max(0));
+                self.add_actor_negative_status(target_side, 100, param0(card));
                 if realm >= 4 {
-                    self.modify_actor_hp(actor_side, other_param(card, 1).max(0), false, false);
+                    self.modify_actor_hp(actor_side, param1(card), false, false);
                 }
                 if self.check_rear_move(actor_side, was_used_before_effect) {
                     if realm <= 3 {
-                        self.modify_actor_hp(actor_side, other_param(card, 1).max(0), false, false);
+                        self.modify_actor_hp(actor_side, param1(card), false, false);
                     } else {
                         let divisor = other_param(card, 2);
                         if divisor > 0 {
@@ -97,9 +98,9 @@ impl ReplayState {
             }
             10_000_070 => {
                 self.apply_configured_physique(actor_side, card);
-                self.modify_actor_hp(actor_side, other_param(card, 0).max(0), false, false);
+                self.modify_actor_hp(actor_side, param0(card), false, false);
                 let internal_injury = if realm <= 3 {
-                    other_param(card, 1).max(0)
+                    param1(card)
                 } else {
                     let divisor = other_param(card, 1);
                     if divisor > 0 {
@@ -116,8 +117,8 @@ impl ReplayState {
             }
             10_000_073 => {
                 self.apply_configured_anima(actor_side, card);
-                self.modify_actor_hp(actor_side, other_param(card, 0).max(0), false, false);
-                let agility = other_param(card, 1).max(0)
+                self.modify_actor_hp(actor_side, param0(card), false, false);
+                let agility = param1(card)
                     + if realm >= 4 {
                         self.actor(actor_side).core.anima.max(0)
                     } else {
@@ -131,7 +132,7 @@ impl ReplayState {
                 let momentum = self.actor(actor_side).beng.momentum.max(0);
                 let extra_attack = if realm <= 4 {
                     if agility > 0 || momentum > 0 {
-                        other_param(card, 0).max(0)
+                        param0(card)
                     } else {
                         0
                     }
@@ -175,20 +176,17 @@ impl ReplayState {
                 let captured_anima = self.actor(actor_side).core.anima.max(0);
                 if realm <= 3 {
                     if captured_momentum > 0 || captured_anima > 0 {
-                        self.apply_physique_amount(actor_side, other_param(card, 0).max(0));
-                        self.modify_actor_hp(actor_side, other_param(card, 1).max(0), false, false);
+                        self.apply_physique_amount(actor_side, param0(card));
+                        self.modify_actor_hp(actor_side, param1(card), false, false);
                     }
                 } else {
-                    self.gain_agility(actor_side, other_param(card, 3).max(0));
+                    self.gain_agility(actor_side, param3(card));
                     if captured_momentum > 0 {
                         self.modify_momentum(actor_side, -captured_momentum);
-                        self.apply_physique_amount(
-                            actor_side,
-                            captured_momentum * other_param(card, 1).max(0),
-                        );
+                        self.apply_physique_amount(actor_side, captured_momentum * param1(card));
                         self.modify_actor_hp(
                             actor_side,
-                            captured_momentum * other_param(card, 2).max(0),
+                            captured_momentum * param2(card),
                             false,
                             false,
                         );

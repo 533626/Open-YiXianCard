@@ -1,23 +1,23 @@
 use super::effect_invocation::{
     TemporaryDeckIdentityMode, TemporaryHadUsedSource, TemporaryInvocationSpec,
 };
+use super::flow_card_effect::{param0, param1, param2};
 use super::original_config::{original_card_definition, original_card_realm_level};
 use super::support::{
-    card_rarity, has_cloud_chain, is_cloud_sword, is_frenzy_sword_for_actor,
-    is_spirit_sword_for_actor, is_sword_formation_card, normalized_base_id, opponent_side,
+    card_rarity, has_cloud_chain, normalized_base_id, opponent_side,
     other_param, other_param_or, wu_xing_count_in_deck,
 };
 use super::{Element, ReplayState};
 use crate::model::{CardDefinition, PlayerSide};
 use std::collections::BTreeSet;
 
-#[cfg(all(test, feature = "private-fixtures"))]
+#[cfg(test)]
 pub(super) const SYNTHETIC_ORACLE_WAVE018_CARD_IDS: [i64; 25] = [
     278, 289, 292, 293, 315, 316, 317, 318, 323, 122, 123, 124, 125, 127, 128, 129, 130, 131, 133,
     135, 137, 138, 139, 141, 142,
 ];
 
-#[cfg(all(test, feature = "private-fixtures"))]
+#[cfg(test)]
 pub(super) const SYNTHETIC_ORACLE_WAVE019_CARD_IDS: [i64; 27] = [
     144, 151, 152, 153, 154, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 170,
     171, 172, 173, 174, 175, 176, 39, 7_000_093,
@@ -126,7 +126,7 @@ linking this module before that integration fails loudly instead of producing a
 plausible but incomplete replay.
 */
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn mirage_ronghui_value(
         &self,
         actor_side: PlayerSide,
@@ -329,18 +329,20 @@ impl ReplayState {
         actor_side: PlayerSide,
         card: &CardDefinition,
     ) -> bool {
+        // Build 26315169 (CardActionBase.cs:3618):
+        // if (src.HasBuff(BuffType.HuanQinZhuoJianZaiCiXingDong) && cardActionBase.cardConfig.name.Contains("剑")
+        //     && (cardActionBase.cardConfig.id != 19 || !src.HasTalent(30096))
+        //     && src.GetBuffValue(BuffType.ExActionAgain) <= 0
+        //     && src.GetBuffValue(BuffType.ZaiCiXingDong) < src.battleTempData.actionAgainPerRound)
         if self.mirage_ronghui_value(
             actor_side,
             MirageRonghuiValue::OrdinarySwordActionAgainCards,
         ) <= 0
             || !card.name.contains('剑')
-            || is_cloud_sword(self.actor(actor_side), card)
-            || is_frenzy_sword_for_actor(self.actor(actor_side), card)
-            || is_spirit_sword_for_actor(self.actor(actor_side), card)
-            || is_sword_formation_card(self.actor(actor_side), card)
             || (card.id == 19 && self.actor(actor_side).identity.talents.contains(&30_096))
             || self.actor(actor_side).turn.extra_actions > 0
-            || self.actor(actor_side).turn.action_again_count >= 1
+            || self.actor(actor_side).turn.action_again_count
+                >= self.dream_mirage_action_again_limit(actor_side)
         {
             return false;
         }
@@ -416,7 +418,14 @@ impl ReplayState {
         if consumed <= 0 {
             return;
         }
-        if normalized_base_id(card) != 10_000_082 {
+        // CardActionBase.OnAfterExecuted：XiaoHaoBengQuanDuoXing 在
+        // IsLianBeng 时不扣 BengQuanDuoXing。IsLianBeng 是基础 id
+        // 10000035，以及 id 恰好为 10030082 / 10040082（二者归一化后是
+        // 10000082）。连崩打出时仍然按 60% 回血，标记留给下一张崩拳。
+        // oracle 锚点：hf-latest-33912000 pa_ec03597e
+        // 崩拳•突 p1.hp 原版 29、引擎 20；pa_bce1434a
+        // 崩拳•寸劲 p1.hp 原版 20、引擎 10。两轮出牌前 buff 420 仍在。
+        if !matches!(normalized_base_id(card), 10_000_035 | 10_000_082) {
             self.modify_mirage_ronghui_value(
                 actor_side,
                 MirageRonghuiValue::CrashFistStarSeize,
@@ -477,6 +486,9 @@ impl ReplayState {
             self.gain_hexagram(actor_side, plate);
             self.modify_star_power(actor_side, plate);
         }
+    }
+
+    pub(super) fn apply_mirage_ronghui_double_hp_at_turn_start(&mut self, actor_side: PlayerSide) {
         if self.mirage_ronghui_value(actor_side, MirageRonghuiValue::DoubleHpAtTurnStart) > 0 {
             let current_hp = self.actor(actor_side).core.hp;
             self.modify_actor_hp(actor_side, current_hp, false, false);
@@ -498,14 +510,6 @@ impl ReplayState {
         let loss = self.mirage_ronghui_value(actor_side, MirageRonghuiValue::BilateralTurnEndLoss);
         if loss > 0 {
             self.modify_actor_hp(actor_side, -loss, false, false);
-        }
-        let cap = self.mirage_ronghui_value(actor_side, MirageRonghuiValue::MirageWaterDefenseCap);
-        let water = self.actor(actor_side).elements.water_momentum.max(0);
-        if cap > 0 && water > 0 {
-            // BattleCharacter.OnTurnEnded (build 25621897)：持有 HuanTuLingZhenYiChuShangXian 时不截断。
-            let uncapped =
-                self.mirage_ronghui_value(actor_side, MirageRonghuiValue::MirageWaterDefenseUncapped) > 0;
-            self.gain_defense(actor_side, if uncapped { water } else { water.min(cap) });
         }
         for value in [
             MirageRonghuiValue::MirageInternalInjuryAmplifierTurns,
@@ -534,6 +538,25 @@ impl ReplayState {
         );
     }
 
+    pub(super) fn apply_mirage_water_defense_after_turn_end_water_damage(
+        &mut self,
+        actor_side: PlayerSide,
+    ) {
+        let cap = self.mirage_ronghui_value(actor_side, MirageRonghuiValue::MirageWaterDefenseCap);
+        let water = self.actor(actor_side).elements.water_momentum.max(0);
+        if cap <= 0 || water <= 0 {
+            return;
+        }
+        // Card_317's OnTurnEnded branch follows the ShuiShi damage loop in
+        // BattleCharacter.cs (water damage at IL_1bf8; this ModifyDef branch
+        // at IL_1e18). Keep ModifyDef's callbacks after every water hit: they
+        // can reflect damage and consume the opponent's remaining defense.
+        let uncapped = self
+            .mirage_ronghui_value(actor_side, MirageRonghuiValue::MirageWaterDefenseUncapped)
+            > 0;
+        self.gain_defense(actor_side, if uncapped { water } else { water.min(cap) });
+    }
+
     pub(super) fn reset_mirage_ronghui_first_hp_loss_rewards(&mut self) {
         // 原版 BattleCharacter.cs:5753-5759 在 OnTurnEnded 的末尾清除自身及对手的
         // MingYeMiZongBuShengXiao；必须晚于该回合所有 late HP 变更。
@@ -552,6 +575,11 @@ impl ReplayState {
 
     pub(super) fn has_binding_bypass(&self, actor_side: PlayerSide) -> bool {
         self.mirage_ronghui_value(actor_side, MirageRonghuiValue::ActionAgainIgnoresBinding) > 0
+            || self
+                .actor(actor_side)
+                .identity
+                .xian_mo_strategies
+                .contains(&28001)
     }
 
     pub(super) fn complete_mirage_ronghui_card_classification(
@@ -648,21 +676,21 @@ impl ReplayState {
         match base_id {
             278 => {
                 self.apply_configured_anima(actor_side, card);
-                self.modify_actor_hp(actor_side, other_param(card, 0).max(0), false, false);
+                self.modify_actor_hp(actor_side, param0(card), false, false);
                 self.modify_mirage_ronghui_value(
                     actor_side,
                     MirageRonghuiValue::MirageAnimaAttackCards,
-                    other_param(card, 1).max(0),
+                    param1(card),
                 );
                 Some(false)
             }
             289 => {
                 self.apply_configured_anima(actor_side, card);
-                self.add_actor_negative_status(target_side, 100, other_param(card, 0).max(0));
+                self.add_actor_negative_status(target_side, 100, param0(card));
                 self.modify_mirage_ronghui_value(
                     target_side,
                     MirageRonghuiValue::MirageInternalInjuryAmplifierTurns,
-                    other_param(card, 1).max(0),
+                    param1(card),
                 );
                 Some(false)
             }
@@ -670,7 +698,7 @@ impl ReplayState {
                 self.apply_configured_anima(actor_side, card);
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
                 let mut grid = slot;
-                for _ in 0..other_param(card, 0).max(0) {
+                for _ in 0..param0(card) {
                     let Some(next) = self.mirage_ronghui_next_grid(actor_side, grid) else {
                         self.missing_decision("card:292:next active grid");
                         break;
@@ -695,41 +723,41 @@ impl ReplayState {
                 self.modify_mirage_ronghui_value(
                     actor_side,
                     MirageRonghuiValue::MirageSwordIntentRefund,
-                    other_param(card, 0).max(0),
+                    param0(card),
                 );
                 Some(false)
             }
             315 => {
                 self.apply_configured_anima(actor_side, card);
-                let loss = other_param(card, 1).max(0);
+                let loss = param1(card);
                 self.modify_actor_hp(target_side, -loss, false, false);
                 self.modify_actor_max_hp(target_side, -loss);
                 self.modify_mirage_ronghui_value(
                     actor_side,
                     MirageRonghuiValue::MirageSharpnessConversionTurns,
-                    other_param(card, 0).max(0),
+                    param0(card),
                 );
                 Some(false)
             }
             316 => {
-                self.gain_sharpness(actor_side, other_param(card, 1).max(0));
+                self.gain_sharpness(actor_side, param1(card));
                 self.activate_element(actor_side, Element::Metal);
                 self.activate_element(actor_side, Element::Wood);
                 self.modify_mirage_ronghui_value(
                     actor_side,
                     MirageRonghuiValue::MirageHealingConversionTurns,
-                    other_param(card, 0).max(0),
+                    param0(card),
                 );
                 Some(false)
             }
             317 => {
-                self.gain_water_momentum(actor_side, other_param(card, 0).max(0));
+                self.gain_water_momentum(actor_side, param0(card));
                 self.activate_element(actor_side, Element::Earth);
                 self.activate_element(actor_side, Element::Water);
                 self.modify_mirage_ronghui_value(
                     actor_side,
                     MirageRonghuiValue::MirageWaterDefenseCap,
-                    other_param(card, 1).max(0),
+                    param1(card),
                 );
                 // Card_317.cs (build 25621897)：3 级（rarity 2）写入 HuanTuLingZhenYiChuShangXian，取消回合末加防上限。
                 if card_rarity(card) == 2 {
@@ -743,7 +771,7 @@ impl ReplayState {
             }
             318 => {
                 self.apply_configured_physique(actor_side, card);
-                let injury = other_param(card, 0).max(0);
+                let injury = param0(card);
                 self.add_actor_negative_status(actor_side, 100, injury);
                 self.add_actor_negative_status(target_side, 100, injury);
                 let divisor = other_param(card, 1);
@@ -784,7 +812,7 @@ impl ReplayState {
             122 => {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
                 if self.active_effect_wounded_count() > 0 {
-                    self.modify_paint_finishing_touch(actor_side, other_param(card, 0).max(0));
+                    self.modify_paint_finishing_touch(actor_side, param0(card));
                 }
                 // Dynamic action-again is frozen by the shared action-again
                 // resolver immediately after this effect.
@@ -805,10 +833,10 @@ impl ReplayState {
             }
             124 => {
                 self.apply_configured_anima(actor_side, card);
-                self.gain_guard(actor_side, other_param(card, 1).max(0));
+                self.gain_guard(actor_side, param1(card));
                 self.actor_mut(actor_side)
                     .sword
-                    .hundred_bird_spirit_sword_art += other_param(card, 0).max(0);
+                    .hundred_bird_spirit_sword_art += param0(card);
                 Some(false)
             }
             125 => {
@@ -836,7 +864,7 @@ impl ReplayState {
                 self.apply_configured_anima(actor_side, card);
                 let rear_move = self.check_rear_move(actor_side, was_used_before_effect);
                 if card_rarity(card) > 0 && rear_move {
-                    self.modify_actor_hp(actor_side, other_param(card, 1).max(0), false, false);
+                    self.modify_actor_hp(actor_side, param1(card), false, false);
                 }
                 // Rarity-zero action-again is resolved from the rear-move flag
                 // immediately after this effect.
@@ -844,7 +872,7 @@ impl ReplayState {
             }
             128 => {
                 let mut grid = slot;
-                for _ in 0..other_param(card, 0).max(0) {
+                for _ in 0..param0(card) {
                     let Some(next) = self.mirage_ronghui_next_grid(actor_side, grid) else {
                         self.missing_decision("card:128:next active grid");
                         break;
@@ -856,8 +884,8 @@ impl ReplayState {
                 Some(false)
             }
             129 => {
-                self.add_actor_negative_status(target_side, 100, other_param(card, 0).max(0));
-                for _ in 0..other_param(card, 1).max(0) {
+                self.add_actor_negative_status(target_side, 100, param0(card));
+                for _ in 0..param1(card) {
                     let roll = self.consume_mirage_ronghui_optional_original_random(actor_side);
                     let injury = self.actor(target_side).status.internal_injury.max(0);
                     if roll < other_param(card, 2) && injury > 0 {
@@ -868,21 +896,17 @@ impl ReplayState {
             }
             130 => {
                 let star_power = self.actor(actor_side).astrology.star_power.max(0);
-                let attacked = self.attack_by_config(
-                    actor_side,
-                    card,
-                    star_power * other_param(card, 0).max(0),
-                    slot,
-                );
+                let attacked =
+                    self.attack_by_config(actor_side, card, star_power * param0(card), slot);
                 self.modify_star_power(actor_side, -((star_power + 1) / 2));
                 Some(attacked)
             }
             131 => {
-                self.modify_star_power(actor_side, other_param(card, 1).max(0));
+                self.modify_star_power(actor_side, param1(card));
                 self.modify_mirage_ronghui_value(
                     actor_side,
                     MirageRonghuiValue::SixYaoFanDamage,
-                    other_param(card, 0).max(0),
+                    param0(card),
                 );
                 Some(false)
             }
@@ -890,12 +914,12 @@ impl ReplayState {
                 self.modify_mirage_ronghui_value(
                     actor_side,
                     MirageRonghuiValue::CounterElementAnima,
-                    other_param(card, 0).max(0),
+                    param0(card),
                 );
                 self.modify_mirage_ronghui_value(
                     actor_side,
                     MirageRonghuiValue::CounterElementDefense,
-                    other_param(card, 1).max(0),
+                    param1(card),
                 );
                 Some(false)
             }
@@ -905,28 +929,27 @@ impl ReplayState {
                 self.modify_mirage_ronghui_value(
                     actor_side,
                     MirageRonghuiValue::MoltenRing,
-                    other_param(card, 0).max(0),
+                    param0(card),
                 );
                 Some(false)
             }
             137 => {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
                 self.apply_configured_physique(actor_side, card);
-                self.modify_actor_hp(actor_side, other_param(card, 0).max(0), false, false);
-                self.modify_momentum(actor_side, other_param(card, 1).max(0));
-                self.gain_agility(actor_side, other_param(card, 2).max(0));
+                self.modify_actor_hp(actor_side, param0(card), false, false);
+                self.modify_momentum(actor_side, param1(card));
+                self.gain_agility(actor_side, param2(card));
                 Some(attacked)
             }
             138 => {
                 let status_types = self.negative_status_types_present(actor_side).len() as i64;
-                self.modify_momentum(actor_side, status_types * other_param(card, 0).max(0));
-                let bonus =
-                    self.actor(actor_side).beng.momentum.max(0) * other_param(card, 1).max(0);
+                self.modify_momentum(actor_side, status_types * param0(card));
+                let bonus = self.actor(actor_side).beng.momentum.max(0) * param1(card);
                 Some(self.attack_by_config(actor_side, card, bonus, slot))
             }
             139 => {
-                self.gain_agility(actor_side, other_param(card, 1).max(0));
-                self.add_actor_negative_status(actor_side, 367, other_param(card, 0).max(0));
+                self.gain_agility(actor_side, param1(card));
+                self.add_actor_negative_status(actor_side, 367, param0(card));
                 // 原版 Card_139.cs:123 写入一层 BuffType.MingYeMiZongBu，
                 // BattleCharacter.cs:9815-9819 在首次掉血时按该 Buff 的当前值结算。
                 self.modify_mirage_ronghui_value(
@@ -937,20 +960,21 @@ impl ReplayState {
                 Some(false)
             }
             141 => {
+                // Card_141.cs:115 先于 :99-100：先加 cardConfig.def，再加连云
+                // anima×op0。顺序决定天机•逆施两次反射的先后（4→2 伤先、
+                // 3→1 伤后），后者被雪羽清风 64 的 +1 防全吸收则不再触发 64。
+                // oracle 锚点：pa_b90a1351 卡#4（p1 防 0 非 1）。
+                self.apply_configured_defense(actor_side, card);
                 if has_cloud_chain(self.actor(actor_side)) && self.actor(actor_side).core.anima > 0
                 {
-                    self.gain_defense(
-                        actor_side,
-                        self.actor(actor_side).core.anima * other_param(card, 0).max(0),
-                    );
+                    self.gain_defense(actor_side, self.actor(actor_side).core.anima * param0(card));
                 }
-                self.apply_configured_defense(actor_side, card);
                 Some(false)
             }
             142 => {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
                 let mut grid = slot;
-                for _ in 0..other_param(card, 0).max(0) {
+                for _ in 0..param0(card) {
                     let Some(next) = self.mirage_ronghui_next_grid(actor_side, grid) else {
                         self.missing_decision("card:142:next active grid");
                         break;
@@ -979,7 +1003,7 @@ impl ReplayState {
                 let frenzy = self.actor(actor_side).sword.frenzy_sword.max(0);
                 if frenzy > 0 {
                     self.gain_anima(actor_side, frenzy);
-                    self.gain_defense(actor_side, frenzy * other_param(card, 0).max(0));
+                    self.gain_defense(actor_side, frenzy * param0(card));
                     self.modify_sword_intent(actor_side, frenzy);
                 }
                 Some(attacked)
@@ -989,14 +1013,13 @@ impl ReplayState {
                 let star_power = self.actor(actor_side).astrology.star_power.max(0);
                 self.spend_anima_unchecked(actor_side, anima);
                 self.modify_star_power(actor_side, -star_power);
-                let hp_gain =
-                    anima * other_param(card, 0).max(0) + star_power * other_param(card, 1).max(0);
+                let hp_gain = anima * param0(card) + star_power * param1(card);
                 if hp_gain > 0 {
                     self.modify_actor_max_hp(actor_side, hp_gain);
                     self.modify_actor_hp(actor_side, hp_gain, false, false);
                 }
                 if self.check_rear_move(actor_side, was_used_before_effect) {
-                    self.gain_anima(actor_side, other_param(card, 2).max(0));
+                    self.gain_anima(actor_side, param2(card));
                 }
                 // Dynamic action-again reads the post-effect HpGained ledger.
                 Some(false)
@@ -1005,7 +1028,7 @@ impl ReplayState {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
                 let mut grid = slot;
                 let mut primary_kinds = BTreeSet::new();
-                for _ in 0..other_param(card, 0).max(0) {
+                for _ in 0..param0(card) {
                     let Some(next) = self.mirage_ronghui_next_grid(actor_side, grid) else {
                         self.missing_decision("card:153:next active grid");
                         break;
@@ -1036,11 +1059,10 @@ impl ReplayState {
             }
             154 => {
                 self.apply_configured_physique(actor_side, card);
-                self.modify_momentum(actor_side, other_param(card, 0).max(0));
+                self.modify_momentum(actor_side, param0(card));
                 let divisor = other_param(card, 1);
                 let bonus = if divisor > 0 {
-                    (self.actor(actor_side).core.physique.max(0) / divisor)
-                        .min(other_param(card, 2).max(0))
+                    (self.actor(actor_side).core.physique.max(0) / divisor).min(param2(card))
                 } else {
                     0
                 };
@@ -1048,7 +1070,7 @@ impl ReplayState {
                 Some(false)
             }
             156 => {
-                let printed = other_param(card, 0).max(0);
+                let printed = param0(card);
                 self.modify_actor_max_hp(actor_side, printed);
                 self.modify_actor_hp(actor_side, printed, false, false);
                 let divisor = other_param(card, 1);
@@ -1065,16 +1087,16 @@ impl ReplayState {
             }
             157 => {
                 let hp = self.actor(actor_side).core.hp.max(0);
-                let self_loss = (hp * other_param(card, 0).max(0) + 99) / 100;
+                let self_loss = (hp * param0(card) + 99) / 100;
                 self.modify_actor_hp(actor_side, -self_loss, false, false);
-                let target_loss = self_loss + other_param(card, 1).max(0);
+                let target_loss = self_loss + param1(card);
                 self.modify_actor_hp(target_side, -target_loss, false, false);
                 self.modify_actor_max_hp(target_side, -target_loss);
                 Some(false)
             }
             158 => {
-                let growth = other_param(card, 0).max(0);
-                let loss = other_param(card, 1).max(0);
+                let growth = param0(card);
+                let loss = param1(card);
                 for side in [actor_side, target_side] {
                     self.modify_mirage_ronghui_value(
                         side,
@@ -1091,7 +1113,7 @@ impl ReplayState {
                 Some(false)
             }
             159 => {
-                for _ in 0..other_param(card, 0).max(0) {
+                for _ in 0..param0(card) {
                     match self.consume_mirage_ronghui_optional_decision() {
                         0 => {
                             self.modify_actor_hp(target_side, -6, false, false);
@@ -1110,16 +1132,16 @@ impl ReplayState {
                 Some(false)
             }
             160 => {
-                self.gain_attack_bonus(actor_side, other_param(card, 0).max(0));
+                self.gain_attack_bonus(actor_side, param0(card));
                 self.modify_mirage_ronghui_value(
                     actor_side,
                     MirageRonghuiValue::HpLossAttackBonusCharges,
-                    other_param(card, 1).max(0),
+                    param1(card),
                 );
                 Some(false)
             }
             161 => {
-                self.modify_actor_hp(actor_side, other_param(card, 0).max(0), false, false);
+                self.modify_actor_hp(actor_side, param0(card), false, false);
                 self.apply_configured_defense(actor_side, card);
                 let divisor = other_param(card, 1);
                 if divisor > 0 {
@@ -1152,22 +1174,17 @@ impl ReplayState {
                 Some(false)
             }
             164 => {
-                for _ in 0..other_param(card, 0).max(0) {
+                for _ in 0..param0(card) {
                     let roll = self.consume_mirage_ronghui_optional_original_random(actor_side);
                     if roll >= 10 {
                         self.apply_mirage_ronghui_damage(
                             actor_side,
                             actor_side,
-                            other_param(card, 1).max(0),
+                            param1(card),
                             true,
                         );
                     }
-                    self.apply_mirage_ronghui_damage(
-                        actor_side,
-                        target_side,
-                        other_param(card, 2).max(0),
-                        true,
-                    );
+                    self.apply_mirage_ronghui_damage(actor_side, target_side, param2(card), true);
                 }
                 Some(false)
             }
@@ -1225,9 +1242,9 @@ impl ReplayState {
                 let anima = self.actor(actor_side).core.anima.max(0);
                 let agility = self.actor(actor_side).turn.agility.max(0);
                 let attack = card.attack.unwrap_or(0)
-                    + momentum * other_param(card, 0).max(0)
-                    + anima * other_param(card, 1).max(0)
-                    + agility * other_param(card, 2).max(0);
+                    + momentum * param0(card)
+                    + anima * param1(card)
+                    + agility * param2(card);
                 self.modify_momentum(actor_side, -momentum);
                 self.spend_anima_unchecked(actor_side, anima);
                 self.modify_agility(actor_side, -agility);
@@ -1297,18 +1314,18 @@ impl ReplayState {
                 self.modify_mirage_ronghui_value(
                     target_side,
                     MirageRonghuiValue::CannotGainHp,
-                    other_param(card, 1).max(0),
+                    param1(card),
                 );
                 Some(attacked)
             }
             175 => {
-                let hp = other_param(card, 0).max(0);
+                let hp = param0(card);
                 self.modify_actor_max_hp(actor_side, hp);
                 self.modify_actor_hp(actor_side, hp, false, false);
                 self.modify_mirage_ronghui_value(
                     actor_side,
                     MirageRonghuiValue::DoubleHpAtTurnStart,
-                    other_param(card, 1).max(0),
+                    param1(card),
                 );
                 Some(false)
             }
@@ -1319,12 +1336,12 @@ impl ReplayState {
                 self.modify_actor_hp(target_side, -hp_loss, false, false);
                 let max_hp_loss = (self.actor(target_side).core.max_hp.max(0) + 1) / 2;
                 self.modify_actor_max_hp(target_side, -max_hp_loss);
-                self.add_actor_negative_status(target_side, 104, other_param(card, 0).max(0));
+                self.add_actor_negative_status(target_side, 104, param0(card));
                 Some(false)
             }
             39 => {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
-                self.add_actor_negative_status(target_side, 100, other_param(card, 0).max(0));
+                self.add_actor_negative_status(target_side, 100, param0(card));
                 Some(attacked)
             }
             7_000_093 => {
@@ -1333,10 +1350,10 @@ impl ReplayState {
                 let realm = original_card_realm_level(card.id).unwrap_or(0);
                 if realm <= 4 {
                     let attacked = self.attack_by_config(actor_side, card, 0, slot);
-                    let followups = element_count.min(other_param(card, 1).max(0));
+                    let followups = element_count.min(param1(card));
                     let followup_attacked = self.mirage_ronghui_attack_with_value(
                         actor_side,
-                        other_param(card, 0).max(0),
+                        param0(card),
                         followups,
                         slot,
                     );
@@ -1346,8 +1363,7 @@ impl ReplayState {
                     .mirage_ronghui_value(actor_side, MirageRonghuiValue::FiveElementsCardsUsed);
                 Some(self.mirage_ronghui_attack_with_value(
                     actor_side,
-                    card.attack.unwrap_or(0)
-                        + five_elements_cards_used * other_param(card, 0).max(0),
+                    card.attack.unwrap_or(0) + five_elements_cards_used * param0(card),
                     card.attack_count.unwrap_or(1).max(0) + element_count,
                     slot,
                 ))
@@ -1398,15 +1414,14 @@ impl ReplayState {
         if attack <= 0 || attack_count <= 0 {
             return false;
         }
-        let target_side = opponent_side(actor_side);
         for _ in 0..attack_count {
             // ignore_defense_attacks is segment-counted, so adding one before
             // each segment preserves any pre-existing charges exactly.
             self.actor_mut(actor_side).turn.ignore_defense_attacks += 1;
-            let ignored_guard = self.actor(target_side).core.guard.max(0);
-            self.modify_guard(target_side, -ignored_guard);
+            // 无视护体同理用段计次标透传：目标护体全程保留（原版 WuShiHuTi
+            // 只旁路 :9961 格挡，:11075 击伤/锋锐门仍看到护体）。
+            self.actor_mut(actor_side).turn.ignore_guard_attacks += 1;
             self.apply_attack(actor_side, attack, slot);
-            self.gain_guard(target_side, ignored_guard);
         }
         true
     }

@@ -1,7 +1,8 @@
 use super::original_config::{complete_with_original_card, upgrade_original_card};
 use super::support::{
-    adapt_fixture_card_for_replay, basic_attack_card, div_ceil, is_talent_52_replacement_slot,
-    normalize_base_id, normalized_base_id, permanent_physique_key, seven_stars_stabilize_soul_card,
+    adapt_fixture_card_for_replay, basic_attack_card, div_ceil, is_pu_tong_gong_ji_base_id,
+    is_talent_52_replacement_slot, normalize_base_id, normalized_base_id, permanent_physique_key,
+    seven_stars_stabilize_soul_card,
 };
 use super::{
     DrawnCard, HpMutationReceipt, ReplayAstrologyState, ReplayBengQuanState, ReplayCardSlot,
@@ -71,9 +72,9 @@ impl ReplayPlayer {
         self.identity.talents.contains(&209) || self.identity.talents.contains(&208)
     }
 
-    pub(super) fn from_fixture(
+    pub(super) fn from_fixture_view(
         side: PlayerSide,
-        fixture: &FixturePlayer,
+        fixture: &crate::fixture::FixturePlayerView<'_>,
         historical_overrides: &[HistoricalCardOverride],
     ) -> Self {
         let mut hp = fixture.base_max_hp + fixture.extra_max_hp.unwrap_or(0);
@@ -81,7 +82,7 @@ impl ReplayPlayer {
         // FateStrategy 140 (天衍-猛虎之躯) 的 hp/10 增益在开局钩子结算
         // （apply_battle_start_opening_effects）中按当时当前生命计算：
         // 先手方开局伤害（如 11_000_001 天谕系）先扣血，140 再按扣后生命
-        // 采样（oracle 锚点：mirror-32299000 608126353bbde8d4/round-10 cp0
+        // 采样（oracle 锚点：mirror-32299000 pa_1c8ad428 cp0
         // p2.hp 97 vs 98：100 - 3 = 97 → 97/10 = 9，引擎构造期 100/10 = 10）。
         let permanent_physique = fixture
             .permanent_buff_temp_datas
@@ -100,16 +101,7 @@ impl ReplayPlayer {
         } else {
             Vec::new()
         };
-        let talent_physique = if fixture.talents.contains(&183) {
-            if fixture.fate_strategies.contains(&166) {
-                2
-            } else {
-                1
-            }
-        } else {
-            0
-        };
-        let initial_physique = permanent_physique + talent_physique;
+        let initial_physique = permanent_physique;
         let initial_momentum_limit = fixture.initial_momentum_limit.unwrap_or(6).max(0);
         let initial_temp_life = fixture.last_round_life.unwrap_or(max_hp_base).max(0);
         let initial_defense = fixture.initial_defense.max(0);
@@ -117,13 +109,17 @@ impl ReplayPlayer {
         // battle_start.rs 的 OnBattleStarted 天赋循环位置采样当前体魄执行，
         // 不在构造期预置：原版 case 176（BattleCharacter.cs IL_1411）读取的是
         // 该天赋在天赋循环中的实时 TiPo，入冥（179）先触发 415 疯魔架势
-        // ModifyTiPo(+1) 再被 20176 采样（oracle 锚点：4e59d5176f512748/round-14
+        // ModifyTiPo(+1) 再被 20176 采样（oracle 锚点：pa_fcf69621
         // cp0 p2 10 = 70/7，构造期 69/7 = 9 少 1 血）。
-        let endless_staff_stance =
-            fixture.character_id == Some(4_000_005) && fixture.fate_strategies.contains(&335);
+        // OnBattleStarted:899 角色 4000005 或仙魔 27023 开局获得架势；335/7111 时为棍架势，否则拳。
+        let staff_owner =
+            fixture.character_id == Some(4_000_005) || fixture.xian_mo_strategies.contains(&27023);
+        let endless_staff_stance = staff_owner
+            && (fixture.fate_strategies.contains(&335)
+                || fixture.xian_mo_strategies.contains(&7111));
         let initial_quan_stance = if endless_staff_stance {
             0
-        } else if fixture.talents.contains(&204) || fixture.character_id == Some(4_000_005) {
+        } else if fixture.talents.contains(&204) || staff_owner {
             1
         } else {
             0
@@ -157,7 +153,10 @@ impl ReplayPlayer {
             0
         };
         let initial_meditation = talent_meditation + fate_meditation;
-        if initial_meditation > 0 && character_id != Some(4_000_003) {
+        if initial_meditation > 0
+            && character_id != Some(4_000_003)
+            && !fixture.xian_mo_strategies.contains(&27021)
+        {
             // Other characters pay the setup HP loss directly. The forging
             // character's positive conversion is applied after ReplayState is
             // assembled so it can enter the normal HP mutation pipeline.
@@ -193,9 +192,12 @@ impl ReplayPlayer {
             identity: ReplayPlayerIdentity {
                 level: fixture.level,
                 character_id,
-                fate_strategies: fixture.fate_strategies.clone(),
+                fate_strategies: fixture.fate_strategies.clone().into(),
                 fate_strategy_temp_datas: fixture.fate_strategy_temp_datas.clone(),
-                talents: fixture.talents.clone(),
+                xian_mo_strategies: fixture.xian_mo_strategies.clone().into(),
+                xian_mo_temp_datas: fixture.xian_mo_temp_datas.clone(),
+                talents: fixture.talents.clone().into(),
+                sword_forging_attack: fixture.talent_temp_datas.get("92").copied().unwrap_or(0),
                 talent_resonance_id: fixture.talent_resonance_id,
                 talent_resonance_temp_flags: Vec::new(),
                 ke_yin_card_ids: fixture.used_ke_yin_cards.clone(),
@@ -230,6 +232,7 @@ impl ReplayPlayer {
             },
             sword: ReplaySwordState {
                 sword_intent: initial_sword_intent,
+                pending_sword_intent_outside_card: 0,
                 sword_energy: 0,
                 // FateStrategy 333's metal activation + +2 sharpness now
                 // route through ReplayState::activate_element/gain_sharpness
@@ -500,11 +503,23 @@ impl ReplayPlayer {
                 qi_xing_jie_ming: 0, // FateStrategyFunctions.OnBattleStart 在 battle_start.rs 发放
                 jie_quan_shi: 0,     // FateStrategyFunctions.OnBattleStart 在 battle_start.rs 发放
                 tian_yan_feng_ling_duan_qu: 0, // 同上（431 风灵锻躯）
-                cu_ju_fei_xi: 0,     // 同上（416 促局飞袭）
+                next_anima_gain_bonus: 0,
+                dragon_first_attack_stealth: 0,
+                normal_attack_copy_previous: 0,
+                normal_attack_guard_and_exhaust: 0,
+                normal_attack_bonus_and_exhaust: 0,
+                next_damage_internal_injury: 0,
+                next_card_downgrade: 0,
+                xian_mo_13006_triggered: 0,
+                xian_mo_5011_pending_pu_gong: 0,
+                xian_mo_11003_wuxing_upgrades: 0,
+                skip_hp_deltas: Vec::new(),
+                skip_anima_deltas: Vec::new(),
+                cu_ju_fei_xi: 0,      // 同上（416 促局飞袭）
                 wu_you_ling_niang: 0, // 同上（407 无忧灵酿）
-                wu_jing_gua_yan: 0,  // 同上（395 无尽卦衍）
-                xing_yuan: 0,        // 同上（402 星缘）
-                ke_yin_jing_lei: 0,  // 同上（396 惊雷破敌）
+                wu_jing_gua_yan: 0,   // 同上（395 无尽卦衍）
+                xing_yuan: 0,         // 同上（402 星缘）
+                ke_yin_jing_lei: 0,   // 同上（396 惊雷破敌）
                 fate_cycle: 0,
                 fate_cycle_slots: [0, 0],
                 plum_blossom_twice: 0,
@@ -517,6 +532,7 @@ impl ReplayPlayer {
                 used_rear_move_check: 0,
                 rear_move_succeeded: false,
                 exorcism: 0,
+                xian_guo_bao_zong: 0,
                 heavenly_secret_reverse: 0,
                 vitality_bloom: 0,
                 first_strike: 0,
@@ -568,14 +584,19 @@ impl ReplayPlayer {
                 used_card_count: 0,
                 adaptation: 0,
                 ignore_defense_attacks: if fixture.talents.contains(&25) { 2 } else { 0 },
+                ignore_guard_attacks: 0,
                 ignore_weakness_attacks: 0,
                 next_attack_shatter_defense: 0,
                 attack_segments_performed: 0,
                 extra_actions: 0,
                 agility: fixture.initial_agility.max(0),
                 action_again_count: 0,
+                action_again_blocked_turns: 0,
+                successful_action_again_total: 0,
+                own_turn_count: 0,
+                keyin_shan_feng: 0,
                 wind_spirit_body_forge_count: 0,
-                battle_physique_gain_count: talent_physique.max(0),
+                battle_physique_gain_count: 0,
                 lose_hp_count: 0,
                 lose_hp_times_count: 0,
                 actual_damage_carry: 0,
@@ -611,7 +632,8 @@ impl ReplayPlayer {
                             side,
                             slot_index,
                             card.clone(),
-                        ),
+                        )
+                        .into(),
                         skipped: false,
                         used: false,
                     })
@@ -661,6 +683,18 @@ pub(super) fn prepare_fixture_deck_card(
 }
 
 impl ReplayPlayer {
+    /// XianMoStrategyFunctions.IsSwitchActive：先要求持有策略，缺省 tempData 视为 0（开启）。
+    pub(super) fn xian_mo_switch_active(&self, strategy: i64) -> bool {
+        self.identity.xian_mo_strategies.contains(&strategy)
+            && self
+                .identity
+                .xian_mo_temp_datas
+                .get(&strategy.to_string())
+                .copied()
+                .unwrap_or(0)
+                == 0
+    }
+
     pub(super) fn draw_next_card(
         &mut self,
         nameless_white_deer_skip_limit: i64,
@@ -672,7 +706,12 @@ impl ReplayPlayer {
         let mut skipped_slot_indices = Vec::new();
         let mut skipped_opening_slot_indices = Vec::new();
         let mut fate_398_skipped_fifth_grid = false;
-        for _ in 0..active_slot_count {
+        // 每次星弈断消耗一层都是有限进展，允许 ShiftCard 再绕过已离场的牌。
+        // 只有自上次消耗以来整圈都无法取牌，才可退化为普通攻击。
+        let mut last_break_progress = 0usize;
+        let max_draw_steps = active_slot_count
+            .saturating_mul((self.astrology.star_chess_break.max(0) as usize).saturating_add(1));
+        for _ in 0..max_draw_steps {
             let source_slot = self.deck.queue.remove(0);
             let was_skipped = self
                 .deck
@@ -685,52 +724,15 @@ impl ReplayPlayer {
             if skip_star_chess_break {
                 self.astrology.star_chess_break = (self.astrology.star_chess_break - 1).max(0);
                 skipped_slot_indices.push(source_slot);
-                if skipped_slot_indices.len() == active_slot_count {
-                    return Some(DrawnCard {
-                        source_slot,
-                        card: basic_attack_card(),
-                        fallback_basic_attack: true,
-                        skipped_slots: skipped_slot_indices,
-                        skipped_opening_slots: skipped_opening_slot_indices,
-                        fate_398_skipped_fifth_grid: false,
-                    });
-                }
+                last_break_progress = skipped_slot_indices.len();
                 self.deck.queue.push(source_slot);
                 continue;
-            }
-            let skip_space_spirit_field = self.deck.slots.get(source_slot).is_some_and(|slot| {
-                matches!(normalized_base_id(&slot.card), 350 | 9_000_015)
-                    && source_slot + 2 >= active_slot_count
-                    && !slot.used
-            });
-            if skip_space_spirit_field {
-                self.deck.slots[source_slot].used = true;
             }
             let skip_calamity = !was_skipped
                 && (self.dream_mirage.calamity_skip_mask & (1_i64 << source_slot)) != 0;
             if skip_calamity {
                 self.dream_mirage.calamity_skip_mask &= !(1_i64 << source_slot);
                 skipped_slot_indices.push(source_slot);
-                self.deck.queue.push(source_slot);
-                continue;
-            }
-            let skip_five_elements_spirit_field =
-                self.deck.slots.get(source_slot).is_some_and(|slot| {
-                    normalized_base_id(&slot.card) == 202 && source_slot + 1 >= active_slot_count
-                });
-            if skip_five_elements_spirit_field {
-                self.deck.slots[source_slot].used = true;
-                skipped_slot_indices.push(source_slot);
-                if skipped_slot_indices.len() == active_slot_count {
-                    return Some(DrawnCard {
-                        source_slot,
-                        card: basic_attack_card(),
-                        fallback_basic_attack: true,
-                        skipped_slots: skipped_slot_indices,
-                        skipped_opening_slots: skipped_opening_slot_indices,
-                        fate_398_skipped_fifth_grid: false,
-                    });
-                }
                 self.deck.queue.push(source_slot);
                 continue;
             }
@@ -756,10 +758,10 @@ impl ReplayPlayer {
             if skip_rat_oil {
                 fate_398_skipped_fifth_grid = true;
                 skipped_slot_indices.push(source_slot);
-                if skipped_slot_indices.len() == active_slot_count {
+                if skipped_slot_indices.len() - last_break_progress >= active_slot_count {
                     return Some(DrawnCard {
                         source_slot,
-                        card: basic_attack_card(),
+                        card: basic_attack_card().into(),
                         fallback_basic_attack: true,
                         skipped_slots: skipped_slot_indices,
                         skipped_opening_slots: skipped_opening_slot_indices,
@@ -768,6 +770,89 @@ impl ReplayPlayer {
                 }
                 self.deck.queue.push(source_slot);
                 continue;
+            }
+            // 仙魔 5010 跳过第 6 格起的非普通攻击牌。不看 hadUsed，只看开关。原版 BattleExecuter.cs:1961 仅 SkipCardAnim，无生命扣除。
+            // 7116（第 5 格）不在此处：见下方 fate-cycle 之后的 7116 分支。
+            let skip_5010 = !was_skipped
+                && source_slot >= 5
+                && self.xian_mo_switch_active(5010)
+                && self.deck.slots.get(source_slot).is_some_and(|slot| {
+                    !is_pu_tong_gong_ji_base_id(normalized_base_id(&slot.card))
+                });
+            if skip_5010 {
+                skipped_slot_indices.push(source_slot);
+                if skipped_slot_indices.len() - last_break_progress >= active_slot_count {
+                    return Some(DrawnCard {
+                        source_slot,
+                        card: basic_attack_card().into(),
+                        fallback_basic_attack: true,
+                        skipped_slots: skipped_slot_indices,
+                        skipped_opening_slots: skipped_opening_slot_indices,
+                        fate_398_skipped_fifth_grid: false,
+                    });
+                }
+                self.deck.queue.push(source_slot);
+                continue;
+            }
+            // BattleExecuter 跳牌链（:1942-1981）顺序：FS398 → 5010 → 空间灵田 9000015 →
+            // 五行灵田 202 → 350（7116 已按 live oracle 移到 fate-cycle 之后，见下）。
+            // 被前面循环跳走的牌不会再被灵田循环标记 hadUsed
+            // （oracle pa_ba26f22c：5010 先跳第 8 格五行灵田并扣生命；26125017 起每张 1）。
+            let skip_space_spirit_field = self.deck.slots.get(source_slot).is_some_and(|slot| {
+                matches!(normalized_base_id(&slot.card), 350 | 9_000_015)
+                    && source_slot + 2 >= active_slot_count
+                    && !slot.used
+            });
+            if skip_space_spirit_field {
+                self.deck.slots[source_slot].used = true;
+            }
+            let skip_five_elements_spirit_field =
+                self.deck.slots.get(source_slot).is_some_and(|slot| {
+                    normalized_base_id(&slot.card) == 202 && source_slot + 1 >= active_slot_count
+                });
+            if skip_five_elements_spirit_field {
+                self.deck.slots[source_slot].used = true;
+                skipped_slot_indices.push(source_slot);
+                if skipped_slot_indices.len() - last_break_progress >= active_slot_count {
+                    return Some(DrawnCard {
+                        source_slot,
+                        card: basic_attack_card().into(),
+                        fallback_basic_attack: true,
+                        skipped_slots: skipped_slot_indices,
+                        skipped_opening_slots: skipped_opening_slot_indices,
+                        fate_398_skipped_fifth_grid: false,
+                    });
+                }
+                self.deck.queue.push(source_slot);
+                continue;
+            }
+            // BattleExecuter 跳牌链里 XingYiTiao 循环（星弈•跳）先于 DongZhuJiXian（命运轮回）循环：
+            // 跳牌中途经过的非星弈牌即使落在命运轮回格上也不消耗轮回次数；落到星弈牌后清空跳牌标记，
+            // 命运轮回再对落点牌判定（oracle pa_7c1a37f6：原版轮回只扣 1 次）。
+            let ronghui_star_jump = self.ronghui.star_chess_jump > 0;
+            let is_star_chess = self
+                .deck
+                .slots
+                .get(source_slot)
+                .is_some_and(|slot| slot.card.name.contains("星弈"));
+            if !was_skipped && !skip_space_spirit_field && ronghui_star_jump && !is_star_chess {
+                skipped_slot_indices.push(source_slot);
+                skipped_opening_slot_indices.push(source_slot);
+                if skipped_slot_indices.len() - last_break_progress >= active_slot_count {
+                    return Some(DrawnCard {
+                        source_slot,
+                        card: basic_attack_card().into(),
+                        fallback_basic_attack: true,
+                        skipped_slots: skipped_slot_indices,
+                        skipped_opening_slots: skipped_opening_slot_indices,
+                        fate_398_skipped_fifth_grid: false,
+                    });
+                }
+                self.deck.queue.push(source_slot);
+                continue;
+            }
+            if !was_skipped && !skip_space_spirit_field && ronghui_star_jump && is_star_chess {
+                self.ronghui.star_chess_jump = 0;
             }
             let skip_fate_cycle = !was_skipped
                 && !skip_space_spirit_field
@@ -779,10 +864,10 @@ impl ReplayPlayer {
                 if skip_fate_cycle {
                     skipped_slot_indices.push(source_slot);
                     skipped_opening_slot_indices.push(source_slot);
-                    if skipped_slot_indices.len() == active_slot_count {
+                    if skipped_slot_indices.len() - last_break_progress >= active_slot_count {
                         return Some(DrawnCard {
                             source_slot,
-                            card: basic_attack_card(),
+                            card: basic_attack_card().into(),
                             fallback_basic_attack: true,
                             skipped_slots: skipped_slot_indices,
                             skipped_opening_slots: skipped_opening_slot_indices,
@@ -792,19 +877,29 @@ impl ReplayPlayer {
                     self.deck.queue.push(source_slot);
                     continue;
                 }
-                let ronghui_star_jump = self.ronghui.star_chess_jump > 0;
-                let is_star_chess = self
-                    .deck
-                    .slots
-                    .get(source_slot)
-                    .is_some_and(|slot| slot.card.name.contains("星弈"));
-                if ronghui_star_jump && !is_star_chess {
+                // 仙魔 7116 跳过第 5 格（星弈牌 ModifyAnima(1) + otherParams[0]=3 生命），不看 hadUsed，只看开关。
+                // 位置注意：反编译三版 BattleExecuter 都是 7116（:1951）在洞烛机先（:2013）之前，
+                // 但 live oracle 行为相反——洞烛格含第 5 格时洞烛先跳且触发开局，7116 不吞该格：
+                // pa_f7c24edd #7（洞烛 4→2，血光开局内伤 +2 蛇影放大）、
+                // 同 match round-15 #8（洞烛 6→4，+2）、pa_57ee18a6 #6/#15
+                //（洞烛 4→2/2→0，双血光开局 +4/+8）、pa_6ba96fbf #10、
+                // pa_3a055ce7 #9。按 oracle 把 7116 放到 fate-cycle 之后；
+                // 无重叠时行为与原码一致（7116 照跳第 5 格），FS398 维持原位（无反例）。
+                if source_slot == 4 && self.xian_mo_switch_active(7116) {
+                    let is_star_chess = self
+                        .deck
+                        .slots
+                        .get(source_slot)
+                        .is_some_and(|slot| slot.card.name.contains("星弈"));
+                    if is_star_chess {
+                        self.fate.skip_hp_deltas.push(3);
+                        self.fate.skip_anima_deltas.push(1);
+                    }
                     skipped_slot_indices.push(source_slot);
-                    skipped_opening_slot_indices.push(source_slot);
-                    if skipped_slot_indices.len() == active_slot_count {
+                    if skipped_slot_indices.len() - last_break_progress >= active_slot_count {
                         return Some(DrawnCard {
                             source_slot,
-                            card: basic_attack_card(),
+                            card: basic_attack_card().into(),
                             fallback_basic_attack: true,
                             skipped_slots: skipped_slot_indices,
                             skipped_opening_slots: skipped_opening_slot_indices,
@@ -813,9 +908,6 @@ impl ReplayPlayer {
                     }
                     self.deck.queue.push(source_slot);
                     continue;
-                }
-                if ronghui_star_jump && is_star_chess {
-                    self.ronghui.star_chess_jump = 0;
                 }
                 let skip_nameless_white_deer = nameless_white_deer_skip_limit > 0
                     && (source_slot as i64) < nameless_white_deer_skip_limit
@@ -827,10 +919,10 @@ impl ReplayPlayer {
                     });
                 if skip_nameless_white_deer {
                     skipped_slot_indices.push(source_slot);
-                    if skipped_slot_indices.len() == active_slot_count {
+                    if skipped_slot_indices.len() - last_break_progress >= active_slot_count {
                         return Some(DrawnCard {
                             source_slot,
-                            card: basic_attack_card(),
+                            card: basic_attack_card().into(),
                             fallback_basic_attack: true,
                             skipped_slots: skipped_slot_indices,
                             skipped_opening_slots: skipped_opening_slot_indices,
@@ -850,12 +942,13 @@ impl ReplayPlayer {
                     fate_398_skipped_fifth_grid,
                 });
             }
+            // ShiftCard 里按 skip 标记转走的牌、以及 9000015/350/202 的 SkipCardAnim 跳牌都不调用 TriggerOpening
+            // （原版只有 XingYiTiao / DongZhuJiXian 两个跳牌循环会，见 BattleExecuter:2000/2019）。
             skipped_slot_indices.push(source_slot);
-            skipped_opening_slot_indices.push(source_slot);
-            if skipped_slot_indices.len() == active_slot_count {
+            if skipped_slot_indices.len() - last_break_progress >= active_slot_count {
                 return Some(DrawnCard {
                     source_slot,
-                    card: basic_attack_card(),
+                    card: basic_attack_card().into(),
                     fallback_basic_attack: true,
                     skipped_slots: skipped_slot_indices,
                     skipped_opening_slots: skipped_opening_slot_indices,
@@ -888,6 +981,8 @@ impl ReplayPlayer {
                 && (self.dream_mirage.calamity_skip_mask & (1_i64 << source_slot)) == 0
                 && !(base_id == 202 && source_slot + 1 >= active_slot_count)
                 && !(source_slot == 4 && self.identity.fate_strategies.contains(&398))
+                && !(source_slot == 4 && self.xian_mo_switch_active(7116))
+                && !(source_slot >= 5 && self.xian_mo_switch_active(5010))
                 && !(self.fate.fate_cycle > 0
                     && self.fate.fate_cycle_slots.iter().any(|&cycle_slot| {
                         cycle_slot > 0 && cycle_slot == (source_slot + 1) as i64
@@ -918,7 +1013,7 @@ impl ReplayPlayer {
     pub(super) fn complete_drawn_card(&mut self, drawn: &DrawnCard, skipped: bool) {
         if let Some(slot) = self.deck.slots.get_mut(drawn.source_slot) {
             if drawn.fallback_basic_attack {
-                slot.card = basic_attack_card();
+                slot.card = basic_attack_card().into();
                 slot.skipped = false;
             } else {
                 slot.skipped = skipped;
@@ -936,7 +1031,7 @@ impl ReplayPlayer {
     ) {
         if let Some(slot) = self.deck.slots.get_mut(drawn.source_slot) {
             if drawn.fallback_basic_attack {
-                slot.card = basic_attack_card();
+                slot.card = basic_attack_card().into();
                 slot.skipped = false;
             } else {
                 slot.skipped = skipped;
@@ -979,6 +1074,44 @@ impl ReplayPlayer {
         self.deck.queue.push(source_slot);
     }
 
+    pub(super) fn shift_next_raw_card(&mut self) -> Option<DrawnCard> {
+        let active_slot_count = self.deck.queue.len();
+        if active_slot_count == 0 {
+            return None;
+        }
+        let mut skipped_slot_indices = Vec::new();
+        for _ in 0..active_slot_count {
+            let source_slot = self.deck.queue.remove(0);
+            let was_skipped = self
+                .deck
+                .slots
+                .get(source_slot)
+                .is_some_and(|slot| slot.skipped);
+            if was_skipped {
+                skipped_slot_indices.push(source_slot);
+                self.deck.queue.push(source_slot);
+                continue;
+            }
+            let card = self.deck.slots[source_slot].card.clone();
+            return Some(DrawnCard {
+                source_slot,
+                card,
+                fallback_basic_attack: false,
+                skipped_slots: skipped_slot_indices,
+                skipped_opening_slots: Vec::new(),
+                fate_398_skipped_fifth_grid: false,
+            });
+        }
+        Some(DrawnCard {
+            source_slot: 0,
+            card: basic_attack_card().into(),
+            fallback_basic_attack: true,
+            skipped_slots: skipped_slot_indices,
+            skipped_opening_slots: Vec::new(),
+            fate_398_skipped_fifth_grid: false,
+        })
+    }
+
     pub(super) fn tick_turn_end_statuses(&mut self) -> TurnEndStatusDecay {
         let mut decay = TurnEndStatusDecay::default();
         if self.mirage_ronghui.cannot_gain_hp > 0 {
@@ -997,6 +1130,9 @@ impl ReplayPlayer {
             self.status.entangle -= 1;
             decay.entangle = 1;
         }
+        if self.turn.action_again_blocked_turns > 0 {
+            self.turn.action_again_blocked_turns -= 1;
+        }
         decay
     }
 
@@ -1010,7 +1146,9 @@ impl ReplayPlayer {
         if amount <= 0 {
             return 0;
         }
-        if self.identity.fate_strategies.contains(&148) {
+        if self.identity.fate_strategies.contains(&148)
+            || self.identity.xian_mo_strategies.contains(&7035)
+        {
             self.elements.wood_thorn += 1;
             amount -= 1;
         }
@@ -1093,7 +1231,7 @@ impl ReplayPlayer {
     }
 }
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn mutate_actor_hp(
         &mut self,
         actor_side: PlayerSide,
@@ -1106,10 +1244,6 @@ impl ReplayState {
         let hp_events_before = self.actor(actor_side).dream_mirage.hp_gain_event_count;
         let hp_gained_before = self.actor(actor_side).dream_mirage.turn_hp_gained;
         let receipt = self.mutate_actor_hp_inner(actor_side, delta, is_cost, ignore_guard);
-        // 天髓葫芦-style extra-action grant used to be a raw field write
-        // inside the runtime layer; it now lives here (receipt-capable layer)
-        // so `extraActions` changes are recorded with the same attribution
-        // context as the hp mutation that triggered them.
         if receipt.ledger > 0 && self.actor(actor_side).fate.wild_ferry_seal > 0 {
             self.actor_mut(actor_side).fate.wild_ferry_seal -= 1;
             self.modify_extra_actions(actor_side, 1);
@@ -1171,11 +1305,11 @@ impl ReplayState {
         // 非零关闭；成本、负向生命变化及被拒绝的变化不进入该分支。
         if !is_cost
             && delta > 0
-            && self
+            && (self
                 .actor(actor_side)
                 .identity
                 .fate_strategies
-                .contains(&394)
+                .contains(&394))
             && self
                 .actor(actor_side)
                 .identity
@@ -1184,6 +1318,16 @@ impl ReplayState {
                 .copied()
                 .unwrap_or(0)
                 == 0
+        {
+            delta += 1;
+        }
+        if !is_cost
+            && delta > 0
+            && self
+                .actor(actor_side)
+                .identity
+                .xian_mo_strategies
+                .contains(&7076)
         {
             delta += 1;
         }
@@ -1226,9 +1370,11 @@ impl ReplayState {
             self.actor_mut(actor_side).core.temporary_guard = (temporary_guard - 1).max(0);
             // 一层护体抵挡整笔损失，所以记的是 delta（已过 no-hp-loss 标记）而不是 requested：
             // requested 在被标记吞掉时是 0，会把"什么都没挡"记成挡了一大笔。
-            self.actor_mut(actor_side)
-                .prevention
-                .hp_loss_prevented_by_guard += (-delta).max(0);
+            if OBSERVE {
+                self.actor_mut(actor_side)
+                    .prevention
+                    .hp_loss_prevented_by_guard += (-delta).max(0);
+            }
             return HpMutationReceipt::prevented_by(requested, super::HpMutationPrevention::Guard);
         }
         if !is_cost && delta < 0 && self.actor(actor_side).fate.graft_flowers_to_tree > 0 {
@@ -1247,6 +1393,7 @@ impl ReplayState {
                 }
             }
         }
+        let mut bloom_fills_max_hp = false;
         if !is_cost && delta > 0 {
             // BattleCharacter.ModifyHp:9650-9673. Egg-yolk zongzi increases
             // Appetite before every positive modifier reads it; red-date
@@ -1275,21 +1422,33 @@ impl ReplayState {
             );
             if overflow > 0 {
                 self.modify_actor_max_hp(actor_side, overflow);
+                // ModifyHp:10061-10072 sets hp to the new max even when
+                // ShunYing amplified the bloom's ModifyMaxHp request.
+                bloom_fills_max_hp = true;
             }
         }
         let mut receipt = self
             .actor_mut(actor_side)
             .apply_hp_delta_raw(delta, is_cost);
         receipt.requested = requested;
-        self.apply_after_hp_modify_pipeline(actor_side, receipt.applied);
+        if bloom_fills_max_hp {
+            let extra = self.actor(actor_side).core.max_hp - self.actor(actor_side).core.hp;
+            self.actor_mut(actor_side).core.hp += extra;
+            receipt.applied += extra;
+        }
+        self.apply_after_hp_modify_pipeline(actor_side, receipt.effect_delta());
+        // ModifyHp:10107 precedes LingYuanWaiFang:10112. Both can re-enter
+        // the target's defense hooks, so their order affects subsequent hits.
+        if !is_cost && receipt.resolved > 0 {
+            self.apply_heavenly_secret_reverse_from_gain(actor_side, receipt.resolved);
+        }
         if !is_cost
             && receipt.resolved > receipt.applied
             && self.actor(actor_side).astrology.ling_yuan_wai_fang > 0
         {
-            self.apply_damage(actor_side, receipt.resolved - receipt.applied, false, false, false);
+            self.apply_reflect_damage(actor_side, receipt.resolved - receipt.applied);
         }
         if !is_cost && receipt.resolved > 0 {
-            self.apply_heavenly_secret_reverse_from_gain(actor_side, receipt.resolved);
             self.apply_dream_mirage_positive_resource_gain_damage(
                 actor_side,
                 receipt.resolved,
@@ -1298,17 +1457,27 @@ impl ReplayState {
         }
         if is_cost
             && receipt.applied < 0
-            && self.actor(actor_side).identity.talent_resonance_id == Some(50)
+            && (self.actor(actor_side).identity.talent_resonance_id == Some(50))
         {
             self.modify_actor_hp(actor_side, 2, false, false);
+        }
+        if is_cost
+            && receipt.applied < 0
+            && (self
+                .actor(actor_side)
+                .identity
+                .fate_strategies
+                .contains(&149))
+        {
+            self.apply_physique_amount(actor_side, 1);
         }
         if is_cost
             && receipt.applied < 0
             && self
                 .actor(actor_side)
                 .identity
-                .fate_strategies
-                .contains(&149)
+                .xian_mo_strategies
+                .contains(&7102)
         {
             self.apply_physique_amount(actor_side, 1);
         }
@@ -1317,7 +1486,7 @@ impl ReplayState {
 
     /// The single executable entry for BattleCharacter.AfterHpModifyEffect.
     fn apply_after_hp_modify_pipeline(&mut self, actor_side: PlayerSide, actual_delta: i64) {
-        for phase in ORIGINAL_AFTER_HP_MODIFY_PHASES {
+        static_phases! { phase in ORIGINAL_AFTER_HP_MODIFY_PHASES [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] {
             match phase {
                 AfterHpModifyPhase::SpiritTurtleFootwork => {
                     let value = self.actor(actor_side).turn.spirit_turtle_footwork.max(0);
@@ -1377,12 +1546,13 @@ impl ReplayState {
                 }
                 AfterHpModifyPhase::BloodCalamity => {
                     if actual_delta < 0 && self.actor(actor_side).status.blood_calamity > 0 {
-                        // 原版 BattleCharacter.cs:9902-9905 走
-                        // ModifyBuffValue(WaiShang, 1)，必须经过负面状态共享管线；
-                        // 首次负面状态会在这里消耗星蚀，而不能延后到同张牌随后
-                        // 显式发放的虚弱。
-                        self.add_actor_negative_status(actor_side, 105, 1);
+                        // 原版 BattleCharacter.cs:10182-10186：
+                        // ModifyBuffValue(BuffType.XueGuangZhiZai, -1) 先于
+                        // ModifyBuffValue(BuffType.WaiShang, 1)。
+                        // 必须先扣减血光之灾层数，再走负面状态共享管线（避免负面状态
+                        // 触发反伤等二次扣血重入 ModifyHp 时递归无限触发）。
                         self.modify_blood_calamity(actor_side, -1);
+                        self.add_actor_negative_status(actor_side, 105, 1);
                     }
                 }
                 AfterHpModifyPhase::HpLossAttackCharge => {
@@ -1429,7 +1599,7 @@ impl ReplayState {
                     }
                 }
             }
-        }
+        } }
     }
 
     /// Shared YanQi continuation for both ModifyHp and ModifyMaxHp. The nested
@@ -1454,6 +1624,6 @@ impl ReplayState {
         ignore_guard: bool,
     ) -> i64 {
         self.mutate_actor_hp(actor_side, delta, is_cost, ignore_guard)
-            .applied
+            .effect_delta()
     }
 }

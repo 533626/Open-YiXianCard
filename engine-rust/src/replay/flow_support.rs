@@ -2,7 +2,7 @@ use super::support::normalized_base_id;
 use super::ReplayState;
 use crate::model::{CardDefinition, PlayerSide};
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     fn turn_end_hook_pair(&self) -> super::ReplayTurnEndHookPair {
         super::ReplayTurnEndHookPair {
             p1: self.turn_end_hook_snapshot(PlayerSide::P1),
@@ -39,7 +39,7 @@ impl ReplayState {
         hook: &'static str,
         apply: impl FnOnce(&mut Self) -> R,
     ) -> R {
-        if !self.observation.mode.is_detailed() {
+        if !(OBSERVE && self.observation.mode.is_detailed()) {
             return apply(self);
         }
         let before = self.turn_end_hook_pair();
@@ -76,10 +76,10 @@ impl ReplayState {
             .slots
             .get_mut(drawn.source_slot)
         {
-            slot.card = replacement.clone();
+            slot.card = replacement.clone().into();
         }
         self.actor_mut(actor_side).chance.you_ming_xu_hun_quan -= 1;
-        drawn.card = replacement;
+        drawn.card = replacement.into();
     }
 
     pub(super) fn spirit_formation_echo_card(

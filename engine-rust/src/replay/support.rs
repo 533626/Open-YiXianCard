@@ -3,13 +3,13 @@ use super::original_config::{
 };
 use super::{Element, ReplayPlayer, BASIC_ATTACK_DAMAGE, BASIC_ATTACK_ID, PERMANENT_PHYSIQUE_KEY};
 use crate::fixture::FixturePlayer;
-use crate::id_hash::IdMap;
+use crate::id_hash::BaseIdFlags;
 use crate::model::{CardDefinition, PlayerSide};
 use std::collections::HashMap;
 use std::sync::OnceLock;
 
 /// base id → 特征位掩码（位号见 `trait_bit`）。
-static CARD_TRAITS_BY_BASE_ID: OnceLock<IdMap<u16>> = OnceLock::new();
+static CARD_TRAITS_BY_BASE_ID: OnceLock<BaseIdFlags> = OnceLock::new();
 
 const ELEMENT_NAME_TOKENS: [(&str, Element); 5] = [
     ("金灵", Element::Metal),
@@ -40,36 +40,36 @@ fn trait_bit(trait_name: &str) -> Option<u16> {
 // 键在加载时解析成 i64、特征压成位掩码：热路径（每次出牌数十次）不再为查表分配字符串，
 // 也不再逐个比较特征字符串。JSON 的键全是规范十进制整数（parse 失败即 panic），
 // 与旧的 `base_id.to_string()` 查法一一对应。
-fn card_traits_by_base_id() -> &'static IdMap<u16> {
+fn card_traits_by_base_id() -> &'static BaseIdFlags {
     CARD_TRAITS_BY_BASE_ID.get_or_init(|| {
         let raw: HashMap<String, Vec<String>> =
             serde_json::from_str(include_str!("../../../shared/data/base-card-traits.json"))
                 .expect("base-card-traits.json parses");
-        raw.into_iter()
-            .map(|(key, traits)| {
-                let id: i64 = key
-                    .parse()
-                    .expect("base-card-traits.json keys are integers");
-                assert_eq!(
-                    id.to_string(),
-                    key,
-                    "base-card-traits.json key is canonical"
-                );
-                let mask = traits.iter().fold(0_u16, |mask, name| {
-                    mask | 1
-                        << trait_bit(name).unwrap_or_else(|| {
-                            panic!("base-card-traits.json trait {name:?} missing from trait_bit")
-                        })
-                });
-                (id, mask)
-            })
-            .collect()
+        let mut table = BaseIdFlags::default();
+        for (key, traits) in raw {
+            let id: i64 = key
+                .parse()
+                .expect("base-card-traits.json keys are integers");
+            assert_eq!(
+                id.to_string(),
+                key,
+                "base-card-traits.json key is canonical"
+            );
+            let mask = traits.iter().fold(0_u16, |mask, name| {
+                mask | 1
+                    << trait_bit(name).unwrap_or_else(|| {
+                        panic!("base-card-traits.json trait {name:?} missing from trait_bit")
+                    })
+            });
+            table.insert(id, mask);
+        }
+        table
     })
 }
 
 #[inline]
 fn base_id_trait_mask(base_id: i64) -> u16 {
-    card_traits_by_base_id().get(&base_id).copied().unwrap_or(0)
+    card_traits_by_base_id().get(base_id)
 }
 
 #[inline(always)]
@@ -108,6 +108,7 @@ pub(super) fn has_cloud_chain(actor: &ReplayPlayer) -> bool {
     // Original BattleCharacter.HasBuff, BattleCharacter.cs:8306-8320: these virtual
     // sources all satisfy HasBuff(LianYun), even without a stored LianYun buff.
     actor.sword.cloud_chain > 0
+        || actor.identity.xian_mo_strategies.contains(&11001)
         || actor.identity.talents.contains(&14)
         || (actor.identity.talent_resonance_id == Some(10)
             && actor.identity.talent_resonance_temp_flags.contains(&10))
@@ -130,6 +131,7 @@ pub(super) fn opponent_side(side: PlayerSide) -> PlayerSide {
     }
 }
 
+#[inline(always)]
 pub(super) fn normalized_base_id(card: &CardDefinition) -> i64 {
     card.base_id.unwrap_or_else(|| normalize_base_id(card.id))
 }
@@ -161,41 +163,47 @@ pub(super) fn adapt_fixture_card_for_replay(
         card.sword_intent = Some(card_rarity(&card) + 2);
     }
     if card.id == 19 {
-        let wuji_bonus = if fixture.talents.contains(&30_096) {
-            1
-        } else {
-            0
-        };
-        let stable_sword_edge = fixture.talents.contains(&20_093);
-        let forged_sword_attack = if fixture.talents.contains(&92) {
-            fixture.talent_temp_datas.get("92").copied().unwrap_or(0) + wuji_bonus
-        } else {
-            0
-        };
-        let sword_forging_bonus = if fixture.talents.contains(&10_093) {
-            3
-        } else {
-            0
-        };
-        let moon_shadow_penalty = if fixture.talents.contains(&20_096) {
-            // TalentConfig 20096 otherParams[1]; Steam build 24217566: 7 -> 3; 25796222: 3 -> 7.
-            7
-        } else {
-            0
-        };
-        let sharp_sword_pattern_penalty = if fixture.talents.contains(&30_094) {
-            2
-        } else {
-            0
-        };
-        let attack = card.attack.unwrap_or(0) + forged_sword_attack + sword_forging_bonus
-            - if stable_sword_edge { 2 } else { 0 }
-            - sharp_sword_pattern_penalty
-            - moon_shadow_penalty;
-        card.attack = Some(attack.max(1));
-        if stable_sword_edge {
-            card.defense = Some(9 + wuji_bonus);
-        }
+        card = adapt_cheng_xin_card(
+            card,
+            &fixture.talents,
+            fixture.talent_temp_datas.get("92").copied().unwrap_or(0),
+        );
+    }
+    card
+}
+
+/// RefreshSpecialCard reloads Card 19 using its current executing owner.
+pub(super) fn adapt_cheng_xin_card(
+    mut card: CardDefinition,
+    talents: &[i64],
+    sword_forging_attack: i64,
+) -> CardDefinition {
+    let wuji_bonus = if talents.contains(&30_096) { 1 } else { 0 };
+    let stable_sword_edge = talents.contains(&20_093);
+    let forged_sword_attack = if talents.contains(&92) {
+        // 锻剑 temp 裸加，无极 +1 另计（UpdateCardInfo 两处独立）。
+        sword_forging_attack
+    } else {
+        0
+    };
+    let sword_forging_bonus = if talents.contains(&10_093) { 3 } else { 0 };
+    let moon_shadow_penalty = if talents.contains(&20_096) {
+        // TalentConfig 20096 otherParams[1]; Steam build 24217566: 7 -> 3; 25796222: 3 -> 7.
+        7
+    } else {
+        0
+    };
+    let sharp_sword_pattern_penalty = if talents.contains(&30_094) { 2 } else { 0 };
+    // Card_19.UpdateCardInfo：30096（无极）恒 +1 攻（num=1 后
+    // cardConfig.attack += num），不以前置 92/20093 为条件。
+    let attack = card.attack.unwrap_or(0) + forged_sword_attack + sword_forging_bonus
+        + wuji_bonus
+        - if stable_sword_edge { 2 } else { 0 }
+        - sharp_sword_pattern_penalty
+        - moon_shadow_penalty;
+    card.attack = Some(attack.max(1));
+    if stable_sword_edge {
+        card.defense = Some(9 + wuji_bonus);
     }
     card
 }
@@ -227,10 +235,12 @@ pub(super) fn wu_xing_count_in_deck(actor: &ReplayPlayer) -> i64 {
     // BattleCharacter.GetWuXingCountInDeck (BattleCharacter.cs:12118-12177):
     // with fate strategy 417 the talent-199 card params' names also count
     // toward the distinct 五行 set. oracle 锚点: mirror-32219000
-    // 4eea252403546e4b/round-13 checkpoint[4] 混元化灵 p1.anima 7 (引擎 6:
+    // pa_b5731607 checkpoint[4] 混元化灵 p1.anima 7 (引擎 6:
     // talent199 土灵•合八荒 漏计); round-16 checkpoint[4] anima 13 (引擎 10:
     // 金/水/土 三系漏计)。
-    if actor.identity.fate_strategies.contains(&417) {
+    if actor.identity.fate_strategies.contains(&417)
+        || actor.identity.xian_mo_strategies.contains(&7085)
+    {
         for card_id in actor.identity.talent_199_card_ids.iter().copied() {
             if card_id <= 0 {
                 continue;
@@ -263,7 +273,7 @@ pub(super) fn active_deck_cards(actor: &ReplayPlayer) -> impl Iterator<Item = &C
         .slots
         .iter()
         .take(actor.deck.active_slot_count.min(actor.deck.slots.len()))
-        .map(|slot| &slot.card)
+        .map(|slot| slot.card.definition())
 }
 
 pub(super) fn elements_in_card_name(card: &CardDefinition) -> Vec<Element> {
@@ -334,6 +344,12 @@ pub(super) fn effective_anima_cost(
         - five_elements_spirit_strike_reduction
         - hungry_tiger_reduction
         - ling_long_travel_reduction
+        - i64::from(
+            actor.identity.xian_mo_strategies.contains(&7051)
+                && super::original_config::original_card_current_desc_contains_action_again(
+                    card.id,
+                ),
+        )
         - hundred_bird_reduction
         - star_moon_fan_reduction
         - actor.turn.next_card_anima_cost_reduction.max(0))
@@ -345,10 +361,11 @@ fn check_water_billow_anima_free(actor: &ReplayPlayer) -> bool {
     // base 7000019/271 在 CheckWuXing(src, JiHuoShuiLing) 为真时不耗灵气。
     // CheckWuXing（CardActionBase.cs:5322-5356）除激活/龙马精神/UsedWuXing
     // 相生链外，卡组含 7030077|7040077 五行刺恒真时恒真。
-    // oracle 锚点：hf-32308000 c92e455bf4f24b5b/round-09 cp3（p2 卡组含
+    // oracle 锚点：hf-32308000 pa_e24b4042 cp3（p2 卡组含
     // 7030077，turn4 原版 0 灵气打出 7020019 水灵•波澜；引擎漏判恒真，
     // 灵气短缺跳过该回合 → actorTurn 4 vs 5）。
     actor.elements.activated_elements.contains(&Element::Water)
+        || actor.identity.xian_mo_strategies.contains(&11003)
         || actor.elements.last_element == Some(Element::Water)
         || actor.elements.last_element.is_some_and(|last| {
             is_element_generated_by(last, Element::Water, actor.identity.talents.contains(&137))
@@ -439,10 +456,13 @@ pub(super) fn is_frenzy_sword_with_options(
         || (!ignore_temporary_buff
             && (has_temporary_all_purpose_sword_identity(actor)
                 || has_temporary_frenzy_sword_identity(actor)))
-        || (actor.identity.fate_strategies.contains(&319)
+        || ((actor.identity.fate_strategies.contains(&319)
+            || actor.identity.xian_mo_strategies.contains(&7049))
             && card.career_name.as_deref() == Some("QinShi"))
         || (actor.identity.fate_strategies.contains(&381)
             && original_card_desc_contains_wounded(card))
+        || (actor.identity.xian_mo_strategies.contains(&7068)
+            && super::original_config::original_card_current_desc_contains_wounded(card.id))
 }
 
 pub(super) fn is_frenzy_sword_for_actor(actor: &ReplayPlayer, card: &CardDefinition) -> bool {
@@ -479,11 +499,7 @@ pub(super) fn is_sword_formation_card(actor: &ReplayPlayer, card: &CardDefinitio
         || base_id == 213
         || (actor.identity.talents.contains(&192)
             && actor.sword.ling_wu_card_base_ids.contains(&base_id))
-        || (actor
-            .deck
-            .slots
-            .iter()
-            .any(|slot| normalized_base_id(&slot.card) == 312)
+        || (actor.deck.slots.contains_base(312)
             && !super::original_config::original_card_is_hidden_or_mi_shu(card.id)
             && is_frenzy_sword(actor, card))
 }
@@ -506,11 +522,7 @@ pub(super) fn is_sword_card(actor: &ReplayPlayer, card: &CardDefinition) -> bool
 }
 
 pub(super) fn has_base_card_in_deck(actor: &ReplayPlayer, base_id: i64) -> bool {
-    actor
-        .deck
-        .slots
-        .iter()
-        .any(|slot| normalized_base_id(&slot.card) == base_id)
+    actor.deck.slots.contains_base(base_id)
 }
 
 pub(super) fn has_active_base_card_in_deck(actor: &ReplayPlayer, base_id: i64) -> bool {
@@ -563,10 +575,19 @@ pub(super) fn element_from_card(card: &CardDefinition) -> Option<Element> {
             // ActiveWuXingInName uses original config names even when the card
             // body is not registered (e.g. 灵瓶 stores 7000112 / 7000116).
             // CardDefinition.name.contains uses precomputed token bits.
-            ELEMENT_NAME_TOKENS
-                .iter()
-                .find(|(token, _)| card.name.contains(*token))
-                .map(|(_, element)| *element)
+            if card.name.contains("金灵") {
+                Some(Element::Metal)
+            } else if card.name.contains("木灵") {
+                Some(Element::Wood)
+            } else if card.name.contains("水灵") {
+                Some(Element::Water)
+            } else if card.name.contains("火灵") {
+                Some(Element::Fire)
+            } else if card.name.contains("土灵") {
+                Some(Element::Earth)
+            } else {
+                None
+            }
         })
 }
 
@@ -603,7 +624,11 @@ pub(super) fn active_neighbor_card(
     direction: i64,
 ) -> Option<&CardDefinition> {
     let index = active_neighbor_slot_index(actor, slot_index, direction)?;
-    actor.deck.slots.get(index).map(|slot| &slot.card)
+    actor
+        .deck
+        .slots
+        .get(index)
+        .map(|slot| slot.card.definition())
 }
 
 pub(super) fn active_neighbor_slot_index(
@@ -681,7 +706,7 @@ pub(super) fn is_sword_formation_base_id(base_id: i64) -> bool {
     // 「防+{def}；将最多{otherParams[0]}[剑意]转为[灵气]；[再次行动]」）
     // 名字含剑阵，属剑阵牌：缺它会导致百兽灵剑阵（49）的首次剑阵触发、
     // 溟空剑阵诀追击与连环剑阵链对其失效（oracle 锚点：mirror-32299000
-    // 4371d0685fd859f8/round-14 cp9 p1.hp 90 vs 98、cp13 83 vs 90）。
+    // pa_5b24ea38 cp9 p1.hp 90 vs 98、cp13 83 vs 90）。
     matches!(
         base_id,
         48 | 49

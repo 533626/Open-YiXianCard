@@ -42,6 +42,123 @@ pub struct BattleFixture {
     pub players: FixturePlayers,
 }
 
+/// Borrowed preparation view. Replay mutates its own runtime state, never this
+/// input; deck/hand/seed overlays have the same semantics as an owned variant.
+pub(crate) struct BattleFixtureView<'a> {
+    base: &'a BattleFixture,
+    pub players: FixturePlayerViews<'a>,
+    pub first_player_side: PlayerSide,
+    pub historical_card_overrides: std::borrow::Cow<'a, [HistoricalCardOverride]>,
+    pub fallback_seed_override: Option<u32>,
+    pub capture_decision_events: bool,
+}
+
+pub(crate) struct FixturePlayerViews<'a> {
+    pub p1: FixturePlayerView<'a>,
+    pub p2: FixturePlayerView<'a>,
+}
+
+pub(crate) struct FixturePlayerView<'a> {
+    base: &'a FixturePlayer,
+    pub cards: &'a [CardDefinition],
+    pub hand_cards: &'a [i64],
+}
+
+impl<'a> From<&'a FixturePlayer> for FixturePlayerView<'a> {
+    fn from(base: &'a FixturePlayer) -> Self {
+        Self {
+            base,
+            cards: &base.cards,
+            hand_cards: &base.hand_cards,
+        }
+    }
+}
+impl std::ops::Deref for FixturePlayerView<'_> {
+    type Target = FixturePlayer;
+    fn deref(&self) -> &Self::Target {
+        self.base
+    }
+}
+impl std::ops::Deref for BattleFixtureView<'_> {
+    type Target = BattleFixture;
+    fn deref(&self) -> &Self::Target {
+        self.base
+    }
+}
+impl<'a> BattleFixtureView<'a> {
+    pub fn new(base: &'a BattleFixture) -> Self {
+        Self::with_players(
+            base,
+            &base.players.p1,
+            &base.players.p2,
+            base.first_player_side,
+        )
+    }
+    pub fn with_players(
+        base: &'a BattleFixture,
+        p1: &'a FixturePlayer,
+        p2: &'a FixturePlayer,
+        first_player_side: PlayerSide,
+    ) -> Self {
+        Self {
+            base,
+            players: FixturePlayerViews {
+                p1: p1.into(),
+                p2: p2.into(),
+            },
+            first_player_side,
+            historical_card_overrides: std::borrow::Cow::Borrowed(&base.historical_card_overrides),
+            fallback_seed_override: None,
+            capture_decision_events: true,
+        }
+    }
+    pub fn with_deck(
+        &mut self,
+        side: PlayerSide,
+        cards: &'a [CardDefinition],
+        hand: Option<&'a [i64]>,
+    ) {
+        let player = match side {
+            PlayerSide::P1 => &mut self.players.p1,
+            PlayerSide::P2 => &mut self.players.p2,
+        };
+        player.cards = cards;
+        if let Some(hand) = hand {
+            player.hand_cards = hand;
+        }
+        if self
+            .historical_card_overrides
+            .iter()
+            .any(|entry| entry.side == side)
+        {
+            self.historical_card_overrides
+                .to_mut()
+                .retain(|entry| entry.side != side);
+        }
+    }
+    pub fn reborrow(&self) -> BattleFixtureView<'_> {
+        BattleFixtureView {
+            base: self.base,
+            players: FixturePlayerViews {
+                p1: FixturePlayerView {
+                    base: self.players.p1.base,
+                    cards: self.players.p1.cards,
+                    hand_cards: self.players.p1.hand_cards,
+                },
+                p2: FixturePlayerView {
+                    base: self.players.p2.base,
+                    cards: self.players.p2.cards,
+                    hand_cards: self.players.p2.hand_cards,
+                },
+            },
+            first_player_side: self.first_player_side,
+            historical_card_overrides: std::borrow::Cow::Borrowed(&self.historical_card_overrides),
+            fallback_seed_override: self.fallback_seed_override,
+            capture_decision_events: self.capture_decision_events,
+        }
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
 pub struct FixtureSource {
@@ -135,13 +252,17 @@ pub struct HistoricalCardPatch {
 
 impl BattleFixture {
     pub fn validate(&self) -> Result<()> {
+        self.validate_with_players(&self.players.p1, &self.players.p2)
+    }
+
+    pub fn validate_with_players(&self, p1: &FixturePlayer, p2: &FixturePlayer) -> Result<()> {
         if self.schema_version != 1 {
             return Err(EngineError::InvalidFixture(format!(
                 "unsupported schemaVersion {}",
                 self.schema_version
             )));
         }
-        for (side, player) in [("p1", &self.players.p1), ("p2", &self.players.p2)] {
+        for (side, player) in [("p1", p1), ("p2", p2)] {
             if player.active_slot_count == 0 || player.active_slot_count > DECK_SIZE {
                 return Err(EngineError::InvalidFixture(format!(
                     "{side} activeSlotCount must be between 1 and {DECK_SIZE}, got {}",
@@ -157,8 +278,7 @@ impl BattleFixture {
             }
             // 低格轮次（R1–R5，activeSlotCount < 8）的夹具允许短数组：
             // 战斗只走 queue（0..active_slot_count），超出的槽位从不入列，
-            // 上面的 active_slot_count <= cards.len() 已是充分下界；补齐到
-            // DECK_SIZE 的旧要求只是格式惯性（此前 119 blocked 全因此被拒判）。
+            // 上面的 active_slot_count <= cards.len() 已是充分下界。
             if player.cards.len() > DECK_SIZE {
                 return Err(EngineError::InvalidFixture(format!(
                     "{side} has {} cards, expected at most {DECK_SIZE}",

@@ -1,16 +1,24 @@
-use crate::fixture::{apply_historical_card_patch, BattleFixture, FixtureSource};
-use crate::model::{CardDefinition, PlayerSide};
-use crate::replay::{evaluate_replay_fixture_fallible, run_replay_fixture_with_events_fallible};
-use crate::{
-    original_card_definition_by_id, ReplayDecisionEvent, ReplayDecisionProvider, ReplayRun,
-    ReplaySummary,
+use crate::fixture::{
+    apply_historical_card_patch, BattleFixture, BattleFixtureView, FixtureSource,
 };
-use serde::Serialize;
+use crate::model::{CardDefinition, PlayerSide};
+use crate::{
+    original_card_definition_by_id, ReplayDecisionEvent, ReplayDecisionProvider, ReplaySummary,
+};
+use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
-use super::rule_impact::{compute_rule_impact, SolverRuleImpactReport};
-use super::value::{compute_value_metrics, value_score, ScoreProfile, SolverValueMetrics};
 use super::FAILED_SCORE;
+
+/// Wire selector kept so requests can keep sending `"scoreProfile": "hpDelta"` and results keep
+/// echoing it. hpDelta is the only profile: the value-v0 profile (weights, area terms, rule-impact
+/// attribution) was removed on 2026-10-21; `git log -- engine-rust/src/solver/value.rs` recovers it.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Deserialize, Serialize)]
+pub enum ScoreProfile {
+    #[serde(rename = "hpDelta")]
+    #[default]
+    HpDelta,
+}
 
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -28,12 +36,10 @@ pub struct SolverEvaluation {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub physique_for_side: Option<f64>,
     pub score: f64,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub value_metrics: Option<SolverValueMetrics>,
-    #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub rule_impacts: Vec<SolverRuleImpactReport>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub decision_events: Vec<ReplayDecisionEvent>,
+    #[serde(skip)]
+    pub(crate) uncaptured_synthetic_seeds: Vec<u32>,
     pub failed: bool,
     pub warnings: Vec<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -57,9 +63,8 @@ struct SuccessfulEvaluationInput {
     p2_hp: i64,
     p1_physique: i64,
     p2_physique: i64,
-    value_metrics: Option<SolverValueMetrics>,
-    rule_impacts: Vec<SolverRuleImpactReport>,
     decision_events: Vec<ReplayDecisionEvent>,
+    uncaptured_synthetic_seeds: Vec<u32>,
     warnings: Vec<String>,
 }
 
@@ -68,29 +73,30 @@ pub fn evaluate_fixture(
     side: PlayerSide,
     score_profile: ScoreProfile,
 ) -> SolverEvaluation {
-    match score_profile {
-        ScoreProfile::HpDelta => match evaluate_replay_fixture_fallible(fixture) {
-            Ok(run) => evaluation_from_summary(
-                side,
-                score_profile,
-                SuccessfulEvaluationInput {
-                    summary: run.summary,
-                    p1_hp: run.p1.hp,
-                    p2_hp: run.p2.hp,
-                    p1_physique: run.p1.physique,
-                    p2_physique: run.p2.physique,
-                    value_metrics: None,
-                    rule_impacts: Vec::new(),
-                    decision_events: run.decision_events,
-                    warnings: Vec::new(),
-                },
-            ),
-            Err(error) => failed_evaluation(side, score_profile, error),
-        },
-        ScoreProfile::ValueV0 => match run_replay_fixture_with_events_fallible(fixture) {
-            Ok(run) => evaluation_from_event_run(side, score_profile, run, Vec::new()),
-            Err(error) => failed_evaluation(side, score_profile, error),
-        },
+    evaluate_fixture_view(&BattleFixtureView::new(fixture), side, score_profile)
+}
+
+pub(crate) fn evaluate_fixture_view(
+    fixture: &BattleFixtureView<'_>,
+    side: PlayerSide,
+    score_profile: ScoreProfile,
+) -> SolverEvaluation {
+    match crate::replay::evaluate_replay_terminal_fallible(fixture) {
+        Ok(run) => evaluation_from_summary(
+            side,
+            score_profile,
+            SuccessfulEvaluationInput {
+                summary: run.summary,
+                p1_hp: run.hp[0],
+                p2_hp: run.hp[1],
+                p1_physique: run.physique[0],
+                p2_physique: run.physique[1],
+                decision_events: run.decision_events,
+                uncaptured_synthetic_seeds: run.uncaptured_synthetic_seeds,
+                warnings: Vec::new(),
+            },
+        ),
+        Err(error) => failed_evaluation(side, score_profile, error),
     }
 }
 
@@ -132,8 +138,9 @@ pub fn evaluate_fixture_deck(
     hand_card_ids: Option<Vec<i64>>,
     score_profile: ScoreProfile,
 ) -> SolverEvaluation {
-    let variant = create_fixture_variant(fixture, side, cards, hand_card_ids);
-    evaluate_fixture(&variant, side, score_profile)
+    let mut variant = BattleFixtureView::new(fixture);
+    variant.with_deck(side, cards, hand_card_ids.as_deref());
+    evaluate_fixture_view(&variant, side, score_profile)
 }
 
 pub fn evaluate_fixture_deck_across_battle_seeds(
@@ -156,13 +163,38 @@ pub fn evaluate_fixture_deck_across_battle_seeds(
     }
     // 换阵型只克隆一次，再逐种子改决策回退种子（与「先按种子克隆、再换阵型」等价：
     // 两步改的是不同字段）。原写法每个种子要克隆整个 fixture 两次。
-    let mut variant = create_fixture_variant(fixture, side, cards, hand_card_ids);
+    let mut variant = BattleFixtureView::new(fixture);
+    variant.with_deck(side, cards, hand_card_ids.as_deref());
     aggregate_seed_evaluations(
         seeds
             .iter()
             .map(|seed| {
-                set_typed_decision_fallback(&mut variant, *seed);
-                evaluate_fixture(&variant, side, score_profile)
+                variant.fallback_seed_override = Some(*seed);
+                evaluate_fixture_view(&variant, side, score_profile)
+            })
+            .collect(),
+        seeds,
+    )
+}
+
+pub(crate) fn evaluate_fixture_view_deck(
+    fixture: &BattleFixtureView<'_>,
+    side: PlayerSide,
+    cards: &[CardDefinition],
+    score_profile: ScoreProfile,
+    seeds: Option<&[u32]>,
+) -> SolverEvaluation {
+    let mut variant = fixture.reborrow();
+    variant.with_deck(side, cards, None);
+    let Some(seeds) = seeds else {
+        return evaluate_fixture_view(&variant, side, score_profile);
+    };
+    aggregate_seed_evaluations(
+        seeds
+            .iter()
+            .map(|seed| {
+                variant.fallback_seed_override = Some(*seed);
+                evaluate_fixture_view(&variant, side, score_profile)
             })
             .collect(),
         seeds,
@@ -175,13 +207,13 @@ fn with_typed_decision_fallback(fixture: &BattleFixture, seed: u32) -> BattleFix
     seeded
 }
 
-fn set_typed_decision_fallback(fixture: &mut BattleFixture, seed: u32) {
+pub(super) fn set_typed_decision_fallback(fixture: &mut BattleFixture, seed: u32) {
     let source = fixture.source.get_or_insert_with(FixtureSource::default);
     source.synthetic_decision_fallback_seed = Some(seed);
 }
 
 fn aggregate_seed_evaluations(
-    evaluations: Vec<SolverEvaluation>,
+    mut evaluations: Vec<SolverEvaluation>,
     seeds: &[u32],
 ) -> SolverEvaluation {
     let count = evaluations.len() as f64;
@@ -193,14 +225,20 @@ fn aggregate_seed_evaluations(
         |select: fn(&SolverEvaluation) -> f64| evaluations.iter().map(select).sum::<f64>() / count;
     let win_count = evaluations.iter().filter(|item| item.win_for_side).count();
     let wins = win_count * 2 >= evaluations.len();
-    let synthetic_decision_seeds_used = evaluations
+    let mut synthetic_decision_seeds_used = evaluations
         .iter()
         .flat_map(|item| item.decision_events.iter())
         .filter(|event| event.provider == ReplayDecisionProvider::SeededSynthetic)
         .filter_map(|event| event.seed)
-        .collect::<BTreeSet<_>>()
-        .into_iter()
+        .chain(
+            evaluations
+                .iter()
+                .flat_map(|item| item.uncaptured_synthetic_seeds.iter().copied()),
+        )
         .collect::<Vec<_>>();
+    synthetic_decision_seeds_used.sort_unstable();
+    synthetic_decision_seeds_used.dedup();
+    let used_synthetic_decisions = !synthetic_decision_seeds_used.is_empty();
     let average_score = average(|item| item.score);
     SolverEvaluation {
         side: first.side,
@@ -221,15 +259,11 @@ fn aggregate_seed_evaluations(
             .sum::<Option<f64>>()
             .map(|total| total / count),
         score: average_score,
-        value_metrics: first
-            .value_metrics
-            .as_ref()
-            .map(|_| average_value_metrics(&evaluations)),
-        rule_impacts: Vec::new(),
         decision_events: evaluations
-            .iter()
-            .flat_map(|item| item.decision_events.clone())
+            .iter_mut()
+            .flat_map(|item| std::mem::take(&mut item.decision_events))
             .collect(),
+        uncaptured_synthetic_seeds: Vec::new(),
         failed: evaluations.iter().any(|item| item.failed),
         warnings: evaluations
             .iter()
@@ -242,45 +276,9 @@ fn aggregate_seed_evaluations(
             seeds_used: seeds.to_vec(),
             win_count,
             average_score,
-            synthetic_decision_seeds_used: synthetic_decision_seeds_used.clone(),
-            used_synthetic_decisions: !synthetic_decision_seeds_used.is_empty(),
+            synthetic_decision_seeds_used,
+            used_synthetic_decisions,
         }),
-    }
-}
-
-fn average_value_metrics(evaluations: &[SolverEvaluation]) -> SolverValueMetrics {
-    let metrics = evaluations
-        .iter()
-        .map(|item| item.value_metrics.as_ref().expect("value metrics"))
-        .collect::<Vec<_>>();
-    let count = metrics.len() as f64;
-    let average = |select: fn(&SolverValueMetrics) -> f64| {
-        metrics.iter().map(|item| select(item)).sum::<f64>() / count
-    };
-    SolverValueMetrics {
-        terminal_value_for_side: average(|item| item.terminal_value_for_side),
-        terminal_hp_for_side: average(|item| item.terminal_hp_for_side),
-        terminal_shield_for_side: average(|item| item.terminal_shield_for_side),
-        terminal_defense_for_side: average(|item| item.terminal_defense_for_side),
-        terminal_guard_for_side: average(|item| item.terminal_guard_for_side),
-        terminal_resource_for_side: average(|item| item.terminal_resource_for_side),
-        terminal_debuff_for_side: average(|item| item.terminal_debuff_for_side),
-        terminal_tempo_for_side: average(|item| item.terminal_tempo_for_side),
-        terminal_tempo_count_for_side: average(|item| item.terminal_tempo_count_for_side),
-        area_score_for_side: average(|item| item.area_score_for_side),
-        hp_area_for_side: average(|item| item.hp_area_for_side),
-        resource_area_for_side: average(|item| item.resource_area_for_side),
-        debuff_area_for_side: average(|item| item.debuff_area_for_side),
-        hp_area_score_for_side: average(|item| item.hp_area_score_for_side),
-        resource_area_score_for_side: average(|item| item.resource_area_score_for_side),
-        debuff_area_score_for_side: average(|item| item.debuff_area_score_for_side),
-        area_sample_count: average(|item| item.area_sample_count),
-        audit_mismatch_fields: metrics
-            .iter()
-            .flat_map(|item| item.audit_mismatch_fields.iter().cloned())
-            .collect::<BTreeSet<_>>()
-            .into_iter()
-            .collect(),
     }
 }
 
@@ -314,6 +312,13 @@ pub(crate) fn create_fixture_variant(
 
 pub(crate) fn fixture_deck_candidates(
     fixture: &BattleFixture,
+    side: PlayerSide,
+) -> Vec<CardDefinition> {
+    fixture_view_deck_candidates(&BattleFixtureView::new(fixture), side)
+}
+
+pub(crate) fn fixture_view_deck_candidates(
+    fixture: &BattleFixtureView<'_>,
     side: PlayerSide,
 ) -> Vec<CardDefinition> {
     let player = match side {
@@ -403,36 +408,6 @@ fn complete_original_card(card: &CardDefinition) -> CardDefinition {
     completed
 }
 
-fn evaluation_from_event_run(
-    side: PlayerSide,
-    score_profile: ScoreProfile,
-    run: ReplayRun,
-    warnings: Vec<String>,
-) -> SolverEvaluation {
-    let final_event = run
-        .events
-        .last()
-        .expect("replay run must contain battleEnd");
-    let value_metrics =
-        (score_profile == ScoreProfile::ValueV0).then(|| compute_value_metrics(&run, side));
-    let decision_events = run.decision_events;
-    evaluation_from_summary(
-        side,
-        score_profile,
-        SuccessfulEvaluationInput {
-            summary: run.summary,
-            p1_hp: final_event.p1.hp,
-            p2_hp: final_event.p2.hp,
-            p1_physique: final_event.p1.physique,
-            p2_physique: final_event.p2.physique,
-            value_metrics,
-            rule_impacts: Vec::new(),
-            decision_events,
-            warnings,
-        },
-    )
-}
-
 fn evaluation_from_summary(
     side: PlayerSide,
     score_profile: ScoreProfile,
@@ -444,19 +419,14 @@ fn evaluation_from_summary(
         p2_hp,
         p1_physique,
         p2_physique,
-        value_metrics,
-        rule_impacts,
         decision_events,
+        uncaptured_synthetic_seeds,
         warnings,
     } = input;
     let hp_delta_for_side = match side {
         PlayerSide::P1 => p1_hp - p2_hp,
         PlayerSide::P2 => p2_hp - p1_hp,
     };
-    let score = value_metrics
-        .as_ref()
-        .map(value_score)
-        .unwrap_or(hp_delta_for_side as f64);
     SolverEvaluation {
         side,
         score_profile,
@@ -470,49 +440,13 @@ fn evaluation_from_summary(
             PlayerSide::P1 => p1_physique,
             PlayerSide::P2 => p2_physique,
         } as f64),
-        score,
-        value_metrics,
-        rule_impacts,
+        score: hp_delta_for_side as f64,
         decision_events,
+        uncaptured_synthetic_seeds,
         failed: false,
         warnings,
         seed_aggregate: None,
     }
-}
-
-/// Canonical checkpoint attribution for one fixture, without running a search.
-///
-/// The browser needs the same attribution the analysis pipeline consumes,
-/// and recomputing value channels on the consumer side would fork the weight
-/// table. Callers get `canonical-rule-impact-v1` verbatim.
-pub fn explain_fixture_rule_impact(
-    fixture: &BattleFixture,
-    side: PlayerSide,
-) -> Result<SolverRuleImpactReport, String> {
-    capture_rule_impacts_for_fixture(fixture, side, None)?
-        .into_iter()
-        .next()
-        .ok_or_else(|| "rule impact capture produced no report".to_string())
-}
-
-pub(crate) fn capture_rule_impacts_for_fixture(
-    fixture: &BattleFixture,
-    side: PlayerSide,
-    battle_seeds: Option<&[u32]>,
-) -> Result<Vec<SolverRuleImpactReport>, String> {
-    let seeds = battle_seeds
-        .map(|items| items.iter().copied().map(Some).collect::<Vec<_>>())
-        .unwrap_or_else(|| vec![None]);
-    seeds
-        .into_iter()
-        .map(|seed| {
-            let replay_fixture = seed
-                .map(|value| with_typed_decision_fallback(fixture, value))
-                .unwrap_or_else(|| fixture.clone());
-            run_replay_fixture_with_events_fallible(&replay_fixture)
-                .map(|run| compute_rule_impact(&run, side, seed))
-        })
-        .collect()
 }
 
 fn failed_evaluation(
@@ -534,9 +468,8 @@ fn failed_evaluation(
         hp_delta_for_side: FAILED_SCORE as f64,
         physique_for_side: None,
         score: FAILED_SCORE as f64,
-        value_metrics: None,
-        rule_impacts: Vec::new(),
         decision_events: Vec::new(),
+        uncaptured_synthetic_seeds: Vec::new(),
         failed: true,
         warnings: vec![format!("error:{error}")],
         seed_aggregate: None,

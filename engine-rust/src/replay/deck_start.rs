@@ -23,6 +23,7 @@ pub(super) fn apply_deck_start_talent_effects(
     apply_tiger_body_deck_upgrade(cards, fixture, battle_start_hp);
     if !fixture.talents.contains(&SOLITARY_VOID_GOLDEN_BOOK_TALENT)
         && !fixture.fate_strategies.contains(&338)
+        && !fixture.xian_mo_strategies.contains(&7061)
     {
         return;
     }

@@ -7,15 +7,23 @@ published in V1. This decision covers admitted fixtures, incoming and
 quarantine fixtures, raw or decoded replay files, original replay filenames or
 codes, and derived artifacts that could be linked back to a player or match.
 
-The current development repository contains private replay-derived fixtures so
-that exact Rust regression gates can run. The repository must remain private
-while those files are tracked. It must not be made public, mirrored to a public
-Git host, or attached to a public source release. The private corpus is not
-licensed for distribution under the project MIT License.
+The canonical development repository contains private replay-derived fixtures
+so that exact Rust regression gates can run. That repository must remain
+private while those files are tracked; it must not itself be made public or
+mirrored to a public Git host. The public repository is a separate, read-only
+tree produced from the canonical repository by the reviewed allowlist export
+in `publish-manifest.json` (see `docs/CROSS_LINE_RUNBOOK.md`); it contains no
+fixture, replay payload, or corpus-derived artifact. The private corpus is
+not licensed for distribution under the project MIT License.
 
 ## Public source boundary
 
- is zero-fixture and local-only. It contains no fixture,
+The public source surface is the Rust canonical engine, browser UI, neutral
+contracts/data, and stable rule-development documentation. The private
+development tree stays in one canonical `main`; the public tree is exported
+from it mechanically and never edited or merged back.
+
+The public static artifact is zero-fixture and local-only. It contains no fixture,
 fixture index, replay payload, original replay identifier, player identifier,
 local path, or network upload channel. Users may explicitly select their own
 supported local JSON input; the browser processes it locally.
@@ -49,7 +57,7 @@ kept in a separate fixture pool, are never admitted into the canonical replay
 corpus, and are not redistributed from this repository regardless of the
 upstream license. The identity fields above must be removed before a mirrored
 record becomes a fixture; the upstream record identifier may be retained only as
-a one-way digest. The mechanical gate is `bun run check:corpus-provenance`.
+a one-way digest. The mechanical gate is `python3 battle-evaluator/scripts/check_corpus_provenance.py`.
 
 ## Future change procedure
 

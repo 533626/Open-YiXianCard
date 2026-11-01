@@ -1,29 +1,31 @@
-# Open-YiXianCard
+# Open-YiXianCard 战斗引擎
 
-非官方、本地优先的《弈仙牌》单场战斗模拟器与浏览器工作台。给定已经确定的战斗初始状态后，它可以运行规则、查看时间线，并导入受支持的本地回放做对照。本项目独立于游戏开发者和发行商；权利与署名说明见 [`NOTICE`](NOTICE) 与 [`LICENSE`](LICENSE)，游戏名称、商标、客户端文件与美术音频等第三方材料归各自权利人所有。
+非官方的《弈仙牌》单场战斗引擎，以 Rust 实现。输入已解析的战斗初始状态，模拟卡牌效果、状态、伤害和行动，输出战斗结果及事件。项目独立于游戏开发者和发行商；游戏名称、商标及其他第三方材料归各自权利人所有，详见 [NOTICE](NOTICE) 和 [LICENSE](LICENSE)。
 
-## 范围与限制
+## 引擎
 
-- 从已解析的战斗初始状态开始，模拟战斗钩子、回合、卡牌效果、伤害、治疗、资源、状态变化、死亡与终局结果。
-- 不模拟商店、抽换牌、炼化、成长、匹配、排名、账号进度或战后奖励。
-- 不支持或证据不足的机制 fail closed，不用近似行为冒充精确复现。
-- 回放校验严格比对胜负、行动方和生命值变化，不为掩盖偏差而放宽断言。
-- 当前兼容原作 Steam build **25796222**；游戏更新后可能需要重新审校。
+引擎从已解析的战斗初始状态运行至终局，处理卡牌、状态、伤害、治疗、资源与行动，并提供战斗结果、事件和追踪数据。Rust 库同时支持原生和 WebAssembly 构建；规则以原作 Steam build **26315169** 为目标。
 
-## 本地运行
+## HF 回放验证
 
-应用是静态、仅本地运行的浏览器工作台：战斗计算在 Web Worker 中执行，不需要账号、不上传构筑或回放，也不提供服务端战斗 API。发布产物保持零 fixture，不捆绑仓库回放或 demo 数据。
+使用 Hugging Face 数据集 [sharpobject/yxp_replays](https://huggingface.co/datasets/sharpobject/yxp_replays) 的普通、练习和天梯模式回放，按胜负、行动方与生命值变化三个字段进行精确比对。2026-11-01 对分片 34251000–34275000 共 25 个分片复筛：
 
-需要 [Bun](https://bun.sh/)（版本见 [`.bun-version`](.bun-version)）、Rust/Cargo，以及 `wasm32-unknown-unknown` target：
+| 结果 | 数量 |
+| --- | ---: |
+| 三项精确匹配 | 105,781 |
+| mismatch | 0 |
+| blocked（范围外） | 18,100 |
+| error（空输入） | 8,499 |
+
+105,781 条可执行记录全部精确匹配；blocked 和 error 未计入匹配率。这是该批次、该版本引擎的验证结果。
+
+## 构建与使用
+
+安装 Rust 和 Cargo 后，在仓库根目录运行：
 
 ```bash
-bun install --frozen-lockfile
-bun run build:ui
-bun run serve
+cargo check --manifest-path engine-rust/Cargo.toml --locked
+cargo build --release --manifest-path engine-rust/Cargo.toml --locked
 ```
 
-打开 `http://localhost:3001`。`bun run build:site` 会在 `dist/` 生成经审计的静态产物，不执行部署。
-
-## 贡献
-
-规则改动需要原版证据和精确的最小契约。本投影只含 UI 与引擎源码；规则证据索引、产品契约与取证流程留在开发树，不随公开投影分发。改动后运行 `bun run check` 与 `bun run check:ui`。
+Rust 库入口及公开类型见 [engine-rust/src/lib.rs](engine-rust/src/lib.rs)。调用方负责准备符合引擎契约的战斗初始状态；部分数据加载接口以仓库根目录为输入。

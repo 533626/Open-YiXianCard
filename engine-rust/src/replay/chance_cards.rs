@@ -3,7 +3,7 @@ use super::{Element, ReplayState};
 use crate::model::{CardDefinition, PlayerSide};
 use std::collections::BTreeSet;
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn apply_chance_card_effect(
         &mut self,
         actor_side: PlayerSide,
@@ -227,7 +227,7 @@ impl ReplayState {
                     // 原版 Card_99000105.cs：命元（tempLife）归零时仅在
                     // 当前 hp > 0 时把 hp 置 0，否则保留原值 —— 攻击已把
                     // hp 打成负数时不再归零。oracle 锚点：mirror-32299000
-                    // f8d669b4ef449c86/round-15 cp23（p1.hp 38 → -6，
+                    // pa_94a5f0a4 cp23（p1.hp 38 → -6，
                     // 引擎原 0：第二次裂虚时 tempLife 7-4-4 = -1 触发
                     // 无条件的 hp=0，覆盖了 -6）。
                     if self.actor(target_side).core.hp > 0 {
@@ -249,11 +249,17 @@ impl ReplayState {
                 Some(false)
             }
             99_000_112 => {
-                self.gain_attack_bonus(actor_side, other_param(card, 1).max(0));
                 let percent = other_param(card, 0).max(0);
-                let hp_loss =
-                    super::support::div_ceil(self.actor(actor_side).core.hp.max(0) * percent, 100);
+                // Card_99000112:111 CeilToInt accepts negative current HP;
+                // hp=-49 gives ceil(-7.35)=-7, hence ModifyHp(+7).
+                let product = self.actor(actor_side).core.hp * percent;
+                let hp_loss = if product > 0 {
+                    div_ceil(product, 100)
+                } else {
+                    product / 100
+                };
                 self.modify_actor_hp(actor_side, -hp_loss, false, false);
+                self.gain_attack_bonus(actor_side, other_param(card, 1).max(0));
                 Some(false)
             }
             99_000_113 => {
@@ -383,14 +389,23 @@ impl ReplayState {
             .get(slot)
             .map(|slot| slot.card.clone());
         if let Some(copied) = copied {
-            // Card_99000216.cs: `cardItem.InitData(cardId, ...)` 只取对方
-            // 牌组该格**卡牌 ID**，从全局 CardConfig 重新加载基础配置再执行；
-            // 持有者专属改版（如 澄心剑胚 19 随持有者天赋 92/20093/30096
-            // 改 attack/def，adapt_fixture_card_for_replay）不随复制带出。
-            // oracle 锚点：hf-32308000 24f83df2a5db19b4/round-13 cp[7]
-            // p1.defense 0 / p2.defense 31（引擎复制改版实例得 10/20）。
-            let copied =
-                super::original_config::original_card_definition(copied.id).unwrap_or(copied);
+            // InitData reloads the opponent's ID; RefreshSpecialCard then
+            // rebuilds special cards with the copier's public data, not the
+            // opponent's adapted instance (Card_99000216.cs:160-164).
+            let copied = match super::original_config::original_card_definition(copied.id) {
+                Some(mut definition) => {
+                    if definition.id == 19 {
+                        let actor = self.actor(actor_side);
+                        definition = super::support::adapt_cheng_xin_card(
+                            definition,
+                            &actor.identity.talents,
+                            actor.identity.sword_forging_attack,
+                        );
+                    }
+                    super::RuntimeCard::from(definition)
+                }
+                None => copied,
+            };
             if self.apply_temporary_card_effect(actor_side, &copied, slot) {
                 self.modify_extra_actions(actor_side, 1);
             }

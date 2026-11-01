@@ -1,12 +1,6 @@
 node_modules/
-*.bak
-.DS_Store
-*.log
-*.js.bak
-*.html.bak
-*.swp
-coverage/
-.zed/
-public/build/
 dist/
+public/build/
 engine-rust/target/
+*.log
+.DS_Store

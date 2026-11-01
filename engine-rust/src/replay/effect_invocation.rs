@@ -76,7 +76,6 @@ pub(super) struct EffectCardIdentity {
     pub(super) segment_source: SharedStr,
     pub(super) has_anima_desc: bool,
     pub(super) is_beng_quan: bool,
-    pub(super) is_frenzy_sword: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -101,6 +100,7 @@ pub(super) struct EffectInvocationLocal {
     /// 11627-11641，decompiled build-24646245）。默认 1（不翻倍）。
     pub(super) attack_multiplier: i64,
     pub(super) pending_sword_intent: i64,
+    pub(super) suppress_sword_intent: bool,
     pub(super) deferred_sword_intent_restore: i64,
     pub(super) actual_damage: i64,
     pub(super) wounded_count: i64,
@@ -116,6 +116,7 @@ impl Default for EffectInvocationLocal {
             shatter_defense: 0,
             attack_multiplier: 1,
             pending_sword_intent: 0,
+            suppress_sword_intent: false,
             deferred_sword_intent_restore: 0,
             actual_damage: 0,
             wounded_count: 0,
@@ -159,18 +160,19 @@ struct EffectInvocationWindowSnapshot {
 pub(super) struct EffectInvocationFrame {
     pub(super) origin: EffectCardIdentity,
     pub(super) effective: EffectCardIdentity,
-    effective_definition: CardDefinition,
+    effective_definition: super::RuntimeCard,
     pub(super) physical: PhysicalCardIdentity,
     pub(super) invocation_slot: usize,
+    pub(super) was_used_before_effect: bool,
     pub(super) kind: EffectInvocationKind,
     pub(super) phase: EffectInvocationPhase,
     pub(super) local: Rc<RefCell<EffectInvocationLocal>>,
 }
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     fn effect_card_identity(
         &self,
-        actor_side: PlayerSide,
+        _actor_side: PlayerSide,
         card: &CardDefinition,
         is_beng_quan: bool,
     ) -> EffectCardIdentity {
@@ -182,22 +184,23 @@ impl ReplayState {
             segment_source: card_segment_source(base_id),
             has_anima_desc: super::original_config::original_card_desc_contains_anima(card),
             is_beng_quan,
-            is_frenzy_sword: is_frenzy_sword_for_actor(self.actor(actor_side), card),
         }
     }
 
     #[allow(clippy::too_many_arguments)]
-    pub(super) fn begin_effect_invocation(
+    pub(super) fn begin_effect_invocation_shared(
         &mut self,
         actor_side: PlayerSide,
         origin_card: &CardDefinition,
-        effective_card: &CardDefinition,
+        effective_card: &super::RuntimeCard,
         physical_card: &CardDefinition,
         physical_slot: usize,
         invocation_slot: usize,
         kind: EffectInvocationKind,
         effective_is_beng_quan: bool,
     ) {
+        #[cfg(all(feature = "perf-ceiling", not(target_arch = "wasm32")))]
+        let _timer = crate::performance::Timer::new(10);
         let origin_is_beng_quan = if origin_card.id == effective_card.id {
             effective_is_beng_quan
         } else {
@@ -212,14 +215,15 @@ impl ReplayState {
         // effective 都是 `drawn.card`，崩拳标志也随之相同）直接复用，省掉重复的剑系判定 / 驻留查表。
         let effective =
             self.effect_card_identity(actor_side, effective_card, effective_is_beng_quan);
-        let origin = if std::ptr::eq(origin_card, effective_card) {
+        let origin = if std::ptr::eq(origin_card, effective_card.definition()) {
             effective.clone()
         } else {
             self.effect_card_identity(actor_side, origin_card, origin_is_beng_quan)
         };
         // 实体卡是格位里的那份拷贝，内容通常与 effective 相同（同 id 时崩拳标志也取 effective 的）
-        let physical = if std::ptr::eq(physical_card, effective_card)
-            || (physical_card.id == effective_card.id && physical_card == effective_card)
+        let physical = if std::ptr::eq(physical_card, effective_card.definition())
+            || (physical_card.id == effective_card.id
+                && physical_card == effective_card.definition())
         {
             effective.clone()
         } else if std::ptr::eq(physical_card, origin_card) {
@@ -238,10 +242,41 @@ impl ReplayState {
             },
             invocation_slot,
             kind,
+            was_used_before_effect: false,
             phase: EffectInvocationPhase::BeforeBody,
             local: fresh_invocation_local(),
         };
+        if self.effect_invocation_stack.is_empty() {
+            let pending = self.actor(actor_side).sword.pending_sword_intent_outside_card;
+            self.actor_mut(actor_side).sword.pending_sword_intent_outside_card = 0;
+            frame.local.borrow_mut().pending_sword_intent = pending;
+        }
         self.effect_invocation_stack.push(frame);
+    }
+
+    #[cfg(test)]
+    #[allow(clippy::too_many_arguments)]
+    pub(super) fn begin_effect_invocation(
+        &mut self,
+        actor_side: PlayerSide,
+        origin_card: &CardDefinition,
+        effective_card: &CardDefinition,
+        physical_card: &CardDefinition,
+        physical_slot: usize,
+        invocation_slot: usize,
+        kind: EffectInvocationKind,
+        effective_is_beng_quan: bool,
+    ) {
+        self.begin_effect_invocation_shared(
+            actor_side,
+            origin_card,
+            &effective_card.clone().into(),
+            physical_card,
+            physical_slot,
+            invocation_slot,
+            kind,
+            effective_is_beng_quan,
+        );
     }
 
     fn begin_temporary_effect_invocation(
@@ -249,7 +284,11 @@ impl ReplayState {
         actor_side: PlayerSide,
         selected: &CardDefinition,
         spec: TemporaryInvocationSpec,
-    ) -> Option<(CardDefinition, bool, Option<EffectInvocationWindowSnapshot>)> {
+    ) -> Option<(
+        super::RuntimeCard,
+        bool,
+        Option<EffectInvocationWindowSnapshot>,
+    )> {
         let physical_slot = spec.physical_slot;
         let invocation_slot = spec.invocation_slot;
         let physical_card = self
@@ -303,17 +342,18 @@ impl ReplayState {
         let original_rear_move = self.actor(actor_side).fate.rear_move_succeeded;
 
         if spec.deck_identity_mode == TemporaryDeckIdentityMode::ReplaceWithEffective {
-            self.actor_mut(actor_side).deck.slots[physical_slot].card = selected.clone();
+            self.actor_mut(actor_side).deck.slots[physical_slot].card = selected.clone().into();
         }
         self.actor_mut(actor_side).fate.rear_move_succeeded = false;
 
         let frame = EffectInvocationFrame {
             origin,
             effective: self.effect_card_identity(actor_side, selected, effective_is_beng_quan),
-            effective_definition: selected.clone(),
+            effective_definition: selected.clone().into(),
             physical,
             invocation_slot,
             kind: EffectInvocationKind::Temporary,
+            was_used_before_effect: false,
             phase: EffectInvocationPhase::BeforeBody,
             local: Rc::clone(&local),
         };
@@ -396,6 +436,8 @@ impl ReplayState {
         actor_side: PlayerSide,
         expected_kind: EffectInvocationKind,
     ) {
+        #[cfg(all(feature = "perf-ceiling", not(target_arch = "wasm32")))]
+        let _timer = crate::performance::Timer::new(13);
         let completed = self
             .effect_invocation_stack
             .pop()
@@ -505,7 +547,15 @@ impl ReplayState {
     pub(super) fn active_effect_is_frenzy_sword(&self) -> bool {
         self.effect_invocation_stack
             .last()
-            .is_some_and(|frame| frame.effective.is_frenzy_sword)
+            // CardActionBase:2704-2706 increments the temporary classification
+            // depth after the frame opens. IsKuangJian:12797-12800 reads that
+            // live depth for each attack, including nested ExecuteEffect.
+            .is_some_and(|frame| {
+                is_frenzy_sword_for_actor(
+                    self.actor(frame.physical.actor_side),
+                    &frame.effective_definition,
+                )
+            })
     }
 
     pub(super) fn active_effect_wood_spirit_patrol_before_card(&self) -> bool {
@@ -657,6 +707,13 @@ impl ReplayState {
         if let Some(frame) = self.effect_invocation_stack.last_mut() {
             frame.phase = phase;
         }
+    }
+
+    pub(super) fn active_effect_physical_slot(&self, actor_side: PlayerSide) -> Option<usize> {
+        self.effect_invocation_stack
+            .last()
+            .filter(|frame| frame.physical.actor_side == actor_side)
+            .map(|frame| frame.physical.slot)
     }
 
     #[cfg(test)]

@@ -5,7 +5,7 @@ use super::support::{
 use super::ReplayState;
 use crate::model::{CardDefinition, PlayerSide};
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn apply_fate_strategy_card_effect(
         &mut self,
         actor_side: PlayerSide,
@@ -48,29 +48,56 @@ impl ReplayState {
             super::support::is_spirit_sword_for_actor(self.actor(actor_side), card);
         let is_sword_energy_granted_card = has_base_card_in_deck(self.actor(actor_side), 1_000_075)
             && is_sword_card(self.actor(actor_side), card);
-        let is_fate_379_cloud_sword = self
+        // CardActionBase:4688 的 JianQi 追加伤害条件：天衍 379 与仙魔 7067 都是「云剑」分支。
+        let is_fate_379_cloud_sword = (self
             .actor(actor_side)
             .identity
             .fate_strategies
             .contains(&379)
+            || self
+                .actor(actor_side)
+                .identity
+                .xian_mo_strategies
+                .contains(&7067))
             && is_cloud_sword(self.actor(actor_side), card);
-        if !(is_spirit_sword || is_sword_energy_granted_card || is_fate_379_cloud_sword) {
+        let is_wan_shi_ru_yi = super::support::normalized_base_id(card) == 19
+            && (self
+                .actor(actor_side)
+                .identity
+                .fate_strategies
+                .contains(&387)
+                || self
+                    .actor(actor_side)
+                    .identity
+                    .xian_mo_strategies
+                    .contains(&7071));
+        if !(is_spirit_sword || is_sword_energy_granted_card || is_fate_379_cloud_sword || is_wan_shi_ru_yi) {
             return;
         }
         self.apply_damage(actor_side, sword_energy, false, false, false);
     }
 
-    pub(super) fn settle_wan_shi_ru_yi_card_19(
+    /// 万世如意（天衍 387 / 仙魔 7071）+ id 19：OnAfterExecuted 前段
+    /// （CardActionBase.cs:4354-4365）把剩余灵气全部转剑气，不打伤害。
+    /// 必须在梦•相邻被动等 after 钩子之前执行：被动采样的灵气是转后值。
+    /// oracle 锚点：pa_769c7d08 卡#3（1030069 被动采转后 0 得 +1；
+    /// 若采转前 5 则 +6、多 5 伤）。
+    pub(super) fn convert_wan_shi_ru_yi_anima_to_sword_energy(
         &mut self,
         actor_side: PlayerSide,
         card: &CardDefinition,
     ) {
         if super::support::normalized_base_id(card) != 19
-            || !self
+            || !(self
                 .actor(actor_side)
                 .identity
                 .fate_strategies
                 .contains(&387)
+                || self
+                    .actor(actor_side)
+                    .identity
+                    .xian_mo_strategies
+                    .contains(&7071))
         {
             return;
         }
@@ -78,10 +105,6 @@ impl ReplayState {
         if anima > 0 {
             self.spend_anima_unchecked(actor_side, anima);
             self.actor_mut(actor_side).sword.sword_energy += anima;
-        }
-        let sword_energy = self.actor(actor_side).sword.sword_energy.max(0);
-        if sword_energy > 0 {
-            self.apply_damage(actor_side, sword_energy, false, false, false);
         }
     }
 
@@ -193,6 +216,9 @@ impl ReplayState {
                 }
             }
             1_000_094 => {
+                if let Some(frame) = self.effect_invocation_stack.last() {
+                    frame.local.borrow_mut().suppress_sword_intent = true;
+                }
                 let attack = card.attack.unwrap_or(0);
                 if attack > 0 {
                     self.apply_attack_with_options(actor_side, attack, slot, true, false, 0, None);
@@ -324,8 +350,7 @@ impl ReplayState {
                         attacked = true;
                     }
                 }
-                if self.consume_optional_percent_roll(actor_side) < other_param(card, 2)
-                {
+                if self.consume_optional_percent_roll(actor_side) < other_param(card, 2) {
                     self.modify_extra_actions(actor_side, 1);
                 }
             }

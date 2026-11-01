@@ -8,9 +8,9 @@ pub const DECK_SIZE: usize = 8;
 /// 引擎按卡名判牌种时用到的关键字（`card.name.contains(..)` 的全部字面量）。卡名驻留时预算
 /// 一个「含哪些关键字」的位掩码，热路径上的 `contains` 变成一次位测试。新增关键字只需加在这里；
 /// 不在表里的模式照常走 `str::contains`，结果不变。
-const NAME_TOKENS: [&str; 19] = [
+const NAME_TOKENS: [&str; 20] = [
     "星弈", "雷", "火灵", "木灵", "金灵", "灵阵", "水灵", "掌", "土灵", "卦", "云剑", "蛇", "猫",
-    "狂剑", "灵气", "灵印", "灵剑", "印", "剑",
+    "狂剑", "灵气", "灵印", "灵剑", "印", "剑", "剑阵",
 ];
 
 // inline(always)：调用点几乎都是字面量（`card.name.contains("云剑")`），内联后字符串比较在编译期折叠成常数位号，
@@ -38,6 +38,7 @@ fn name_token_bit(needle: &str) -> Option<u32> {
         "灵剑" => 16,
         "印" => 17,
         "剑" => 18,
+        "剑阵" => 19,
         _ => return None,
     })
 }
@@ -417,7 +418,7 @@ impl<'de> Deserialize<'de> for SharedInts {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, schemars::JsonSchema)]
 #[serde(rename_all = "lowercase")]
 pub enum PlayerSide {
     P1,

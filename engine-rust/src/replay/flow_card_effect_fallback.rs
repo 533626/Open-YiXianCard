@@ -1,16 +1,17 @@
 use super::card_effect_catalog::{resolve_card_effect, CardEffectResolution};
+use super::flow_card_effect::{param0, param1};
 use super::support::{opponent_side, other_param};
 use super::ReplayState;
 use crate::model::{CardDefinition, PlayerSide};
 
-struct PrintedFallbackContext<'state, 'card> {
-    state: &'state mut ReplayState,
+struct PrintedFallbackContext<'state, 'card, const OBSERVE: bool> {
+    state: &'state mut ReplayState<OBSERVE>,
     actor_side: PlayerSide,
     card: &'card CardDefinition,
     slot: usize,
 }
 
-impl PrintedFallbackContext<'_, '_> {
+impl<const OBSERVE: bool> PrintedFallbackContext<'_, '_, OBSERVE> {
     fn execute(&mut self) {
         let base_attack = self.card.attack.unwrap_or(0).max(0);
         let random_attack = self.card.random_attack.unwrap_or(0).max(0);
@@ -52,7 +53,7 @@ impl PrintedFallbackContext<'_, '_> {
     }
 }
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn apply_card_effect_fallback(
         &mut self,
         actor_side: PlayerSide,
@@ -64,28 +65,20 @@ impl ReplayState {
         match base_id {
             4_000_024 => {
                 self.attack_by_config(actor_side, card, 0, slot);
-                self.modify_star_power(actor_side, other_param(card, 0).max(0));
+                self.modify_star_power(actor_side, param0(card));
                 CardEffectResolution::Executable
             }
             4_000_020 => {
                 self.attack_by_config(actor_side, card, 0, slot);
                 if self.consume_percent_roll(actor_side) < other_param(card, 0) {
-                    self.add_actor_negative_status(
-                        opponent_side(actor_side),
-                        101,
-                        other_param(card, 1).max(0),
-                    );
+                    self.add_actor_negative_status(opponent_side(actor_side), 101, param1(card));
                 }
                 CardEffectResolution::Executable
             }
             4_000_021 => {
                 self.apply_configured_anima(actor_side, card);
                 self.apply_configured_defense(actor_side, card);
-                self.add_actor_negative_status(
-                    opponent_side(actor_side),
-                    100,
-                    other_param(card, 0).max(0),
-                );
+                self.add_actor_negative_status(opponent_side(actor_side), 100, param0(card));
                 CardEffectResolution::Executable
             }
             4_000_023 => {
@@ -94,16 +87,13 @@ impl ReplayState {
                 CardEffectResolution::Executable
             }
             4_000_027 => {
-                self.actor_mut(actor_side).fate.quiet_mindset += other_param(card, 0).max(0);
+                self.actor_mut(actor_side).fate.quiet_mindset += param0(card);
                 CardEffectResolution::Executable
             }
             4_000_028 => {
                 self.attack_by_config(actor_side, card, 0, slot);
                 if self.actor(actor_side).astrology.star_slots.contains(&slot) {
-                    self.reduce_anima_unchecked(
-                        opponent_side(actor_side),
-                        other_param(card, 0).max(0),
-                    );
+                    self.reduce_anima_unchecked(opponent_side(actor_side), param0(card));
                 }
                 CardEffectResolution::Executable
             }
@@ -112,14 +102,14 @@ impl ReplayState {
                     let attack = card.attack.unwrap_or(0).max(0);
                     self.apply_attack(actor_side, attack, slot);
                     self.apply_attack(actor_side, attack, slot);
-                    self.apply_attack(actor_side, other_param(card, 0).max(0), slot);
+                    self.apply_attack(actor_side, param0(card), slot);
                 } else {
                     self.attack_by_config(actor_side, card, 0, slot);
                 }
                 CardEffectResolution::Executable
             }
             4_000_032 => {
-                self.modify_star_power(actor_side, other_param(card, 0).max(0));
+                self.modify_star_power(actor_side, param0(card));
                 self.add_following_star_slots(actor_side, slot, other_param(card, 1));
                 CardEffectResolution::Executable
             }
@@ -136,11 +126,7 @@ impl ReplayState {
             4_000_039 => {
                 self.attack_by_config(actor_side, card, 0, slot);
                 if self.actor(actor_side).astrology.star_slots.contains(&slot) {
-                    self.add_actor_negative_status(
-                        opponent_side(actor_side),
-                        101,
-                        other_param(card, 0).max(0),
-                    );
+                    self.add_actor_negative_status(opponent_side(actor_side), 101, param0(card));
                 }
                 CardEffectResolution::Executable
             }
@@ -151,12 +137,7 @@ impl ReplayState {
                     self.modify_hexagram(actor_side, -hexagram);
                     self.modify_star_power(actor_side, hexagram);
                     self.gain_anima(actor_side, hexagram);
-                    self.modify_actor_hp(
-                        actor_side,
-                        hexagram * other_param(card, 0).max(0),
-                        false,
-                        false,
-                    );
+                    self.modify_actor_hp(actor_side, hexagram * param0(card), false, false);
                 }
                 CardEffectResolution::Executable
             }
@@ -177,7 +158,7 @@ impl ReplayState {
                     .actor(actor_side)
                     .astrology
                     .hexagram_effective_count
-                    .min(other_param(card, 0).max(0));
+                    .min(param0(card));
                 if attack > 0 {
                     self.apply_attack(actor_side, attack, slot);
                 }

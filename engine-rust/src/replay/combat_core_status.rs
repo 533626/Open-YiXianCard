@@ -4,7 +4,7 @@ use super::support::{normalized_base_id, opponent_side};
 use super::ReplayState;
 use crate::model::{CardDefinition, PlayerSide};
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn consume_card_param(&mut self, _actor_side: PlayerSide) -> i64 {
         if self.decision_tape.is_empty() {
             self.missing_decision("card parameter");
@@ -122,15 +122,24 @@ impl ReplayState {
                         .next_beng_quan_hp_cost_damage -= 1;
                 }
             }
-            if self
+            let has_347 = self
                 .actor(actor_side)
                 .identity
                 .fate_strategies
-                .contains(&347)
+                .contains(&347);
+            let has_7118 = self
+                .actor(actor_side)
+                .identity
+                .xian_mo_strategies
+                .contains(&7118);
+            if (has_347 || has_7118)
                 && self.actor(actor_side).fate.hot_blood_to_qi_triggered <= 0
             {
                 self.actor_mut(actor_side).fate.hot_blood_to_qi_triggered = 1;
                 self.gain_anima(actor_side, 1);
+                if has_7118 {
+                    self.modify_actor_hp(actor_side, 3, false, false);
+                }
             }
         }
     }
@@ -141,7 +150,7 @@ impl ReplayState {
         card: &CardDefinition,
     ) {
         // 天运•避凶：只在非开局效果牌后触发，探灵等开局牌不消耗层数。
-        if ReplayState::card_has_opening_effect(normalized_base_id(card)) {
+        if Self::card_triggers_opening(normalized_base_id(card)) {
             return;
         }
         let count = self.actor(actor_side).formations.fortune_avoid_misfortune;
@@ -219,11 +228,10 @@ impl ReplayState {
                 // 原版 BattleCharacter.cs:8761-8769 走
                 // ApplyDamage(DamageType.Damage, skipWoundCheck: true, hitDef: false)，
                 // 即完整伤害管线：目标铁骨 −5 最低 1（:10715-10720）+ 防御吸收
-                // + 护体。引擎原先用 apply_defense_first_hp_loss 裸扣，漏了
-                // 铁骨。apply_damage 的 apply_wound_bonus=false 对应非 Attack
+                // + 护体。apply_damage 的 apply_wound_bonus=false 对应非 Attack
                 // 路径（含铁骨），ignore_defense=false 对应仍吃防御。
-                // oracle 锚点：0b54851d5a95ad84/round-13（p1 金灵•铁骨 生效期
-                // 内 p2 灵卦自衍 卦象+1 → 六爻杀阵 3 → 原版 1 / 引擎 3）。
+                // oracle 锚点：pa_635b7e29（p1 金灵•铁骨 生效期
+                // 内 p2 灵卦自衍 卦象+1 → 六爻杀阵 3 → 原版 1）。
                 self.apply_damage(actor_side, damage, false, false, false);
             }
         }
@@ -323,7 +331,7 @@ impl ReplayState {
         }
 
         // Build 24180265 records the lower-clamped committed loss as a positive
-        // delta in hidden buff 700. Card 422 no longer overlaps this path.
+        // delta in hidden buff 700.
         let lost_hexagram = self.actor(actor_side).astrology.lost_hexagram;
         self.actor_mut(actor_side).astrology.lost_hexagram =
             lost_hexagram.saturating_add(actual_loss);
@@ -340,7 +348,7 @@ impl ReplayState {
     /// BattleCharacter.GetNextRandomValue:9332-9337 (build 24646245).
     /// Card 422 紫芒星爆 (buff 773 ZiMangXingBao) 的星力、卦象与共鸣 71
     /// 的灵气是互斥的 if-else-if 分支，不是顺序消耗：命中星力分支后
-    /// 不再扣卦象。oracle 锚点：hf-32308000 371a9271ba43ad84/round-14
+    /// 不再扣卦象。oracle 锚点：hf-32308000 pa_fe5e36fb
     /// cp9（五雷轰顶 5 次随机：原版持紫芒星爆+星力 8 → 星力 8→2、卦象
     /// 保持 1；引擎顺序消耗把卦象 1→0）。
     pub(super) fn consume_original_random_hexagram_side_effects(
@@ -362,7 +370,7 @@ impl ReplayState {
         }
         // 原版第三分支：共鸣 71 生效且临时标记已置位时消耗 1 灵气
         // （GetNextRandomValue:9335-9337）。
-        if self.actor(actor_side).identity.talent_resonance_id == Some(71)
+        if (self.actor(actor_side).identity.talent_resonance_id == Some(71))
             && self
                 .actor(actor_side)
                 .identity
@@ -437,8 +445,9 @@ impl ReplayState {
         deficit: i64,
     ) -> bool {
         let actor = self.actor(actor_side);
-        let enabled = actor.identity.fate_strategies.contains(&160)
-            || actor.identity.talent_resonance_id == Some(57);
+        let enabled = (actor.identity.fate_strategies.contains(&160))
+            || actor.identity.xian_mo_strategies.contains(&7115)
+            || (actor.identity.talent_resonance_id == Some(57));
         if deficit <= 0 || !enabled || deficit > actor.status.meditation {
             return false;
         }
@@ -587,10 +596,9 @@ impl ReplayState {
             // BattleCharacter.GetNextRandomValue -> GetNextParam
             // （BattleCharacter.cs:9315-9327）：battleParamsQueue 耗尽时
             // Dequeue 抛异常被捕获并返回 -1 —— 对任意非负阈值都判定成功，
-            // 不是失败。oracle 锚点：e0242566c4335718/round-16 cp[44]
+            // 不是失败。oracle 锚点：pa_23160a71 cp[44]
             // （t38 弯弓射虎第 7 次取随机，队列已空 → -1 < 10 → 获得
-            // ExActionAgain 并再次行动；引擎原先 fail-closed 返回 100
-            // 导致 actorTurn 偏差）。仅对 optional 路径生效；strict 路径
+            // ExActionAgain 并再次行动）。仅对 optional 路径生效；strict 路径
             // 保持 100 并照常上报缺失。
             PercentRollDecisionResolution::Missing if suppress_missing_error => return -1,
             PercentRollDecisionResolution::Missing => return 100,
@@ -621,10 +629,9 @@ impl ReplayState {
             }
             return 100;
         }
-        if value >= 100 {
-            self.missing_decision("percent roll replay out of range");
-            return 100;
-        }
+        // BattleCharacter.GetNextRandomValue -> GetNextParam：回放带百分骰
+        // 不设 0-99 上限（见 decisions.rs 同源注释与 d8cd6e93/round-13 turn16
+        // 实测 3000010），读到什么返回什么，调用方阈值比较。
         value
     }
 
@@ -685,7 +692,7 @@ impl ReplayState {
     ) {
         let base_id = normalized_base_id(card);
         if self.actor(actor_side).fate.fortune_seek_auspicious > 0
-            && ReplayState::card_has_opening_effect(base_id)
+            && Self::card_triggers_opening(base_id)
         {
             let card = card.clone();
             self.apply_opening_effect_for_card(actor_side, &card, slot_index);

@@ -1,4 +1,6 @@
-use super::effect_invocation::TemporaryInvocationSpec;
+use super::effect_invocation::{
+    TemporaryDeckIdentityMode, TemporaryHadUsedSource, TemporaryInvocationSpec,
+};
 use super::support::{
     has_cloud_chain, is_sword_formation_card, normalized_base_id, opponent_side, other_param,
 };
@@ -11,16 +13,16 @@ use std::collections::HashSet;
 /// invariant: the sword kernel must never claim another sect's ids.
 #[cfg(test)]
 pub(super) const SWORD_HANDLED_IDS: &[i64] = &[
-    1_000_102, 1_000_103, 1_000_105, 1_000_106,
-    331, 401, 424, 213, 263, 1_000_002, 1_000_003, 1_000_004, 1_000_006, 1_000_008, 1_000_009,
-    1_000_011, 1_000_014, 1_000_015, 1_000_016, 1_000_020, 1_000_021, 1_000_022, 1_000_024,
-    1_000_025, 1_000_026, 1_000_027, 1_000_028, 1_000_029, 1_000_030, 1_000_033, 1_000_034,
-    1_000_035, 1_000_036, 1_000_038, 1_000_039, 1_000_040, 1_000_041, 1_000_042, 1_000_043,
-    1_000_044, 1_000_045, 1_000_046, 1_000_048, 1_000_052, 1_000_055, 1_000_059, 1_000_060,
-    1_000_062, 1_000_063, 1_000_064, 1_000_065, 1_000_096, 1_000_099, 1_000_100, 1_000_101, 1_000_104, 1_000_107, 1_000_108,
+    1_000_102, 1_000_103, 1_000_105, 1_000_106, 331, 401, 424, 213, 263, 1_000_002, 1_000_003,
+    1_000_004, 1_000_006, 1_000_008, 1_000_009, 1_000_011, 1_000_014, 1_000_015, 1_000_016,
+    1_000_020, 1_000_021, 1_000_022, 1_000_024, 1_000_025, 1_000_026, 1_000_027, 1_000_028,
+    1_000_029, 1_000_030, 1_000_033, 1_000_034, 1_000_035, 1_000_036, 1_000_038, 1_000_039,
+    1_000_040, 1_000_041, 1_000_042, 1_000_043, 1_000_044, 1_000_045, 1_000_046, 1_000_048,
+    1_000_052, 1_000_055, 1_000_059, 1_000_060, 1_000_062, 1_000_063, 1_000_064, 1_000_065,
+    1_000_096, 1_000_099, 1_000_100, 1_000_101, 1_000_104, 1_000_107, 1_000_108,
 ];
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn apply_sword_card_effect(
         &mut self,
         actor_side: PlayerSide,
@@ -79,7 +81,6 @@ impl ReplayState {
                 // 按牌面「{attack}攻×{attackCount}，每保留1张手牌追加1次攻击（最多追加 otherParams[0] 次）」推出
                 // attackCount + min(开局手牌数, otherParams[0])——语料 435 局持有者的回放：307 局队列只含该值，
                 // 其余 128 局队列含该值另夹其它牌的参数；live 练习局 33371977 R11 林小月手牌 3、基础 2 段，队列 [5]。
-                // 此前空队列取 0 段（整张不打伤害），对持有者的评估系统性偏乐观。
                 // 评估入口同样以 strict 启动（execute_replay_fixture），只认 !fail_on_missing_decision 时这条推导
                 // 永不生效：评估 fixture 以 syntheticDecisionFallbackSeed 标识（pop-deploy / solver variant），
                 // 有它就推导；无种子的真实回放照旧 fail closed。live g127 r9：林小月手牌 4、战报队列 [6]，
@@ -260,7 +261,11 @@ impl ReplayState {
                 attacked |= self.attack_by_config(actor_side, card, bonus, slot);
             }
             1_000_102 => {
-                let gain = self.actor(actor_side).sword.frenzy_sword.min(other_param(card, 0));
+                let gain = self
+                    .actor(actor_side)
+                    .sword
+                    .frenzy_sword
+                    .min(other_param(card, 0));
                 self.gain_attack_bonus(actor_side, gain);
                 attacked |= self.attack_by_config(actor_side, card, 0, slot);
             }
@@ -271,9 +276,11 @@ impl ReplayState {
             1_000_105 => {
                 self.apply_configured_anima(actor_side, card);
                 self.actor_mut(actor_side).sword.cloud_sea += other_param(card, 0);
-                if slot % 2 == 0 {
-                    let amount = other_param(card, 1) + self.actor(actor_side).core.anima * other_param(card, 3);
-                    let heal = amount.min(self.actor(actor_side).core.max_hp - self.actor(actor_side).core.hp);
+                if slot.is_multiple_of(2) {
+                    let amount = other_param(card, 1)
+                        + self.actor(actor_side).core.anima * other_param(card, 3);
+                    let heal = amount
+                        .min(self.actor(actor_side).core.max_hp - self.actor(actor_side).core.hp);
                     self.modify_actor_hp(actor_side, heal, false, false);
                     self.gain_defense(actor_side, amount - heal);
                 } else {
@@ -281,8 +288,10 @@ impl ReplayState {
                 }
             }
             1_000_106 => {
-                let resources = self.actor(actor_side).core.attack_bonus + self.actor(actor_side).sword.sword_intent;
-                let amount = other_param(card, 0) + (resources * other_param(card, 1)).min(other_param(card, 2));
+                let resources = self.actor(actor_side).core.attack_bonus
+                    + self.actor(actor_side).sword.sword_intent;
+                let amount = other_param(card, 0)
+                    + (resources * other_param(card, 1)).min(other_param(card, 2));
                 self.modify_actor_max_hp(actor_side, amount);
                 self.modify_actor_hp(actor_side, amount, false, false);
                 if has_cloud_chain(self.actor(actor_side)) {
@@ -300,8 +309,14 @@ impl ReplayState {
             }
             1_000_107 => {
                 self.modify_sword_intent(actor_side, card.sword_intent.unwrap_or(0));
-                let resources = self.actor(actor_side).core.anima + self.actor(actor_side).sword.sword_intent;
-                self.gain_defense(actor_side, (resources * other_param(card, 0)).min(other_param(card, 1)).max(0));
+                let resources =
+                    self.actor(actor_side).core.anima + self.actor(actor_side).sword.sword_intent;
+                self.gain_defense(
+                    actor_side,
+                    (resources * other_param(card, 0))
+                        .min(other_param(card, 1))
+                        .max(0),
+                );
             }
             1_000_108 => {
                 let bonus = self.actor(actor_side).core.defense / other_param(card, 0).max(1);
@@ -360,10 +375,10 @@ impl ReplayState {
             1_000_027 => {
                 self.apply_configured_anima(actor_side, card);
                 let attack = self.actor(actor_side).core.anima.max(0);
-                if attack > 0 {
-                    self.apply_attack(actor_side, attack, slot);
-                    attacked = true;
-                }
+                // Card_1000027:80 always calls Attack, even with zero anima.
+                // Staff stance and other attack modifiers still apply.
+                self.apply_attack(actor_side, attack, slot);
+                attacked = true;
             }
             1_000_028 => {
                 attacked |= self.attack_by_config(actor_side, card, 0, slot);
@@ -638,7 +653,17 @@ impl ReplayState {
             self.actor_mut(actor_side)
                 .sword
                 .chain_sword_temporary_cursor = Some(previous_index);
-            self.execute_chain_sword_temporary_card(actor_side, slot, &previous_card);
+            // Card_1000064 mutates the same CardItem that invoked it. Under a
+            // copied Card_179 effect, its gridNumber is the logical chain slot,
+            // but its physical slot remains Card_179's CardItem (source
+            // Card_179.cs and Card_1000064.cs both call InitData on that item).
+            let physical_slot = self.active_effect_physical_slot(actor_side).unwrap_or(slot);
+            self.execute_chain_sword_temporary_card(
+                actor_side,
+                physical_slot,
+                slot,
+                &previous_card,
+            );
             self.actor_mut(actor_side)
                 .sword
                 .chain_sword_temporary_cursor = None;
@@ -649,11 +674,17 @@ impl ReplayState {
     fn execute_chain_sword_temporary_card(
         &mut self,
         actor_side: PlayerSide,
-        slot: usize,
+        physical_slot: usize,
+        invocation_slot: usize,
         selected: &CardDefinition,
     ) {
-        let mut spec = TemporaryInvocationSpec::physical(slot);
-        spec.inherit_parent_beng_quan = true;
+        let spec = TemporaryInvocationSpec {
+            physical_slot,
+            invocation_slot,
+            had_used_source: TemporaryHadUsedSource::PhysicalAtEntry,
+            deck_identity_mode: TemporaryDeckIdentityMode::ReplaceWithEffective,
+            inherit_parent_beng_quan: true,
+        };
         if self.apply_temporary_card_effect_with_spec(actor_side, selected, spec) {
             self.modify_extra_actions(actor_side, 1);
         }

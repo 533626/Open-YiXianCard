@@ -17,7 +17,7 @@ pub(super) const BODY_HANDLED_IDS: &[i64] = &[
     10_000_100, 10_000_101, 11_000_005, 11_000_007, 11_000_014,
 ];
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn apply_body_card_effect(
         &mut self,
         actor_side: PlayerSide,
@@ -34,11 +34,13 @@ impl ReplayState {
             10_000_103 => {
                 self.modify_momentum_limit(actor_side, other_param(card, 0));
                 self.modify_momentum(actor_side, other_param(card, 0));
-                let bonus = (self.actor(actor_side).core.anima + self.actor(actor_side).beng.momentum).min(other_param(card, 1));
+                let bonus = (self.actor(actor_side).core.anima
+                    + self.actor(actor_side).beng.momentum)
+                    .min(other_param(card, 1));
                 attacked |= self.attack_by_config(actor_side, card, bonus, slot);
             }
             10_000_104 => {
-                if slot % 2 == 0 {
+                if slot.is_multiple_of(2) {
                     self.apply_configured_physique(actor_side, card);
                 } else {
                     self.modify_momentum(actor_side, other_param(card, 0));
@@ -56,12 +58,16 @@ impl ReplayState {
                 self.gain_attack_bonus(actor_side, other_param(card, 0));
                 let limit = other_param(card, 1);
                 let spent = self.spend_anima_up_to(actor_side, limit);
-                let momentum = (limit - spent).min(self.actor(actor_side).beng.momentum).max(0);
+                let momentum = (limit - spent)
+                    .min(self.actor(actor_side).beng.momentum)
+                    .max(0);
                 self.modify_momentum(actor_side, -momentum);
                 self.gain_agility(actor_side, (spent + momentum) * other_param(card, 2));
             }
             10_000_107 => {
-                let amount = (other_param(card, 0) + self.actor(actor_side).core.attack_bonus) * (10 + self.actor(actor_side).beng.momentum) / 10;
+                let amount = (other_param(card, 0) + self.actor(actor_side).core.attack_bonus)
+                    * (10 + self.actor(actor_side).beng.momentum)
+                    / 10;
                 self.modify_actor_hp(actor_side, amount, false, false);
                 let bonus = self.actor(actor_side).add_hp_count() / other_param(card, 1).max(1);
                 attacked |= self.attack_by_config(actor_side, card, bonus, slot);
@@ -70,16 +76,20 @@ impl ReplayState {
                 self.apply_configured_anima(actor_side, card);
                 self.modify_actor_hp(actor_side, other_param(card, 2), false, false);
                 self.add_actor_negative_status(actor_side, 100, other_param(card, 0));
-                let gain = (self.actor(actor_side).core.anima + self.known_negative_status_count(actor_side)).min(other_param(card, 1));
+                let gain = (self.actor(actor_side).core.anima
+                    + self.known_negative_status_count(actor_side))
+                .min(other_param(card, 1));
                 self.gain_agility(actor_side, gain);
             }
             10_000_109 => {
                 // Both segment inputs are frozen before either attack.
                 let first = card.attack.unwrap_or(0) + self.actor(actor_side).core.anima;
-                let second = card.attack.unwrap_or(0) + self.known_negative_status_count(actor_side);
+                let second =
+                    card.attack.unwrap_or(0) + self.known_negative_status_count(actor_side);
                 self.apply_attack(actor_side, first, slot);
                 self.apply_attack(actor_side, second, slot);
-                let heal = self.actor(actor_side).turn.actual_damage_carry / other_param(card, 0).max(1);
+                let heal =
+                    self.actor(actor_side).turn.actual_damage_carry / other_param(card, 0).max(1);
                 self.modify_actor_hp(actor_side, heal, false, false);
                 attacked = true;
             }
@@ -119,7 +129,7 @@ impl ReplayState {
             222 => {
                 // Card_222.cs（build 25796222）：先无条件身法 otherParams[0]；拳 → 再加 [1]；
                 // 棍 → 攻击。两种架势都没有（如幻羽鹦复制给无架势方）时只加 [0]、不攻击。
-                // 旧 build 无架势不加身法（oracle：hf-latest-33333000 bbcfba241c4acf94/round-13）。
+                // 旧 build 无架势不加身法（oracle：hf-latest-33333000 pa_f24529a3）。
                 self.gain_agility(actor_side, other_param(card, 0).max(0));
                 if self.actor(actor_side).beng.quan_stance > 0 {
                     self.gain_agility(actor_side, other_param(card, 1).max(0));
@@ -162,7 +172,7 @@ impl ReplayState {
                 // 攻击完成后才 ModifyAnima(anima) → ModifyTiPo(physique) →
                 // ShenFa+otherParams[0]。顺序影响 F432 等按攻击时刻灵气
                 // 读数的命运策略（oracle 锚点：mirror-32219000-human-01
-                // 6f0470d9de1927d7/round-11）。
+                // pa_77bc6938）。
                 attacked |= self.attack_by_config(actor_side, card, 0, slot);
                 self.apply_configured_anima(actor_side, card);
                 self.apply_configured_physique(actor_side, card);
@@ -254,7 +264,7 @@ impl ReplayState {
                 // 中的负面状态 id），对其 -1 层并计 1 加攻；参数取尽返回
                 // -1 时提前结束（num2 只计已消耗参数数，即使该状态当前为
                 // 0 层也照计）。参数必须来自回放带，不带启发式兜底。
-                // oracle 锚点：hf-32308000 a2ace584d6664933/round-16 cp25
+                // oracle 锚点：hf-32308000 pa_a459f081 cp25
                 // （turn14 万玄破魔掌已耗尽带内 [100,103,100,103]，turn26
                 // 再出时原版参数队列空 → 0 转化、加攻保持 12；引擎兜底
                 // 按在场负面状态自选 +4 → 16）。
@@ -263,6 +273,23 @@ impl ReplayState {
                 let tries = self.actor(actor_side).core.physique / step;
                 let mut removed = 0;
                 for ordinal in 0..tries {
+                    // Card_82 对任何非 -1 参数都 ModifyBuffValue((BuffType)param, -1) 并计 1；
+                    // 不存在的 buff 负增量直接 return（BattleCharacter.ModifyBuffValue:8847）。
+                    // 镜像带错位时会读到非负面状态值（oracle pa_834a2de3 读到
+                    // 7000029）：0 与卡牌 id 量级不是 BuffConfig 类型 → 只计数；3 为星力 → -1；
+                    // 其余类型仍按非法决策 fail closed。
+                    if self.synthetic_decision_seed.is_none() {
+                        if let Some(&value) = self.decision_tape.first() {
+                            if value == 0 || value >= 100_000 || value == 3 {
+                                self.decision_tape.remove(0);
+                                if value == 3 && self.actor(actor_side).astrology.star_power > 0 {
+                                    self.modify_star_power(actor_side, -1);
+                                }
+                                removed += 1;
+                                continue;
+                            }
+                        }
+                    }
                     let options = self.negative_status_types_present(actor_side);
                     let Some(status) = self
                         .resolve_negative_status_decision(actor_side, card.id, ordinal, &options)
@@ -282,7 +309,14 @@ impl ReplayState {
                 // physique (ModifyTiPo) before the agility gain.
                 self.apply_configured_physique(actor_side, card);
                 self.gain_agility(actor_side, other_param(card, 0).max(0));
-                let damage = self.actor(actor_side).turn.agility.max(0);
+                // Build 25981480: divide before the HuaShen multiplier, so
+                // odd agility still loses its remainder at level 5 and above.
+                let damage = self.actor(actor_side).turn.agility.max(0) / 2
+                    * if self.actor(actor_side).identity.level >= 5 {
+                        2
+                    } else {
+                        1
+                    };
                 if damage > 0 {
                     self.apply_damage(actor_side, damage, false, false, false);
                     attacked = true;
@@ -400,8 +434,12 @@ impl ReplayState {
                 self.add_actor_negative_status(actor_side, 100, other_param(card, 0).max(0));
             }
             10_000_008 => {
-                self.apply_configured_anima(actor_side, card);
+                // Card_10000008.cs:63 攻击 → :80 加灵 → :93 自身外伤。
+                // 攻击先于加灵：气沉（灵气×10% 攻）采样的是加前灵气。
+                // oracle 锚点：pa_8a0e52f4 卡#16（采 1 得 factor
+                // 120；先加灵采 2 得 130，多 1 伤）。
                 attacked |= self.attack_by_config(actor_side, card, 0, slot);
+                self.apply_configured_anima(actor_side, card);
                 // Card_10000008.cs applies WaiShang through ModifyBuffValue;
                 // retain generic negative-status prevention such as BiXie.
                 self.add_actor_negative_status(actor_side, 105, other_param(card, 0).max(0));
@@ -637,6 +675,11 @@ impl ReplayState {
     pub(super) fn has_locked_li_stance(&self, actor_side: PlayerSide) -> bool {
         let fate_strategies = &self.actor(actor_side).identity.fate_strategies;
         fate_strategies.contains(&335)
+            || self
+                .actor(actor_side)
+                .identity
+                .xian_mo_strategies
+                .contains(&7111)
     }
 
     pub(super) fn apply_fate_strategy_stance_switch(&mut self, actor_side: PlayerSide) -> bool {
@@ -651,6 +694,15 @@ impl ReplayState {
             self.modify_momentum(actor_side, 1);
             self.gain_defense(actor_side, 3);
             handled = true;
+        } else if self
+            .actor(actor_side)
+            .identity
+            .xian_mo_strategies
+            .contains(&7111)
+        {
+            self.apply_physique_amount(actor_side, 3);
+            self.gain_defense(actor_side, 3);
+            handled = true;
         }
         if self
             .actor(actor_side)
@@ -659,6 +711,16 @@ impl ReplayState {
             .contains(&349)
         {
             self.apply_damage(actor_side, 3, false, false, false);
+            handled = true;
+        }
+        // CardActionBase:6233 仙魔 7113 紧随 FS349，追加 otherParams[0]=5 点伤害。
+        if self
+            .actor(actor_side)
+            .identity
+            .xian_mo_strategies
+            .contains(&7113)
+        {
+            self.apply_damage(actor_side, 5, false, false, false);
             handled = true;
         }
         // 强攻架势 FateStrategy 429（otherParams=[1,1]）：切换架势后按最终架势
@@ -671,6 +733,19 @@ impl ReplayState {
             .identity
             .fate_strategies
             .contains(&429)
+        {
+            if self.actor(actor_side).beng.quan_stance > 0 {
+                self.modify_momentum(actor_side, 1);
+            } else {
+                self.gain_attack_bonus(actor_side, 1);
+            }
+            handled = true;
+        }
+        if self
+            .actor(actor_side)
+            .identity
+            .xian_mo_strategies
+            .contains(&7090)
         {
             if self.actor(actor_side).beng.quan_stance > 0 {
                 self.modify_momentum(actor_side, 1);

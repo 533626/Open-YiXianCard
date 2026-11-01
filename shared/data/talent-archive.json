@@ -5,13 +5,13 @@
       "kind": "exclusive",
       "key": "exclusive:3000002",
       "label": "杜伶鸳仙命",
-      "totalCount": 10,
+      "totalCount": 15,
       "battleCount": 2,
       "implementedCount": 2,
       "missingBattleCount": 0,
       "recordOnlyCount": 8,
-      "unclassifiedNonBattleCount": 0,
-      "variantCount": 10
+      "unclassifiedNonBattleCount": 5,
+      "variantCount": 15
     },
     {
       "kind": "sect",
@@ -388,6 +388,78 @@
   ],
   "entries": [
     {
+      "talentId": 278,
+      "name": "混元归一",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:3000002",
+      "archiveLabel": "杜伶鸳仙命",
+      "battle": false,
+      "status": "unclassified-nonbattle",
+      "variants": [
+        {
+          "id": 278,
+          "levelName": "YuanYing",
+          "battle": false,
+          "status": "unclassified-nonbattle",
+          "isMiJingTalent": true
+        }
+      ]
+    },
+    {
+      "talentId": 277,
+      "name": "灵树庇佑",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:3000002",
+      "archiveLabel": "杜伶鸳仙命",
+      "battle": false,
+      "status": "unclassified-nonbattle",
+      "variants": [
+        {
+          "id": 277,
+          "levelName": "JinDan",
+          "battle": false,
+          "status": "unclassified-nonbattle",
+          "isMiJingTalent": true
+        }
+      ]
+    },
+    {
+      "talentId": 279,
+      "name": "灵阵回响",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:3000002",
+      "archiveLabel": "杜伶鸳仙命",
+      "battle": false,
+      "status": "unclassified-nonbattle",
+      "variants": [
+        {
+          "id": 279,
+          "levelName": "HuaShen",
+          "battle": false,
+          "status": "unclassified-nonbattle",
+          "isMiJingTalent": true
+        }
+      ]
+    },
+    {
+      "talentId": 280,
+      "name": "流鸳双生伞",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:3000002",
+      "archiveLabel": "杜伶鸳仙命",
+      "battle": false,
+      "status": "unclassified-nonbattle",
+      "variants": [
+        {
+          "id": 280,
+          "levelName": "FanXu",
+          "battle": false,
+          "status": "unclassified-nonbattle",
+          "isMiJingTalent": false
+        }
+      ]
+    },
+    {
       "talentId": 124,
       "name": "双鸳逆克",
       "archiveKind": "exclusive",
@@ -401,6 +473,24 @@
           "levelName": "YuanYing",
           "battle": false,
           "status": "record-only",
+          "isMiJingTalent": true
+        }
+      ]
+    },
+    {
+      "talentId": 276,
+      "name": "五行花钿",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:3000002",
+      "archiveLabel": "杜伶鸳仙命",
+      "battle": false,
+      "status": "unclassified-nonbattle",
+      "variants": [
+        {
+          "id": 276,
+          "levelName": "ZhuJi",
+          "battle": false,
+          "status": "unclassified-nonbattle",
           "isMiJingTalent": true
         }
       ]
@@ -9239,6 +9329,96 @@
       "characterRefs": []
     },
     {
+      "id": 278,
+      "talentId": 278,
+      "name": "混元归一",
+      "desc": "所有[五行]效果可无视条件触发；计算卡组中不同[五行]的数量时视作已有全部5种；需要卡组中仅1种[五行]才可触发的效果可无视[五行]数量限制触发",
+      "otherParams": [],
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:3000002",
+      "archiveLabel": "杜伶鸳仙命",
+      "characterRefs": [
+        {
+          "characterId": 3000002,
+          "characterName": "杜伶鸳",
+          "sectName": "WuXingDaoMeng"
+        }
+      ]
+    },
+    {
+      "id": 277,
+      "talentId": 277,
+      "name": "灵树庇佑",
+      "desc": "战斗开始时，卡组中每有一种不同[五行]，就加{otherParams[0]}生命及上限",
+      "otherParams": [
+        3
+      ],
+      "levelName": "JinDan",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:3000002",
+      "archiveLabel": "杜伶鸳仙命",
+      "characterRefs": [
+        {
+          "characterId": 3000002,
+          "characterName": "杜伶鸳",
+          "sectName": "WuXingDaoMeng"
+        }
+      ]
+    },
+    {
+      "id": 279,
+      "talentId": 279,
+      "name": "灵阵回响",
+      "desc": "每场战斗中首次使用名字含“灵阵”的牌后重复一次其1级效果",
+      "otherParams": [],
+      "levelName": "HuaShen",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:3000002",
+      "archiveLabel": "杜伶鸳仙命",
+      "characterRefs": [
+        {
+          "characterId": 3000002,
+          "characterName": "杜伶鸳",
+          "sectName": "WuXingDaoMeng"
+        }
+      ]
+    },
+    {
+      "id": 280,
+      "talentId": 280,
+      "name": "流鸳双生伞",
+      "desc": "每当使用已[激活]过2次及以上的[五行]的牌后，该[五行]的[激活]次数减1，重复一次该牌的效果",
+      "otherParams": [],
+      "levelName": "FanXu",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:3000002",
+      "archiveLabel": "杜伶鸳仙命",
+      "characterRefs": [
+        {
+          "characterId": 3000002,
+          "characterName": "杜伶鸳",
+          "sectName": "WuXingDaoMeng"
+        }
+      ]
+    },
+    {
       "id": 124,
       "talentId": 124,
       "name": "双鸳逆克",
@@ -9251,6 +9431,30 @@
       "battle": false,
       "isMiJingTalent": true,
       "status": "record-only",
+      "registrationStatus": "missing",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:3000002",
+      "archiveLabel": "杜伶鸳仙命",
+      "characterRefs": [
+        {
+          "characterId": 3000002,
+          "characterName": "杜伶鸳",
+          "sectName": "WuXingDaoMeng"
+        }
+      ]
+    },
+    {
+      "id": 276,
+      "talentId": 276,
+      "name": "五行花钿",
+      "desc": "获得1张【{otherParams[0]}】",
+      "otherParams": [
+        447
+      ],
+      "levelName": "ZhuJi",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "unclassified-nonbattle",
       "registrationStatus": "missing",
       "archiveKind": "exclusive",
       "archiveKey": "exclusive:3000002",
@@ -9726,7 +9930,7 @@
       "id": 183,
       "talentId": 183,
       "name": "禅心锻身",
-      "desc": "每场战斗开始时加{otherParams[0]}[体魄]。战斗胜利时额外加1体魄上限（最多加{otherParams[1]}次）。",
+      "desc": "每场战斗开始时加{otherParams[0]}[体魄]。战斗胜利时额外加1体魄上限（最多加{otherParams[1]}次）。以[体魄]突破境界时额外加1生命上限。",
       "otherParams": [
         1,
         4
@@ -9753,7 +9957,7 @@
       "name": "记忆碎片",
       "desc": "手牌中的1级牌可以和2级牌合成为3级牌，此法合成耗{otherParams[0]}体魄，体魄不足则无效。（2张牌均在手牌中才能以此法合成）",
       "otherParams": [
-        5
+        3
       ],
       "levelName": "JinDan",
       "battle": false,
@@ -9848,7 +10052,7 @@
       "id": 62,
       "talentId": 62,
       "name": "布星问卦",
-      "desc": "战斗中每次使用“星弈”牌时加{otherParams[0]}[卦象]",
+      "desc": "修为减1，抽1张星弈牌（金丹期以上）；战斗中每次使用“星弈”牌时加{otherParams[0]}[卦象]",
       "otherParams": [
         1
       ],
@@ -9943,7 +10147,7 @@
       "id": 61,
       "talentId": 61,
       "name": "占星",
-      "desc": "战斗中加[卦象]时，若[星力]为0，则加{otherParams[0]}[星力]。",
+      "desc": "修为+1；战斗中加[卦象]时，若[星力]为0，则加{otherParams[0]}[星力]。",
       "otherParams": [
         1
       ],
@@ -10360,7 +10564,7 @@
       "id": 270,
       "talentId": 270,
       "name": "化躯为风",
-      "desc": "[速度]+{otherParams[0]}；\n换牌机会不足时，可耗{otherParams[1]}[体魄]进行换牌",
+      "desc": "[速度]+{otherParams[0]}；\n 换牌机会不足时，可耗{otherParams[1]}[体魄]进行换牌",
       "otherParams": [
         3,
         5
@@ -10738,7 +10942,7 @@
       "id": 96,
       "talentId": 96,
       "name": "剑心淬炼",
-      "desc": "为【19】选择定名与效果：\\n狂剑•澄心：加3攻，下1张牌算作狂剑\\n云剑•澄心：减3攻，下1张云剑获得[再次行动]\\n澄心•无极：此牌效果中的所有数字加1\\n选择后抽1张元婴期以上的剑牌（根据定名优先抽狂剑，云剑，或多抽1张）",
+      "desc": "为【19】选择定名与效果：\\n狂剑•澄心：加3攻，下1张牌算作狂剑\\n云剑•澄心：减7攻，下1张云剑获得[再次行动]\\n澄心•无极：此牌效果中的所有数字加1\\n选择后抽1张元婴期以上的剑牌（根据定名优先抽狂剑，云剑，或多抽1张）",
       "otherParams": [],
       "levelName": "HuaShen",
       "battle": false,
@@ -11012,7 +11216,7 @@
       "desc": "【19】定名为“云剑•澄心”，减{otherParams[1]}攻，附加效果“下{otherParams[0]}张云剑获得[再次行动]”",
       "otherParams": [
         1,
-        3
+        7
       ],
       "levelName": "HuaShen",
       "battle": true,
@@ -11180,7 +11384,7 @@
       "name": "云影化身",
       "desc": "下次命元耗尽时，保留1点命元不被淘汰，并且换牌机会加{otherParams[0]}",
       "otherParams": [
-        3
+        5
       ],
       "levelName": "YuanYing",
       "battle": false,
@@ -11584,7 +11788,7 @@
       "id": 29,
       "talentId": 29,
       "name": "勤学苦练",
-      "desc": "每炼化{otherParams[0]}张牌，抽{otherParams[1]}张牌\n<#7091FF>天衍万象赛季中，因为天衍仙命而每减1修为时，当前已炼化牌的计数减1（可变为负数，需要炼化更多牌补足）</color>",
+      "desc": "每炼化{otherParams[0]}张牌，抽{otherParams[1]}张牌",
       "otherParams": [
         8,
         1,
@@ -12181,7 +12385,7 @@
       "id": 153,
       "talentId": 153,
       "name": "灵涌不竭",
-      "desc": "使用卡牌时若灵气不足，每点灵气耗{otherParams[0]}生命和{otherParams[1]}体魄代替（生命或体魄不足则无效）",
+      "desc": "使用卡牌时若灵气不足，每点灵气耗{otherParams[0]}生命代替（生命不足则无效）",
       "otherParams": [
         3,
         1
@@ -12208,7 +12412,7 @@
       "name": "磨砺不止",
       "desc": "每损失{otherParams[0]}点命元，加1换牌机会",
       "otherParams": [
-        7
+        6
       ],
       "levelName": "LianQi",
       "battle": false,
@@ -12380,7 +12584,7 @@
       "desc": "每造成{otherParams[0]}点命元伤害，抽1张牌（初始计数{otherParams[1]}）",
       "otherParams": [
         28,
-        16
+        20
       ],
       "levelName": "LianQi",
       "battle": false,
@@ -12475,10 +12679,10 @@
       "id": 19,
       "talentId": 19,
       "name": "血脉潜能",
-      "desc": "每损失{otherParams[0]}点命元，抽1张牌（初始计数{otherParams[1]}）",
+      "desc": "每损失{otherParams[0]}点命元，抽1张牌",
       "otherParams": [
         18,
-        12,
+        0,
         10
       ],
       "levelName": "LianQi",

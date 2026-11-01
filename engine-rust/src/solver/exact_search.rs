@@ -1,8 +1,6 @@
-use super::value::ScoreProfile;
 use super::variant::{
-    capture_rule_impacts_for_fixture, create_fixture_variant, evaluate_fixture_across_battle_seeds,
-    evaluate_fixture_deck_across_battle_seeds, fixture_deck_candidates, fixture_hand_candidates,
-    SolverEvaluation,
+    evaluate_fixture_across_battle_seeds, evaluate_fixture_deck_across_battle_seeds,
+    fixture_deck_candidates, fixture_hand_candidates, ScoreProfile, SolverEvaluation,
 };
 use crate::fixture::BattleFixture;
 use crate::model::{CardDefinition, PlayerSide, DECK_SIZE};
@@ -80,7 +78,6 @@ pub struct SolveDeckOptions {
     pub score_profile: ScoreProfile,
     pub exact_deck_ids: Option<Vec<i64>>,
     pub battle_seeds: Option<Vec<u32>>,
-    pub capture_rule_impact: bool,
 }
 
 impl Default for SolveDeckOptions {
@@ -95,7 +92,6 @@ impl Default for SolveDeckOptions {
             score_profile: ScoreProfile::HpDelta,
             exact_deck_ids: None,
             battle_seeds: None,
-            capture_rule_impact: false,
         }
     }
 }
@@ -198,11 +194,13 @@ pub(super) fn solver_parallelism() -> usize {
             .ok()
             .and_then(|value| value.parse::<usize>().ok())
             .filter(|&value| value > 0)
-            .unwrap_or_else(|| thread::available_parallelism().map(usize::from).unwrap_or(1))
+            .unwrap_or_else(|| {
+                thread::available_parallelism()
+                    .map(usize::from)
+                    .unwrap_or(1)
+            })
     })
 }
-
-
 
 pub fn solve_deck(
     fixture: &BattleFixture,
@@ -223,6 +221,86 @@ pub fn evaluate_exact_deck(
     score_profile: ScoreProfile,
     battle_seeds: Option<Vec<u32>>,
 ) -> EngineResult<SolverEvaluation> {
+    evaluate_exact_deck_view(
+        &crate::fixture::BattleFixtureView::new(fixture),
+        side,
+        deck_ids,
+        score_profile,
+        battle_seeds,
+    )
+}
+
+/// Keep RNG and synthetic-seed metadata while omitting unrequested events.
+pub fn evaluate_exact_deck_with_capture(
+    fixture: &BattleFixture,
+    side: PlayerSide,
+    deck_ids: &[i64],
+    score_profile: ScoreProfile,
+    battle_seeds: Option<Vec<u32>>,
+    capture_decision_events: bool,
+) -> EngineResult<SolverEvaluation> {
+    let mut view = crate::fixture::BattleFixtureView::new(fixture);
+    view.capture_decision_events = capture_decision_events;
+    let mut evaluation =
+        evaluate_exact_deck_view(&view, side, deck_ids, score_profile, battle_seeds)?;
+    if !capture_decision_events {
+        evaluation.decision_events.clear();
+    }
+    Ok(evaluation)
+}
+
+/// Borrow shared sides through exact evaluation instead of cloning a fixture
+/// per request. Validation and all deck/seed normalization remain identical.
+#[allow(clippy::too_many_arguments)]
+pub fn evaluate_exact_deck_with_players(
+    template: &BattleFixture,
+    p1: &crate::fixture::FixturePlayer,
+    p2: &crate::fixture::FixturePlayer,
+    first_player_side: PlayerSide,
+    side: PlayerSide,
+    deck_ids: &[i64],
+    score_profile: ScoreProfile,
+    battle_seeds: Option<Vec<u32>>,
+) -> EngineResult<SolverEvaluation> {
+    evaluate_exact_deck_view(
+        &crate::fixture::BattleFixtureView::with_players(template, p1, p2, first_player_side),
+        side,
+        deck_ids,
+        score_profile,
+        battle_seeds,
+    )
+}
+
+#[allow(clippy::too_many_arguments)]
+pub fn evaluate_exact_deck_with_players_and_capture(
+    template: &BattleFixture,
+    p1: &crate::fixture::FixturePlayer,
+    p2: &crate::fixture::FixturePlayer,
+    first_player_side: PlayerSide,
+    side: PlayerSide,
+    deck_ids: &[i64],
+    score_profile: ScoreProfile,
+    battle_seeds: Option<Vec<u32>>,
+    capture_decision_events: bool,
+) -> EngineResult<SolverEvaluation> {
+    let mut view =
+        crate::fixture::BattleFixtureView::with_players(template, p1, p2, first_player_side);
+    view.capture_decision_events = capture_decision_events;
+    let mut evaluation =
+        evaluate_exact_deck_view(&view, side, deck_ids, score_profile, battle_seeds)?;
+    if !capture_decision_events {
+        evaluation.decision_events.clear();
+    }
+    Ok(evaluation)
+}
+
+fn evaluate_exact_deck_view(
+    fixture: &crate::fixture::BattleFixtureView<'_>,
+    side: PlayerSide,
+    deck_ids: &[i64],
+    score_profile: ScoreProfile,
+    battle_seeds: Option<Vec<u32>>,
+) -> EngineResult<SolverEvaluation> {
     let mut seeds = battle_seeds;
     if let Some(list) = seeds.as_mut() {
         if list.is_empty() {
@@ -233,16 +311,41 @@ pub fn evaluate_exact_deck(
         list.sort_unstable();
         list.dedup();
     }
-    let baseline_deck = fixture_deck_candidates(fixture, side);
+    let baseline_deck = super::variant::fixture_view_deck_candidates(fixture, side);
     let deck = complete_deck_ids(&baseline_deck, deck_ids);
-    Ok(evaluate_fixture_deck_across_battle_seeds(
+    Ok(super::variant::evaluate_fixture_view_deck(
         fixture,
         side,
         &deck,
-        None,
         score_profile,
         seeds.as_deref(),
     ))
+}
+
+/// Diagnostic preparation uses the production deck completion/variant path.
+/// Restrict to a single unique seed; callers must compare all emitted rows.
+#[cfg(all(feature = "perf-ceiling", not(target_arch = "wasm32")))]
+pub fn prepare_exact_fixture(
+    fixture: &BattleFixture,
+    side: PlayerSide,
+    deck_ids: &[i64],
+    seeds: Option<&[u32]>,
+) -> EngineResult<BattleFixture> {
+    let baseline = fixture_deck_candidates(fixture, side);
+    let deck = complete_deck_ids(&baseline, deck_ids);
+    let mut prepared = super::variant::create_fixture_variant(fixture, side, &deck, None);
+    if let Some(seeds) = seeds {
+        let Some(seed) = seeds.first() else {
+            return Err(EngineError::InvalidFixture("empty diagnostic seeds".into()));
+        };
+        if seeds.iter().any(|candidate| candidate != seed) {
+            return Err(EngineError::InvalidFixture(
+                "diagnostic requires one unique seed".into(),
+            ));
+        }
+        super::variant::set_typed_decision_fallback(&mut prepared, *seed);
+    }
+    Ok(prepared)
 }
 
 fn normalize_solve_deck_options(mut options: SolveDeckOptions) -> EngineResult<SolveDeckOptions> {
@@ -267,7 +370,7 @@ fn solve_deck_normalized(fixture: &BattleFixture, options: SolveDeckOptions) -> 
     let started = SolverInstant::now();
     let top_n = options.top.max(1);
     let baseline_deck = fixture_deck_candidates(fixture, options.side);
-    let mut baseline = evaluate_fixture_across_battle_seeds(
+    let baseline = evaluate_fixture_across_battle_seeds(
         fixture,
         options.side,
         options.score_profile,
@@ -285,7 +388,7 @@ fn solve_deck_normalized(fixture: &BattleFixture, options: SolveDeckOptions) -> 
             options.score_profile,
             options.battle_seeds.as_deref(),
         );
-        let mut result = SolverDeckResult {
+        let result = SolverDeckResult {
             rank: 1,
             score: evaluation.score,
             deck: card_ids(&deck),
@@ -294,17 +397,6 @@ fn solve_deck_normalized(fixture: &BattleFixture, options: SolveDeckOptions) -> 
             sort_key: deck_sort_key(&deck),
             evaluation,
         };
-        if options.capture_rule_impact {
-            attach_rule_impacts(
-                fixture,
-                &baseline_deck,
-                options.side,
-                options.mode,
-                options.battle_seeds.as_deref(),
-                &mut baseline,
-                std::slice::from_mut(&mut result),
-            );
-        }
         let summary = summarize_evaluated_results(std::slice::from_ref(&result));
         let seed_audit = seed_audit_fields(
             std::iter::once(&baseline).chain(std::iter::once(&result.evaluation)),
@@ -371,17 +463,6 @@ fn solve_deck_normalized(fixture: &BattleFixture, options: SolveDeckOptions) -> 
         for (index, result) in results.iter_mut().enumerate() {
             result.rank = index + 1;
         }
-        if options.capture_rule_impact {
-            attach_rule_impacts(
-                fixture,
-                &baseline_deck,
-                options.side,
-                options.mode,
-                options.battle_seeds.as_deref(),
-                &mut baseline,
-                &mut results,
-            );
-        }
         let seed_audit = seed_audit_fields(
             std::iter::once(&baseline).chain(results.iter().map(|item| &item.evaluation)),
         );
@@ -433,17 +514,6 @@ fn solve_deck_normalized(fixture: &BattleFixture, options: SolveDeckOptions) -> 
     for (index, result) in results.iter_mut().enumerate() {
         result.rank = index + 1;
     }
-    if options.capture_rule_impact {
-        attach_rule_impacts(
-            fixture,
-            &baseline_deck,
-            options.side,
-            options.mode,
-            options.battle_seeds.as_deref(),
-            &mut baseline,
-            &mut results,
-        );
-    }
     let seed_audit = seed_audit_fields(
         std::iter::once(&baseline).chain(results.iter().map(|item| &item.evaluation)),
     );
@@ -474,43 +544,6 @@ fn solve_deck_normalized(fixture: &BattleFixture, options: SolveDeckOptions) -> 
         seeds_used: seed_audit.0,
         synthetic_decision_seeds_used: seed_audit.1,
         used_synthetic_decisions: seed_audit.2,
-    }
-}
-
-fn attach_rule_impacts(
-    fixture: &BattleFixture,
-    baseline_deck: &[CardDefinition],
-    side: PlayerSide,
-    mode: SolverMode,
-    battle_seeds: Option<&[u32]>,
-    baseline: &mut SolverEvaluation,
-    results: &mut [SolverDeckResult],
-) {
-    set_rule_impacts(
-        baseline,
-        capture_rule_impacts_for_fixture(fixture, side, battle_seeds),
-    );
-    for result in results {
-        let deck = complete_deck_ids(baseline_deck, &result.deck);
-        let hand_card_ids =
-            (mode == SolverMode::Hand).then(|| result.leftover_hand_card_ids.clone());
-        let variant = create_fixture_variant(fixture, side, &deck, hand_card_ids);
-        set_rule_impacts(
-            &mut result.evaluation,
-            capture_rule_impacts_for_fixture(&variant, side, battle_seeds),
-        );
-    }
-}
-
-fn set_rule_impacts(
-    evaluation: &mut SolverEvaluation,
-    impacts: Result<Vec<super::SolverRuleImpactReport>, String>,
-) {
-    match impacts {
-        Ok(impacts) => evaluation.rule_impacts = impacts,
-        Err(error) => evaluation
-            .warnings
-            .push(format!("rule-impact:error:{error}")),
     }
 }
 

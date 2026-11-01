@@ -1,4 +1,7 @@
-use super::original_config::{original_card_definition, original_card_realm_level};
+use super::flow_card_effect::{param0, param1, param2};
+use super::original_config::{
+    original_card_definition, original_card_realm_level, original_config_rarity,
+};
 use super::support::{
     has_cloud_chain, is_spirit_sword_for_actor, is_sword_formation_card, opponent_side,
     other_param, wu_xing_count_in_deck,
@@ -6,14 +9,14 @@ use super::support::{
 use super::{Element, ReplayState};
 use crate::model::{CardDefinition, PlayerSide};
 
-#[cfg(all(test, feature = "private-fixtures"))]
+#[cfg(test)]
 pub(super) const SYNTHETIC_ORACLE_WAVE015_CARD_IDS: [i64; 25] = [
     334, 335, 340, 344, 345, 346, 348, 349, 350, 351, 369, 378, 1_000_069, 1_000_070, 1_000_074,
     1_000_075, 1_000_077, 1_000_078, 1_000_079, 1_000_080, 1_000_083, 1_000_084, 1_000_085,
     1_000_086, 1_000_087,
 ];
 
-#[cfg(all(test, feature = "private-fixtures"))]
+#[cfg(test)]
 pub(super) const SYNTHETIC_ORACLE_WAVE016_CARD_IDS: [i64; 25] = [
     4_000_069, 4_000_070, 4_000_073, 4_000_075, 4_000_078, 4_000_079, 4_000_081, 4_000_082,
     4_000_084, 4_000_085, 4_000_087, 4_000_089, 7_000_074, 7_000_075, 7_000_076, 7_000_077,
@@ -21,7 +24,7 @@ pub(super) const SYNTHETIC_ORACLE_WAVE016_CARD_IDS: [i64; 25] = [
     7_000_087,
 ];
 
-#[cfg(all(test, feature = "private-fixtures"))]
+#[cfg(test)]
 pub(super) const SYNTHETIC_ORACLE_WAVE017_CARD_IDS: [i64; 29] = [
     7_000_089, 7_000_090, 7_000_093, 10_000_069, 10_000_071, 10_000_076, 10_000_077, 10_000_078,
     10_000_080, 10_000_081, 10_000_082, 10_000_083, 10_000_084, 10_000_085, 10_000_087, 10_000_088,
@@ -155,7 +158,7 @@ ronghui implementations respectively; whichever module is ordered first must
 not shadow those authoritative bodies.
 */
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn execute_dream_mirage_temporary_card(
         &mut self,
         actor_side: PlayerSide,
@@ -175,18 +178,6 @@ impl ReplayState {
         matches!(base_id, 348 | 369 | 378 | 1_000_086 | 4_000_079 | 7_000_079)
     }
 
-    pub(super) fn apply_dream_mirage_battle_start_opening(
-        &mut self,
-        actor_side: PlayerSide,
-        card: &CardDefinition,
-        slot: usize,
-        base_id: i64,
-    ) {
-        self.apply_dream_mirage_battle_start_opening_with_trigger_grid(
-            actor_side, card, slot, base_id, slot,
-        );
-    }
-
     pub(super) fn apply_dream_mirage_battle_start_opening_with_trigger_grid(
         &mut self,
         actor_side: PlayerSide,
@@ -198,7 +189,7 @@ impl ReplayState {
         let target_side = opponent_side(actor_side);
         match base_id {
             348 => {
-                let duration = other_param(card, 0).max(0);
+                let duration = param0(card);
                 for side in [actor_side, target_side] {
                     self.modify_dream_mirage_value(
                         side,
@@ -228,7 +219,7 @@ impl ReplayState {
                         if let Some(target_slot) =
                             self.actor_mut(target_side).deck.slots.get_mut(trigger_grid)
                         {
-                            target_slot.card = lower;
+                            target_slot.card = lower.into();
                         }
                     } else {
                         self.missing_decision("card:369:lower-rarity card config");
@@ -242,14 +233,14 @@ impl ReplayState {
                 }
             }
             378 => {
-                let duration = other_param(card, 0).max(0);
+                let duration = param0(card);
                 for side in [actor_side, target_side] {
                     self.modify_dream_mirage_value(side, DreamMirageValue::HalfAnimaGain, duration);
                 }
             }
             1_000_086 => {
                 if dream_mirage_realm(card) >= 4 {
-                    self.actor_mut(actor_side).sword.cloud_sea += other_param(card, 1).max(0);
+                    self.actor_mut(actor_side).sword.cloud_sea += param1(card);
                 }
             }
             4_000_079 => {
@@ -258,7 +249,7 @@ impl ReplayState {
                 self.ensure_dream_mirage_star_slot(actor_side, previous);
                 self.ensure_dream_mirage_star_slot(actor_side, next);
             }
-            7_000_079 => self.gain_anima(actor_side, other_param(card, 1).max(0)),
+            7_000_079 => self.gain_anima(actor_side, param1(card)),
             _ => {}
         }
     }
@@ -327,7 +318,7 @@ impl ReplayState {
         let realm = dream_mirage_realm(card);
         match base_id {
             334 => {
-                let amount = other_param(card, 0).max(0);
+                let amount = param0(card);
                 self.modify_actor_max_hp(actor_side, amount);
                 self.modify_actor_hp(actor_side, amount, false, false);
                 let duration = if self
@@ -347,20 +338,20 @@ impl ReplayState {
                 Some(false)
             }
             335 => {
-                self.modify_actor_hp(actor_side, -other_param(card, 0).max(0), false, false);
+                self.modify_actor_hp(actor_side, -param0(card), false, false);
                 if !was_used_before_effect && self.actor(target_side).deck.queue.len() > 1 {
                     // Card_335.cs:86 dst.RightMoveCardItems(1, CareSkip: true)
                     // （BattleCharacter.cs:8268-8290）：把对方卡组末尾的牌移到
                     // 队首；末尾牌已跳过时该次移动不计入 R，继续移动新末尾牌
                     // （本轮已用/消耗的牌在快照里 skip=true）。
-                    // oracle 锚点：mirror-32299000 22cbe42588093881/round-14
+                    // oracle 锚点：mirror-32299000 pa_6f89a71f
                     // t5 p2 抽到 213 曳影剑阵（队列 [213, s0, s1, s2, ...]）。
                     self.actor_mut(target_side).right_move_card_queue(1);
                 }
                 Some(false)
             }
             340 => {
-                let amount = other_param(card, 0).max(0);
+                let amount = param0(card);
                 for side in [actor_side, target_side] {
                     self.modify_dream_mirage_value(
                         side,
@@ -375,18 +366,18 @@ impl ReplayState {
                 self.modify_dream_mirage_value(
                     actor_side,
                     DreamMirageValue::DreamFlyingCloudPill,
-                    other_param(card, 0).max(0),
+                    param0(card),
                 );
                 Some(false)
             }
             345 => {
-                let amount = other_param(card, 1).max(0);
+                let amount = param1(card);
                 self.modify_actor_max_hp(actor_side, amount);
                 self.modify_actor_hp(actor_side, amount, false, false);
                 self.modify_dream_mirage_value(
                     actor_side,
                     DreamMirageValue::DreamGreatReturnPill,
-                    other_param(card, 0).max(0),
+                    param0(card),
                 );
                 Some(false)
             }
@@ -396,11 +387,11 @@ impl ReplayState {
                 Some(false)
             }
             348 => {
-                self.modify_actor_hp(actor_side, -other_param(card, 1).max(0), false, false);
+                self.modify_actor_hp(actor_side, -param1(card), false, false);
                 Some(false)
             }
             349 => {
-                let amount = other_param(card, 0).max(0);
+                let amount = param0(card);
                 self.modify_actor_max_hp(actor_side, amount);
                 self.modify_actor_hp(actor_side, amount, false, false);
                 self.execute_dream_mirage_selected_temporary_card(actor_side, slot);
@@ -408,10 +399,10 @@ impl ReplayState {
             }
             350 => Some(false),
             351 => {
-                for _ in 0..other_param(card, 1).max(0) {
-                    self.modify_actor_hp(target_side, -other_param(card, 0).max(0), false, false);
+                for _ in 0..param1(card) {
+                    self.modify_actor_hp(target_side, -param0(card), false, false);
                 }
-                let duration = other_param(card, 2).max(0);
+                let duration = param2(card);
                 self.modify_dream_mirage_value(
                     target_side,
                     DreamMirageValue::CannotGainHp,
@@ -425,12 +416,12 @@ impl ReplayState {
                 Some(false)
             }
             369 => {
-                self.add_actor_negative_status(target_side, 100, other_param(card, 0).max(0));
+                self.add_actor_negative_status(target_side, 100, param0(card));
                 Some(false)
             }
             378 => {
-                self.spend_anima_up_to(actor_side, other_param(card, 1).max(0));
-                self.spend_anima_up_to(target_side, other_param(card, 1).max(0));
+                self.spend_anima_up_to(actor_side, param1(card));
+                self.spend_anima_up_to(target_side, param1(card));
                 Some(false)
             }
             1_000_069 => {
@@ -439,28 +430,27 @@ impl ReplayState {
             }
             1_000_070 => {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
-                self.actor_mut(actor_side).sword.cloud_sea += other_param(card, 0).max(0);
+                self.actor_mut(actor_side).sword.cloud_sea += param0(card);
                 // Card_1000070.cs:99-131（梦•云剑极意）：[连云] 剑意增益整段
                 // 受 HasBuff(LianYun) 门控（化神档除外）。档位分支：筑基及
                 // 以下 +op[1] 平值；金丹~元婴 +op[1]×连云层数；化神
-                // +op[1] + op[1]×用过云剑次数（不受连云门控）。引擎此前
-                // 无连云也发 op[1]。oracle 锚点：hf-32308000
-                // 6b1f17c3eac57536/round-07 cp16（p1 无连云 0→0 不发，
-                // 引擎 +1）、7a3090163702dc0d/round-06 cp10（p2 无连云，
-                // 攻击消耗 3 后不发 → 0，引擎剩 1）。
+                // +op[1] + op[1]×用过云剑次数（不受连云门控）。
+                // oracle 锚点：hf-32308000
+                // pa_2160419b cp16（p1 无连云 0→0 不发）、
+                // pa_aef2b91b cp10（p2 无连云，
+                // 攻击消耗 3 后不发 → 0）。
                 let mut intent = 0;
                 if realm >= 5 {
-                    intent += other_param(card, 1).max(0)
+                    intent += param1(card)
                         + self
                             .dream_mirage_value(actor_side, DreamMirageValue::CloudSwordUsedCount)
                             .max(0)
-                            * other_param(card, 1).max(0);
+                            * param1(card);
                 } else if has_cloud_chain(self.actor(actor_side)) {
                     intent = if realm > 2 {
-                        other_param(card, 1).max(0)
-                            * self.actor(actor_side).sword.cloud_chain.max(0)
+                        param1(card) * self.actor(actor_side).sword.cloud_chain.max(0)
                     } else {
-                        other_param(card, 1).max(0)
+                        param1(card)
                     };
                 }
                 self.modify_sword_intent(actor_side, intent);
@@ -482,7 +472,7 @@ impl ReplayState {
             }
             1_000_075 => {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
-                self.actor_mut(actor_side).sword.sword_energy += other_param(card, 0).max(0);
+                self.actor_mut(actor_side).sword.sword_energy += param0(card);
                 if realm > 3 {
                     let anima = self.actor(actor_side).core.anima.max(0);
                     if anima > 0 {
@@ -497,12 +487,12 @@ impl ReplayState {
                 self.modify_dream_mirage_value(
                     actor_side,
                     DreamMirageValue::AnimaGainDefense,
-                    other_param(card, 0).max(0),
+                    param0(card),
                 );
                 self.modify_dream_mirage_value(
                     actor_side,
                     DreamMirageValue::SwordIntentGainDefense,
-                    other_param(card, 1).max(0),
+                    param1(card),
                 );
                 Some(false)
             }
@@ -512,30 +502,28 @@ impl ReplayState {
                     let defense = self
                         .dream_mirage_value(actor_side, DreamMirageValue::CloudSwordUsedCount)
                         .max(0)
-                        * other_param(card, 0).max(0);
+                        * param0(card);
                     self.gain_defense(actor_side, defense.max(0));
                 }
-                self.actor_mut(actor_side).sword.cloud_sea += other_param(card, 2).max(0);
+                self.actor_mut(actor_side).sword.cloud_sea += param2(card);
                 if realm >= 4 {
-                    self.actor_mut(actor_side).sword.water_month_sword_formation +=
-                        other_param(card, 1).max(0);
+                    self.actor_mut(actor_side).sword.water_month_sword_formation += param1(card);
                 }
                 // Card_1000078.cs IL_012e：境界 ≤ 元婴 走 [连云] 分支——先读
                 // 当前 LianYun 计数（本卡完成时 classification hook 才 +1，
                 // 与 CardActionBase.cs:4602-4606 的补计数时序一致），再
                 // ModifyDef(LianYun × otherParams[0])；境界 = 化神 走
                 // YongGuoYunJianJiShu（720 用过云剑计数）分支。原版两分支
-                // 互斥，引擎此前只实现了化神分支，元婴档（1030078/1020078）
-                // 少了连云加防。oracle 锚点：mirror-32299000
-                // 7d2572044fb994f0/round-10 cp11（原版 p1.def=15 = 9+2×3，
-                // rust=9）、7f45e2b2095d598c/round-07 cp10（17 = 9+4×2）、
-                // 9bd061474bea1143/round-10 cp2（12 = 9+1×3）、
-                // a48308baca307537/round-09 cp15（24 = 9+5×3）、
-                // ff968b01d5c365e1/round-10 cp6（12 = 9+1×3）。
+                // 互斥。oracle 锚点：mirror-32299000
+                // pa_c00c6d53 cp11（原版 p1.def=15 = 9+2×3）、
+                // pa_c04472b2 cp10（17 = 9+4×2）、
+                // pa_7b2adb56 cp2（12 = 9+1×3）、
+                // pa_ef2cc77d cp15（24 = 9+5×3）、
+                // pa_ae6bd262 cp6（12 = 9+1×3）。
                 if realm <= 4 {
                     let lian_yun = self.actor(actor_side).sword.cloud_chain.max(0);
                     if lian_yun > 0 {
-                        self.gain_defense(actor_side, lian_yun * other_param(card, 0).max(0));
+                        self.gain_defense(actor_side, lian_yun * param0(card));
                     }
                 }
                 Some(false)
@@ -543,7 +531,7 @@ impl ReplayState {
             1_000_079 => {
                 let scaled = if realm >= 3 {
                     self.dream_mirage_value(actor_side, DreamMirageValue::SwordUsedCount)
-                        * other_param(card, 1).max(0)
+                        * param1(card)
                 } else {
                     0
                 };
@@ -568,10 +556,10 @@ impl ReplayState {
                 // resolve_synthetic_oracle_dream_mirage_action_again 按卡组剑阵
                 // 总数（含自身）判定。
                 // oracle 锚点：hf-latest-32308000-16f9c778
-                // 401536d03d54eff4/round-06 cp14 p2.hp 12 vs 15（卡组 2 张剑阵
+                // pa_c07c55e4 cp14 p2.hp 12 vs 15（卡组 2 张剑阵
                 // 含自身：6+3×2=12 → 防御 1 → 11；引擎 FormationUsedCount 只算
                 // 已用 1 张 → 6+3=9 → 8）。
-                let mut amount = other_param(card, 0).max(0);
+                let mut amount = param0(card);
                 if realm <= 3 {
                     let formation_count = self
                         .actor(actor_side)
@@ -582,11 +570,11 @@ impl ReplayState {
                             is_sword_formation_card(self.actor(actor_side), &candidate.card)
                         })
                         .count() as i64;
-                    amount += formation_count * other_param(card, 1).max(0);
+                    amount += formation_count * param1(card);
                 } else {
                     amount += self
                         .dream_mirage_value(actor_side, DreamMirageValue::FormationUsedCount)
-                        * other_param(card, 1).max(0);
+                        * param1(card);
                 }
                 self.dream_mirage_direct_damage(actor_side, target_side, amount);
                 Some(false)
@@ -594,13 +582,12 @@ impl ReplayState {
             1_000_083 => {
                 self.apply_configured_defense(actor_side, card);
                 if realm >= 5 {
-                    self.actor_mut(actor_side).sword.water_month_sword_formation +=
-                        other_param(card, 1).max(0);
+                    self.actor_mut(actor_side).sword.water_month_sword_formation += param1(card);
                 }
                 self.modify_dream_mirage_value(
                     actor_side,
                     DreamMirageValue::TurnStartDefense,
-                    other_param(card, 0).max(0),
+                    param0(card),
                 );
                 if realm >= 4 {
                     self.modify_dream_mirage_value(
@@ -614,12 +601,12 @@ impl ReplayState {
             1_000_084 => {
                 self.apply_configured_anima(actor_side, card);
                 if realm <= 3 {
-                    self.actor_mut(actor_side).sword.sword_energy += other_param(card, 0).max(0);
+                    self.actor_mut(actor_side).sword.sword_energy += param0(card);
                 } else {
                     self.modify_dream_mirage_value(
                         actor_side,
                         DreamMirageValue::SwordEnergyOnSword,
-                        other_param(card, 0).max(0),
+                        param0(card),
                     );
                 }
                 Some(false)
@@ -669,12 +656,12 @@ impl ReplayState {
                 // above JinDan it installs the MengKuangEr sustain that later
                 // converts turn-end healing into KuangJian.
                 if realm <= 3 {
-                    self.actor_mut(actor_side).sword.frenzy_sword += other_param(card, 1).max(0);
+                    self.actor_mut(actor_side).sword.frenzy_sword += param1(card);
                 } else {
                     self.modify_dream_mirage_value(
                         actor_side,
                         DreamMirageValue::HealingTurnEndFrenzy,
-                        other_param(card, 1).max(0),
+                        param1(card),
                     );
                 }
                 Some(attacked)
@@ -686,8 +673,7 @@ impl ReplayState {
                 if self.actor(actor_side).astrology.star_slots.contains(&slot) {
                     self.gain_defense(
                         actor_side,
-                        self.actor(actor_side).astrology.star_power.max(0)
-                            * other_param(card, 0).max(0),
+                        self.actor(actor_side).astrology.star_power.max(0) * param0(card),
                     );
                 }
                 Some(attacked)
@@ -695,11 +681,11 @@ impl ReplayState {
             4_000_070 => {
                 self.apply_configured_anima(actor_side, card);
                 if realm < 4 {
-                    let hp = other_param(card, 0).max(0);
+                    let hp = param0(card);
                     self.modify_actor_max_hp(actor_side, hp);
                     self.modify_actor_hp(actor_side, hp, false, false);
                 } else {
-                    self.gain_hexagram(actor_side, other_param(card, 0).max(0));
+                    self.gain_hexagram(actor_side, param0(card));
                 }
                 let hexagram = self.actor(actor_side).astrology.hexagram.max(0);
                 // Card_4000070.OnExecuted calls ModifyBuffValue(GuaXiang,
@@ -723,13 +709,14 @@ impl ReplayState {
                     .deck
                     .slots
                     .iter()
-                    .filter(|slot_state| {
-                        slot_state.card.id != card.id
+                    .enumerate()
+                    .filter(|(index, slot_state)| {
+                        *index != slot
                             && (slot_state.card.name.contains('雷')
                                 || slot_state.card.name.contains('卦'))
                     })
                     .count() as i64;
-                let value = card.attack.unwrap_or(0) + names * other_param(card, 0).max(0);
+                let value = card.attack.unwrap_or(0) + names * param0(card);
                 let mut attacked = self.dream_mirage_attack_with_value(
                     actor_side,
                     value,
@@ -760,14 +747,14 @@ impl ReplayState {
                 if realm <= 3 && repeats > 0 {
                     attacked |= self.dream_mirage_attack_with_value(
                         actor_side,
-                        other_param(card, 0).max(0),
+                        param0(card),
                         card.attack_count.unwrap_or(1),
                         slot,
                     );
                 } else if repeats > 0 {
                     attacked |= self.dream_mirage_attack_with_value(
                         actor_side,
-                        other_param(card, 0).max(0),
+                        param0(card),
                         repeats,
                         slot,
                     );
@@ -775,19 +762,19 @@ impl ReplayState {
                 Some(attacked)
             }
             4_000_078 => {
-                let hp = other_param(card, 0).max(0);
+                let hp = param0(card);
                 self.modify_actor_max_hp(actor_side, hp);
                 self.modify_actor_hp(actor_side, hp, false, false);
                 self.modify_dream_mirage_value(
                     actor_side,
                     DreamMirageValue::DreamReflection,
-                    other_param(card, 1).max(0),
+                    param1(card),
                 );
                 Some(false)
             }
             4_000_079 => {
                 self.apply_configured_anima(actor_side, card);
-                self.modify_star_power(actor_side, other_param(card, 0).max(0));
+                self.modify_star_power(actor_side, param0(card));
                 Some(false)
             }
             4_000_081 => {
@@ -796,7 +783,7 @@ impl ReplayState {
                 Some(attacked)
             }
             4_000_082 => {
-                let hp = other_param(card, 1).max(0);
+                let hp = param1(card);
                 self.modify_actor_max_hp(actor_side, hp);
                 self.modify_actor_hp(actor_side, hp, false, false);
                 // Card_4000082.cs 是三个独立 if（非 else-if）：
@@ -804,20 +791,20 @@ impl ReplayState {
                 //   level == JinDan → dst 虚弱(101)
                 //   level >  JinDan → dst 蛇影 + 用过蛇卡时 src 身法 10
                 // 金丹同时吃内伤+虚弱。oracle 锚点：hf-32308000
-                // fbde66539ca72b2d/round-06 cp[16] p2.internalInjury 1（引擎
-                // 0）、3f8fce148a56cd82/round-07 cp[6] p2 内伤 2 虚弱 1
+                // pa_de597152 cp[16] p2.internalInjury 1（引擎
+                // 0）、pa_511cd508 cp[6] p2 内伤 2 虚弱 1
                 //（引擎 0/2）。
                 if realm <= 3 {
-                    self.add_actor_negative_status(target_side, 100, other_param(card, 0).max(0));
+                    self.add_actor_negative_status(target_side, 100, param0(card));
                 }
                 if realm == 3 {
-                    self.add_actor_negative_status(target_side, 101, other_param(card, 0).max(0));
+                    self.add_actor_negative_status(target_side, 101, param0(card));
                 }
                 if realm > 3 {
                     self.modify_dream_mirage_value(
                         target_side,
                         DreamMirageValue::SnakeShadow,
-                        other_param(card, 0).max(0),
+                        param0(card),
                     );
                     if self.dream_mirage_value(actor_side, DreamMirageValue::SnakeCardUsedCount) > 0
                     {
@@ -827,14 +814,18 @@ impl ReplayState {
                 Some(false)
             }
             4_000_084 => {
-                // Card_4000084 uses two distinct original buffs. 炼气 through
-                // 元婴 consume the printed number of uses; 化神 stacks a
-                // permanent once-per-turn reward instead.
+                // Card_4000084.cs：anima > 0 时先 ModifyAnima，再安装持续。
+                // 筑基 4010084 的 anima=1。安装后的 OnAfterExecuted 还会对
+                // 非星位再加 1 灵气，所以首张非星位打出是 +2，不是 +1。
+                // oracle 锚点：hf-latest-33912000 pa_4bf677b4
+                // cardCompleted[0] p1.anima 原版 2、引擎 1。
+                self.apply_configured_anima(actor_side, card);
+                // 炼气至元婴消耗印面次数；化神改为每回合一次的永久标记。
                 if original_card_realm_level(card.id).unwrap_or(0) <= 4 {
                     self.modify_dream_mirage_value(
                         actor_side,
                         DreamMirageValue::DreamStarBoardLowRealm,
-                        other_param(card, 0).max(0),
+                        param0(card),
                     );
                 } else {
                     self.modify_dream_mirage_value(actor_side, DreamMirageValue::DreamStarBoard, 1);
@@ -844,12 +835,7 @@ impl ReplayState {
             4_000_085 => {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
                 let rear_move = self.check_rear_move(actor_side, was_used_before_effect);
-                let repeats = other_param(card, 0).max(0)
-                    + if rear_move {
-                        other_param(card, 1).max(0)
-                    } else {
-                        0
-                    };
+                let repeats = param0(card) + if rear_move { param1(card) } else { 0 };
                 for _ in 0..repeats {
                     if let Some(status) = self.consume_optional_negative_status_decision() {
                         self.add_actor_negative_status(target_side, status, 1);
@@ -864,9 +850,9 @@ impl ReplayState {
                 //   其余变体（4020087 等）：只要用过就翻倍一次 → count>0 时 ×2。
                 // 翻倍点位于 CalculateAttack 百分比倍率之前，覆盖星力/加攻
                 // 等已累加平值（见 active_effect_attack_multiplier）。
-                // oracle 锚点：97977de0a7697428/round-13 cp13 p2.hp 47 vs 49
+                // oracle 锚点：pa_64d923ab cp13 p2.hp 47 vs 49
                 // （梅开二度双执行：第二段 (12+星力2)×2）、
-                // fb3c4ca4a7a4e78e/round-06 cp37/cp48/cp59 p1.hp
+                // pa_dde0062c cp37/cp48/cp59 p1.hp
                 // （4020087 只翻倍一次，非指数）。
                 let times = self
                     .dream_mirage_value(actor_side, DreamMirageValue::WitheredTreeUsedCount)
@@ -898,20 +884,20 @@ impl ReplayState {
             4_000_089 => {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
                 if realm > 3 {
-                    self.modify_star_power(actor_side, other_param(card, 1).max(0));
+                    self.modify_star_power(actor_side, param1(card));
                 } else if self.actor(actor_side).astrology.star_slots.contains(&slot) {
-                    self.add_actor_negative_status(target_side, 100, other_param(card, 0).max(0));
+                    self.add_actor_negative_status(target_side, 100, param0(card));
                 }
                 Some(attacked)
             }
             7_000_074 => {
                 self.activate_element(actor_side, Element::Metal);
-                self.gain_sharpness(actor_side, other_param(card, 0).max(0));
+                self.gain_sharpness(actor_side, param0(card));
                 if realm > 3 {
                     self.modify_dream_mirage_value(
                         actor_side,
                         DreamMirageValue::ActionAgainSharpness,
-                        other_param(card, 1).max(0),
+                        param1(card),
                     );
                 }
                 Some(false)
@@ -921,22 +907,18 @@ impl ReplayState {
                 if realm >= 5 {
                     self.execute_dream_mirage_selected_temporary_card(actor_side, slot);
                 } else {
-                    self.dream_mirage_direct_damage(
-                        actor_side,
-                        target_side,
-                        other_param(card, 0).max(0),
-                    );
+                    self.dream_mirage_direct_damage(actor_side, target_side, param0(card));
                 }
                 Some(false)
             }
             7_000_076 => {
                 self.apply_configured_anima(actor_side, card);
-                let hp = other_param(card, 1).max(0);
+                let hp = param1(card);
                 if hp > 0 {
                     self.modify_actor_max_hp(actor_side, hp);
                     self.modify_actor_hp(actor_side, hp, false, false);
                 }
-                self.gain_water_momentum(actor_side, other_param(card, 0).max(0));
+                self.gain_water_momentum(actor_side, param0(card));
                 if realm >= 4 {
                     self.modify_dream_mirage_value(
                         actor_side,
@@ -953,14 +935,13 @@ impl ReplayState {
                     // 高境界分支读取 JiLuWuXingPaiShiYongCiShu，不能与低境界
                     // 的卡组五行种类计数混用。
                     let attacked = self.attack_by_config(actor_side, card, 0, slot);
-                    let defense =
-                        wu_xing_count_in_deck(self.actor(actor_side)) * other_param(card, 0).max(0);
+                    let defense = wu_xing_count_in_deck(self.actor(actor_side)) * param0(card);
                     self.gain_defense(actor_side, defense.max(0));
                     Some(attacked)
                 } else {
                     let defense = self
                         .dream_mirage_value(actor_side, DreamMirageValue::UsedFiveElementsCount)
-                        * other_param(card, 0).max(0);
+                        * param0(card);
                     self.gain_defense(actor_side, defense.max(0));
                     self.modify_dream_mirage_value(
                         actor_side,
@@ -999,15 +980,14 @@ impl ReplayState {
                 Some(false)
             }
             7_000_080 => {
-                self.modify_actor_hp(actor_side, other_param(card, 0).max(0), false, false);
+                self.modify_actor_hp(actor_side, param0(card), false, false);
                 if realm <= 3 {
                     let water_momentum = self.actor(actor_side).elements.water_momentum.max(0);
                     self.actor_mut(actor_side).turn.next_attack_bonus += water_momentum;
                 } else {
                     let divisor = other_param(card, 1);
                     let bonus = if divisor > 0 {
-                        (self.actor(actor_side).elements.water_momentum / divisor)
-                            .min(other_param(card, 2).max(0))
+                        (self.actor(actor_side).elements.water_momentum / divisor).min(param2(card))
                     } else {
                         0
                     };
@@ -1026,22 +1006,21 @@ impl ReplayState {
                 //     伤害+等量回血，BattleCharacter.cs:11761-11764）；
                 //   level == 化神: maxHp += otherParams[2]，
                 //     JiaGongZhuanMuCi += otherParams[0]（加攻转木刺）。
-                // oracle 锚点：mirror-32299000 01426afd87ec8719/round-10 cp6
+                // oracle 锚点：mirror-32299000 pa_a5f90595 cp6
                 // p2.hp 62 vs 63（混元碎击缺 668 的 1 伤 1 回）、
-                // 0e4dd80777aec990/round-08 cp5 p1.hp 63 vs 65。
+                // pa_6b6299cf cp5 p1.hp 63 vs 65。
                 if realm <= 4 {
-                    self.actor_mut(actor_side).elements.attack_life_drain +=
-                        other_param(card, 0).max(0);
+                    self.actor_mut(actor_side).elements.attack_life_drain += param0(card);
                 }
                 if realm >= 4 {
-                    self.actor_mut(actor_side).elements.wood_thorn += other_param(card, 1).max(0);
+                    self.actor_mut(actor_side).elements.wood_thorn += param1(card);
                 }
                 if realm >= 5 {
-                    self.modify_actor_max_hp(actor_side, other_param(card, 2).max(0));
+                    self.modify_actor_max_hp(actor_side, param2(card));
                     self.modify_dream_mirage_value(
                         actor_side,
                         DreamMirageValue::AttackBonusToThorns,
-                        other_param(card, 0).max(0),
+                        param0(card),
                     );
                 }
                 Some(false)
@@ -1049,7 +1028,7 @@ impl ReplayState {
             7_000_082 => {
                 let attack = card.attack.unwrap_or(0)
                     + self.dream_mirage_value(target_side, DreamMirageValue::LostMaxHpEventCount)
-                        * other_param(card, 0).max(0);
+                        * param0(card);
                 Some(self.dream_mirage_attack_with_value(
                     actor_side,
                     attack,
@@ -1058,7 +1037,7 @@ impl ReplayState {
                 ))
             }
             7_000_083 => {
-                let amount = other_param(card, 0).max(0)
+                let amount = param0(card)
                     + self.actor(actor_side).core.defense / other_param(card, 1).max(1);
                 self.modify_actor_hp(target_side, -amount, false, false);
                 self.modify_actor_max_hp(target_side, -amount);
@@ -1080,23 +1059,31 @@ impl ReplayState {
             7_000_086 => {
                 self.apply_configured_defense(actor_side, card);
                 if realm <= 3 {
-                    self.actor_mut(actor_side).turn.next_turn_defense +=
-                        other_param(card, 0).max(0);
+                    self.actor_mut(actor_side).turn.next_turn_defense += param0(card);
                 } else {
                     self.modify_dream_mirage_value(actor_side, DreamMirageValue::DreamCliff, 1);
                 }
                 Some(false)
             }
             7_000_087 => {
-                // Card_7000087.cs: OnExecuted stores otherParams[1] in
-                // MengTianSuiDiJingJie (the low-to-YuanYing finite-use buff).
-                // The HuaShen variant uses MengTianSui and is handled as an
-                // unbounded marker by the shared hook below.
+                // Card_7000087.cs OnExecuted: otherParams[0] > 0 时先
+                // ModifyMaxHp 再 ModifyHp（炼气 7000087=[2,1]，筑基
+                // 7010087=[4,1]；金丹及以上 otherParams[0]=0）。上限必须先于
+                // 回血，否则满血时回血被旧上限夹掉。随后 otherParams[1] 写入
+                // MengTianSuiDiJingJie（元婴及以下有限次）；化神写 MengTianSui
+                // 无限标记，由下方共享 hook 消费。
+                // oracle 锚点：hf-latest-33912000 pa_1645adbe
+                // cardCompleted[0] p1.hp 原版 42、引擎 40（7000087 少回 2）。
+                let granted_hp = param0(card);
+                if granted_hp > 0 {
+                    self.modify_actor_max_hp(actor_side, granted_hp);
+                    self.modify_actor_hp(actor_side, granted_hp, false, false);
+                }
                 if original_card_realm_level(card.id).unwrap_or(0) <= 4 {
                     self.modify_dream_mirage_value(
                         actor_side,
                         DreamMirageValue::FiveElementsMarrow,
-                        other_param(card, 1).max(0),
+                        param1(card),
                     );
                 } else {
                     self.actor_mut(actor_side)
@@ -1108,8 +1095,7 @@ impl ReplayState {
 
             7_000_089 => {
                 self.apply_configured_anima(actor_side, card);
-                let amount = other_param(card, 0).max(0)
-                    + self.actor(actor_side).core.anima * other_param(card, 1).max(0);
+                let amount = param0(card) + self.actor(actor_side).core.anima * param1(card);
                 self.modify_actor_hp(target_side, -amount, false, false);
                 self.modify_actor_max_hp(target_side, -amount);
                 if !was_used_before_effect {
@@ -1122,14 +1108,14 @@ impl ReplayState {
             7_000_090 => {
                 self.activate_element(actor_side, Element::Fire);
                 self.apply_configured_defense(actor_side, card);
-                let amount = other_param(card, 0).max(0);
+                let amount = param0(card);
                 self.modify_actor_hp(target_side, -amount, false, false);
                 self.modify_actor_max_hp(target_side, -amount);
                 if realm >= 4 {
                     self.modify_dream_mirage_value(
                         actor_side,
                         DreamMirageValue::DreamFireFormation,
-                        other_param(card, 1).max(0),
+                        param1(card),
                     );
                 }
                 Some(false)
@@ -1137,7 +1123,7 @@ impl ReplayState {
             7_000_093 => None,
             10_000_069 => {
                 self.apply_configured_anima(actor_side, card);
-                self.modify_actor_hp(actor_side, other_param(card, 0).max(0), false, false);
+                self.modify_actor_hp(actor_side, param0(card), false, false);
                 self.modify_dream_mirage_value(
                     actor_side,
                     DreamMirageValue::DreamMysticFootwork,
@@ -1168,10 +1154,7 @@ impl ReplayState {
             10_000_076 => {
                 self.apply_configured_defense(actor_side, card);
                 let (key, amount) = if realm <= 4 {
-                    (
-                        DreamMirageValue::NextHpGainDefense,
-                        other_param(card, 0).max(0),
-                    )
+                    (DreamMirageValue::NextHpGainDefense, param0(card))
                 } else {
                     (DreamMirageValue::HpGainDefense, 1)
                 };
@@ -1183,9 +1166,9 @@ impl ReplayState {
                 // 负面状态，攻击 +1。原版脚本硬编码 +1（不是 otherParams[0]：
                 // 10020077 的 otherParams[0] = 0，但持有 冥(367)/破绽/外伤
                 // 等负面状态时每段仍多 1 攻）。oracle 锚点：
-                // aa1dd3dad8d82ea6/round-07 cp3 p1.hp 48 vs 50（冥 367 计为
-                // 负面）、b897036ba60289fc/round-07 cp2 p2.hp 49 vs 51（破绽）、
-                // dbe54b8d15e15d01/round-06 cp8 p2.hp 4 vs 6（外伤）。
+                // pa_903c3f58 cp3 p1.hp 48 vs 50（冥 367 计为
+                // 负面）、pa_09cccd69 cp2 p2.hp 49 vs 51（破绽）、
+                // pa_361c6e3f cp8 p2.hp 4 vs 6（外伤）。
                 let extra = if realm <= 3 && self.negative_status_stack_count(actor_side) > 0 {
                     1
                 } else {
@@ -1198,13 +1181,13 @@ impl ReplayState {
                     slot,
                 );
                 if realm >= 4 {
-                    self.gain_agility(actor_side, other_param(card, 1).max(0));
+                    self.gain_agility(actor_side, param1(card));
                 }
                 Some(attacked)
             }
             10_000_078 => {
                 if realm >= 4 && self.negative_status_stack_count(actor_side) > 0 {
-                    self.modify_momentum(actor_side, other_param(card, 0).max(0));
+                    self.modify_momentum(actor_side, param0(card));
                 }
                 Some(
                     self.dream_mirage_attack_with_value(
@@ -1221,7 +1204,7 @@ impl ReplayState {
             }
             10_000_080 => {
                 self.apply_configured_defense(actor_side, card);
-                self.gain_agility(actor_side, other_param(card, 0).max(0));
+                self.gain_agility(actor_side, param0(card));
                 Some(false)
             }
             10_000_081 => {
@@ -1246,8 +1229,8 @@ impl ReplayState {
                 {
                     attacked |= self.dream_mirage_attack_with_value(
                         actor_side,
-                        other_param(card, 0).max(0),
-                        other_param(card, 1).max(0),
+                        param0(card),
+                        param1(card),
                         slot,
                     );
                 }
@@ -1259,24 +1242,24 @@ impl ReplayState {
                     self.modify_dream_mirage_value(
                         actor_side,
                         DreamMirageValue::NextBengQuanAdditionalAttack,
-                        other_param(card, 0).max(0),
+                        param0(card),
                     );
                 }
                 Some(attacked)
             }
             10_000_083 => {
                 let defense = card.defense.unwrap_or(0).max(0)
-                    + self.negative_status_stack_count(actor_side) * other_param(card, 0).max(0);
+                    + self.negative_status_stack_count(actor_side) * param0(card);
                 self.gain_defense(actor_side, defense);
                 Some(false)
             }
             10_000_084 => {
                 if realm >= 4 {
-                    self.modify_momentum_limit(actor_side, other_param(card, 1).max(0));
+                    self.modify_momentum_limit(actor_side, param1(card));
                 } else {
-                    self.modify_actor_hp(actor_side, other_param(card, 1).max(0), false, false);
+                    self.modify_actor_hp(actor_side, param1(card), false, false);
                 }
-                self.modify_momentum(actor_side, other_param(card, 0).max(0));
+                self.modify_momentum(actor_side, param0(card));
                 if realm >= 5 {
                     self.modify_dream_mirage_value(
                         actor_side,
@@ -1288,10 +1271,9 @@ impl ReplayState {
             }
             10_000_085 => {
                 self.apply_configured_anima(actor_side, card);
-                self.modify_momentum(actor_side, other_param(card, 1).max(0));
+                self.modify_momentum(actor_side, param1(card));
                 if realm <= 4 {
-                    self.actor_mut(actor_side).beng.momentum_before_attack +=
-                        other_param(card, 0).max(0);
+                    self.actor_mut(actor_side).beng.momentum_before_attack += param0(card);
                 } else {
                     self.modify_dream_mirage_value(
                         actor_side,
@@ -1325,17 +1307,23 @@ impl ReplayState {
                     } else {
                         DreamMirageValue::DreamDefenseGainDamage
                     },
-                    other_param(card, 1).max(0),
+                    param1(card),
                 );
                 Some(false)
             }
             260 => {
+                // 幻•暗鸦灵剑（Card_260.cs）：攻击 → 灵气>0 时防御 +=
+                // 灵气×otherParams[0]，rarity=2（如 20260）不设上限，否则钳制
+                // otherParams[2]。再行动的灵剑计数条件见 actionAgain 侧静态口径。
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
-                self.gain_defense(
-                    actor_side,
-                    (self.actor(actor_side).core.anima * other_param(card, 0).max(0))
-                        .min(other_param(card, 2).max(0)),
-                );
+                let anima = self.actor(actor_side).core.anima;
+                if anima > 0 {
+                    let mut defense = param0(card) * anima;
+                    if original_config_rarity(card.id) != 2 {
+                        defense = defense.min(param2(card));
+                    }
+                    self.gain_defense(actor_side, defense);
+                }
                 Some(attacked)
             }
             261 => {
@@ -1345,17 +1333,17 @@ impl ReplayState {
                 Some(attacked)
             }
             266 => {
-                self.add_actor_negative_status(target_side, 100, other_param(card, 0).max(0));
+                self.add_actor_negative_status(target_side, 100, param0(card));
                 self.modify_dream_mirage_value(
                     target_side,
                     DreamMirageValue::FlowingMerciless,
-                    other_param(card, 1).max(0),
+                    param1(card),
                 );
                 Some(false)
             }
             269 => {
                 let mut grid = slot;
-                for _ in 0..other_param(card, 0).max(0) {
+                for _ in 0..param0(card) {
                     grid = self.dream_mirage_next_grid(actor_side, grid);
                     self.add_dream_mirage_star_slot(actor_side, grid);
                 }
@@ -1364,16 +1352,16 @@ impl ReplayState {
                 self.modify_dream_mirage_value(
                     actor_side,
                     DreamMirageValue::StarShiftAttack,
-                    other_param(card, 1).max(0),
+                    param1(card),
                 );
                 Some(false)
             }
             270 => {
                 self.apply_configured_anima(actor_side, card);
-                let amount = other_param(card, 1).max(0);
+                let amount = param1(card);
                 self.modify_actor_hp(target_side, -amount, false, false);
                 self.modify_actor_max_hp(target_side, -amount);
-                let cost = other_param(card, 0).max(0);
+                let cost = param0(card);
                 if self.check_wu_xing(actor_side, Element::Fire)
                     && self.actor(actor_side).core.anima >= cost
                 {
@@ -1387,11 +1375,11 @@ impl ReplayState {
                 Some(false)
             }
             271 => {
-                self.gain_water_momentum(actor_side, other_param(card, 0).max(0));
+                self.gain_water_momentum(actor_side, param0(card));
                 self.modify_dream_mirage_value(
                     actor_side,
                     DreamMirageValue::ExtraWaterMomentumTurnEnd,
-                    other_param(card, 1).max(0),
+                    param1(card),
                 );
                 Some(false)
             }
@@ -1400,12 +1388,12 @@ impl ReplayState {
                 let heal = (self.dream_mirage_value(actor_side, DreamMirageValue::LastTurnStartHp)
                     - self.actor(actor_side).core.hp)
                     .max(0)
-                    .min(other_param(card, 1).max(0));
+                    .min(param1(card));
                 self.modify_actor_hp(actor_side, heal, false, false);
                 if self.check_wu_xing(actor_side, Element::Wood)
                     && self.actor(actor_side).add_hp_count() > 0
                 {
-                    self.gain_dream_mirage_attack_bonus(actor_side, other_param(card, 0).max(0));
+                    self.gain_dream_mirage_attack_bonus(actor_side, param0(card));
                 }
                 Some(false)
             }
@@ -1417,7 +1405,7 @@ impl ReplayState {
                     card.attack_count.unwrap_or(1),
                     slot,
                 );
-                self.gain_sharpness(actor_side, other_param(card, 0).max(0));
+                self.gain_sharpness(actor_side, param0(card));
                 if self.check_wu_xing(actor_side, Element::Metal) {
                     self.modify_dream_mirage_value(
                         actor_side,
@@ -1434,18 +1422,18 @@ impl ReplayState {
                 self.modify_dream_mirage_value(
                     actor_side,
                     DreamMirageValue::ExcessPhysiqueHp,
-                    other_param(card, 0).max(0),
+                    param0(card),
                 );
                 self.modify_dream_mirage_value(
                     actor_side,
                     DreamMirageValue::ExcessPhysiqueDamage,
-                    other_param(card, 1).max(0),
+                    param1(card),
                 );
                 Some(false)
             }
             395 => {
-                self.modify_actor_hp(actor_side, other_param(card, 0).max(0), false, false);
-                self.gain_agility(actor_side, other_param(card, 1).max(0));
+                self.modify_actor_hp(actor_side, param0(card), false, false);
+                self.gain_agility(actor_side, param1(card));
                 self.execute_dream_mirage_selected_temporary_card(actor_side, slot);
                 Some(false)
             }
@@ -1455,9 +1443,9 @@ impl ReplayState {
                 Some(false)
             }
             79 => {
-                self.gain_dream_mirage_attack_bonus(actor_side, other_param(card, 0).max(0));
-                self.gain_guard(actor_side, other_param(card, 1).max(0));
-                let duration = other_param(card, 2).max(0);
+                self.gain_dream_mirage_attack_bonus(actor_side, param0(card));
+                self.gain_guard(actor_side, param1(card));
+                let duration = param2(card);
                 self.modify_dream_mirage_value(
                     actor_side,
                     DreamMirageValue::DragonExtraActionImmunity,
@@ -1531,6 +1519,24 @@ impl ReplayState {
             self.gain_anima(actor_side, 1);
         } else {
             self.actor_mut(actor_side).astrology.star_slots.push(grid);
+        }
+    }
+
+    /// BattleCharacter.OnBattleStarted 开头（:880-893，天赋循环之前）：卡组每张
+    /// 4000079 系梦•斗转星移把前后格补成星位（已是星位则跳过，不触发星位聚灵）。
+    pub(super) fn place_dream_star_shift_star_slots_at_battle_start(&mut self, actor_side: PlayerSide) {
+        let count = self.actor(actor_side).deck.active_slot_count;
+        for slot in 0..count {
+            let Some(entry) = self.actor(actor_side).deck.slots.get(slot) else {
+                break;
+            };
+            if super::support::normalized_base_id(&entry.card) != 4_000_079 {
+                continue;
+            }
+            let previous = self.dream_mirage_previous_grid(actor_side, slot);
+            let next = self.dream_mirage_next_grid(actor_side, slot);
+            self.ensure_dream_mirage_star_slot(actor_side, previous);
+            self.ensure_dream_mirage_star_slot(actor_side, next);
         }
     }
 

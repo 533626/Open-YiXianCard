@@ -79,7 +79,7 @@ pub fn trace_replay_fixture_hooks(fixture: &BattleFixture) -> Result<ReplayHookT
     // matches the original game's battle-replay view, which shows the opening
     // state changes as part of the battle-start frame rather than as already-set
     // state with no visible cause.
-    let pre_opening = ReplayState::from_fixture_pre_opening(fixture, true).ok();
+    let pre_opening = ReplayState::<true>::from_fixture_pre_opening(fixture, true).ok();
     let pre_opening_p1 = pre_opening.as_ref().map(|state| state.p1.detail_entries());
     let pre_opening_p2 = pre_opening.as_ref().map(|state| state.p2.detail_entries());
     let mut previous: Option<&ReplayDetailedStep> = None;

@@ -1,3 +1,4 @@
+use super::flow_card_effect::{param0, param1};
 use super::support::{
     active_neighbor_card, elements_in_card_name, has_cloud_chain, opponent_side, other_param,
     wu_xing_count_in_deck,
@@ -5,7 +6,7 @@ use super::support::{
 use super::{Element, ReplayState};
 use crate::model::{CardDefinition, PlayerSide};
 
-impl ReplayState {
+impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn apply_ronghui_early_card_effect(
         &mut self,
         actor_side: PlayerSide,
@@ -16,7 +17,7 @@ impl ReplayState {
     ) -> Option<bool> {
         match base_id {
             136 => {
-                self.gain_water_momentum(actor_side, other_param(card, 0).max(0));
+                self.gain_water_momentum(actor_side, param0(card));
                 // Card_136.cs:88-89 directly calls ModifyBuffValue on the
                 // two JiHuo* counters.  This is deliberately not the
                 // semantic ActiveWuXing/activate_element path: generated
@@ -36,13 +37,12 @@ impl ReplayState {
                 Some(self.attack_by_config(actor_side, card, bonus, slot))
             }
             169 => {
-                let bonus =
-                    wu_xing_count_in_deck(self.actor(actor_side)) * other_param(card, 0).max(0);
+                let bonus = wu_xing_count_in_deck(self.actor(actor_side)) * param0(card);
                 Some(self.attack_by_config(actor_side, card, bonus, slot))
             }
             180 => {
                 self.apply_configured_anima(actor_side, card);
-                let hp_gain = other_param(card, 0).max(0);
+                let hp_gain = param0(card);
                 self.modify_actor_max_hp(actor_side, hp_gain);
                 self.modify_actor_hp(actor_side, hp_gain, false, false);
                 Some(false)
@@ -50,9 +50,8 @@ impl ReplayState {
             183 => {
                 self.apply_elixir_base(actor_side, card);
                 self.modify_sword_intent(actor_side, card.sword_intent.unwrap_or(0).max(0));
-                self.modify_actor_max_hp(actor_side, other_param(card, 1).max(0));
-                let healing =
-                    self.actor(actor_side).sword.sword_intent.max(0) * other_param(card, 0).max(0);
+                self.modify_actor_max_hp(actor_side, param1(card));
+                let healing = self.actor(actor_side).sword.sword_intent.max(0) * param0(card);
                 if healing > 0 {
                     self.modify_actor_hp(actor_side, healing, false, false);
                 }
@@ -61,11 +60,7 @@ impl ReplayState {
             184 => {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
                 if has_cloud_chain(self.actor(actor_side)) {
-                    self.add_actor_negative_status(
-                        opponent_side(actor_side),
-                        101,
-                        other_param(card, 0).max(0),
-                    );
+                    self.add_actor_negative_status(opponent_side(actor_side), 101, param0(card));
                 }
                 Some(attacked)
             }
@@ -74,7 +69,7 @@ impl ReplayState {
                 let next_elements = active_neighbor_card(self.actor(actor_side), slot, 1)
                     .map(elements_in_card_name)
                     .unwrap_or_default();
-                self.gain_guard(actor_side, other_param(card, 0).max(0));
+                self.gain_guard(actor_side, param0(card));
                 if !was_used_before_effect {
                     self.gain_guard(actor_side, 1);
                 }
@@ -99,13 +94,12 @@ impl ReplayState {
             }
             204 => {
                 self.apply_configured_anima(actor_side, card);
-                self.actor_mut(actor_side).turn.ignore_defense_attacks +=
-                    other_param(card, 0).max(0);
-                self.gain_agility(actor_side, other_param(card, 1).max(0));
+                self.actor_mut(actor_side).turn.ignore_defense_attacks += param0(card);
+                self.gain_agility(actor_side, param1(card));
                 Some(false)
             }
             391 => {
-                self.gain_agility(actor_side, other_param(card, 0).max(0));
+                self.gain_agility(actor_side, param0(card));
                 Some(false)
             }
             _ => None,
