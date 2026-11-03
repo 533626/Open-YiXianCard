@@ -344,8 +344,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             let card = self.actor(actor_side).deck.slots[index as usize]
                 .card
                 .clone();
-            let base_id = normalized_base_id(&card);
-            if !Self::card_triggers_opening(base_id) {
+            if !Self::card_triggers_opening(&card) {
                 index += direction;
                 continue;
             }

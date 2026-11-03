@@ -557,9 +557,11 @@ mod tests {
     fn opening_effect_unification_case_b_herbs() {
         // Verify 57 (土生金) works under both battle-start and mid-battle trigger-opening
         assert!(ReplayState::<true>::card_has_opening_effect(57));
-        assert!(ReplayState::<true>::card_triggers_opening(57));
-        assert!(ReplayState::<true>::card_triggers_opening_on_skip(57));
+        let herb = super::super::tests::test_card(57, 57, "土生金");
+        assert!(ReplayState::<true>::card_triggers_opening(&herb));
+        assert!(ReplayState::<true>::card_triggers_opening_on_skip(&herb));
         // Verify 56 (火生土) is excluded from skip-card triggering
-        assert!(!ReplayState::<true>::card_triggers_opening_on_skip(56));
+        let fire = super::super::tests::test_card(56, 56, "火生土");
+        assert!(!ReplayState::<true>::card_triggers_opening_on_skip(&fire));
     }
 }

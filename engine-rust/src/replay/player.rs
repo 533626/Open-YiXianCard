@@ -208,7 +208,8 @@ impl ReplayPlayer {
                     .cloned()
                     .unwrap_or_default(),
                 hand_card_count: fixture.hand_cards.len() as i64,
-            },
+            }
+            .into(),
             core: ReplayCoreVitals {
                 hp,
                 max_hp: max_hp_base + initial_physique,
@@ -278,7 +279,8 @@ impl ReplayPlayer {
                 next_cards_as_frenzy_sword_effective_count: 0,
                 yun_jian_mao_ying: 0,
                 chain_sword_temporary_cursor: None,
-            },
+            }
+            .into(),
             elements: ReplayElementState {
                 water_momentum: initial_water_momentum,
                 water_formation: 0,
@@ -322,7 +324,8 @@ impl ReplayPlayer {
                 long_ma_spirit: 0,
                 synthetic_ding_feng_bo_candidate: 0,
                 zhu_chen_bu: 0,
-            },
+            }
+            .into(),
             formations: ReplayFormationState {
                 turtle_formation: 0,
                 turtle_formation_defense: 0,
@@ -356,7 +359,8 @@ impl ReplayPlayer {
                 six_yao_formation: 0,
                 spirit_formation_echo: 0,
                 spirit_formation_echo_triggered: false,
-            },
+            }
+            .into(),
             beng: ReplayBengQuanState {
                 next_beng_quan_hp_cost_damage: 0,
                 beng_quan_double_shadow: 0,
@@ -390,7 +394,8 @@ impl ReplayPlayer {
                 beng_quan_fei_zhou: 0,
                 quan_stance: initial_quan_stance,
                 gun_stance: initial_gun_stance,
-            },
+            }
+            .into(),
             music: ReplayMusicState {
                 music_cards_played: 0,
                 immortal_binding_tune: 0,
@@ -403,7 +408,8 @@ impl ReplayPlayer {
                 xiaoyao_tune: 0,
                 xiaoyao_guqin: 0,
                 chaotic_mind_tune: 0,
-            },
+            }
+            .into(),
             astrology: ReplayAstrologyState {
                 hexagram: initial_hexagram,
                 lost_hexagram: 0,
@@ -424,7 +430,8 @@ impl ReplayPlayer {
                 lei_shan_er_du: 0,
                 ling_yuan_wai_fang: 0,
                 star_slots: vec![2, 5],
-            },
+            }
+            .into(),
             status: ReplayStatusState {
                 // Talent 171's opening 外伤 is an OnBattleStarted ModifyBuffValue,
                 // not constructor state.  It must pass through the shared
@@ -555,13 +562,15 @@ impl ReplayPlayer {
                 },
                 resonance_mystic_heart_enter_profound: 0,
                 instant_shadow_strike: 0,
-            },
-            chance: ReplayChanceState::default(),
+            }
+            .into(),
+            chance: ReplayChanceState::default().into(),
             dream_mirage: super::ReplayDreamMirageState {
                 action_again_limit: 1,
                 ..Default::default()
-            },
-            mirage_ronghui: super::ReplayMirageRonghuiState::default(),
+            }
+            .into(),
+            mirage_ronghui: super::ReplayMirageRonghuiState::default().into(),
             ronghui: super::ReplayRonghuiState {
                 five_elements_bottle_card_id: fixture
                     .talent_card_params
@@ -570,7 +579,8 @@ impl ReplayPlayer {
                     .copied()
                     .unwrap_or(0),
                 ..Default::default()
-            },
+            }
+            .into(),
             turn: ReplayTurnState {
                 lost_defense_count: 0,
                 turn_attack_segments: 0,

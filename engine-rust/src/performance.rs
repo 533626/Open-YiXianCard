@@ -3,7 +3,7 @@
 use std::cell::{Cell, RefCell};
 use std::sync::atomic::{compiler_fence, Ordering};
 
-pub const CATEGORIES: [&str; 14] = [
+pub const CATEGORIES: [&str; 15] = [
     "initialization",
     "battle_loop",
     "card_body",
@@ -18,6 +18,7 @@ pub const CATEGORIES: [&str; 14] = [
     "finish_card",
     "after_card",
     "end_invocation",
+    "mechanism_refresh",
 ];
 pub const CATEGORY_COUNT: usize = CATEGORIES.len();
 #[derive(Clone, Copy, Default, serde::Serialize)]

@@ -152,10 +152,9 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         if OBSERVE {
             self.attribution_block = Some(super::TraceAttributionBlock::BattleStart);
         }
-        // BattleCharacter.Init sets LastTurnStartHp before either actor's
-        // OnBattleStarted, including HP changes made by the first actor.
-        self.initialize_last_turn_start_hp(PlayerSide::P1);
-        self.initialize_last_turn_start_hp(PlayerSide::P2);
+        // LastTurnStartHp 不在此预采：原版在各 actor 自身 OnBattleStarted
+        // 起点采样（BattleCharacter.cs:895），采样点在
+        // apply_battle_start_opening_effects 的每方迭代起点。
         self.apply_verified_xian_mo_before_battle_start();
         self.apply_battle_start_opening_effects(fixture);
         self.apply_battle_start_phase_perturbations(fixture)?;

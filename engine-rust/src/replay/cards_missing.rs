@@ -1,9 +1,10 @@
 use super::cards_dream_mirage::DreamMirageValue;
 use super::flow_card_effect::{param0, param1, param2, param3};
+use super::original_config::original_card_realm_level;
 use super::support::{
-    active_neighbor_card, card_rarity, div_ceil, element_from_card, elements_in_card_name,
-    is_element_generated_by, neighbor_card as support_neighbor_card, normalized_base_id,
-    opponent_side, other_param,
+    active_neighbor_card, card_rarity, div_ceil_signed, element_from_card,
+    elements_in_card_name, is_element_generated_by,
+    neighbor_card as support_neighbor_card, normalized_base_id, opponent_side, other_param,
 };
 use super::ReplayState;
 use crate::model::{CardDefinition, PlayerSide};
@@ -657,21 +658,19 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 Some(false)
             }
             3_000_014 => {
+                // Card_3000014.cs:61-62,80 无条件 ModifyHp/ModifyMaxHp/
+                // ModifyAnima，且以 Mathf.CeilToInt 取整：目标负血量时
+                // ceil 为负即回血。support::div_ceil 会把非正数钳到 0，
+                // 此处必须用真 ceil，否则负血分支被吞。
+                // oracle：pa_e273b714（p1 -13 -> -12）。
                 let target_side = opponent_side(actor_side);
                 let target = self.actor(target_side);
                 let percent = param0(card);
-                let hp_loss = div_ceil(target.core.hp * percent, 100);
-                let max_hp_loss = div_ceil(target.core.max_hp * percent, 100);
-                if hp_loss > 0 {
-                    self.modify_actor_hp(target_side, -hp_loss, false, false);
-                }
-                if max_hp_loss > 0 {
-                    self.modify_actor_max_hp(target_side, -max_hp_loss);
-                }
-                let anima_loss = param1(card);
-                if anima_loss > 0 {
-                    self.reduce_anima_unchecked(target_side, anima_loss);
-                }
+                let hp_loss = div_ceil_signed(target.core.hp * percent, 100);
+                let max_hp_loss = div_ceil_signed(target.core.max_hp * percent, 100);
+                self.modify_actor_hp(target_side, -hp_loss, false, false);
+                self.modify_actor_max_hp(target_side, -max_hp_loss);
+                self.reduce_anima_unchecked(target_side, param1(card));
                 Some(false)
             }
             5_000_003 => {
@@ -978,13 +977,20 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
 
     /// 原版 BattleCharacter.TriggerOpening 的 switch（跳牌循环、天星牵引/反击、天运避凶判定都走它）：
     /// 梦牌 348 / 378 / 4000079 在当前 build 是开局时扫描卡组的被动（BattleCharacter.cs:884、2511–2518），
-    /// 不在 switch 里，被跳过/牵引时不会再次触发。
-    pub(super) fn card_triggers_opening(base_id: i64) -> bool {
+    /// 不在 switch 里，被跳过/牵引时不会再次触发。base 1000086 另有境界门：
+    /// 元婴以下显式 return false（BattleCharacter.cs:11509-11518），不授云海也不重触发。
+    pub(super) fn card_triggers_opening(card: &CardDefinition) -> bool {
+        let base_id = normalized_base_id(card);
+        if base_id == 1_000_086
+            && original_card_realm_level(card.id).unwrap_or(0) < 4
+        {
+            return false;
+        }
         Self::card_has_opening_effect(base_id) && !matches!(base_id, 348 | 378 | 4_000_079)
     }
 
-    pub(super) fn card_triggers_opening_on_skip(base_id: i64) -> bool {
-        Self::card_triggers_opening(base_id) && base_id != 56
+    pub(super) fn card_triggers_opening_on_skip(card: &CardDefinition) -> bool {
+        Self::card_triggers_opening(card) && normalized_base_id(card) != 56
     }
 
     pub(super) fn card_has_opening_effect(base_id: i64) -> bool {

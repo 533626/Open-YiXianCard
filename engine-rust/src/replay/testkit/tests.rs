@@ -872,6 +872,79 @@ fn card_402_odd_slot_repeats_the_next_cloud_sword_without_fate_strategies() {
     assert_eq!(state.p2.core.hp, hp_after_step - 12);
 }
 
+#[test]
+fn last_turn_start_hp_samples_after_first_actor_opening_damage() {
+    // BattleCharacter.cs:895 samples LastTurnStartHp at the start of each
+    // actor's own OnBattleStarted; BattleExecuter.cs:1800-1801 awaits the
+    // first actor before starting the second. Sampling both actors upfront
+    // leaves the second actor a stale pre-opening value. Oracle anchor:
+    // pa_5994d1c7 (p1 opening 11000018 reflects 6 onto p2;
+    // original p2.LastTurnStartHp=98 against pre-opening 104).
+    let p1 = super::test_support::fill_deck(
+        vec![super::test_support::original_card(11_000_018)],
+        basic_attack_test_card(),
+    );
+    let fixture = minimal_fixture(
+        p1,
+        filler_cards(basic_attack_test_card()),
+        FixtureExpected {
+            winner_side: PlayerSide::P1,
+            actor_turn_count: 1,
+            hp_delta_p1_minus_p2: 0,
+            final_hp: None,
+        },
+    );
+    let state = ReplayState::test_from_fixture(&fixture);
+    // 11000018 opening reflects other_param[1]=6 onto p2 (max hp 30).
+    assert_eq!(state.p2.core.hp, 24);
+    assert_eq!(
+        state.mirage_ronghui_value(PlayerSide::P1, MirageRonghuiValue::LastTurnStartHp),
+        30
+    );
+    assert_eq!(
+        state.mirage_ronghui_value(PlayerSide::P2, MirageRonghuiValue::LastTurnStartHp),
+        24
+    );
+}
+
+#[test]
+fn card_3000014_applies_negative_percent_loss_as_heal() {
+    // Card_3000014.cs:61-62,80 applies ModifyHp/ModifyMaxHp/ModifyAnima
+    // unconditionally; at negative hp the ceiling is negative, i.e. a heal.
+    // Oracle anchor: pa_e273b714 ([15]: p1 -13 -> -12).
+    let fixture = minimal_fixture(
+        filler_cards(basic_attack_test_card()),
+        filler_cards(basic_attack_test_card()),
+        FixtureExpected {
+            winner_side: PlayerSide::P1,
+            actor_turn_count: 1,
+            hp_delta_p1_minus_p2: 0,
+            final_hp: None,
+        },
+    );
+    let mut state = ReplayState::test_from_fixture(&fixture);
+    let card = super::test_support::original_card(3_000_014);
+    state.p2.core.hp = -13;
+    state.test_apply_card_effect(PlayerSide::P1, &card, 0);
+    assert_eq!(state.p2.core.hp, -12);
+    // Positive hp keeps the existing percent-loss behavior.
+    state.p2.core.hp = 20;
+    state.test_apply_card_effect(PlayerSide::P1, &card, 0);
+    assert_eq!(state.p2.core.hp, 17);
+}
+
+#[test]
+fn opening_retrigger_excludes_sub_yuanying_1000086() {
+    // BattleCharacter.TriggerOpening:11509-11518 returns false for base
+    // 1000086 below YuanYing (realm 4): no YunHai grant, no re-trigger.
+    // Oracle anchor: pa_a0c4d765 ([8]: p1 1010086 must not
+    // consume TianYunQuJi nor deal its 3).
+    let zhu_ji = super::test_support::original_card(1_010_086);
+    assert!(!ReplayState::<true>::card_triggers_opening(&zhu_ji));
+    let yuan_ying = super::test_support::original_card(1_030_086);
+    assert!(ReplayState::<true>::card_triggers_opening(&yuan_ying));
+}
+
 #[path = "tests_battle_start_hooks.rs"]
 mod battle_start_hooks;
 #[path = "tests_temporary_effects.rs"]

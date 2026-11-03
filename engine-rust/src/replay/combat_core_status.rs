@@ -150,7 +150,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         card: &CardDefinition,
     ) {
         // 天运•避凶：只在非开局效果牌后触发，探灵等开局牌不消耗层数。
-        if Self::card_triggers_opening(normalized_base_id(card)) {
+        if Self::card_triggers_opening(card) {
             return;
         }
         let count = self.actor(actor_side).formations.fortune_avoid_misfortune;
@@ -690,9 +690,8 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         card: &CardDefinition,
         slot_index: usize,
     ) {
-        let base_id = normalized_base_id(card);
         if self.actor(actor_side).fate.fortune_seek_auspicious > 0
-            && Self::card_triggers_opening(base_id)
+            && Self::card_triggers_opening(card)
         {
             let card = card.clone();
             self.apply_opening_effect_for_card(actor_side, &card, slot_index);

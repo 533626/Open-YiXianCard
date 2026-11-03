@@ -81,6 +81,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         self.apply_xing_yi_lian(actor_side, card, slot);
         self.apply_selected_card_hooks_after_start(actor_side, card, slot, false);
         self.apply_selected_card_talent_loop_hooks(actor_side, card, slot, false);
+        self.apply_next_card_action_again_conversion(actor_side);
         self.apply_muling_healing_formation_on_play_card(actor_side, card);
     }
 
@@ -183,6 +184,18 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             && self.actor(actor_side).identity.talents.contains(&200)
         {
             self.activate_element(actor_side, Element::Wood);
+        }
+    }
+
+    /// 运笔如飞 (Card_6000012) 下张牌再动：XiaZhangPaiZaiCiXingDong 在下一张牌
+    /// 执行前转为 ExActionAgain token。必须晚于 talent 循环（含 talent 200
+    /// 的木灵激活），否则先占 token 会挡住混元无极阵的激活授权——oracle
+    /// 锚点 pa_19c7db36 turn5（218 忘忧：混元 1→0 后 token
+    /// 0→1→2）证明激活先于转换。
+    pub(super) fn apply_next_card_action_again_conversion(&mut self, actor_side: PlayerSide) {
+        if self.actor(actor_side).turn.next_card_action_again > 0 {
+            self.actor_mut(actor_side).turn.next_card_action_again -= 1;
+            self.modify_extra_actions(actor_side, 1);
         }
     }
 
@@ -419,10 +432,6 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             if let Some(slot_state) = self.actor_mut(actor_side).deck.slots.get_mut(slot) {
                 slot_state.skipped = true;
             }
-        }
-        if self.actor(actor_side).turn.next_card_action_again > 0 {
-            self.actor_mut(actor_side).turn.next_card_action_again -= 1;
-            self.modify_extra_actions(actor_side, 1);
         }
         // CardActionBase.OnBeforeExecuted reads the effective post-transform
         // card once per ExecuteEffect. Unlike the Cloud Sword hooks above,

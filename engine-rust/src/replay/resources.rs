@@ -1055,19 +1055,27 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         }
     }
 
-    pub(super) fn decay_actor_defense(&mut self, actor_side: PlayerSide) {
+    pub(super) fn decay_actor_defense(&mut self, actor_side: PlayerSide) -> i64 {
         let defense = self.actor(actor_side).core.defense;
         let loss = div_ceil(defense, 2);
         if loss > 0 {
-            self.lose_defense(actor_side, loss);
+            self.lose_defense(actor_side, loss).applied
+        } else {
+            0
         }
     }
 
-    pub(super) fn decay_actor_defense_percent(&mut self, actor_side: PlayerSide, percent: i64) {
+    pub(super) fn decay_actor_defense_percent(
+        &mut self,
+        actor_side: PlayerSide,
+        percent: i64,
+    ) -> i64 {
         let defense = self.actor(actor_side).core.defense;
         let loss = div_ceil(defense * percent.max(0), 100);
         if loss > 0 {
-            self.lose_defense(actor_side, loss);
+            self.lose_defense(actor_side, loss).applied
+        } else {
+            0
         }
     }
 

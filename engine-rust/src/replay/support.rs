@@ -888,6 +888,19 @@ pub(super) fn div_ceil(value: i64, denominator: i64) -> i64 {
     }
 }
 
+/// True ceiling division for possibly-negative dividends (C# Mathf.CeilToInt
+/// semantics at these magnitudes). Unlike [`div_ceil`], negative inputs are
+/// not clamped to zero.
+pub(super) fn div_ceil_signed(value: i64, denominator: i64) -> i64 {
+    debug_assert!(denominator > 0);
+    let quotient = value / denominator;
+    if value % denominator > 0 {
+        quotient + 1
+    } else {
+        quotient
+    }
+}
+
 pub(super) fn permanent_physique_key() -> &'static str {
     PERMANENT_PHYSIQUE_KEY
 }

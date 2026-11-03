@@ -90,11 +90,7 @@ pub(super) fn card_active_mechanisms(card: &CardDefinition) -> ActiveMechanisms 
     }
 
     // Thunder
-    if name.contains('雷')
-        || id == 29
-        || id == 4_000_030
-        || (id >= 4_000_070 && id <= 4_040_075)
-    {
+    if name.contains('雷') || id == 29 || id == 4_000_030 || (id >= 4_000_070 && id <= 4_040_075) {
         mask.insert(ActiveMechanisms::THUNDER_MINDSET);
     }
 
@@ -149,22 +145,23 @@ pub(super) fn card_active_mechanisms(card: &CardDefinition) -> ActiveMechanisms 
     mask
 }
 
-pub(super) fn player_active_mechanisms(player: &super::ReplayPlayer) -> ActiveMechanisms {
+pub(super) fn identity_active_mechanisms(
+    identity: &super::ReplayPlayerIdentity,
+) -> ActiveMechanisms {
     let mut mask = ActiveMechanisms::NONE;
 
-    if !player.identity.fate_strategies.is_empty() {
+    if !identity.fate_strategies.is_empty() {
         mask.insert(ActiveMechanisms::FATE_STRATEGY);
-        if player.identity.fate_strategies.contains(&396) {
+        if identity.fate_strategies.contains(&396) {
             mask.insert(ActiveMechanisms::THUNDER_MINDSET);
         }
-        if player.identity.fate_strategies.contains(&380) {
+        if identity.fate_strategies.contains(&380) {
             mask.insert(ActiveMechanisms::SWORD_SECT | ActiveMechanisms::FORMATION);
         }
-        if player.identity.fate_strategies.contains(&416) {
+        if identity.fate_strategies.contains(&416) {
             mask.insert(ActiveMechanisms::ELEMENT_FLOW);
         }
-        if player
-            .identity
+        if identity
             .fate_strategies
             .iter()
             .any(|&id| id == 319 || id == 322 || id == 381)
@@ -173,12 +170,9 @@ pub(super) fn player_active_mechanisms(player: &super::ReplayPlayer) -> ActiveMe
         }
     }
 
-    if !player.identity.xian_mo_strategies.is_empty()
-        || !player.identity.xian_mo_temp_datas.is_empty()
-    {
+    if !identity.xian_mo_strategies.is_empty() || !identity.xian_mo_temp_datas.is_empty() {
         mask.insert(ActiveMechanisms::XIAN_MO);
-        if player
-            .identity
+        if identity
             .xian_mo_strategies
             .iter()
             .any(|&id| id == 7049 || id == 7068 || id == 7132)
@@ -187,8 +181,8 @@ pub(super) fn player_active_mechanisms(player: &super::ReplayPlayer) -> ActiveMe
         }
     }
 
-    if !player.identity.talents.is_empty() {
-        for &talent in player.identity.talents.iter() {
+    if !identity.talents.is_empty() {
+        for &talent in identity.talents.iter() {
             match talent {
                 14 | 15 | 57 | 192 | 10_057 | 20_057 | 30_057 | 10_096 | 20_096 => {
                     mask.insert(ActiveMechanisms::SWORD_SECT);
@@ -204,12 +198,11 @@ pub(super) fn player_active_mechanisms(player: &super::ReplayPlayer) -> ActiveMe
         }
     }
 
-    if matches!(player.identity.talent_resonance_id, Some(10) | Some(109)) {
+    if matches!(identity.talent_resonance_id, Some(10) | Some(109)) {
         mask.insert(ActiveMechanisms::SWORD_SECT);
     }
 
-    if player
-        .identity
+    if identity
         .ke_yin_card_ids
         .iter()
         .any(|id| id.rem_euclid(10_000) == 146)
@@ -217,73 +210,148 @@ pub(super) fn player_active_mechanisms(player: &super::ReplayPlayer) -> ActiveMe
         mask.insert(ActiveMechanisms::SWORD_SECT);
     }
 
-    // Check non-zero initial resource states
-    if player.formations != super::ReplayFormationState::default() {
+    mask
+}
+
+fn player_static_mechanisms(player: &super::ReplayPlayer) -> ActiveMechanisms {
+    let mut mask = player.identity.mechanisms();
+    // A true deck/identity bit already dominates its dynamic-state disjunct.
+    // Keep every refresh, but do not construct/compare a large default state
+    // when that comparison cannot change the resulting bit.
+    for slot in player.deck.slots.iter() {
+        mask.insert(slot.card.mechanisms());
+    }
+    mask
+}
+
+fn insert_player_dynamic_mechanisms(player: &super::ReplayPlayer, mask: &mut ActiveMechanisms) {
+    if !mask.has(ActiveMechanisms::FORMATION) && player.formations.is_nondefault() {
         mask.insert(ActiveMechanisms::FORMATION);
     }
 
-    if player.sword != super::ReplaySwordState::default() {
+    if !mask.has(ActiveMechanisms::SWORD_SECT) && player.sword.is_nondefault() {
         mask.insert(ActiveMechanisms::SWORD_SECT);
     }
 
-    if player.dream_mirage != super::ReplayDreamMirageState::default()
-        || player.mirage_ronghui != super::ReplayMirageRonghuiState::default()
+    if !mask.has(ActiveMechanisms::MIRAGE)
+        && (player.dream_mirage.is_nondefault() || player.mirage_ronghui.is_nondefault())
     {
         mask.insert(ActiveMechanisms::MIRAGE);
     }
 
-    if player.ronghui != super::ReplayRonghuiState::default() {
+    if !mask.has(ActiveMechanisms::RONGHUI) && player.ronghui.is_nondefault() {
         mask.insert(ActiveMechanisms::RONGHUI);
     }
 
-    if player.fate != super::ReplayFateTalentState::default() {
+    if !mask.has(ActiveMechanisms::FATE_STRATEGY) && player.fate.is_nondefault() {
         mask.insert(ActiveMechanisms::FATE_STRATEGY);
-        if player.fate.ke_yin_jing_lei != 0 {
-            mask.insert(ActiveMechanisms::THUNDER_MINDSET);
-        }
-        // 星弈•连 is a fate counter, but its OnBeforeExecuted hook is gated by
-        // ASTROLOGY. The counter is often gained mid-battle.
-        if player.fate.xing_yi_lian > 0 {
-            mask.insert(ActiveMechanisms::ASTROLOGY);
-        }
+    }
+    // These counters imply nondefault fate, and affect OTHER families. They
+    // must still be checked when FATE_STRATEGY was supplied by the identity.
+    if player.fate.ke_yin_jing_lei != 0 {
+        mask.insert(ActiveMechanisms::THUNDER_MINDSET);
+    }
+    if player.fate.xing_yi_lian > 0 {
+        mask.insert(ActiveMechanisms::ASTROLOGY);
     }
 
-    if player.beng != super::ReplayBengQuanState::default() {
+    if !mask.has(ActiveMechanisms::BENG_QUAN) && player.beng.is_nondefault() {
         mask.insert(ActiveMechanisms::BENG_QUAN);
     }
 
     if player.astrology.thunder_mindset != 0 || player.astrology.lei_shan_er_du != 0 {
         mask.insert(ActiveMechanisms::THUNDER_MINDSET);
     }
-    if player.astrology != super::ReplayAstrologyState::default() {
+    if !mask.has(ActiveMechanisms::ASTROLOGY) && player.astrology.is_nondefault() {
         mask.insert(ActiveMechanisms::ASTROLOGY);
     }
 
-    if player.elements != super::ReplayElementState::default() {
+    if !mask.has(ActiveMechanisms::ELEMENT_FLOW) && player.elements.is_nondefault() {
         mask.insert(ActiveMechanisms::ELEMENT_FLOW);
     }
 
-    if player.music != super::ReplayMusicState::default() {
+    if !mask.has(ActiveMechanisms::MUSIC) && player.music.is_nondefault() {
         mask.insert(ActiveMechanisms::MUSIC);
     }
 
-    if player.chance != super::ReplayChanceState::default() {
+    if !mask.has(ActiveMechanisms::CHANCE) && player.chance.is_nondefault() {
         mask.insert(ActiveMechanisms::CHANCE);
     }
+}
 
-    // Deck slots
-    for slot in player.deck.slots.iter() {
-        mask.insert(card_active_mechanisms(&slot.card));
-    }
-
+#[cfg(test)]
+fn player_active_mechanisms(player: &super::ReplayPlayer) -> ActiveMechanisms {
+    let mut mask = player_static_mechanisms(player);
+    insert_player_dynamic_mechanisms(player, &mut mask);
     mask
 }
 
 pub(super) fn detect_active_mechanisms<const OBSERVE: bool>(
     state: &ReplayState<OBSERVE>,
 ) -> ActiveMechanisms {
-    let mut mask = ActiveMechanisms::NONE;
-    mask.insert(player_active_mechanisms(&state.p1));
-    mask.insert(player_active_mechanisms(&state.p2));
+    // The detector consumes the UNION, so either side can supply a bit before
+    // the dynamic disjuncts of either side are considered. No cached state.
+    let mut mask = player_static_mechanisms(&state.p1) | player_static_mechanisms(&state.p2);
+    insert_player_dynamic_mechanisms(&state.p1, &mut mask);
+    insert_player_dynamic_mechanisms(&state.p2, &mut mask);
     mask
+}
+
+#[cfg(test)]
+mod cache_tests {
+    use super::*;
+    use crate::replay::{original_config, ReplayCardSlot, RuntimeCard};
+
+    fn check(card: CardDefinition) -> RuntimeCard {
+        let expected = card_active_mechanisms(&card);
+        let runtime: RuntimeCard = card.into();
+        assert_eq!(runtime.1, expected);
+        assert_eq!(runtime.clone().1, card_active_mechanisms(&runtime));
+        runtime
+    }
+
+    #[test]
+    fn immutable_cache_matches_original_and_same_id_fixture_overrides() {
+        for card in original_config::original_base_card_definitions() {
+            check(card.clone());
+            // ID alone is deliberately insufficient as a cache key.
+            let mut patched = card.clone();
+            patched.name = "梦幻阵雷五行金灵木灵水灵火灵土灵剑崩星卦琴融汇机缘".into();
+            patched.career_name = Some("QinShi".into());
+            check(patched);
+            let mut patched = card;
+            patched.base_id = Some(389);
+            patched.card_type = None;
+            patched.name = "fixture-without-keywords".into();
+            check(patched);
+        }
+    }
+
+    #[test]
+    fn deck_replacement_movement_and_removal_keep_exact_classification() {
+        let definitions = original_config::original_base_card_definitions();
+        let mut player = crate::replay::ReplayPlayer::default();
+        for card in definitions {
+            player.deck.slots.push(ReplayCardSlot {
+                card: check(card),
+                skipped: false,
+                used: false,
+            });
+            if player.deck.slots.len() > 8 {
+                player.deck.slots.remove(0);
+            }
+            player.deck.slots.reverse();
+            let expected = player
+                .deck
+                .slots
+                .iter()
+                .fold(ActiveMechanisms::NONE, |mask, slot| {
+                    mask | card_active_mechanisms(&slot.card)
+                });
+            assert_eq!(player_active_mechanisms(&player), expected);
+            player.deck.slots[0].skipped = true;
+            player.deck.slots[0].used = true;
+            assert_eq!(player_active_mechanisms(&player), expected);
+        }
+    }
 }

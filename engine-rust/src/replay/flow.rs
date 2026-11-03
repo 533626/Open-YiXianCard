@@ -301,14 +301,13 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 }
                 TurnStartPhase::DefenseDecay => {
                     if water_month_sword_formation <= 0 {
-                        let defense_before_decay = self.actor(actor_side).core.defense;
-                        if self.actor(actor_side).chance.di_xuan_gui > 0 {
-                            self.decay_actor_defense_percent(actor_side, 20);
+                        // BattleCharacter.cs OnTurnStarted: 衰减走 ModifyDef(-num3)
+                        // （合八荒在内退款），随后按毛衰减值 num3 回血，不按退款后净值。
+                        let defense_lost = if self.actor(actor_side).chance.di_xuan_gui > 0 {
+                            self.decay_actor_defense_percent(actor_side, 20)
                         } else {
-                            self.decay_actor_defense(actor_side);
-                        }
-                        let defense_lost =
-                            (defense_before_decay - self.actor(actor_side).core.defense).max(0);
+                            self.decay_actor_defense(actor_side)
+                        };
                         self.apply_dream_mirage_defense_decay_healing(actor_side, defense_lost);
                     }
                 }
@@ -1384,8 +1383,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             player.fate.instant_shadow_strike > 0 && drawn.card.hp_cost.unwrap_or(0) > 0;
         let skipped_opening = drawn.skipped_opening_slots.iter().any(|&skipped_slot| {
             player.deck.slots.get(skipped_slot).is_some_and(|slot| {
-                let base_id = super::support::normalized_base_id(&slot.card);
-                Self::card_triggers_opening_on_skip(base_id)
+                Self::card_triggers_opening_on_skip(&slot.card)
             })
         });
         if !shadow_strike_skip && !skipped_opening {
@@ -1688,8 +1686,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             else {
                 continue;
             };
-            let base_id = super::support::normalized_base_id(&card);
-            if !Self::card_triggers_opening_on_skip(base_id) {
+            if !Self::card_triggers_opening_on_skip(&card) {
                 continue;
             }
             self.apply_opening_effect_for_card(actor_side, &card, skipped_slot);

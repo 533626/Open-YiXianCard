@@ -184,6 +184,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             self.apply_tian_sui_ni_ke_jue_before_card(actor_side, card);
         }
         self.apply_selected_card_talent_loop_hooks(actor_side, card, slot, is_temporary);
+        self.apply_next_card_action_again_conversion(actor_side);
         if self.active_mechanisms.has(super::ActiveMechanisms::MIRAGE | super::ActiveMechanisms::RONGHUI) {
             self.apply_counter_element_before_card(actor_side, card, slot);
         }

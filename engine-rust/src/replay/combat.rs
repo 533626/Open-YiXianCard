@@ -725,16 +725,15 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             .elements
             .primordial_infinity_formation
             > 0
-            // ModifyBuffValue:9121 的门槛是 !HasBuff(ExActionAgain) && ZaiCiXingDong < battleTempData.actionAgainPerRound（逍遥游 435 等会把它加到 2+）。
+            && self.actor(actor_side).turn.extra_actions <= 0
+            // ModifyBuffValue:9100 的门槛是 ZaiCiXingDong < battleTempData.actionAgainPerRound（逍遥游 435 等会把它加到 2+）。
             && self.actor(actor_side).turn.action_again_count
                 < self.dream_mirage_action_again_limit(actor_side)
         {
             self.actor_mut(actor_side)
                 .elements
                 .primordial_infinity_formation -= 1;
-            if self.actor(actor_side).turn.extra_actions <= 0 {
-                self.modify_extra_actions(actor_side, 1);
-            }
+            self.modify_extra_actions(actor_side, 1);
         }
         // 原版 ModifyBuffValue 激活五行时序（BattleCharacter.cs:8835+）：
         // talent 138 的 ModifyHp/ModifyMaxHp 在镇印 ApplyDamage 之前。

@@ -243,6 +243,73 @@ fn water_month_sword_formation_skips_turn_start_defense_decay() {
 }
 
 #[test]
+fn defense_decay_healing_uses_gross_loss_through_eight_wastes_refund() {
+    // BattleCharacter.cs OnTurnStarted：衰减 ModifyDef(-num3) 触发合八荒退款后，
+    // 荷重前行仍按毛衰减值 num3 回血，不按退款后净值。
+    // oracle 锚点 pa_48ba80f8 turn12（防 12→6→12，回 6 血）。
+    let dream = test_card(10_040_083, 10_000_083, "梦•荷重前行");
+    let p1_cards = super::test_support::fill_deck(
+        vec![basic_attack_test_card(), dream],
+        basic_attack_test_card(),
+    );
+    let fixture = minimal_fixture(
+        p1_cards,
+        filler_cards(basic_attack_test_card()),
+        FixtureExpected {
+            winner_side: PlayerSide::P1,
+            actor_turn_count: 1,
+            hp_delta_p1_minus_p2: 0,
+            final_hp: None,
+        },
+    );
+    fixture.validate().expect("fixture valid");
+    let mut state = ReplayState::test_from_fixture(&fixture);
+    state.test_configure_p1(|player| {
+        player.core.defense = 12;
+        player.core.hp = 20;
+        player.core.max_hp = 30;
+        player.elements.earth_eight_wastes = 1;
+    });
+    state.test_play_actor_turn();
+    assert_eq!(state.p1.core.defense, 12);
+    assert_eq!(state.p1.core.hp, 26);
+    assert_eq!(state.p1.elements.earth_eight_wastes, 0);
+    assert_eq!(state.p1.turn.lost_defense_count, 6);
+}
+
+#[test]
+fn talent_200_activation_runs_before_next_card_action_again_conversion() {
+    // 运笔如飞的下张牌标记必须晚于 talent 200 的木灵激活转为 token，
+    // 否则先占 token 会挡住混元无极阵的激活授权（混元层数不消耗、
+    // turn9 误给再动）。oracle 锚点 pa_19c7db36 turn5
+    //（218 忘忧：混元 1→0，token 先 0→1 再→2）。
+    use super::Element;
+    let card = basic_attack_test_card();
+    let fixture = minimal_fixture(
+        filler_cards(card.clone()),
+        filler_cards(basic_attack_test_card()),
+        FixtureExpected {
+            winner_side: PlayerSide::P1,
+            actor_turn_count: 1,
+            hp_delta_p1_minus_p2: 0,
+            final_hp: None,
+        },
+    );
+    fixture.validate().expect("fixture valid");
+    let mut state = ReplayState::test_from_fixture(&fixture);
+    state.test_configure_p1(|player| {
+        player.identity.talents = vec![200].into();
+        player.elements.primordial_infinity_formation = 1;
+        player.turn.next_card_action_again = 1;
+    });
+    state.apply_before_execute_effect_hooks(PlayerSide::P1, &card, 0, false);
+    assert!(state.p1.elements.activated_elements.contains(&Element::Wood));
+    assert_eq!(state.p1.elements.primordial_infinity_formation, 0);
+    assert_eq!(state.p1.turn.next_card_action_again, 0);
+    assert_eq!(state.p1.turn.extra_actions, 2);
+}
+
+#[test]
 fn talent_101_grants_peach_blossom_extra_action_without_generating_chain() {
     use super::Element;
     let peach = CardDefinition {

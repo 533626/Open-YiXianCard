@@ -57,6 +57,14 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 second.beng.quan_stance = deferred_stance.0;
                 second.beng.gun_stance = deferred_stance.1;
             }
+            // LastTurnStartHp 由各 actor 在自身 OnBattleStarted 起点采样
+            // （BattleCharacter.cs:895，前置仅星位与 QiShiShangXian 等
+            // HP-neutral setup）；次位开局在首位完整开局之后才启动
+            // （BattleExecuter.cs:1800-1801 await 首位），故次位必须采
+            // 首位开局伤害之后的 HP。两方 upfront 预采会在首位开局伤血
+            // 时给次位留 stale 值。oracle：pa_5994d1c7
+            //（首位 11000018 反射 6 点，原版 p2.Last=98，预采 104）。
+            self.initialize_last_turn_start_hp(actor_side);
             let player_fixture = match actor_side {
                 PlayerSide::P1 => &fixture.players.p1,
                 PlayerSide::P2 => &fixture.players.p2,

@@ -32,6 +32,8 @@ pub use turn_end_trace::{
 
 mod action_again;
 mod active_mechanisms;
+mod identity;
+mod mechanism_state;
 pub(crate) use active_mechanisms::ActiveMechanisms;
 mod battle_start;
 mod body;
@@ -513,7 +515,7 @@ pub struct ReplayUiCardSlotSnapshot {
 /// Original definitions borrow the finite catalog; fixture patches stay owned
 /// by the battle and never enter a process-global intern table.
 #[derive(Debug, Clone)]
-struct RuntimeCard(RuntimeCardStorage);
+struct RuntimeCard(RuntimeCardStorage, active_mechanisms::ActiveMechanisms);
 
 #[derive(Debug, Clone)]
 enum RuntimeCardStorage {
@@ -522,6 +524,10 @@ enum RuntimeCardStorage {
 }
 
 impl RuntimeCard {
+    fn mechanisms(&self) -> active_mechanisms::ActiveMechanisms {
+        self.1
+    }
+
     fn definition(&self) -> &CardDefinition {
         match &self.0 {
             RuntimeCardStorage::Original(card) => card,
@@ -539,10 +545,14 @@ impl std::ops::Deref for RuntimeCard {
 
 impl From<CardDefinition> for RuntimeCard {
     fn from(card: CardDefinition) -> Self {
-        match original_config::original_card_definition_ref(card.id) {
-            Some(original) if *original == card => Self(RuntimeCardStorage::Original(original)),
-            _ => Self(RuntimeCardStorage::Patched(std::sync::Arc::new(card))),
-        }
+        // RuntimeCard exposes only shared references. Every replacement must
+        // pass this constructor; clones keep the same immutable definition.
+        let mechanisms = active_mechanisms::card_active_mechanisms(&card);
+        let storage = match original_config::original_card_definition_ref(card.id) {
+            Some(original) if *original == card => RuntimeCardStorage::Original(original),
+            _ => RuntimeCardStorage::Patched(std::sync::Arc::new(card)),
+        };
+        Self(storage, mechanisms)
     }
 }
 
@@ -563,21 +573,21 @@ struct ReplayCardSlot {
 
 #[derive(Debug, Clone, Default)]
 struct ReplayPlayer {
-    identity: ReplayPlayerIdentity,
+    identity: identity::RuntimeIdentity,
     core: ReplayCoreVitals,
-    sword: ReplaySwordState,
-    elements: ReplayElementState,
-    formations: ReplayFormationState,
-    beng: ReplayBengQuanState,
-    music: ReplayMusicState,
-    astrology: ReplayAstrologyState,
+    sword: mechanism_state::MechanismState<ReplaySwordState>,
+    elements: mechanism_state::MechanismState<ReplayElementState>,
+    formations: mechanism_state::MechanismState<ReplayFormationState>,
+    beng: mechanism_state::MechanismState<ReplayBengQuanState>,
+    music: mechanism_state::MechanismState<ReplayMusicState>,
+    astrology: mechanism_state::MechanismState<ReplayAstrologyState>,
     status: ReplayStatusState,
     hp_mutation: ReplayHpMutationState,
-    fate: ReplayFateTalentState,
-    chance: ReplayChanceState,
-    dream_mirage: ReplayDreamMirageState,
-    mirage_ronghui: ReplayMirageRonghuiState,
-    ronghui: ReplayRonghuiState,
+    fate: mechanism_state::MechanismState<ReplayFateTalentState>,
+    chance: mechanism_state::MechanismState<ReplayChanceState>,
+    dream_mirage: mechanism_state::MechanismState<ReplayDreamMirageState>,
+    mirage_ronghui: mechanism_state::MechanismState<ReplayMirageRonghuiState>,
+    ronghui: mechanism_state::MechanismState<ReplayRonghuiState>,
     turn: ReplayTurnState,
     deck: ReplayDeckState,
     prevention: ReplayPreventionState,
@@ -1845,6 +1855,8 @@ enum TraceAttributionBlock {
 impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     #[inline(always)]
     pub(super) fn refresh_active_mechanisms(&mut self) {
+        #[cfg(feature = "perf-ceiling")]
+        let _timer = crate::performance::Timer::new(14);
         self.active_mechanisms = active_mechanisms::detect_active_mechanisms(self);
     }
 
