@@ -961,10 +961,6 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         if quiet_healing > 0 {
             self.modify_actor_hp(actor_side, quiet_healing, false, false);
         }
-        let ling_gua_art = self.actor(actor_side).astrology.ling_gua_art.max(0);
-        if ling_gua_art > 0 {
-            self.gain_hexagram(actor_side, amount * ling_gua_art);
-        }
         let anima_to_star_power = self.actor(actor_side).astrology.anima_to_star_power.max(0);
         if anima_to_star_power > 0 {
             let converted = amount.min(anima_to_star_power);
@@ -984,6 +980,18 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             .max(0);
         if two_polarity_defense > 0 {
             self.gain_defense(actor_side, amount * two_polarity_defense);
+        }
+        // BattleCharacter.ModifyAnima 源序：梦•两仪生命/防御（:9741-9750）先于
+        // 灵卦术（:9759-9762）。两仪治疗先落（可能触顶），再转卦象触发
+        // 两仪卦象钩；反过来会把大额治疗提前触顶，吞掉天赋 64（每次生命
+        // 变化 +1 防，按实际变化量触发）的第二次触发。
+        // oracle 锚点：pa_6a7a1f70 [35]（转弦合调灵气+2：
+        // 两仪治疗 +6 先到 95，再卦象+4 的两仪治疗 +12 到顶 97，两次 64
+        // 共 +2 防；旧顺序大治疗先触顶，64 只触发一次少 1 防）、同 match
+        // round-16 [13]（灵元外放同理少 1 防，26 非 25）。
+        let ling_gua_art = self.actor(actor_side).astrology.ling_gua_art.max(0);
+        if ling_gua_art > 0 {
+            self.gain_hexagram(actor_side, amount * ling_gua_art);
         }
         let dream_defense = amount
             * self
@@ -1362,32 +1370,13 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             after,
             actual_delta,
         );
-        self.modify_actor_max_hp(actor_side, amount);
-        let excess = if actual_delta > 0 {
-            actual_delta.min((after - limit).max(0))
-        } else {
-            0
-        };
-        if excess > 0 {
-            let extra_healing = excess
-                * self
-                    .dream_mirage_value(actor_side, DreamMirageValue::ExcessPhysiqueHp)
-                    .max(0);
-            if extra_healing > 0 {
-                self.modify_actor_hp(actor_side, extra_healing, false, false);
-            }
-            let extra_damage = excess
-                * self
-                    .dream_mirage_value(actor_side, DreamMirageValue::ExcessPhysiqueDamage)
-                    .max(0);
-            if extra_damage > 0 {
-                self.apply_reflect_damage(actor_side, extra_damage);
-            }
-        }
-        let healing = (after - limit).max(0) - (before - limit).max(0);
-        if healing > 0 {
-            self.modify_actor_hp(actor_side, healing, false, false);
-        }
+        // BattleCharacter.ModifyTiPo 源序：体魄 buff → 本场计数 → 天赋 184 →
+        // 163/7042 灵气（含嵌套的 267 体魄，同步完成）→ 生命上限 → 溢出。
+        // 外层溢出 num3 按嵌套完成后的当前体魄算（min(本 delta, 当前-上限)），
+        // 不能先于嵌套用本层 after 快照，否则嵌套体魄被漏数。
+        // oracle 锚点：pa_80c00584 [2]（锻神开海体魄+4 嵌套
+        // 267 的 +1：62→66→67，上限 65，内层溢出 1 + 外层溢出 2 = 治疗 3；
+        // 旧顺序外层先算得 1 + 1 = 2，p1 生命 109 非 110）。
         if actual_delta > 0 {
             let gain_count_before = self.actor(actor_side).turn.battle_physique_gain_count;
             self.actor_mut(actor_side).turn.battle_physique_gain_count += actual_delta;
@@ -1418,6 +1407,32 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 self.actor_mut(actor_side).fate.chan_xin_ju_ling_triggered = 1;
                 self.gain_anima(actor_side, 1);
             }
+        }
+        self.modify_actor_max_hp(actor_side, amount);
+        // 溢出 num3：delta>0 且当前体魄>上限时 min(本层 delta, 当前体魄-上限)。
+        // 无嵌套时当前体魄恒等于 after，与旧公式一致；有嵌套时含嵌套增量。
+        let current = self.actor(actor_side).core.physique;
+        let overflow = if actual_delta > 0 {
+            actual_delta.min((current - limit).max(0))
+        } else {
+            0
+        };
+        if overflow > 0 {
+            let extra_healing = overflow
+                * self
+                    .dream_mirage_value(actor_side, DreamMirageValue::ExcessPhysiqueHp)
+                    .max(0);
+            if extra_healing > 0 {
+                self.modify_actor_hp(actor_side, extra_healing, false, false);
+            }
+            let extra_damage = overflow
+                * self
+                    .dream_mirage_value(actor_side, DreamMirageValue::ExcessPhysiqueDamage)
+                    .max(0);
+            if extra_damage > 0 {
+                self.apply_reflect_damage(actor_side, extra_damage);
+            }
+            self.modify_actor_hp(actor_side, overflow, false, false);
         }
     }
 

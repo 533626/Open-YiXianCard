@@ -862,7 +862,17 @@ impl ReplayPlayer {
                 continue;
             }
             if !was_skipped && !skip_space_spirit_field && ronghui_star_jump && is_star_chess {
-                self.ronghui.star_chess_jump = 0;
+                // 仙魔 7116 跳过第 5 格先于 XingYiTiao 判定（BattleExecuter
+                // :1951 < :1991）：将被 7116 跳走的星弈牌不得在此清空跳牌
+                // 标记，标记须留给 7116 之后的牌。洞烛重叠时 7116 仍在
+                // fate-cycle 之后（见下），此处只保标记不改跳牌权。
+                // oracle 锚点：pa_a66ce89f [7]（7116 跳走第 5
+                // 格星弈•夹后，星弈•跳标记跳过第 6 格杯弓蛇影选中第 7 格
+                // 星弈•飞；旧逻辑在第 5 格清空标记，误选第 6 格）。
+                let will_7116_skip = source_slot == 4 && self.xian_mo_switch_active(7116);
+                if !will_7116_skip {
+                    self.ronghui.star_chess_jump = 0;
+                }
             }
             let skip_fate_cycle = !was_skipped
                 && !skip_space_spirit_field

@@ -114,9 +114,23 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         if self.active_mechanisms.has(super::ActiveMechanisms::FATE_STRATEGY) {
             self.apply_qi_xing_lian_zhu(actor_side, card, slot);
         }
+        // 7022 七星伤魂先于 13017（XianMo OnPlayCard :1304 先于 :1386），且二者
+        // 皆先于星弈连（CardActionBase :3300 先于 :3676）。13017 数负面须包含
+        // 7022 的 +2（55900b/round-15 首张 11 grid7 首用：p2 内伤 3→5→6，
+        // 防+6；旧顺序先数后加得防+4）。7022 无首用/临时限制，每次用 7 号槽皆触发。
+        if self.active_mechanisms.has(super::ActiveMechanisms::XIAN_MO) {
+            self.apply_xian_mo_7022_before_star_hooks(actor_side, slot);
+        }
         // 伏魔 13017 数负面前于星弈连转内伤（CardActionBase
         // .OnBeforeExecuted :3300 先于 :3676），与 OnPlayCard 其余
-        // 附魔的相对顺序见 apply_verified_xian_mo_on_play_card。
+        // 附魔的相对顺序见 apply_verified_xian_mo_on_play_card；
+        // 与 7022 的相对顺序见上（7022 先于 13017）。
+        // 7057（卦牌首用虚弱）与 13017 同在 OnPlayCard 内，执行序
+        // 7057 先于 13017（见 apply_xian_mo_7057_before_13017），故
+        // 此处先调 7057 再调 13017，二者皆先于星弈连。
+        // 13014 同在 IL_119a 段，序在 13017 之前；OnPlayCard 整体先于
+        // 707 体魄（:3300 < :3365 < :3676），故 13014 紧随 7057、
+        // 707 消费紧随 OnPlayCard 早调段、星弈连之前。
         if self.active_mechanisms.has(super::ActiveMechanisms::XIAN_MO)
             && !is_temporary
             && self
@@ -126,7 +140,14 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 .get(slot)
                 .is_some_and(|s| !s.used)
         {
+            self.apply_xian_mo_7057_before_13017(actor_side, card);
+            self.apply_fumo_13014_before_star_hooks(actor_side, slot);
             self.apply_fumo_13017_before_star_hooks(actor_side, slot);
+        }
+        // 707 下张崩拳加体魄：OnPlayCard 之后、星弈连之前（:3365）。
+        // 保持原 MIRAGE 门控（标记只由梦•锻拳设置）。
+        if self.active_mechanisms.has(super::ActiveMechanisms::MIRAGE) {
+            self.consume_pending_next_beng_quan_physique(actor_side);
         }
         if self.active_mechanisms.has(super::ActiveMechanisms::ASTROLOGY)
             || self.actor(actor_side).fate.xing_yi_lian > 0

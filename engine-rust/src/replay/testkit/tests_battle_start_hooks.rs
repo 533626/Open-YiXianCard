@@ -233,3 +233,69 @@ fn xian_mo_7103_samples_hp_before_11004_physique() {
     assert_eq!(state.p2.core.hp, 33);
     assert_eq!(state.p2.core.max_hp, 33);
 }
+
+#[test]
+fn xian_mo_16024_battle_start_param_branches() {
+    // XianMoStrategyFunctions.cs:598-617：16024 开局 switch(GetNextParam())，
+    // 0 → 当前血 10% 加血加血上限，1 → 10% 加防，3 → 1 层虚弱(101)，
+    // 其余（含空队列 -1）无效果；otherParams=[10,10,1,1]。
+    // 最小契约(30 HP)：0 → 33/33，1 → 防+3，3 → 虚弱 1。
+    for (tape, hp, max_hp, def, weakness) in [
+        (vec![0], 33, 33, 0, 0),
+        (vec![1], 30, 30, 3, 0),
+        (vec![3], 30, 30, 0, 1),
+        (Vec::new(), 30, 30, 0, 0),
+        (vec![2], 30, 30, 0, 0),
+        (vec![8], 30, 30, 0, 0),
+        (vec![-1], 30, 30, 0, 0),
+    ] {
+        let mut fixture = minimal_fixture(
+            filler_cards(basic_attack_test_card()),
+            filler_cards(basic_attack_test_card()),
+            FixtureExpected {
+                winner_side: PlayerSide::P1,
+                actor_turn_count: 1,
+                hp_delta_p1_minus_p2: 0,
+                final_hp: None,
+            },
+        );
+        fixture.players.p1.xian_mo_strategies = vec![16024];
+        fixture.decision_tape = tape.clone();
+        let state = ReplayState::test_from_fixture(&fixture);
+        assert_eq!(state.p1.core.hp, hp, "tape {tape:?}");
+        assert_eq!(state.p1.core.max_hp, max_hp, "tape {tape:?}");
+        assert_eq!(state.p1.core.defense, def, "tape {tape:?}");
+        assert_eq!(state.p1.status.weakness, weakness, "tape {tape:?}");
+        // 无效果值同样消费一个参数（含显式 -1），空队列则无可消费。
+        let expected_remaining = tape.len().saturating_sub(1);
+        assert_eq!(
+            state.decision_tape.len(),
+            expected_remaining,
+            "tape {tape:?}"
+        );
+    }
+}
+
+#[test]
+fn xian_mo_16024_two_sided_consumes_in_first_player_order() {
+    // 首位完整开局先于次位（BattleExecuter.cs:1800-1801），双 16024 按
+    // [first, second] 顺序各消费一个参数：tape [0,1] 首位取 0、次位取 1。
+    let mut fixture = minimal_fixture(
+        filler_cards(basic_attack_test_card()),
+        filler_cards(basic_attack_test_card()),
+        FixtureExpected {
+            winner_side: PlayerSide::P1,
+            actor_turn_count: 1,
+            hp_delta_p1_minus_p2: 0,
+            final_hp: None,
+        },
+    );
+    fixture.players.p1.xian_mo_strategies = vec![16024];
+    fixture.players.p2.xian_mo_strategies = vec![16024];
+    fixture.decision_tape = vec![0, 1];
+    let state = ReplayState::test_from_fixture(&fixture);
+    assert_eq!(state.p1.core.hp, 33);
+    assert_eq!(state.p1.core.max_hp, 33);
+    assert_eq!(state.p2.core.defense, 3);
+    assert_eq!(state.decision_tape.len(), 0);
+}

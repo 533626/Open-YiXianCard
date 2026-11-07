@@ -873,6 +873,34 @@ fn card_402_odd_slot_repeats_the_next_cloud_sword_without_fate_strategies() {
 }
 
 #[test]
+fn card_437_physique_uses_lose_hp_divided_by_param() {
+    // Card_437.cs (build 26449625): delta = physique + LoseHpCount / otherParams[0]
+    // (integer division). 437 极•锻体不息 has physique 3 and otherParams [5], so
+    // 20 lost HP gains 3 + 20/5 = 7 physique, not the old 3 + 20*5/100 = 4.
+    let deck = super::test_support::fill_deck(
+        vec![super::test_support::original_card(437)],
+        basic_attack_test_card(),
+    );
+    let mut fixture = minimal_fixture(
+        deck,
+        filler_cards(basic_attack_test_card()),
+        FixtureExpected {
+            winner_side: PlayerSide::P1,
+            actor_turn_count: 1,
+            hp_delta_p1_minus_p2: 0,
+            final_hp: None,
+        },
+    );
+    fixture.players.p1.active_slot_count = 1;
+    let mut state = ReplayState::test_from_fixture(&fixture);
+    state.p1.turn.lose_hp_count = 20;
+    let before = state.p1.core.physique;
+    state.test_execute_one_card(PlayerSide::P1);
+    assert_eq!(state.p1.deck.slots[0].card.id, 437);
+    assert_eq!(state.p1.core.physique - before, 7);
+}
+
+#[test]
 fn last_turn_start_hp_samples_after_first_actor_opening_damage() {
     // BattleCharacter.cs:895 samples LastTurnStartHp at the start of each
     // actor's own OnBattleStarted; BattleExecuter.cs:1800-1801 awaits the

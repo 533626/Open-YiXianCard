@@ -459,10 +459,13 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 Some(attacked)
             }
             437 => {
-                // Card_437：攻击后体魄 +physique + 累计失去生命 × otherParams[0] / 100。
+                // Card_437.cs（build 26449625）：攻击后体魄 +physique +
+                // LoseHpCount / otherParams[0]（C# 整数除法，与 floor 一致）。
+                // 旧式 LoseHp×param/100 已作废（配置 [5] 不变，卡文案
+                // 「每失去过 5 点生命多加 1」与新式一致）。
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
                 let delta = card.physique.unwrap_or(0)
-                    + self.actor(actor_side).turn.lose_hp_count * other_param(card, 0) / 100;
+                    + self.actor(actor_side).turn.lose_hp_count / other_param(card, 0).max(1);
                 self.apply_physique_amount(actor_side, delta);
                 Some(attacked)
             }

@@ -203,6 +203,31 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         );
     }
 
+    /// 消费下张崩拳加体魄（707，梦·锻拳）标记：无条件（不受 IsBengQuan
+    /// 限制），体魄照单全收。
+    /// CardActionBase.OnBeforeExecuted :3365-3368，位于 XianMo OnPlayCard
+    /// （:3300，含 13014）之后、星弈连（:3676）之前。调用方须保证此
+    /// 相对顺序（见 apply_before_execute_effect_hooks），不得提前到
+    /// OnPlayCard 之前，否则 13014 会按含 707 体魄的新体魄算防御。
+    /// oracle 锚点：pa_cf4ee85a [3]（见
+    /// apply_fumo_13014_before_star_hooks）。
+    pub(super) fn consume_pending_next_beng_quan_physique(
+        &mut self,
+        actor_side: crate::model::PlayerSide,
+    ) {
+        let pending_physique = self
+            .dream_mirage_value(actor_side, DreamMirageValue::NextBengQuanPhysique)
+            .max(0);
+        if pending_physique > 0 {
+            self.apply_physique_amount(actor_side, pending_physique);
+            self.modify_dream_mirage_value(
+                actor_side,
+                DreamMirageValue::NextBengQuanPhysique,
+                -pending_physique,
+            );
+        }
+    }
+
     /// CardActionBase.CheckAdjacentEffectsBeforeCard:2000-2054,2949-2958.
     /// Despite the similar name, the original calls this private helper from
     /// OnBeforeExecuted, once per successful ExecuteEffect repetition.
@@ -254,23 +279,6 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                     -1,
                 );
             }
-        }
-
-        // CardActionBase.OnBeforeExecuted:2859-2862 consumes the
-        // XiaZhangBengQuanJiaTiPo (707, 梦·锻拳) marker for the next card
-        // unconditionally; it is not guarded by IsBengQuan.  Keep this
-        // before the card body so the configured physique and its HP/max-HP
-        // hooks observe the same order as the original client.
-        let pending_physique = self
-            .dream_mirage_value(actor_side, DreamMirageValue::NextBengQuanPhysique)
-            .max(0);
-        if pending_physique > 0 {
-            self.apply_physique_amount(actor_side, pending_physique);
-            self.modify_dream_mirage_value(
-                actor_side,
-                DreamMirageValue::NextBengQuanPhysique,
-                -pending_physique,
-            );
         }
 
         let pending = self

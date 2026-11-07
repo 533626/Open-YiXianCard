@@ -96,7 +96,11 @@ fn xian_mo_damage_precedes_beng_mei_momentum_overflow() {
 }
 
 #[test]
-fn fu_hu_zero_defense_damage_still_reaches_iron_bone() {
+fn fu_hu_zero_defense_skips_damage_despite_iron_bone() {
+    // Build 26477585 changed the rule pinned here through 26449625: the
+    // OnAfterExecuted ChuFaFuHu branch now guards with `def > 0`
+    // (CardActionBase.cs old :4706-4710 unconditional vs new :5141 guarded;
+    // diff 26449625-to-26477585). Zero-def no longer reaches 铁骨's floor-to-1.
     let battle = fixture(deck(basic_attack()), deck(basic_attack()));
     let mut state = ReplayState::test_from_fixture(&battle);
     state.p1.core.defense = 0;
@@ -104,7 +108,7 @@ fn fu_hu_zero_defense_damage_still_reaches_iron_bone() {
     state.p2.elements.metal_iron_bone = 1;
     let before = state.p2.core.hp;
     state.apply_beng_quan_fu_hu_after_card(PlayerSide::P1);
-    assert_eq!(state.p2.core.hp, before - 1);
+    assert_eq!(state.p2.core.hp, before);
     assert_eq!(state.p1.beng.triggered_beng_quan_fu_hu, 0);
 }
 

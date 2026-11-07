@@ -140,6 +140,9 @@ mod tests_build_2026_09_season;
 #[path = "replay/testkit/tests_build_2026_10_rotation.rs"]
 mod tests_build_2026_10_rotation;
 #[cfg(test)]
+#[path = "replay/testkit/tests_build_26477585.rs"]
+mod tests_build_26477585;
+#[cfg(test)]
 #[path = "replay/testkit/tests_calamity_skip_mask.rs"]
 mod tests_calamity_skip_mask;
 #[cfg(test)]

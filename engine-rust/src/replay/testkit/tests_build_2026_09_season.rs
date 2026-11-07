@@ -598,16 +598,18 @@ fn run_first_slot_enchant_case(case: &StrategyCase) {
         state.p1.astrology.hexagram = 2;
         state.p1.sword.sword_intent = 3;
         state.p2.status.weakness = 2;
-        // 13017 早于星弈连单独执行（CardActionBase.OnBeforeExecuted
+        // 13017/13014 早于星弈连单独执行（CardActionBase.OnBeforeExecuted
         // :3300 先于 :3676），此处走新入口以保留原断言。
         if strategy == 13017 {
             state.apply_fumo_13017_before_star_hooks(PlayerSide::P1, 0);
+        } else if strategy == 13014 {
+            state.apply_fumo_13014_before_star_hooks(PlayerSide::P1, 0);
         } else {
             state.apply_verified_xian_mo_on_play_card(PlayerSide::P1, &water, 0, false);
         }
         match strategy {
-            13004 => assert_eq!((state.p1.core.hp, state.p1.core.max_hp), (19, 39)),
-            13008 => assert_eq!((state.p1.core.guard, state.p1.core.temporary_guard), (3, 3)),
+            13004 => assert_eq!((state.p1.core.hp, state.p1.core.max_hp), (20, 40)),
+            13008 => assert_eq!((state.p1.core.guard, state.p1.core.temporary_guard), (2, 2)),
             13009 => assert_eq!(
                 (
                     state.p1.core.defense,
@@ -629,7 +631,7 @@ fn run_first_slot_enchant_case(case: &StrategyCase) {
                 ),
                 (3, 33, 13)
             ),
-            13014 => assert_eq!((state.p1.core.physique, state.p1.core.defense), (3, 0)),
+            13014 => assert_eq!((state.p1.core.physique, state.p1.core.defense), (2, 0)),
             13015 => {
                 assert_eq!((state.p2.core.hp, state.p2.core.max_hp), (24, 24));
                 assert_eq!(

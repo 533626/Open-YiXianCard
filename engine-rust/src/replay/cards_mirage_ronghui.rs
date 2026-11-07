@@ -644,10 +644,22 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         selected_id: i64,
         virtual_slot: usize,
     ) {
-        let Some(selected) = original_card_definition(selected_id) else {
+        let Some(mut selected) = original_card_definition(selected_id) else {
             self.missing_decision("mirage-ronghui temporary card definition");
             return;
         };
+        // Card_173.cs calls InitData(id) then RefreshSpecialCard(publicData)
+        // before ExecuteEffect. CardItem.RefreshSpecialCard rebuilds card 19
+        // from the copier's current talents and talentTempDatas (Card_19.cs),
+        // so its attack/defense must not use the catalog's unrefreshed values.
+        if normalized_base_id(&selected) == 19 {
+            let actor = self.actor(actor_side);
+            selected = super::support::adapt_cheng_xin_card(
+                selected,
+                &actor.identity.talents,
+                actor.identity.sword_forging_attack,
+            );
+        }
         let action_again = self.apply_temporary_card_effect_with_spec(
             actor_side,
             &selected,

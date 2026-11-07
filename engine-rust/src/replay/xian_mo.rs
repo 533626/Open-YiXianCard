@@ -18,7 +18,7 @@ const IMPLEMENTED_XIAN_MO_STRATEGY_IDS: &[i64] = &[
     7098, 7099, 7100, 7101, 7102, 7103, 7104, 7105, 7109, 7110, 7111, 7112, 7113, 7115, 7116, 7118,
     7120, 7122, 7123, 7127, 7128, 7129, 7130, 7132, 7133, 7135, 7136, 7138, 11001, 11002, 11003,
     11004, 13001, 13002, 13003, 13004, 13005, 13006, 13007, 13008, 13009, 13010, 13011, 13012,
-    13013, 13014, 13015, 13016, 13017, 13018, 13019, 15018, 17071, 23045, 23058, 23062, 23066,
+    13013, 13014, 13015, 13016, 13017, 13018, 13019, 15018, 16024, 17071, 23045, 23058, 23062, 23066,
     23069, 23079, 23080, 27021, 27023, 28001,
 ];
 
@@ -341,6 +341,11 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
         if player.xian_mo_strategies.contains(&3011) {
             self.actor_mut(actor_side).fate.next_anima_gain_bonus += 2;
         }
+        // 16024 在 3011 之后、5004 之前（OnBattleStart state 11→12→13：
+        // 3011 IL_0d78 → 16024 IL_0e6c → 5004 IL_1015），晚于 1006（state 5）。
+        // 早置于 1005/1006 之间会先加后扣，与原版先扣后加差 ±1
+        //（5d0303/round-12：103-15=88+8=96，原版 96；早置 103+10=113-16=97）。
+        self.apply_verified_xian_mo_strategy_16024_battle_start(actor_side, player);
         if player.xian_mo_strategies.contains(&5005) {
             self.actor_mut(actor_side).fate.normal_attack_copy_previous += 1;
         }
@@ -703,6 +708,50 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
         }
     }
 
+    fn apply_verified_xian_mo_strategy_16024_battle_start(
+        &mut self,
+        actor_side: crate::model::PlayerSide,
+        player: &crate::fixture::FixturePlayerView<'_>,
+    ) {
+        if !player.xian_mo_strategies.contains(&16024) {
+            return;
+        }
+        // XianMoStrategyFunctions.cs:598-617 OnBattleStart：switch(GetNextParam())，
+        // case 0 取当前血 10% 加血加血上限、case 1 加 10% 防、case 3 加
+        // otherParams[3]=1 层虚弱（XuRuo 101），其余（含队列空 -1）无效果；
+        // 配置 otherParams=[10,10,1,1]（XianMoStrategyConfig 16024）。
+        // 原版位置在 3011 之后、5004 之前（state 11→12→13），晚于 1006（state 5）；
+        // 1006→16024 先扣后加，HP 采样与原版一致。
+        // GetNextParam 只取服务端 battleParams 队列（fixture decisionTape），
+        // 空队列 catch 返回 -1，不消耗卦象/星力/灵气（BattleCharacter.cs:9593-9602）。
+        // 首位完整开局先于次位（BattleExecuter.cs:1800-1801 await 首位），
+        // 引擎按 [first, second] 逐 actor 执行，此处消费顺序与原版一致。
+        let param = if self.decision_tape.is_empty() {
+            -1
+        } else {
+            self.decision_tape.remove(0)
+        };
+        match param {
+            0 => {
+                let amount = self.actor(actor_side).core.hp * 10 / 100;
+                if amount != 0 {
+                    self.modify_actor_max_hp(actor_side, amount);
+                    self.modify_actor_hp(actor_side, amount, false, false);
+                }
+            }
+            1 => {
+                let amount = self.actor(actor_side).core.hp * 10 / 100;
+                if amount != 0 {
+                    self.gain_defense(actor_side, amount);
+                }
+            }
+            3 => {
+                self.add_actor_negative_status(actor_side, 101, 1);
+            }
+            _ => {}
+        }
+    }
+
     /// 保留在本地 actor 开局块末处理的 HP 采样臂（7103/7123/15018）。
     ///
     /// 原版单 actor 开局顺序是天赋循环 → FateStrategy.OnBattleStart →
@@ -836,15 +885,10 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
         {
             self.actor_mut(actor_side).sword.cloud_sea += 1;
         }
-        if slot == 7
-            && self
-                .actor(actor_side)
-                .identity
-                .xian_mo_strategies
-                .contains(&7022)
-        {
-            self.add_actor_negative_status(super::support::opponent_side(actor_side), 100, 2);
-        }
+        // 7022 七星伤魂已移至星弈连前（apply_xian_mo_7022_before_star_hooks）：
+        // 原版 XianMo OnPlayCard 中 7022 (:1304) 先于 13017 (:1386)，13017
+        // 数负面须包含其 +2；OnPlayCard (:3300) 先于星弈连 (:3676)，故 7022
+        // 亦须在星前。见 flow_card_effect.rs 调用点。
         if self
             .actor(actor_side)
             .identity
@@ -887,13 +931,9 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
         {
             self.actor_mut(actor_side).sword.water_month_sword_formation += 1;
         }
-        if (is_temporary
-            || self
-                .actor(actor_side)
-                .deck
-                .slots
-                .get(slot)
-                .is_some_and(|s| !s.used))
+        // 7057 非临时首用已在星弈连前单独执行（apply_xian_mo_7057_before_13017，
+        // 须先于 13017 数负面）；此处只保留临时牌路径（原版无 isTempCard 排除）。
+        if is_temporary
             && card.name.contains("卦")
             && self
                 .actor(actor_side)
@@ -1025,10 +1065,96 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
         }
     }
 
+    /// 七星伤魂 7022：每次使用第8格牌时向对方施加2层内伤，须在星弈连前、13017前执行。
+    /// XianMoStrategyFunctions.OnPlayCard 中 7022 (:1304) 先于 13017 (:1386)；
+    /// CardActionBase.OnBeforeExecuted 中 XianMo OnPlayCard (:3300) 先于星弈连
+    /// (:3676-3687)。13017 数负面必须包含 7022 的 +2（55900b/round-15 首张
+    /// 11：p2 内伤 3→5→6，防+6）。原版无 hadUsed/isTempCard 检查，每次用
+    /// 7号槽（含重复用牌）皆触发；XianMoStrategyConfig 7022 otherParams=[2]。
+    pub(super) fn apply_xian_mo_7022_before_star_hooks(
+        &mut self,
+        actor_side: crate::model::PlayerSide,
+        slot: usize,
+    ) {
+        if slot != 7 {
+            return;
+        }
+        if !self
+            .actor(actor_side)
+            .identity
+            .xian_mo_strategies
+            .contains(&7022)
+        {
+            return;
+        }
+        let target = super::support::opponent_side(actor_side);
+        self.add_actor_negative_status(target, 100, 2);
+    }
+
+    /// 仙魔 7057（卦牌首用向对方施加 1 层虚弱），单独先于 13017 执行。
+    /// XianMoStrategyFunctions.OnPlayCard 的执行序不是文件序：IL_0507 段的
+    /// 7057（:1464）经 13010 后的 goto IL_119a 先于 IL_119a 段的 13017
+    /// （:1386）。13017 数负面须包含本张卦牌的 7057 虚弱。
+    /// 调用方保证首用/非临时；临时牌仍走后段 OnPlayCard（原版 7057 无
+    /// isTempCard 排除，此处只处理非临时首用以免重复）。
+    /// oracle 锚点：pa_60517796 [1]（乾卦：p1 内伤 1 +
+    /// 虚弱 1 → 防+2；旧顺序先数后加得防+1）、同 match round-13 [3]
+    /// （震卦：内伤 1 + 虚弱 2 → 防+3；旧顺序得防+2）。
+    pub(super) fn apply_xian_mo_7057_before_13017(
+        &mut self,
+        actor_side: crate::model::PlayerSide,
+        card: &crate::model::CardDefinition,
+    ) {
+        if !card.name.contains("卦")
+            || !self
+                .actor(actor_side)
+                .identity
+                .xian_mo_strategies
+                .contains(&7057)
+        {
+            return;
+        }
+        self.add_actor_negative_status(super::support::opponent_side(actor_side), 101, 1);
+    }
+
+    /// 伏魔 13014（坚体刻纹）的首次用牌附魔，单独先于星弈连执行。
+    /// XianMo OnPlayCard 执行序：IL_119a 段内 13014（:1358）先于 13017
+    /// （:1386），且 OnPlayCard（:3300）整体先于 CardActionBase 的
+    /// 下张崩拳加体魄（707，:3365）与星弈连（:3676）。13014 按
+    /// 自身体魄+2 后的旧体魄算防御（floor(体魄/6)），707 的体魄后叠。
+    /// 调用方保证首用/非临时。
+    /// oracle 锚点：pa_cf4ee85a [3]（崩拳•戳：体魄 32+2=34，
+    /// 防 floor(34/6)=5，再叠 707 的 +2 体魄到 36；旧顺序 707 先叠得
+    /// floor(36/6)=6 防）。
+    pub(super) fn apply_fumo_13014_before_star_hooks(
+        &mut self,
+        actor_side: crate::model::PlayerSide,
+        slot: usize,
+    ) {
+        let actor = self.actor(actor_side);
+        if !actor.identity.xian_mo_strategies.contains(&13014)
+            || actor
+                .identity
+                .xian_mo_temp_datas
+                .get("13014")
+                .copied()
+                .unwrap_or(0)
+                != slot as i64
+        {
+            return;
+        }
+        // 26449625: otherParams [3,6]->[2,6].
+        self.apply_physique_amount(actor_side, 2);
+        let amount = self.actor(actor_side).core.physique / 6;
+        self.gain_defense(actor_side, amount);
+    }
+
     /// 伏魔 13017 的首次用牌附魔，单独先于星弈连执行。
     /// CardActionBase.OnBeforeExecuted：XianMo OnPlayCard（:3300，
     /// 先加 1 内伤再数负面加防）先于星弈连（:3676-3687，星位
     /// +1 星力，可经 23069 转内伤）。调用方保证首用/非临时。
+    /// 相对顺序：7022 (:1304) 先于 13017 (:1386)，调用方须先调
+    /// apply_xian_mo_7022_before_star_hooks 再调本方法。
     pub(super) fn apply_fumo_13017_before_star_hooks(
         &mut self,
         actor_side: crate::model::PlayerSide,
@@ -1073,7 +1199,8 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
             (13011, "13011"),
             (13012, "13012"),
             (13013, "13013"),
-            (13014, "13014"),
+            // 13014 不在此循环：与 13017 同理须先于 707 体魄与星弈连
+            // （见 apply_fumo_13014_before_star_hooks）。
             (13015, "13015"),
             (13016, "13016"),
             // 13017 不在此循环：CardActionBase.OnBeforeExecuted 里
@@ -1126,7 +1253,8 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
                     }
                 }
                 13004 => {
-                    let amount = actor.turn.lose_hp_count * 18 / 100;
+                    // 26449625: otherParams[0] 18->20.
+                    let amount = actor.turn.lose_hp_count * 20 / 100;
                     if amount > 0 {
                         self.modify_actor_max_hp(actor_side, amount);
                         self.modify_actor_hp(actor_side, amount, false, false);
@@ -1138,7 +1266,8 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
                     self.gain_defense(actor_side, amount);
                 }
                 13008 => {
-                    self.gain_temporary_guard(actor_side, 3);
+                    // 26449625: otherParams[0] 3->2.
+                    self.gain_temporary_guard(actor_side, 2);
                 }
                 13007 => {
                     self.actor_mut(target).fate.next_card_downgrade += 1;
@@ -1149,7 +1278,8 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
                     self.actor_mut(actor_side).sword.water_month_sword_formation += 2;
                 }
                 13010 => {
-                    self.add_following_star_slots(actor_side, slot, 3);
+                    // 26449625: otherParams[0] 3->4.
+                    self.add_following_star_slots(actor_side, slot, 4);
                 }
                 13011 => {
                     if card.name.contains("金灵") {
@@ -1171,11 +1301,6 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
                 13012 => {
                     self.modify_momentum_limit(actor_side, 1);
                     self.actor_mut(actor_side).beng.momentum_before_attack += 3;
-                }
-                13014 => {
-                    self.apply_physique_amount(actor_side, 3);
-                    let amount = self.actor(actor_side).core.physique / 6;
-                    self.gain_defense(actor_side, amount);
                 }
                 13015 => {
                     self.modify_actor_hp(target, -6, false, false);

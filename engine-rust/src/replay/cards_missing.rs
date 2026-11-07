@@ -590,7 +590,11 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
                 self.apply_configured_defense(actor_side, card);
                 let defense = self.actor(actor_side).core.defense;
-                self.apply_damage(actor_side, defense, false, false, false);
+                // Build 26477585: Card_337.OnExecuted guards the def-damage with
+                // `def > 0` (new Card_337.cs ~:95; unconditional through 26449625).
+                if defense > 0 {
+                    self.apply_damage(actor_side, defense, false, false, false);
+                }
                 self.actor_mut(actor_side).beng.beng_quan_fu_hu += 1;
                 Some(attacked)
             }
@@ -1061,8 +1065,12 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             return;
         }
         let defense = self.actor(actor_side).core.defense;
-        // Original invokes ApplyDamage even at zero defense; 铁骨 can floor it to 1.
-        self.apply_damage(actor_side, defense * triggered, false, false, false);
+        // Build 26477585: OnAfterExecuted ChuFaFuHu branch guards with `def > 0`
+        // (CardActionBase.cs new :5141; unconditional ApplyDamage through 26449625,
+        // when 铁骨 floored the zero-def hit to 1). Triggered count still resets.
+        if defense > 0 {
+            self.apply_damage(actor_side, defense * triggered, false, false, false);
+        }
         self.actor_mut(actor_side).beng.triggered_beng_quan_fu_hu = 0;
     }
 }
