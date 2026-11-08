@@ -747,13 +747,19 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         if self.active_mechanisms.has(super::ActiveMechanisms::FORMATION | super::ActiveMechanisms::SWORD_SECT) {
             self.apply_secret_sword_formation_follow_up(actor_side, card, slot, false);
         }
+        if self.active_mechanisms.has(super::ActiveMechanisms::FORMATION)
+            || self.actor(actor_side).formations.body_observation > 0
+        {
+            // CardActionBase.cs IL_066f (周天剑阵) / IL_078b (察体) 先于 IL_0f82 (灵玄不息)：
+            // 阵法追加攻击检查当前单卡攻击计数，非攻击牌（如 416 灵玄不息持续牌）出牌时不应因后续融汇追击而触发。
+            self.apply_after_attack_formation_hooks(actor_side, slot);
+        }
         if self.active_mechanisms.has(super::ActiveMechanisms::RONGHUI | super::ActiveMechanisms::SWORD_SECT) {
             self.apply_ronghui_after_card_effect(actor_side, card, slot);
         }
         if self.active_mechanisms.has(super::ActiveMechanisms::FORMATION)
             || self.actor(actor_side).formations.body_observation > 0
         {
-            self.apply_after_attack_formation_hooks(actor_side, slot);
             self.apply_hundred_beast_spirit_sword_formation_after_card(actor_side, card);
         }
         if self.active_mechanisms.has(super::ActiveMechanisms::SWORD_SECT) {

@@ -575,7 +575,19 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
         if player.xian_mo_strategies.contains(&7122) {
             self.upgrade_first_battle_deck_card(actor_side, |card| card.name.contains("水灵"));
         }
-        // 7123 采样当前 HP，推迟到开局块末（见 1003/1006 注释）。
+        // 7123 (天衍-猫魂庇佑) 在 11004 (锻玄加体魄) 之前执行：XianMoStrategyFunctions.cs IL_207d 先于 IL_2210。
+        // 采样当前 HP (+15%) 先于 11004 体魄溢出治疗；oracle 锚点：pa_47416bc8 (84*15%=12, 体魄+3, 84+12+3=99)。
+        if player.xian_mo_strategies.contains(&7123) {
+            if let Some(life) = player.last_round_life {
+                if life <= 50 {
+                    let amount = self.actor(actor_side).core.hp * 15 / 100;
+                    self.modify_actor_max_hp(actor_side, amount);
+                    self.modify_actor_hp(actor_side, amount, false, false);
+                }
+            } else {
+                self.missing_card_effect(0, 0, "xianMo strategy 7123 missing original life");
+            }
+        }
         if player.xian_mo_strategies.contains(&7127) {
             self.actor_mut(actor_side).fate.ke_yin_jing_lei += 1;
         }
@@ -769,17 +781,6 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
     ) {
         if player.xian_mo_strategies.is_empty() {
             return;
-        }
-        if player.xian_mo_strategies.contains(&7123) {
-            if let Some(life) = player.last_round_life {
-                if life <= 50 {
-                    let amount = self.actor(actor_side).core.hp * 15 / 100;
-                    self.modify_actor_max_hp(actor_side, amount);
-                    self.modify_actor_hp(actor_side, amount, false, false);
-                }
-            } else {
-                self.missing_card_effect(0, 0, "xianMo strategy 7123 missing original life");
-            }
         }
         if player.xian_mo_strategies.contains(&15018) && !player.hand_cards.is_empty() {
             let amount = self.actor(actor_side).core.hp * 12 / 100;
