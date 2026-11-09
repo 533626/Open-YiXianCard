@@ -2,6 +2,7 @@ use super::{BattleError, ReplayCardExecution, ReplayState};
 use crate::model::PlayerSide;
 use serde::Serialize;
 
+const REQUIRED_PARAM_DECISION_TAG: u32 = 0x7265_7170;
 const NEGATIVE_STATUS_DECISION_TAG: u32 = 0x6e65_6773;
 const PERCENT_ROLL_DECISION_TAG: u32 = 0x7065_7263;
 const RANDOM_RANGE_DECISION_TAG: u32 = 0x7261_6e67;
@@ -12,11 +13,15 @@ pub enum ReplayDecisionKind {
     NegativeStatus,
     PercentRoll,
     RandomRange,
+    /// Raw GetNextParam server values (card choices / computed bonuses)
+    /// generated synthetically when a synthetic battle has no replay tape.
+    RequiredParam,
 }
 
 impl ReplayDecisionKind {
     fn hash_tag(self) -> u32 {
         match self {
+            Self::RequiredParam => REQUIRED_PARAM_DECISION_TAG,
             Self::NegativeStatus => NEGATIVE_STATUS_DECISION_TAG,
             Self::PercentRoll => PERCENT_ROLL_DECISION_TAG,
             Self::RandomRange => RANDOM_RANGE_DECISION_TAG,

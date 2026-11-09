@@ -435,7 +435,22 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             }
             1_000_052 => {
                 // 残云封天剑的 GetNextParam 是回放带中的云剑手牌加攻。
-                let bonus = self.consume_required_decision().max(0);
+                // 合成战斗（env/求解器）无回放带时按卡面自洽推导：开局手牌
+                // 中云剑张数 x otherParams[0]（HF 回放实测 4 张->32、7 张->56）。
+                let bonus = self
+                    .consume_required_decision_or_synthetic(actor_side, 1_000_052, Vec::new(), |state, _| {
+                        let hand = &state.initial_hand_card_ids[usize::from(actor_side == PlayerSide::P2)];
+                        let count = hand
+                            .iter()
+                            .filter(|&&id| {
+                                super::original_config::original_card_definition(id)
+                                    .is_some_and(|d| d.name.contains("云剑"))
+                            })
+                            .count() as i64;
+                        Some(count * other_param(card, 0).max(0))
+                    })
+                    .unwrap_or(0)
+                    .max(0);
                 attacked |= self.attack_by_config(actor_side, card, bonus, slot);
             }
             1_000_055 => {

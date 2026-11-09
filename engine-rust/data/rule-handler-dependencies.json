@@ -17,7 +17,7 @@
       "label": "出牌前钩子",
       "location": {
         "path": "src/replay/flow_card_effect.rs",
-        "line": 94,
+        "line": 99,
         "function": "apply_before_execute_effect_hooks"
       }
     },
@@ -26,7 +26,7 @@
       "label": "卡牌主体 dispatch",
       "location": {
         "path": "src/replay/flow_card_effect.rs",
-        "line": 352,
+        "line": 357,
         "function": "apply_card_effect_body"
       }
     },
@@ -35,7 +35,7 @@
       "label": "配置印刷字段",
       "location": {
         "path": "src/replay/flow_card_effect.rs",
-        "line": 635,
+        "line": 640,
         "function": "apply_regular_printed_card_effects"
       }
     },
@@ -53,7 +53,7 @@
       "label": "牌后钩子",
       "location": {
         "path": "src/replay/flow_card_effect.rs",
-        "line": 674,
+        "line": 679,
         "function": "apply_regular_after_card_effect_hooks"
       }
     },
@@ -71,7 +71,7 @@
       "label": "完成态结算",
       "location": {
         "path": "src/replay/flow.rs",
-        "line": 1628,
+        "line": 1635,
         "function": "complete_card_effect_repetition"
       }
     }
@@ -390,7 +390,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -709,7 +709,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -720,7 +720,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -731,7 +731,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -742,7 +742,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -764,7 +764,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -775,7 +775,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -786,7 +786,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -797,7 +797,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -808,7 +808,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -830,7 +830,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -852,7 +852,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -874,7 +874,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -885,7 +885,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -896,7 +896,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -918,7 +918,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -929,7 +929,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -951,7 +951,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -962,7 +962,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -973,7 +973,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -984,7 +984,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -995,7 +995,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1006,7 +1006,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1017,7 +1017,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1028,7 +1028,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1039,7 +1039,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1050,7 +1050,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1061,7 +1061,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1072,7 +1072,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1083,7 +1083,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1094,7 +1094,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1105,7 +1105,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1116,7 +1116,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1127,7 +1127,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1138,7 +1138,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1160,7 +1160,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1171,7 +1171,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1182,7 +1182,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1193,7 +1193,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1204,7 +1204,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1215,7 +1215,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1226,7 +1226,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1903,7 +1903,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -1991,7 +1991,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -2013,7 +2013,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -2024,7 +2024,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -2156,7 +2156,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -2167,7 +2167,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -2178,7 +2178,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -2189,7 +2189,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -2222,7 +2222,7 @@
       "routes": [
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }
@@ -6821,7 +6821,7 @@
         },
         {
           "path": "src/replay/cards_mirage_ronghui.rs",
-          "line": 679,
+          "line": 703,
           "function": "apply_synthetic_oracle_mirage_ronghui_card_effect",
           "kind": "typed"
         }

@@ -261,6 +261,45 @@ pub(super) fn original_card_sect_name(card_id: i64) -> Option<String> {
         .and_then(|meta| meta.sect_name.clone())
 }
 
+/// Synthetic-battle server pools (analysis-only; replay fixtures always
+/// carry their recorded battleParams and never consult these). Sorted for
+/// deterministic seeded picks.
+pub(super) fn synthetic_sect_card_ids(sect_name: &str) -> Vec<i64> {
+    let mut ids: Vec<i64> = catalog()
+        .meta
+        .iter()
+        .filter(|(_, meta)| meta.sect_name.as_deref() == Some(sect_name))
+        .map(|(id, _)| *id)
+        .collect();
+    ids.sort_unstable();
+    ids
+}
+
+pub(super) fn synthetic_special_card_ids(min_realm: i64) -> Vec<i64> {
+    let mut ids: Vec<i64> = catalog()
+        .meta
+        .iter()
+        .filter(|(_, meta)| {
+            meta.realm_level.is_some_and(|r| r >= min_realm)
+                && matches!(meta.subcategory_name.as_deref(), Some("Pet" | "Artifact" | "MiShu"))
+        })
+        .map(|(id, _)| *id)
+        .collect();
+    ids.sort_unstable();
+    ids
+}
+
+/// Character sect name by character-id million digit (CardConfig sects).
+pub(super) fn sect_name_of_character(character_id: i64) -> Option<&'static str> {
+    Some(match character_id / 1_000_000 {
+        1 => "YunLingJianZong",
+        2 => "QiXingGe",
+        3 => "WuXingDaoMeng",
+        4 => "DuanXuanZong",
+        _ => return None,
+    })
+}
+
 pub(super) fn original_card_is_hidden_or_mi_shu(card_id: i64) -> bool {
     let base_id = normalize_base_id(card_id);
     original_card_meta(card_id)

@@ -1,5 +1,8 @@
 use super::cards_dream_mirage::DreamMirageValue;
-use super::decisions::{PercentRollDecisionResolution, RandomRangeDecisionResolution};
+use super::decisions::{
+    seeded_decision_choice_index, PercentRollDecisionResolution, RandomRangeDecisionResolution,
+    ReplayDecisionDomain, ReplayDecisionEvent, ReplayDecisionKind, ReplayDecisionProvider,
+};
 use super::support::{normalized_base_id, opponent_side};
 use super::ReplayState;
 use crate::model::{CardDefinition, PlayerSide};
@@ -655,6 +658,87 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         } else {
             self.decision_tape.remove(0)
         }
+    }
+
+    /// Synthetic-seed gate shared with the typed decision providers: a
+    /// battle is synthetic for `side` when a seeded decision mode is
+    /// configured for it (env/solver-generated fixtures). Replay fixtures
+    /// carry a recorded tape and no synthetic seed, so this never fires
+    /// for them and replay admission semantics are untouched.
+    pub(super) fn synthetic_seed_for(&self, side: PlayerSide) -> Option<u32> {
+        self.synthetic_decision_seed
+            .filter(|_| self.synthetic_decision_sides.contains(&side))
+            .or(self.synthetic_decision_fallback_seed)
+    }
+
+    /// Seeded uniform pick from `options` (synthetic server choice).
+    pub(super) fn synthetic_pick(&self, side: PlayerSide, card_id: i64, options: &[i64]) -> Option<i64> {
+        let seed = self.synthetic_seed_for(side)?;
+        if options.is_empty() {
+            return None;
+        }
+        let execution_occurrence = self.current_card_execution.map(|e| e.occurrence).unwrap_or(0);
+        let index = seeded_decision_choice_index(
+            seed,
+            side,
+            self.actor_turn,
+            card_id,
+            ReplayDecisionKind::RequiredParam,
+            execution_occurrence,
+            self.decision_occurrence,
+            0,
+            options.len(),
+        );
+        Some(options[index])
+    }
+
+    /// Raw GetNextParam (required) decision: the replay tape is consumed
+    /// first, exactly as before. With an empty tape in a synthetic
+    /// battle, the server value is derived by `derive` (seeded pick or
+    /// computed bonus) and recorded as a RequiredParam decision event;
+    /// without either, the strict missing-decision error is preserved.
+    pub(super) fn consume_required_decision_or_synthetic(
+        &mut self,
+        side: PlayerSide,
+        card_id: i64,
+        legal_options: Vec<i64>,
+        derive: impl FnOnce(&Self, &[i64]) -> Option<i64>,
+    ) -> Option<i64> {
+        if !self.decision_tape.is_empty() {
+            return Some(self.decision_tape.remove(0));
+        }
+        let Some(seed) = self.synthetic_seed_for(side) else {
+            self.missing_decision("required decision");
+            return None;
+        };
+        self.decision_occurrence += 1;
+        let decision_occurrence = self.decision_occurrence;
+        let selected = derive(self, &legal_options);
+        if let Some(selected) = selected {
+            if self.capture_decision_events {
+                self.decision_events.push(ReplayDecisionEvent {
+                    provider: ReplayDecisionProvider::SeededSynthetic,
+                    seed: Some(seed),
+                    side,
+                    actor_turn: self.actor_turn,
+                    card_id,
+                    decision_kind: ReplayDecisionKind::RequiredParam,
+                    card_execution_occurrence: self
+                        .current_card_execution
+                        .map(|e| e.occurrence)
+                        .unwrap_or(0),
+                    decision_occurrence,
+                    ordinal: 0,
+                    domain: ReplayDecisionDomain::Discrete { legal_options },
+                    selected_option: Some(selected),
+                });
+            } else if !self.uncaptured_synthetic_seeds.contains(&seed) {
+                self.uncaptured_synthetic_seeds.push(seed);
+            }
+        } else {
+            self.missing_decision("required decision");
+        }
+        selected
     }
 
     pub(super) fn consume_required_negative_status_decision(&mut self) -> Option<i64> {

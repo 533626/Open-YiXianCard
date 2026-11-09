@@ -73,12 +73,17 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             }
             // 炼化/置换类（Refine/Change）牌被复制成临时效果时，原版走 FallbackCardAction，仅印面字段（本类无）
             // → 无战斗效果；oracle pa_4e088473 在飞枭灵芝（9020010）被复制后与 HF 终局一致。
+            // 范围外整卡（RECORD_ONLY_CARD_BASE_IDS，如神秘种子）同样没有
+            // Card_* 类：原版 CardFactory 一律 FallbackCardAction（印面
+            // 字段；种子全空 = 无效果），复制执行不报错，印面由 body 的
+            // fallback 分支结算（293 的防御类）。
             CardEffectResolution::RecordOnly
                 if !allow_record_only
                     && !card.card_type.as_ref().is_some_and(|card_type| {
                         card_type.name.eq_ignore_ascii_case("refine")
                             || card_type.name.eq_ignore_ascii_case("change")
-                    }) =>
+                    })
+                    && !super::card_effect_catalog::RECORD_ONLY_CARD_BASE_IDS.contains(&base_id) =>
             {
                 self.missing_card_effect(
                     card.id,

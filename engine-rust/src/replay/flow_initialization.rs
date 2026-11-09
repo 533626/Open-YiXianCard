@@ -99,6 +99,10 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 .unwrap_or(super::DEFAULT_MAX_ACTOR_TURNS),
             decision_tape: fixture.decision_tape.clone(),
             random_fallback_tape: fixture.random_fallback_tape.clone(),
+            initial_hand_card_ids: [
+                fixture.players.p1.hand_cards.to_vec(),
+                fixture.players.p2.hand_cards.to_vec(),
+            ],
             synthetic_decision_seed: fixture
                 .source
                 .as_ref()

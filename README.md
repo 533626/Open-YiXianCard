@@ -8,7 +8,7 @@
 
 ## HF 回放验证
 
-[sharpobject/yxp_replays](https://huggingface.co/datasets/sharpobject/yxp_replays) 的 **131,035 条**可执行回放，胜负、行动方与生命值变化三项精确匹配率 **100%**。覆盖普通、练习、天梯模式的 33 个分片（34380000–34412000）；范围外与空输入未计入匹配率。
+[sharpobject/yxp_replays](https://huggingface.co/datasets/sharpobject/yxp_replays) 的 **89,527 条**可执行回放，胜负、行动方与生命值变化三项精确匹配率 **100%**。覆盖普通、练习、天梯模式的 22 个分片（34436000–34457000）；范围外与空输入未计入匹配率。
 
 ## 构建与使用
 

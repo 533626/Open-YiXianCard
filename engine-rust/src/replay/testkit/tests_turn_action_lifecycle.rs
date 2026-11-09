@@ -1062,6 +1062,12 @@ fn turn_start_phase_table_keeps_documented_order() {
         index(TurnStartPhase::MarkSpiritTurtleFootwork) < index(TurnStartPhase::BuffDurationTicks)
     );
     assert!(index(TurnStartPhase::BuffDurationTicks) < index(TurnStartPhase::DefenseDecay));
+    // 梦•水灵波澜临时加倍（OnTurnStarted :4493-4504，静气心法治疗 :9729-9731）
+    // 先于内伤 tick（:4273-4290 取值，:4545-4558 结算）：治疗先落（可能触顶），
+    // 再吃内伤（oracle：pa_1bbf4b84 cp[22]）。
+    assert!(
+        index(TurnStartPhase::DreamMirageTurnStartLate) < index(TurnStartPhase::InternalInjuryTick)
+    );
 }
 
 #[test]

@@ -601,7 +601,19 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             341 => {
                 // 梦·神来之笔
                 self.apply_configured_defense(actor_side, card);
-                let selected_id = self.consume_optional_decision();
+                let selected_id = if self.decision_tape.is_empty()
+                    && self.synthetic_seed_for(actor_side).is_some()
+                {
+                    // Synthetic battle: server pick among realm>=4
+                    // Pet/Artifact/MiShu cards (the card text's pool).
+                    let options = super::original_config::synthetic_special_card_ids(4);
+                    self.consume_required_decision_or_synthetic(actor_side, 341, options, |state, opts| {
+                        state.synthetic_pick(actor_side, 341, opts)
+                    })
+                    .unwrap_or(-1)
+                } else {
+                    self.consume_optional_decision()
+                };
                 if selected_id < 0 {
                     return Some(false);
                 }
@@ -756,7 +768,28 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             }
             6_000_011 => {
                 self.apply_configured_defense(actor_side, card);
-                let selected_id = self.consume_required_decision();
+                // 神来之笔: replay tape carries the server pick; synthetic
+                // battles pick seeded from the actor's own-sect card pool
+                // (any realm incl. 返虚, HF tape statistics), excluding
+                // 神来之笔 itself to avoid recursive temp execution.
+                let options: Vec<i64> = self
+                    .actor(actor_side)
+                    .identity
+                    .character_id
+                    .and_then(super::original_config::sect_name_of_character)
+                    .map(super::original_config::synthetic_sect_card_ids)
+                    .unwrap_or_default()
+                    .into_iter()
+                    .filter(|id| id - (id / 10_000 % 100) * 10_000 != 6_000_011)
+                    .collect();
+                let Some(selected_id) = self.consume_required_decision_or_synthetic(
+                    actor_side,
+                    6_000_011,
+                    options,
+                    |state, opts| state.synthetic_pick(actor_side, 6_000_011, opts),
+                ) else {
+                    return Some(false);
+                };
                 let Some(selected_card) =
                     super::original_config::original_card_definition(selected_id)
                 else {

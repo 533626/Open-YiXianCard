@@ -1532,3 +1532,76 @@ fn calamity_entanglement_opening_targets_trigger_grid() {
     assert_eq!(state.p2.deck.slots[1].card.id, 0);
     assert_eq!(state.p2.core.hp, 24);
 }
+
+#[test]
+fn synthetic_cloud_sword_bonus_comes_from_hand_cloud_swords() {
+    // Env-generated (synthetic) battles have no replay tape: the server
+    // value for 残云封天剑 is the retained-云剑 hand count x otherParams[0]
+    // (HF fixtures: 4 云剑 -> tape 32, 7 云剑 -> tape 56, param 8).
+    let cloud = original_card_definition_by_id(1_000_052).expect("missing 1000052");
+    let mut battle = fixture(deck(cloud), deck(basic_attack()));
+    battle.players.p1.hand_cards = vec![1_000_002, 1_000_039, 1_000_026, 1_000_026, 5_000_015];
+    battle.players.p2.base_max_hp = 100;
+    battle.source = Some(crate::fixture::FixtureSource {
+        synthetic_decision_fallback_seed: Some(7),
+        ..Default::default()
+    });
+    let mut state = ReplayState::test_from_fixture(&battle);
+    state.fail_on_missing_decision = true;
+    // Deck draw order is engine-internal; execute until the sword lands.
+    for _ in 0..8 {
+        state.test_execute_one_card(PlayerSide::P1);
+        if state.p2.core.hp < 100 { break; }
+    }
+    assert!(state.evaluation_error.is_none(), "synthetic battle must not fail: {:?}", state.evaluation_error);
+    assert_eq!(state.p2.core.hp, 100 - (8 + 4 * 8));
+}
+
+#[test]
+fn synthetic_stroke_of_genius_picks_a_sect_card() {
+    // 神来之笔 in a synthetic battle: the server pick is a random card of
+    // the actor's own sect (any realm, HF tape statistics); it must be
+    // generated, not fail the battle for a missing replay decision.
+    let mut genius = card(6_010_011, 6_000_011, "神来之笔");
+    genius.defense = Some(6);
+    let mut battle = fixture(deck(genius), deck(basic_attack()));
+    battle.players.p1.character_id = Some(2_000_004);
+    battle.source = Some(crate::fixture::FixtureSource {
+        synthetic_decision_fallback_seed: Some(42),
+        ..Default::default()
+    });
+    let mut state = ReplayState::test_from_fixture(&battle);
+    state.fail_on_missing_decision = true;
+    state.test_execute_one_card(PlayerSide::P1);
+    assert!(state.evaluation_error.is_none(), "synthetic battle must not fail: {:?}", state.evaluation_error);
+    assert_eq!(state.p1.core.defense, 6);
+    let picked = state.decision_events.iter().find(|e| e.card_id == 6_000_011).and_then(|e| e.selected_option);
+    let picked = picked.expect("synthetic pick must be recorded as a decision event");
+    assert_eq!(
+        super::original_config::original_card_sect_name(picked).as_deref(),
+        Some("QiXingGe"),
+        "picked card {picked} must belong to the actor's sect"
+    );
+}
+
+#[test]
+fn synthetic_dream_genius_picks_a_high_realm_special_card() {
+    // 梦·神来之笔: random 元婴+ (realm>=4) 灵宠/法宝/秘术 card, generated
+    // in synthetic battles instead of silently doing nothing.
+    let mut dream = card(341, 341, "梦·神来之笔");
+    dream.defense = Some(2);
+    let mut battle = fixture(deck(dream), deck(basic_attack()));
+    battle.players.p1.character_id = Some(2_000_004);
+    battle.source = Some(crate::fixture::FixtureSource {
+        synthetic_decision_fallback_seed: Some(9),
+        ..Default::default()
+    });
+    let mut state = ReplayState::test_from_fixture(&battle);
+    state.fail_on_missing_decision = true;
+    state.test_execute_one_card(PlayerSide::P1);
+    assert!(state.evaluation_error.is_none(), "synthetic battle must not fail: {:?}", state.evaluation_error);
+    let picked = state.decision_events.iter().find(|e| e.card_id == 341).and_then(|e| e.selected_option);
+    let picked = picked.expect("synthetic pick must be recorded as a decision event");
+    assert!(super::original_config::original_card_realm_level(picked).is_some_and(|r| r >= 4),
+        "picked card {picked} must be realm>=4");
+}

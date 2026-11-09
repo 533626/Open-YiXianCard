@@ -66,11 +66,16 @@ pub(in crate::replay) const TURN_START_PHASES: [TurnStartPhase; 27] = [
     TurnStartPhase::DreamGreatReturnPill,
     // OnTurnStarted IL_1655 follows recovery IL_139a and 梦•大还丹 IL_14f3.
     TurnStartPhase::InfiniteHexagramPlate,
+    // 梦•水灵波澜临时加倍（BattleCharacter.cs OnTurnStarted :4493-4504，内嵌的
+    // ModifyAnima 连带静气心法治疗 :9729-9731）先于内伤 tick（:4273-4290 取值，
+    // :4545-4558 循环结算）：治疗先落（可能触顶），再吃内伤。
+    // oracle 锚点：pa_1bbf4b84 cp[22]（t24：+15 灵气 → 静气心法回 60
+    // 触顶 124，再 -30 内伤到 94；旧顺序先 -30 再回满 124）。
+    TurnStartPhase::DreamMirageTurnStartLate,
     // OnTurnStarted IL_0d84/IL_0e56/IL_0f04/IL_1448 all precede this
     // internal-injury tick at IL_1a4c.
     TurnStartPhase::InternalInjuryTick,
     TurnStartPhase::PostInjuryFormations,
-    TurnStartPhase::DreamMirageTurnStartLate,
     TurnStartPhase::SpiritDrain,
 ];
 

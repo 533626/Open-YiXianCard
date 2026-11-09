@@ -11,6 +11,7 @@ use super::*;
 use crate::fixture::{BattleFixture, FixturePlayer};
 use crate::model::{CardDefinition, PlayerSide};
 use crate::replay::cards_dream_mirage::DreamMirageValue;
+use crate::replay::cards_mirage_ronghui::MirageRonghuiValue;
 
 fn basic_attack() -> CardDefinition {
     super::test_support::basic_attack_card()
@@ -193,4 +194,65 @@ fn anima_hooks_run_two_polarity_before_ling_gua_art() {
     assert_eq!(state.p1.core.hp, 97);
     assert_eq!(state.p1.astrology.hexagram, 4);
     assert_eq!(state.p1.core.defense, 15);
+}
+
+#[test]
+fn illusory_metal_seal_decay_follows_all_turn_end_healing() {
+    // 幻•金灵印（JinLingYinPlus/577）：原版 OnTurnEnded :6804-6806 才 -1，晚于全部
+    // 回合末治疗（回春曲 :6545-6546、百毒不侵 :5964 等）；最后一层在治疗结算时仍
+    // 按 :9966-9970 把加生命转为锋锐。
+    // 锚点：pa_3844ef5a cp[17]（t12 p1 回合末回春曲 +6 上限：原版
+    // 73 血不动、锋锐 14→20、577 消退；旧顺序先衰减，+6 变真治疗到 79、锋锐不动）。
+    let battle = fixture(deck(original(5_010_010)), deck(basic_attack()));
+    let mut state = ReplayState::test_from_fixture(&battle);
+    state.p1.core.hp = 20;
+    state.p1.core.max_hp = 30;
+    state.p1.music.rejuvenation_tune = 6;
+    state.modify_mirage_ronghui_value(
+        PlayerSide::P1,
+        MirageRonghuiValue::MirageHealingConversionTurns,
+        1,
+    );
+    state.apply_turn_end_phases(PlayerSide::P1);
+    assert_eq!(state.p1.core.max_hp, 36);
+    assert_eq!(state.p1.core.hp, 20);
+    assert_eq!(state.p1.sword.sharpness, 6);
+    assert_eq!(
+        state.mirage_ronghui_value(
+            PlayerSide::P1,
+            MirageRonghuiValue::MirageHealingConversionTurns
+        ),
+        0
+    );
+}
+
+#[test]
+fn dream_water_doubling_heals_before_internal_injury_tick() {
+    // 梦•水灵波澜临时加倍（OnTurnStarted :4493-4504，ModifyAnima 连带静气心法治疗
+    // :9729-9731）先于内伤 tick（:4273-4290 取值，:4545-4558 循环结算）：治疗先落
+    // （可能触顶），再吃内伤。
+    // 锚点：pa_1bbf4b84 cp[22]（t24 p2 回合开始：水势/灵气临时加倍，
+    // +15 灵气 → 静气心法回 60 触顶 124，再 -30 内伤到 94；旧顺序先 -30 再回满 124）。
+    let battle = fixture(deck(basic_attack()), deck(basic_attack()));
+    let mut state = ReplayState::test_from_fixture(&battle);
+    state.p1.core.hp = 122;
+    state.p1.core.max_hp = 124;
+    state.p1.core.anima = 15;
+    state.p1.elements.water_momentum = 9;
+    state.p1.fate.quiet_mindset = 4;
+    state.p1.status.internal_injury = 30;
+    state.modify_dream_mirage_value(
+        PlayerSide::P1,
+        DreamMirageValue::TemporaryWaterDouble,
+        1,
+    );
+    state.apply_turn_start_phases(PlayerSide::P1);
+    assert_eq!(state.p1.core.anima, 30);
+    assert_eq!(state.p1.elements.water_momentum, 18);
+    assert_eq!(state.p1.core.hp, 94);
+    assert_eq!(state.p1.status.internal_injury, 30);
+    assert_eq!(
+        state.dream_mirage_value(PlayerSide::P1, DreamMirageValue::TemporaryWaterDouble),
+        0
+    );
 }

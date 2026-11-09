@@ -511,10 +511,12 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         if loss > 0 {
             self.modify_actor_hp(actor_side, -loss, false, false);
         }
+        // MirageHealingConversionTurns（幻•金灵印/JinLingYinPlus/577）不在此处衰减：
+        // 原版 OnTurnEnded :6804-6806 才 -1，晚于全部回合末治疗；提前衰减会在最后一层
+        // 把"加生命转锋锐"变成真治疗。见 flow.rs TurnEndPhase::PoisonImmunity 臂末。
         for value in [
             MirageRonghuiValue::MirageInternalInjuryAmplifierTurns,
             MirageRonghuiValue::MirageSharpnessConversionTurns,
-            MirageRonghuiValue::MirageHealingConversionTurns,
         ] {
             if self.mirage_ronghui_value(actor_side, value) > 0 {
                 self.modify_mirage_ronghui_value(actor_side, value, -1);
@@ -536,6 +538,28 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             MirageRonghuiValue::LastTurnStartHp,
             start - previous,
         );
+    }
+
+    /// 幻•金灵印（JinLingYinPlus/577）回合末衰减。调用点必须在全部回合末治疗之后
+    /// （flow.rs TurnEndPhase::PoisonImmunity 臂）：原版 OnTurnEnded :6804-6806 才 -1，
+    /// 晚于回春曲（:6545-6546）、百毒不侵（:5964）等治疗；ModifyHp 的加生命转锋锐
+    /// （:9966-9970）在此之前仍能看到最后一层。
+    /// oracle 锚点：pa_3844ef5a cp[17]（t12 回春曲 +6 上限：原版 73 血
+    /// 不动、锋锐 +6；旧顺序回 6 血、锋锐不动，终局 hpDelta -114 非 -120）。
+    pub(super) fn decay_mirage_healing_conversion_turns(&mut self, actor_side: PlayerSide) {
+        if self
+            .mirage_ronghui_value(
+                actor_side,
+                MirageRonghuiValue::MirageHealingConversionTurns,
+            )
+            > 0
+        {
+            self.modify_mirage_ronghui_value(
+                actor_side,
+                MirageRonghuiValue::MirageHealingConversionTurns,
+                -1,
+            );
+        }
     }
 
     pub(super) fn apply_mirage_water_defense_after_turn_end_water_damage(

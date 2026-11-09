@@ -172,6 +172,22 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                     self.apply_original_fallback_behavior(actor_side, card, slot);
                     CardEffectResolution::VerifiedPrintedFallback
                 }
+                CardEffectResolution::RecordOnly
+                    if super::card_effect_catalog::RECORD_ONLY_CARD_BASE_IDS.contains(&base_id)
+                        && self.effect_invocation_stack.last().is_some_and(|frame| {
+                            frame.kind == super::effect_invocation::EffectInvocationKind::Temporary
+                        }) =>
+                {
+                    // Scope-excluded whole cards have no Card_* class;
+                    // when a copy effect executes one as a temporary card,
+                    // CardFactory's FallbackCardAction applies its printed
+                    // fields (all empty for 神秘种子/云泉道茶/再试一次;
+                    // defense for 293). Ordinary execution stays a no-op
+                    // (canonical scope policy), and so do refine/change
+                    // temporary copies (oracle-verified above).
+                    self.apply_original_fallback_behavior(actor_side, card, slot);
+                    CardEffectResolution::VerifiedPrintedFallback
+                }
                 CardEffectResolution::RecordOnly => CardEffectResolution::RecordOnly,
                 CardEffectResolution::Missing => {
                     self.missing_card_effect(card.id, base_id, "missing executable behavior");
@@ -277,6 +293,37 @@ mod tests {
             .to_string()
             .contains("card catalog error: card:88888888 base:88888888"));
         assert_eq!(format!("{state:#?}"), before);
+    }
+
+    #[test]
+    fn temporary_scope_excluded_seed_executes_as_printed_fallback() {
+        // 神秘种子 (9000006) has no Card_* class in the original; when a
+        // copy effect (e.g. 幻羽鹦鹉) executes it as a temporary card,
+        // CardFactory falls back to FallbackCardAction, whose printed
+        // fields are all empty for this card: a no-op, not an error.
+        let seed = super::super::original_card_definition_by_id(9_000_006)
+            .expect("missing 9000006 definition");
+        let mut state = state_with_active_card(basic_attack_test_card());
+        state.fail_on_missing_decision = true;
+        let hp_before = (state.p1.core.hp, state.p2.core.hp, state.p1.core.defense);
+        // Return value is the action-again flag (false here), not success.
+        let _ = state.apply_temporary_card_effect(PlayerSide::P1, &seed, 0);
+        assert!(state.evaluation_error.is_none());
+        assert_eq!((state.p1.core.hp, state.p2.core.hp, state.p1.core.defense), hp_before);
+    }
+
+    #[test]
+    fn temporary_scope_excluded_card_applies_printed_defense() {
+        // 293 (幻·灵犀剑阵) likewise has no Card_* class; its printed
+        // defense (2) applies through FallbackCardAction when copied.
+        let card = super::super::original_card_definition_by_id(293)
+            .expect("missing 293 definition");
+        let mut state = state_with_active_card(basic_attack_test_card());
+        state.fail_on_missing_decision = true;
+        let def_before = state.p1.core.defense;
+        let _ = state.apply_temporary_card_effect(PlayerSide::P1, &card, 0);
+        assert!(state.evaluation_error.is_none());
+        assert_eq!(state.p1.core.defense, def_before + 2);
     }
 
     #[test]

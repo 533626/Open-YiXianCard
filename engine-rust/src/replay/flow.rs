@@ -684,6 +684,13 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                                 state.modify_actor_hp(actor_side, healing, false, false);
                             }
                         }
+                        // 幻•金灵印（JinLingYinPlus/577）在全部回合末治疗之后衰减：
+                        // 原版 OnTurnEnded :6804-6806 才 -1，晚于回春曲（:6545-6546）、
+                        // 百毒不侵（:5964）等；此前治疗仍按 :9966-9970 转锋锐。
+                        // 本臂之后再无行动方治疗（StatusDecay 只衰减虚弱/破绽/困缚），
+                        // 放此处与原版 IL_248e 等价。
+                        // oracle 锚点：pa_3844ef5a cp[17]。
+                        state.decay_mirage_healing_conversion_turns(actor_side);
                     });
                 }
                 TurnEndPhase::ResetSpiritTurtleFootwork => {

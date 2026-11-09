@@ -1789,6 +1789,10 @@ struct ReplayState<const OBSERVE: bool = true> {
     max_actor_turns: i64,
     decision_tape: Vec<i64>,
     random_fallback_tape: Vec<i64>,
+    /// Battle-start hand card ids per side (fixture handCards). The battle
+    /// itself only tracks hand counts; synthetic server values that depend
+    /// on hand composition (e.g. 残云封天剑) derive from this snapshot.
+    initial_hand_card_ids: [Vec<i64>; 2],
     synthetic_decision_seed: Option<u32>,
     synthetic_decision_sides: Vec<PlayerSide>,
     synthetic_decision_fallback_seed: Option<u32>,
@@ -1824,6 +1828,7 @@ impl<const OBSERVE: bool> std::fmt::Debug for ReplayState<OBSERVE> {
             .field("max_actor_turns", &self.max_actor_turns)
             .field("decision_tape", &self.decision_tape)
             .field("random_fallback_tape", &self.random_fallback_tape)
+            .field("initial_hand_card_ids", &self.initial_hand_card_ids)
             .field("synthetic_decision_seed", &self.synthetic_decision_seed)
             .field("synthetic_decision_sides", &self.synthetic_decision_sides)
             .field("synthetic_decision_fallback_seed", &self.synthetic_decision_fallback_seed)
