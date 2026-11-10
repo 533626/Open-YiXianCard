@@ -600,12 +600,15 @@ pub(super) fn neighbor_slot_index(
     slot_index: usize,
     direction: i64,
 ) -> usize {
+    let length = actor.deck.slots.len();
+    if length == 0 {
+        return 0;
+    }
     let effective_direction = if actor.fate.reverse_card_direction > 0 {
         -direction
     } else {
         direction
     };
-    let length = actor.deck.slots.len().max(crate::model::DECK_SIZE);
     (slot_index as i64 + effective_direction).rem_euclid(length as i64) as usize
 }
 
