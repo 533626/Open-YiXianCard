@@ -256,3 +256,56 @@ fn dream_water_doubling_heals_before_internal_injury_tick() {
         0
     );
 }
+
+#[test]
+fn dream_mystic_footwork_suppressed_during_opponent_turn_end_water() {
+    // 梦•灵玄迷踪步 (10030069, MengLingXuan 647): 自身回合内前 N 次获得负面状态
+    // 才镜像给对方; 对方回合开始时己方已置 MengLingXuanBuChuFa (654)=1
+    // (BattleCharacter.OnTurnStarted:3923-3925), 回合末清除晚于水势伤害与状态衰减
+    // (OnTurnEnded:6720-6734, 水势 IL_1bc1 在前)。
+    // 锚点: hf-auto-9c1ca5855c8d-0000 pa_400a8635 p2 T3 末水势 3 →
+    // p1 掉 3 血触发血光之灾外伤 1, 不应镜像 (p2 外伤 0); 旧顺序在水前清除抑制,
+    // 误镜像致 p2 外伤 1, 耗掉 T4 配额, T4 减攻未镜像, 终局 11 vs 13。
+    let p1dream = original(10_030_069);
+    let battle = fixture(deck(p1dream), deck(basic_attack()));
+    let mut state = ReplayState::test_from_fixture(&battle);
+    state.p1.core.hp = 30;
+    state.p1.core.max_hp = 30;
+    state.p2.core.hp = 30;
+    state.p2.core.max_hp = 30;
+    state.p2.elements.water_momentum = 3;
+    state.p1.status.blood_calamity = 3;
+    state.modify_dream_mirage_value(
+        PlayerSide::P1,
+        DreamMirageValue::DreamMysticFootwork,
+        2,
+    );
+    state.modify_dream_mirage_value(
+        PlayerSide::P1,
+        DreamMirageValue::DreamMysticFootworkSuppressed,
+        1,
+    );
+    state.apply_turn_end_phases(PlayerSide::P2);
+    assert_eq!(state.p1.core.hp, 27);
+    assert_eq!(state.p1.status.external_injury, 1);
+    assert_eq!(state.p2.status.external_injury, 0);
+    assert_eq!(state.p1.status.blood_calamity, 2);
+    assert_eq!(
+        state.dream_mirage_value(PlayerSide::P1, DreamMirageValue::DreamMysticFootwork),
+        2
+    );
+    assert_eq!(
+        state.dream_mirage_value(
+            PlayerSide::P1,
+            DreamMirageValue::DreamMysticFootworkSuppressed
+        ),
+        0
+    );
+    assert_eq!(
+        state.dream_mirage_value(
+            PlayerSide::P1,
+            DreamMirageValue::DreamMysticFootworkTriggerCount
+        ),
+        0
+    );
+}

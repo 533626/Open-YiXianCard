@@ -157,7 +157,7 @@ struct EffectInvocationWindowSnapshot {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub(super) struct EffectInvocationFrame {
+pub(crate) struct EffectInvocationFrame {
     pub(super) origin: EffectCardIdentity,
     pub(super) effective: EffectCardIdentity,
     effective_definition: super::RuntimeCard,

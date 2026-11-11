@@ -749,6 +749,17 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             }
         }
         self.dream_mirage_clear_value(actor_side, DreamMirageValue::DreamStarBoardTriggered);
+    }
+
+    /// BattleCharacter.OnTurnEnded:6720-6734 clears MengLingXuanBuChuFa (654)
+    /// and MengLingXuanChuFaCiShu (655) for both sides at the very end, after
+    /// water damage (IL_1bc1), YingZhiZhu (IL_1e85) and status decay. Clearing
+    /// before water lets opponent-turn water+血光之灾 WaiShang mirror to the
+    /// actor, consuming the per-turn quota early.
+    /// oracle 锚点: hf-auto-9c1ca5855c8d-0000 pa_400a8635
+    /// (p2 T3 水势 3 → p1 外伤 1 不应镜像; 引擎提前清除导致 p2 外伤 2/减攻 0,
+    /// 原版 1/1, 终局 11 vs 13).
+    pub(super) fn clear_dream_mystic_footwork_at_turn_end(&mut self, actor_side: PlayerSide) {
         for side in [actor_side, opponent_side(actor_side)] {
             self.dream_mirage_clear_value(side, DreamMirageValue::DreamMysticFootworkSuppressed);
             self.dream_mirage_clear_value(side, DreamMirageValue::DreamMysticFootworkTriggerCount);

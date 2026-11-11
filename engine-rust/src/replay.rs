@@ -31,6 +31,7 @@ pub use turn_end_trace::{
 };
 
 mod action_again;
+mod api_types;
 mod active_mechanisms;
 mod identity;
 mod mechanism_state;
@@ -103,6 +104,7 @@ mod mechanic_cards_extra;
 mod player;
 mod resources;
 mod snapshot;
+mod state_impl;
 mod support;
 mod swords;
 // Test modules live in replay/testkit/. #[path] keeps `super` pointed at replay.
@@ -261,6 +263,8 @@ pub use decisions::{
     ReplayDecisionProvider,
 };
 pub use error::BattleError;
+pub use api_types::{ReplayEvaluationRun, ReplayRun, ReplaySummary, ReplayTerminationCause, ReplayUiRun};
+pub(crate) use state_impl::ReplayState;
 
 const DEFAULT_MAX_ACTOR_TURNS: i64 = 64;
 const BASIC_ATTACK_ID: i64 = 0;
@@ -276,65 +280,6 @@ enum Element {
     Wood,
     Fire,
     Earth,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct ReplaySummary {
-    pub winner_side: PlayerSide,
-    pub actor_turn_count: i64,
-    pub hp_delta_p1_minus_p2: i64,
-}
-
-impl ReplaySummary {
-    pub fn matches_fixture(&self, fixture: &BattleFixture) -> bool {
-        self.winner_side == fixture.expected.winner_side
-            && self.actor_turn_count == fixture.expected.actor_turn_count
-            && self.hp_delta_p1_minus_p2 == fixture.expected.hp_delta_p1_minus_p2
-    }
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct ReplayRun {
-    pub summary: ReplaySummary,
-    pub termination_cause: ReplayTerminationCause,
-    pub completed_checkpoint_count: usize,
-    pub events: Vec<ReplayEvent>,
-    /// One entry per `events` element, same index. Kept beside the events instead of
-    /// inside their snapshots so the oracle parity protocol stays exactly 29 fields.
-    pub prevention: Vec<ReplayPreventionPair>,
-    pub decision_events: Vec<ReplayDecisionEvent>,
-}
-
-/// Browser-facing replay stream with live state that intentionally stays outside
-/// the exact 29-field original-oracle snapshot.
-#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct ReplayUiRun {
-    pub summary: ReplaySummary,
-    pub termination_cause: ReplayTerminationCause,
-    pub completed_checkpoint_count: usize,
-    pub events: Vec<ReplayUiEvent>,
-    pub decision_events: Vec<ReplayDecisionEvent>,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize, schemars::JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub enum ReplayTerminationCause {
-    TurnStartLethal,
-    CardLethal,
-    ActionAgainLethal,
-    TurnEndLethal,
-    MaxTurn,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct ReplayEvaluationRun {
-    pub summary: ReplaySummary,
-    pub p1: ReplayPlayerSnapshot,
-    pub p2: ReplayPlayerSnapshot,
-    pub decision_events: Vec<ReplayDecisionEvent>,
 }
 
 /// The solver's HpDelta projection reads four terminal counters. Keeping this
@@ -575,7 +520,7 @@ struct ReplayCardSlot {
 }
 
 #[derive(Debug, Clone, Default)]
-struct ReplayPlayer {
+pub(crate) struct ReplayPlayer {
     identity: identity::RuntimeIdentity,
     core: ReplayCoreVitals,
     sword: mechanism_state::MechanismState<ReplaySwordState>,
@@ -1349,7 +1294,7 @@ struct DrawnCard {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-struct ReplayCardExecution {
+pub(crate) struct ReplayCardExecution {
     occurrence: u64,
     side: PlayerSide,
     card_id: i64,
@@ -1386,7 +1331,7 @@ impl ReplayObservationMode {
 }
 
 #[derive(Debug, Clone, Default)]
-struct ReplayObservationRuntime {
+pub(crate) struct ReplayObservationRuntime {
     prevention: Vec<ReplayPreventionPair>,
     mode: ReplayObservationMode,
     events: Vec<ReplayEvent>,
@@ -1778,113 +1723,12 @@ struct ReviveReceipt {
     max_hp_after: i64,
 }
 
-#[derive(Clone)]
-struct ReplayState<const OBSERVE: bool = true> {
-    p1: ReplayPlayer,
-    p2: ReplayPlayer,
-    first_player: PlayerSide,
-    battle_round: Option<i64>,
-    current_actor: PlayerSide,
-    actor_turn: i64,
-    max_actor_turns: i64,
-    decision_tape: Vec<i64>,
-    random_fallback_tape: Vec<i64>,
-    /// Battle-start hand card ids per side (fixture handCards). The battle
-    /// itself only tracks hand counts; synthetic server values that depend
-    /// on hand composition (e.g. 残云封天剑) derive from this snapshot.
-    initial_hand_card_ids: [Vec<i64>; 2],
-    synthetic_decision_seed: Option<u32>,
-    synthetic_decision_sides: Vec<PlayerSide>,
-    synthetic_decision_fallback_seed: Option<u32>,
-    robust_decisions: bool,
-    decision_occurrence: u64,
-    card_execution_occurrence: u64,
-    current_card_execution: Option<ReplayCardExecution>,
-    decision_events: Vec<ReplayDecisionEvent>,
-    capture_decision_events: bool,
-    uncaptured_synthetic_seeds: Vec<u32>,
-    effect_invocation_stack: Vec<effect_invocation::EffectInvocationFrame>,
-    /// Which explicit phase table is currently running, when no effect
-    /// invocation is active. Receipts recorded inside a phase block are
-    /// attributed to the matching phase step (BattleStart/TurnStart/TurnEnd).
-    attribution_block: Option<TraceAttributionBlock>,
-    fail_on_missing_decision: bool,
-    evaluation_error: Option<BattleError>,
-    observation: ReplayObservationRuntime,
-    termination_cause: Option<ReplayTerminationCause>,
-    completed_checkpoint_count: usize,
-    active_mechanisms: ActiveMechanisms,
-}
-
-impl<const OBSERVE: bool> std::fmt::Debug for ReplayState<OBSERVE> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("ReplayState")
-            .field("p1", &self.p1)
-            .field("p2", &self.p2)
-            .field("first_player", &self.first_player)
-            .field("battle_round", &self.battle_round)
-            .field("current_actor", &self.current_actor)
-            .field("actor_turn", &self.actor_turn)
-            .field("max_actor_turns", &self.max_actor_turns)
-            .field("decision_tape", &self.decision_tape)
-            .field("random_fallback_tape", &self.random_fallback_tape)
-            .field("initial_hand_card_ids", &self.initial_hand_card_ids)
-            .field("synthetic_decision_seed", &self.synthetic_decision_seed)
-            .field("synthetic_decision_sides", &self.synthetic_decision_sides)
-            .field("synthetic_decision_fallback_seed", &self.synthetic_decision_fallback_seed)
-            .field("robust_decisions", &self.robust_decisions)
-            .field("decision_occurrence", &self.decision_occurrence)
-            .field("card_execution_occurrence", &self.card_execution_occurrence)
-            .field("current_card_execution", &self.current_card_execution)
-            .field("decision_events", &self.decision_events)
-            .field("capture_decision_events", &self.capture_decision_events)
-            .field("uncaptured_synthetic_seeds", &self.uncaptured_synthetic_seeds)
-            .field("effect_invocation_stack", &self.effect_invocation_stack)
-            .field("attribution_block", &self.attribution_block)
-            .field("fail_on_missing_decision", &self.fail_on_missing_decision)
-            .field("evaluation_error", &self.evaluation_error)
-            .field("observation", &self.observation)
-            .field("termination_cause", &self.termination_cause)
-            .field("completed_checkpoint_count", &self.completed_checkpoint_count)
-            .finish()
-    }
-}
-
 /// Explicit phase table used to attribute
 /// mutations that run outside any card effect invocation.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum TraceAttributionBlock {
+pub(crate) enum TraceAttributionBlock {
     BattleStart,
     TurnStart,
     ActionAgain,
     TurnEnd,
-}
-
-impl<const OBSERVE: bool> ReplayState<OBSERVE> {
-    #[inline(always)]
-    pub(super) fn refresh_active_mechanisms(&mut self) {
-        #[cfg(feature = "perf-ceiling")]
-        let _timer = crate::performance::Timer::new(14);
-        self.active_mechanisms = active_mechanisms::detect_active_mechanisms(self);
-    }
-
-    fn missing_card_effect(&mut self, card_id: i64, base_id: i64, reason: &str) {
-        if self.evaluation_error.is_none() {
-            self.evaluation_error = Some(BattleError::MissingRule {
-                card_id,
-                base_id,
-                reason: reason.into(),
-                turn: self.actor_turn,
-            });
-        }
-    }
-
-    fn missing_decision(&mut self, reason: &str) {
-        if self.fail_on_missing_decision && self.evaluation_error.is_none() {
-            self.evaluation_error = Some(BattleError::MissingDecision {
-                reason: reason.into(),
-                turn: self.actor_turn,
-            });
-        }
-    }
 }

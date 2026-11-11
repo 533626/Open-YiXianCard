@@ -700,6 +700,10 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                     self.actor_mut(opponent_side(actor_side))
                         .turn
                         .spirit_turtle_footwork_triggered = 0;
+                    // 原版 OnTurnEnded:6720-6734 与灵龟迷踪步生效标记同处清除梦•灵玄迷踪步
+                    // 的抑制与触发计数, 晚于水势/硬枝竹/状态衰减 (见 dream_mirage_hooks
+                    // clear_dream_mystic_footwork_at_turn_end 注释与 oracle 锚点)。
+                    self.clear_dream_mystic_footwork_at_turn_end(actor_side);
                 }
                 TurnEndPhase::PendingHexagram => {
                     self.observe_turn_end_hook(actor_side, "pendingHexagram", |state| {
