@@ -309,3 +309,59 @@ fn dream_mystic_footwork_suppressed_during_opponent_turn_end_water() {
         0
     );
 }
+
+#[test]
+fn fate_7116_isolated_overlap_prefers_7116_without_opening() {
+    // BattleExecuter 外层 while(flag) + 内层 while：7116(:1951)在洞烛(:2013)之前。
+    // 孤立重叠格（当前即第 5 格，非连续洞烛链）时 7116 先跳，不耗洞烛、不触发开局。
+    // 连续洞烛格（grid3→grid4）仍由洞烛内层 while 批量跳过（fc621a 4→2），不重入 7116。
+    // 锚点：pa_6cabbdea [7]（洞烛 4 不动、探灵开局未触发、灵气 1；
+    // 旧 7116-after-fate 误耗 1 次洞烛并 +1 灵气，终局 p2 胜 vs p1 胜）。
+    let mut cards = vec![basic_attack(); 8];
+    cards[4] = original(11_010_009);
+    let mut battle = fixture(cards, deck(basic_attack()));
+    battle.players.p1.active_slot_count = 8;
+    battle.players.p1.xian_mo_strategies = vec![7_116];
+    let mut state = ReplayState::test_from_fixture(&battle);
+    state.p1.fate.fate_cycle = 4;
+    state.p1.fate.fate_cycle_slots = [4, 5];
+    state.p1.deck.queue = vec![4, 5, 6, 7, 0, 1, 2, 3];
+    let drawn = state
+        .p1
+        .draw_next_card(0)
+        .expect("draw isolated fate/7116 overlap");
+    assert_eq!(drawn.source_slot, 5);
+    assert_eq!(drawn.skipped_slots, vec![4]);
+    assert!(drawn.skipped_opening_slots.is_empty());
+    assert_eq!(state.p1.fate.fate_cycle, 4);
+    assert!(state.p1.fate.skip_hp_deltas.is_empty());
+    assert!(state.p1.fate.skip_anima_deltas.is_empty());
+}
+
+#[test]
+fn xing_yi_tiao_landing_clears_before_7116_grid_skip() {
+    // BattleExecuter 外层循环：跳牌落到星弈牌后当轮清空标记(:2011-2013)，
+    // 下一外层迭代 7116 再跳第 5 格；起始即第 5 格星弈时 7116 在同轮先跳，
+    // 标记保留（pa_a66ce89f [7] 仍通过）。
+    // 锚点：pa_45faec9d [4]（跳过 slot3 厄劫缠身落到 slot4 星弈•打，
+    // 清空后 7116 跳 slot4，选中 slot5 众星拱月；旧保留标记误跳 slot5 选 slot6）。
+    let mut cards = vec![basic_attack(); 8];
+    cards[3] = original(11_000_018);
+    cards[4] = original(4_000_029);
+    cards[5] = original(4_010_032);
+    cards[6] = original(4_000_107);
+    let mut battle = fixture(cards, deck(basic_attack()));
+    battle.players.p1.active_slot_count = 8;
+    battle.players.p1.xian_mo_strategies = vec![7_116];
+    let mut state = ReplayState::test_from_fixture(&battle);
+    state.p1.ronghui.star_chess_jump = 1;
+    state.p1.deck.queue = vec![3, 4, 5, 6, 7, 0, 1, 2];
+    let drawn = state
+        .p1
+        .draw_next_card(0)
+        .expect("draw jump landing + 7116");
+    assert_eq!(drawn.source_slot, 5);
+    assert_eq!(drawn.skipped_slots, vec![3, 4]);
+    assert_eq!(drawn.skipped_opening_slots, vec![3]);
+    assert_eq!(state.p1.ronghui.star_chess_jump, 0);
+}

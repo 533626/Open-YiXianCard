@@ -705,10 +705,64 @@ impl ReplayPlayer {
                 == 0
     }
 
+    fn shift_next_non_skip(
+        &mut self,
+        skipped: &mut Vec<usize>,
+        active: usize,
+        last_break: usize,
+        steps: &mut usize,
+        max_steps: usize,
+    ) -> Result<usize, Option<usize>> {
+        // BattleCharacter.ShiftCard:8479-8497 — pop queue head, filtering skip=true
+        // (used sustain/consume) via Push+Shift. Each filtered skip counts toward
+        // fallback (skipped len - last_break >= active → basic attack).
+        // Each pop counts toward max_draw_steps (Duan progress).
+        // Ok(slot) = next non-skip, Err(Some(fallback_slot)) = fallback basic,
+        // Err(None) = steps exhausted or empty queue.
+        loop {
+            if *steps >= max_steps {
+                return Err(None);
+            }
+            if self.deck.queue.is_empty() {
+                return Err(None);
+            }
+            let slot = self.deck.queue.remove(0);
+            *steps += 1;
+            let is_skipped = self.deck.slots.get(slot).is_some_and(|s| s.skipped);
+            if !is_skipped {
+                return Ok(slot);
+            }
+            skipped.push(slot);
+            self.deck.queue.push(slot);
+            if skipped.len().saturating_sub(last_break) >= active {
+                return Err(Some(slot));
+            }
+        }
+    }
+
     pub(super) fn draw_next_card(
         &mut self,
         nameless_white_deer_skip_limit: i64,
     ) -> Option<DrawnCard> {
+        // BattleExecuter.cs:1895-2048 outer while(flag) + inner whiles, current build.
+        // Order: Duan → KeYin(99000214) → MengEJie → FS398 → 7116 → 5010 →
+        // 9000015 → 202 → 350 → 11000017(ignored) → XingYiTiao(if+inner) →
+        // DongZhu(while) → ShunYing(ignored).
+        // Each inner while skips consecutive applicable slots without re-checking
+        // earlier mechanisms in the same outer iteration; after all mechanisms,
+        // outer repeats from the top if any skip occurred (flag).
+        // XingYiTiao inner while skips non-stars with opening, then clears the
+        // entire buff in the same outer iteration, before DongZhu (:1991-2013).
+        // DongZhu inner while skips consecutive fate grids with opening, 1 per skip.
+        // Anchors (all four require outer-loop, not single-loop fixed order):
+        // - pa_f7c24edd #7 (consecutive fate 4→2, both openings):
+        //   fate inner-while wins for grid3→grid4 without 7116 interleaving.
+        // - pa_6cabbdea [7] (isolated overlap grid4, fate stays 4,
+        //   no opening, anima 1 vs 2): 7116 before fate for isolated grid.
+        // - pa_a66ce89f [7] (starting at star grid4 with jump,
+        //   7116→jump→star): 7116 before jump in same iteration, jump preserved.
+        // - pa_45faec9d [4] (jump landing on grid4 star, then 7116,
+        //   jump cleared): jump landing clears before next outer iteration's 7116.
         let active_slot_count = self.deck.queue.len();
         if active_slot_count == 0 {
             return None;
@@ -721,42 +775,147 @@ impl ReplayPlayer {
         let mut last_break_progress = 0usize;
         let max_draw_steps = active_slot_count
             .saturating_mul((self.astrology.star_chess_break.max(0) as usize).saturating_add(1));
-        for _ in 0..max_draw_steps {
-            let source_slot = self.deck.queue.remove(0);
-            let was_skipped = self
-                .deck
-                .slots
-                .get(source_slot)
-                .is_some_and(|slot| slot.skipped);
-            // 原版 BattleExecuter.cs:1751-1755 先消费 XingYi_Duan 跳过当前牌，
-            // 再执行 BattleExecuter.cs:1796-1800 的空间灵田跳过；顺序不能交换。
-            let skip_star_chess_break = !was_skipped && self.astrology.star_chess_break > 0;
-            if skip_star_chess_break {
-                self.astrology.star_chess_break = (self.astrology.star_chess_break - 1).max(0);
-                skipped_slot_indices.push(source_slot);
+        let mut steps: usize = 0;
+        let mut current = match self.shift_next_non_skip(
+            &mut skipped_slot_indices,
+            active_slot_count,
+            last_break_progress,
+            &mut steps,
+            max_draw_steps,
+        ) {
+            Ok(slot) => slot,
+            Err(Some(fallback_slot)) => {
+                return Some(DrawnCard {
+                    source_slot: fallback_slot,
+                    card: basic_attack_card().into(),
+                    fallback_basic_attack: true,
+                    skipped_slots: skipped_slot_indices,
+                    skipped_opening_slots: skipped_opening_slot_indices,
+                    fate_398_skipped_fifth_grid,
+                });
+            }
+            Err(None) => return None,
+        };
+        loop {
+            let mut flag = false;
+            // XingYi_Duan while (:1898-1903).
+            while self.astrology.star_chess_break > 0 {
+                self.astrology.star_chess_break =
+                    (self.astrology.star_chess_break - 1).max(0);
+                skipped_slot_indices.push(current);
                 last_break_progress = skipped_slot_indices.len();
-                self.deck.queue.push(source_slot);
-                continue;
+                self.deck.queue.push(current);
+                flag = true;
+                match self.shift_next_non_skip(
+                    &mut skipped_slot_indices,
+                    active_slot_count,
+                    last_break_progress,
+                    &mut steps,
+                    max_draw_steps,
+                ) {
+                    Ok(slot) => current = slot,
+                    Err(Some(fallback_slot)) => {
+                        return Some(DrawnCard {
+                            source_slot: fallback_slot,
+                            card: basic_attack_card().into(),
+                            fallback_basic_attack: true,
+                            skipped_slots: skipped_slot_indices,
+                            skipped_opening_slots: skipped_opening_slot_indices,
+                            fate_398_skipped_fifth_grid,
+                        });
+                    }
+                    Err(None) => return None,
+                }
             }
-            let skip_calamity = !was_skipped
-                && (self.dream_mirage.calamity_skip_mask & (1_i64 << source_slot)) != 0;
-            if skip_calamity {
-                self.dream_mirage.calamity_skip_mask &= !(1_i64 << source_slot);
-                skipped_slot_indices.push(source_slot);
-                self.deck.queue.push(source_slot);
-                continue;
+            // KeYin 99000214 (nameless white deer) while (:1932-1936), before MengEJie.
+            // Decompiled order restored (was last, after 7116); no oracle yet hits
+            // KeYin+other overlap, faithful order is fail-closed for future.
+            while nameless_white_deer_skip_limit > 0
+                && (current as i64) < nameless_white_deer_skip_limit
+                && self.deck.slots.get(current).is_some_and(|slot| {
+                    slot.card
+                        .card_type
+                        .as_ref()
+                        .is_some_and(|card_type| card_type.value == super::CARD_TYPE_SUSTAIN)
+                })
+            {
+                skipped_slot_indices.push(current);
+                self.deck.queue.push(current);
+                flag = true;
+                if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                    >= active_slot_count
+                {
+                    return Some(DrawnCard {
+                        source_slot: current,
+                        card: basic_attack_card().into(),
+                        fallback_basic_attack: true,
+                        skipped_slots: skipped_slot_indices,
+                        skipped_opening_slots: skipped_opening_slot_indices,
+                        fate_398_skipped_fifth_grid,
+                    });
+                }
+                match self.shift_next_non_skip(
+                    &mut skipped_slot_indices,
+                    active_slot_count,
+                    last_break_progress,
+                    &mut steps,
+                    max_draw_steps,
+                ) {
+                    Ok(slot) => current = slot,
+                    Err(Some(fallback_slot)) => {
+                        return Some(DrawnCard {
+                            source_slot: fallback_slot,
+                            card: basic_attack_card().into(),
+                            fallback_basic_attack: true,
+                            skipped_slots: skipped_slot_indices,
+                            skipped_opening_slots: skipped_opening_slot_indices,
+                            fate_398_skipped_fifth_grid,
+                        });
+                    }
+                    Err(None) => return None,
+                }
             }
-            // FateStrategy 398（老鼠偷油）在开关启用时跳过自身卡组第 5 格；
-            // BattleExecuter.cs:1857-1864 只在该格是星弈牌时先加
-            // otherParams[0]（5）生命，实际加血由 ReplayState 在取牌后结算。
-            // 与原版一样，这个跳过是按 gridNumber 判断，不依赖该格是否已被
-            // 其他跳过机制先轮到。只有本分支跳掉第 5 格才算 FS398 触发——
-            // 若第 5 格先被更靠前的星弈断等机制跳掉，原版 while 链重入时
-            // FS398 循环看到的是新 currentCard，根本不会加血。已带 skip 标记
-            // （用过的持续/消耗牌）的牌在原版 ShiftCard 里先被过滤，同样
-            // 不会进入 FS398 循环。
-            let skip_rat_oil = source_slot == 4
-                && !was_skipped
+            // MengEJie (calamity) while (:1937-1942).
+            while (self.dream_mirage.calamity_skip_mask & (1_i64 << current)) != 0 {
+                self.dream_mirage.calamity_skip_mask &= !(1_i64 << current);
+                skipped_slot_indices.push(current);
+                self.deck.queue.push(current);
+                flag = true;
+                if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                    >= active_slot_count
+                {
+                    return Some(DrawnCard {
+                        source_slot: current,
+                        card: basic_attack_card().into(),
+                        fallback_basic_attack: true,
+                        skipped_slots: skipped_slot_indices,
+                        skipped_opening_slots: skipped_opening_slot_indices,
+                        fate_398_skipped_fifth_grid,
+                    });
+                }
+                match self.shift_next_non_skip(
+                    &mut skipped_slot_indices,
+                    active_slot_count,
+                    last_break_progress,
+                    &mut steps,
+                    max_draw_steps,
+                ) {
+                    Ok(slot) => current = slot,
+                    Err(Some(fallback_slot)) => {
+                        return Some(DrawnCard {
+                            source_slot: fallback_slot,
+                            card: basic_attack_card().into(),
+                            fallback_basic_attack: true,
+                            skipped_slots: skipped_slot_indices,
+                            skipped_opening_slots: skipped_opening_slot_indices,
+                            fate_398_skipped_fifth_grid,
+                        });
+                    }
+                    Err(None) => return None,
+                }
+            }
+            // FS398 while (:1943-1951). HP+5 for star deferred to flow.rs via flag.
+            while current == 4
                 && self.identity.fate_strategies.contains(&398)
                 && self
                     .identity
@@ -764,197 +923,368 @@ impl ReplayPlayer {
                     .get("398")
                     .copied()
                     .unwrap_or(0)
-                    == 0;
-            if skip_rat_oil {
+                    == 0
+            {
                 fate_398_skipped_fifth_grid = true;
-                skipped_slot_indices.push(source_slot);
-                if skipped_slot_indices.len() - last_break_progress >= active_slot_count {
+                skipped_slot_indices.push(current);
+                self.deck.queue.push(current);
+                flag = true;
+                if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                    >= active_slot_count
+                {
                     return Some(DrawnCard {
-                        source_slot,
+                        source_slot: current,
                         card: basic_attack_card().into(),
                         fallback_basic_attack: true,
                         skipped_slots: skipped_slot_indices,
                         skipped_opening_slots: skipped_opening_slot_indices,
-                        fate_398_skipped_fifth_grid: true,
+                        fate_398_skipped_fifth_grid,
                     });
                 }
-                self.deck.queue.push(source_slot);
-                continue;
+                match self.shift_next_non_skip(
+                    &mut skipped_slot_indices,
+                    active_slot_count,
+                    last_break_progress,
+                    &mut steps,
+                    max_draw_steps,
+                ) {
+                    Ok(slot) => current = slot,
+                    Err(Some(fallback_slot)) => {
+                        return Some(DrawnCard {
+                            source_slot: fallback_slot,
+                            card: basic_attack_card().into(),
+                            fallback_basic_attack: true,
+                            skipped_slots: skipped_slot_indices,
+                            skipped_opening_slots: skipped_opening_slot_indices,
+                            fate_398_skipped_fifth_grid,
+                        });
+                    }
+                    Err(None) => return None,
+                }
             }
-            // 仙魔 5010 跳过第 6 格起的非普通攻击牌。不看 hadUsed，只看开关。原版 BattleExecuter.cs:1961 仅 SkipCardAnim，无生命扣除。
-            // 7116（第 5 格）不在此处：见下方 fate-cycle 之后的 7116 分支。
-            let skip_5010 = !was_skipped
-                && source_slot >= 5
+            // 7116 while (:1952-1961), before 5010/spirit/jump/fate (decompiled).
+            // Restored from after-fate (which broke ed491 isolated overlap).
+            // Consecutive fate grids still fate-win via DongZhu inner-while batching.
+            while current == 4 && self.xian_mo_switch_active(7116) {
+                let is_star_chess = self
+                    .deck
+                    .slots
+                    .get(current)
+                    .is_some_and(|slot| slot.card.name.contains("星弈"));
+                if is_star_chess {
+                    self.fate.skip_hp_deltas.push(3);
+                    self.fate.skip_anima_deltas.push(1);
+                }
+                skipped_slot_indices.push(current);
+                self.deck.queue.push(current);
+                flag = true;
+                if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                    >= active_slot_count
+                {
+                    return Some(DrawnCard {
+                        source_slot: current,
+                        card: basic_attack_card().into(),
+                        fallback_basic_attack: true,
+                        skipped_slots: skipped_slot_indices,
+                        skipped_opening_slots: skipped_opening_slot_indices,
+                        fate_398_skipped_fifth_grid,
+                    });
+                }
+                match self.shift_next_non_skip(
+                    &mut skipped_slot_indices,
+                    active_slot_count,
+                    last_break_progress,
+                    &mut steps,
+                    max_draw_steps,
+                ) {
+                    Ok(slot) => current = slot,
+                    Err(Some(fallback_slot)) => {
+                        return Some(DrawnCard {
+                            source_slot: fallback_slot,
+                            card: basic_attack_card().into(),
+                            fallback_basic_attack: true,
+                            skipped_slots: skipped_slot_indices,
+                            skipped_opening_slots: skipped_opening_slot_indices,
+                            fate_398_skipped_fifth_grid,
+                        });
+                    }
+                    Err(None) => return None,
+                }
+            }
+            // 5010 while (:1962-1966).
+            while current >= 5
                 && self.xian_mo_switch_active(5010)
-                && self.deck.slots.get(source_slot).is_some_and(|slot| {
+                && self.deck.slots.get(current).is_some_and(|slot| {
                     !is_pu_tong_gong_ji_base_id(normalized_base_id(&slot.card))
-                });
-            if skip_5010 {
-                skipped_slot_indices.push(source_slot);
-                if skipped_slot_indices.len() - last_break_progress >= active_slot_count {
+                })
+            {
+                skipped_slot_indices.push(current);
+                self.deck.queue.push(current);
+                flag = true;
+                if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                    >= active_slot_count
+                {
                     return Some(DrawnCard {
-                        source_slot,
+                        source_slot: current,
                         card: basic_attack_card().into(),
                         fallback_basic_attack: true,
                         skipped_slots: skipped_slot_indices,
                         skipped_opening_slots: skipped_opening_slot_indices,
-                        fate_398_skipped_fifth_grid: false,
+                        fate_398_skipped_fifth_grid,
                     });
                 }
-                self.deck.queue.push(source_slot);
-                continue;
+                match self.shift_next_non_skip(
+                    &mut skipped_slot_indices,
+                    active_slot_count,
+                    last_break_progress,
+                    &mut steps,
+                    max_draw_steps,
+                ) {
+                    Ok(slot) => current = slot,
+                    Err(Some(fallback_slot)) => {
+                        return Some(DrawnCard {
+                            source_slot: fallback_slot,
+                            card: basic_attack_card().into(),
+                            fallback_basic_attack: true,
+                            skipped_slots: skipped_slot_indices,
+                            skipped_opening_slots: skipped_opening_slot_indices,
+                            fate_398_skipped_fifth_grid,
+                        });
+                    }
+                    Err(None) => return None,
+                }
             }
-            // BattleExecuter 跳牌链（:1942-1981）顺序：FS398 → 5010 → 空间灵田 9000015 →
-            // 五行灵田 202 → 350（7116 已按 live oracle 移到 fate-cycle 之后，见下）。
-            // 被前面循环跳走的牌不会再被灵田循环标记 hadUsed
-            // （oracle pa_ba26f22c：5010 先跳第 8 格五行灵田并扣生命；26125017 起每张 1）。
-            let skip_space_spirit_field = self.deck.slots.get(source_slot).is_some_and(|slot| {
-                matches!(normalized_base_id(&slot.card), 350 | 9_000_015)
-                    && source_slot + 2 >= active_slot_count
+            // 9000015 while (:1967-1972, hadUsed gate).
+            while self.deck.slots.get(current).is_some_and(|slot| {
+                normalized_base_id(&slot.card) == 9_000_015
+                    && current + 2 >= active_slot_count
                     && !slot.used
-            });
-            if skip_space_spirit_field {
-                self.deck.slots[source_slot].used = true;
-            }
-            let skip_five_elements_spirit_field =
-                self.deck.slots.get(source_slot).is_some_and(|slot| {
-                    normalized_base_id(&slot.card) == 202 && source_slot + 1 >= active_slot_count
-                });
-            if skip_five_elements_spirit_field {
-                self.deck.slots[source_slot].used = true;
-                skipped_slot_indices.push(source_slot);
-                if skipped_slot_indices.len() - last_break_progress >= active_slot_count {
+            }) {
+                if let Some(slot) = self.deck.slots.get_mut(current) {
+                    slot.used = true;
+                }
+                skipped_slot_indices.push(current);
+                self.deck.queue.push(current);
+                flag = true;
+                if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                    >= active_slot_count
+                {
                     return Some(DrawnCard {
-                        source_slot,
+                        source_slot: current,
                         card: basic_attack_card().into(),
                         fallback_basic_attack: true,
                         skipped_slots: skipped_slot_indices,
                         skipped_opening_slots: skipped_opening_slot_indices,
-                        fate_398_skipped_fifth_grid: false,
+                        fate_398_skipped_fifth_grid,
                     });
                 }
-                self.deck.queue.push(source_slot);
-                continue;
+                match self.shift_next_non_skip(
+                    &mut skipped_slot_indices,
+                    active_slot_count,
+                    last_break_progress,
+                    &mut steps,
+                    max_draw_steps,
+                ) {
+                    Ok(slot) => current = slot,
+                    Err(Some(fallback_slot)) => {
+                        return Some(DrawnCard {
+                            source_slot: fallback_slot,
+                            card: basic_attack_card().into(),
+                            fallback_basic_attack: true,
+                            skipped_slots: skipped_slot_indices,
+                            skipped_opening_slots: skipped_opening_slot_indices,
+                            fate_398_skipped_fifth_grid,
+                        });
+                    }
+                    Err(None) => return None,
+                }
             }
-            // BattleExecuter 跳牌链里 XingYiTiao 循环（星弈•跳）先于 DongZhuJiXian（命运轮回）循环：
-            // 跳牌中途经过的非星弈牌即使落在命运轮回格上也不消耗轮回次数；落到星弈牌后清空跳牌标记，
-            // 命运轮回再对落点牌判定（oracle pa_7c1a37f6：原版轮回只扣 1 次）。
-            let ronghui_star_jump = self.ronghui.star_chess_jump > 0;
-            let is_star_chess = self
-                .deck
-                .slots
-                .get(source_slot)
-                .is_some_and(|slot| slot.card.name.contains("星弈"));
-            if !was_skipped && !skip_space_spirit_field && ronghui_star_jump && !is_star_chess {
-                skipped_slot_indices.push(source_slot);
-                skipped_opening_slot_indices.push(source_slot);
-                if skipped_slot_indices.len() - last_break_progress >= active_slot_count {
+            // 202 while (:1973-1978, no hadUsed gate).
+            while self.deck.slots.get(current).is_some_and(|slot| {
+                normalized_base_id(&slot.card) == 202 && current + 1 >= active_slot_count
+            }) {
+                if let Some(slot) = self.deck.slots.get_mut(current) {
+                    slot.used = true;
+                }
+                skipped_slot_indices.push(current);
+                self.deck.queue.push(current);
+                flag = true;
+                if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                    >= active_slot_count
+                {
                     return Some(DrawnCard {
-                        source_slot,
+                        source_slot: current,
                         card: basic_attack_card().into(),
                         fallback_basic_attack: true,
                         skipped_slots: skipped_slot_indices,
                         skipped_opening_slots: skipped_opening_slot_indices,
-                        fate_398_skipped_fifth_grid: false,
+                        fate_398_skipped_fifth_grid,
                     });
                 }
-                self.deck.queue.push(source_slot);
-                continue;
-            }
-            if !was_skipped && !skip_space_spirit_field && ronghui_star_jump && is_star_chess {
-                // 仙魔 7116 跳过第 5 格先于 XingYiTiao 判定（BattleExecuter
-                // :1951 < :1991）：将被 7116 跳走的星弈牌不得在此清空跳牌
-                // 标记，标记须留给 7116 之后的牌。洞烛重叠时 7116 仍在
-                // fate-cycle 之后（见下），此处只保标记不改跳牌权。
-                // oracle 锚点：pa_a66ce89f [7]（7116 跳走第 5
-                // 格星弈•夹后，星弈•跳标记跳过第 6 格杯弓蛇影选中第 7 格
-                // 星弈•飞；旧逻辑在第 5 格清空标记，误选第 6 格）。
-                let will_7116_skip = source_slot == 4 && self.xian_mo_switch_active(7116);
-                if !will_7116_skip {
-                    self.ronghui.star_chess_jump = 0;
+                match self.shift_next_non_skip(
+                    &mut skipped_slot_indices,
+                    active_slot_count,
+                    last_break_progress,
+                    &mut steps,
+                    max_draw_steps,
+                ) {
+                    Ok(slot) => current = slot,
+                    Err(Some(fallback_slot)) => {
+                        return Some(DrawnCard {
+                            source_slot: fallback_slot,
+                            card: basic_attack_card().into(),
+                            fallback_basic_attack: true,
+                            skipped_slots: skipped_slot_indices,
+                            skipped_opening_slots: skipped_opening_slot_indices,
+                            fate_398_skipped_fifth_grid,
+                        });
+                    }
+                    Err(None) => return None,
                 }
             }
-            let skip_fate_cycle = !was_skipped
-                && !skip_space_spirit_field
-                && self.should_fate_cycle_skip(source_slot);
-            if skip_fate_cycle {
+            // 350 while (:1979-1984, hadUsed gate).
+            while self.deck.slots.get(current).is_some_and(|slot| {
+                normalized_base_id(&slot.card) == 350
+                    && current + 2 >= active_slot_count
+                    && !slot.used
+            }) {
+                if let Some(slot) = self.deck.slots.get_mut(current) {
+                    slot.used = true;
+                }
+                skipped_slot_indices.push(current);
+                self.deck.queue.push(current);
+                flag = true;
+                if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                    >= active_slot_count
+                {
+                    return Some(DrawnCard {
+                        source_slot: current,
+                        card: basic_attack_card().into(),
+                        fallback_basic_attack: true,
+                        skipped_slots: skipped_slot_indices,
+                        skipped_opening_slots: skipped_opening_slot_indices,
+                        fate_398_skipped_fifth_grid,
+                    });
+                }
+                match self.shift_next_non_skip(
+                    &mut skipped_slot_indices,
+                    active_slot_count,
+                    last_break_progress,
+                    &mut steps,
+                    max_draw_steps,
+                ) {
+                    Ok(slot) => current = slot,
+                    Err(Some(fallback_slot)) => {
+                        return Some(DrawnCard {
+                            source_slot: fallback_slot,
+                            card: basic_attack_card().into(),
+                            fallback_basic_attack: true,
+                            skipped_slots: skipped_slot_indices,
+                            skipped_opening_slots: skipped_opening_slot_indices,
+                            fate_398_skipped_fifth_grid,
+                        });
+                    }
+                    Err(None) => return None,
+                }
+            }
+            // 11000017 while (:1985-1990) not implemented (no fixture hits it).
+            // XingYiTiao if + inner while (:1991-2013): skip non-stars with opening,
+            // then clear entire buff in same outer iteration, before DongZhu.
+            // Only XingYiTiao/DongZhu trigger opening (SkipCardAnim never does).
+            if self.ronghui.star_chess_jump > 0 {
+                while self
+                    .deck
+                    .slots
+                    .get(current)
+                    .is_some_and(|slot| !slot.card.name.contains("星弈"))
+                {
+                    skipped_slot_indices.push(current);
+                    skipped_opening_slot_indices.push(current);
+                    self.deck.queue.push(current);
+                    flag = true;
+                    if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                        >= active_slot_count
+                    {
+                        return Some(DrawnCard {
+                            source_slot: current,
+                            card: basic_attack_card().into(),
+                            fallback_basic_attack: true,
+                            skipped_slots: skipped_slot_indices,
+                            skipped_opening_slots: skipped_opening_slot_indices,
+                            fate_398_skipped_fifth_grid,
+                        });
+                    }
+                    match self.shift_next_non_skip(
+                        &mut skipped_slot_indices,
+                        active_slot_count,
+                        last_break_progress,
+                        &mut steps,
+                        max_draw_steps,
+                    ) {
+                        Ok(slot) => current = slot,
+                        Err(Some(fallback_slot)) => {
+                            return Some(DrawnCard {
+                                source_slot: fallback_slot,
+                                card: basic_attack_card().into(),
+                                fallback_basic_attack: true,
+                                skipped_slots: skipped_slot_indices,
+                                skipped_opening_slots: skipped_opening_slot_indices,
+                                fate_398_skipped_fifth_grid,
+                            });
+                        }
+                        Err(None) => return None,
+                    }
+                }
+                let jump_value = self.ronghui.star_chess_jump;
+                self.ronghui.star_chess_jump =
+                    (self.ronghui.star_chess_jump - jump_value).max(0);
+            }
+            // DongZhu (fate-cycle) while (:2014-2030): consecutive fate grids with
+            // opening, 1 per skip. Inner-while batching preserves fc621a 4→2.
+            while self.should_fate_cycle_skip(current) {
                 self.fate.fate_cycle = (self.fate.fate_cycle - 1).max(0);
-            }
-            if !was_skipped && !skip_space_spirit_field {
-                if skip_fate_cycle {
-                    skipped_slot_indices.push(source_slot);
-                    skipped_opening_slot_indices.push(source_slot);
-                    if skipped_slot_indices.len() - last_break_progress >= active_slot_count {
-                        return Some(DrawnCard {
-                            source_slot,
-                            card: basic_attack_card().into(),
-                            fallback_basic_attack: true,
-                            skipped_slots: skipped_slot_indices,
-                            skipped_opening_slots: skipped_opening_slot_indices,
-                            fate_398_skipped_fifth_grid: false,
-                        });
-                    }
-                    self.deck.queue.push(source_slot);
-                    continue;
-                }
-                // 仙魔 7116 跳过第 5 格（星弈牌 ModifyAnima(1) + otherParams[0]=3 生命），不看 hadUsed，只看开关。
-                // 位置注意：反编译三版 BattleExecuter 都是 7116（:1951）在洞烛机先（:2013）之前，
-                // 但 live oracle 行为相反——洞烛格含第 5 格时洞烛先跳且触发开局，7116 不吞该格：
-                // pa_f7c24edd #7（洞烛 4→2，血光开局内伤 +2 蛇影放大）、
-                // 同 match round-15 #8（洞烛 6→4，+2）、pa_57ee18a6 #6/#15
-                //（洞烛 4→2/2→0，双血光开局 +4/+8）、pa_6ba96fbf #10、
-                // pa_3a055ce7 #9。按 oracle 把 7116 放到 fate-cycle 之后；
-                // 无重叠时行为与原码一致（7116 照跳第 5 格），FS398 维持原位（无反例）。
-                if source_slot == 4 && self.xian_mo_switch_active(7116) {
-                    let is_star_chess = self
-                        .deck
-                        .slots
-                        .get(source_slot)
-                        .is_some_and(|slot| slot.card.name.contains("星弈"));
-                    if is_star_chess {
-                        self.fate.skip_hp_deltas.push(3);
-                        self.fate.skip_anima_deltas.push(1);
-                    }
-                    skipped_slot_indices.push(source_slot);
-                    if skipped_slot_indices.len() - last_break_progress >= active_slot_count {
-                        return Some(DrawnCard {
-                            source_slot,
-                            card: basic_attack_card().into(),
-                            fallback_basic_attack: true,
-                            skipped_slots: skipped_slot_indices,
-                            skipped_opening_slots: skipped_opening_slot_indices,
-                            fate_398_skipped_fifth_grid: false,
-                        });
-                    }
-                    self.deck.queue.push(source_slot);
-                    continue;
-                }
-                let skip_nameless_white_deer = nameless_white_deer_skip_limit > 0
-                    && (source_slot as i64) < nameless_white_deer_skip_limit
-                    && self.deck.slots.get(source_slot).is_some_and(|slot| {
-                        slot.card
-                            .card_type
-                            .as_ref()
-                            .is_some_and(|card_type| card_type.value == super::CARD_TYPE_SUSTAIN)
+                skipped_slot_indices.push(current);
+                skipped_opening_slot_indices.push(current);
+                self.deck.queue.push(current);
+                flag = true;
+                if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                    >= active_slot_count
+                {
+                    return Some(DrawnCard {
+                        source_slot: current,
+                        card: basic_attack_card().into(),
+                        fallback_basic_attack: true,
+                        skipped_slots: skipped_slot_indices,
+                        skipped_opening_slots: skipped_opening_slot_indices,
+                        fate_398_skipped_fifth_grid,
                     });
-                if skip_nameless_white_deer {
-                    skipped_slot_indices.push(source_slot);
-                    if skipped_slot_indices.len() - last_break_progress >= active_slot_count {
+                }
+                match self.shift_next_non_skip(
+                    &mut skipped_slot_indices,
+                    active_slot_count,
+                    last_break_progress,
+                    &mut steps,
+                    max_draw_steps,
+                ) {
+                    Ok(slot) => current = slot,
+                    Err(Some(fallback_slot)) => {
                         return Some(DrawnCard {
-                            source_slot,
+                            source_slot: fallback_slot,
                             card: basic_attack_card().into(),
                             fallback_basic_attack: true,
                             skipped_slots: skipped_slot_indices,
                             skipped_opening_slots: skipped_opening_slot_indices,
-                            fate_398_skipped_fifth_grid: false,
+                            fate_398_skipped_fifth_grid,
                         });
                     }
-                    self.deck.queue.push(source_slot);
-                    continue;
+                    Err(None) => return None,
                 }
-                let card = self.deck.slots[source_slot].card.clone();
+            }
+            // ShunYingJi while (:2031-2047) not implemented (no fixture hits it).
+            if !flag {
+                let card = self.deck.slots[current].card.clone();
                 return Some(DrawnCard {
-                    source_slot,
+                    source_slot: current,
                     card,
                     fallback_basic_attack: false,
                     skipped_slots: skipped_slot_indices,
@@ -962,28 +1292,11 @@ impl ReplayPlayer {
                     fate_398_skipped_fifth_grid,
                 });
             }
-            // ShiftCard 里按 skip 标记转走的牌、以及 9000015/350/202 的 SkipCardAnim 跳牌都不调用 TriggerOpening
-            // （原版只有 XingYiTiao / DongZhuJiXian 两个跳牌循环会，见 BattleExecuter:2000/2019）。
-            skipped_slot_indices.push(source_slot);
-            if skipped_slot_indices.len() - last_break_progress >= active_slot_count {
-                return Some(DrawnCard {
-                    source_slot,
-                    card: basic_attack_card().into(),
-                    fallback_basic_attack: true,
-                    skipped_slots: skipped_slot_indices,
-                    skipped_opening_slots: skipped_opening_slot_indices,
-                    fate_398_skipped_fifth_grid: false,
-                });
-            }
-            self.deck.queue.push(source_slot);
+            // Outer repeats without extra pop (current already shifted); steps
+            // bound pops inside shift_next_non_skip, no extra check here.
         }
-        None
     }
 
-    /// `draw_next_card` 的只读快判：队首槽位不会被任何跳过机制跳过时，返回它的下标
-    /// （此时 `draw_next_card` 必然原样取出这张牌，且除出队外不改任何状态）。
-    /// 任何一条跳过机制可能生效就返回 None，由调用方走克隆 + draw_next_card 的原路径。
-    /// 条件与 `draw_next_card` 各分支一一对应；debug 构建里调用方会与原路径逐项对照。
     pub(super) fn peek_unskipped_next_slot(
         &self,
         nameless_white_deer_skip_limit: i64,
