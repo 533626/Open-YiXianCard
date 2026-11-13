@@ -891,7 +891,9 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                     }
                     // 伏魔 5009 在灵阵回响之后：原版 1344-流程（灵阵回响经
                     // IL_322b→IL_32d6→IL_33b6 落子）先于 1470-流程（伏魔格经
-                    // IL_3658→IL_3703→IL_37d2 落子）。同卡同参再执行一次。
+                    // IL_3658→IL_3703→IL_37d2 落子）。同卡同参再执行一次；
+                    // 26609075 起 rarity > 0 时重复 1 级定义（见
+                    // fu_mo_grid_5009_repeat_definition），rarity == 0 不变。
                     if self.active_mechanisms.has(super::ActiveMechanisms::XIAN_MO)
                         && self.fu_mo_grid_repeats_card(
                             actor_side,
@@ -900,13 +902,18 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                         )
                     {
                         let repetition_ctx = repetition_context(prepared_ref);
-                        self.execute_selected_card_effect_repetition(
-                            actor_side,
-                            &repetition_ctx,
-                            &prepared_ref.drawn.card,
-                            effects_executed,
-                            EffectInvocationKind::Repeated,
-                        );
+                        if let Some(repeat_definition) = self
+                            .fu_mo_grid_5009_repeat_definition(&prepared_ref.drawn.card)
+                        {
+                            let repeat_card = super::RuntimeCard::from(repeat_definition);
+                            self.execute_selected_card_effect_repetition(
+                                actor_side,
+                                &repetition_ctx,
+                                &repeat_card,
+                                effects_executed,
+                                EffectInvocationKind::Repeated,
+                            );
+                        }
                     }
                     if self.active_mechanisms.has(super::ActiveMechanisms::FORMATION) {
                         self.clear_spirit_formation_echo_triggered(actor_side);

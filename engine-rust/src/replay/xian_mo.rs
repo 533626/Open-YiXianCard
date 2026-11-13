@@ -187,6 +187,34 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
         )
     }
 
+    /// 伏魔 5009 在 26609075 起重复 1 级效果：rarity > 0（配置值）时原版把
+    /// cardInfo.id 换成 GetBaseCardId 后 InitData 再 ExecuteEffect
+    /// （CardActionBase.cs:1406-1432→IL_3821→IL_38f0→IL_3976 还原），rarity == 0
+    /// 时沿用原牌。境界门仍按替换前判定（`fu_mo_grid_repeats_card` 不变）。
+    /// 取证：BUILD_26477585-to-26609075_RULE_DELTA.md §2.5 +
+    /// XianMoStrategyDesc_5009“重复一次这张牌的1级效果”。base 定义缺失时
+    /// fail closed（不按原牌重复，避免静默高值）。
+    pub(super) fn fu_mo_grid_5009_repeat_definition(
+        &mut self,
+        card: &crate::model::CardDefinition,
+    ) -> Option<crate::model::CardDefinition> {
+        if super::original_config::original_config_rarity(card.id) <= 0 {
+            return Some(card.clone());
+        }
+        let base_id = super::support::normalize_base_id(card.id);
+        match super::original_config::original_card_definition(base_id) {
+            Some(definition) => Some(definition),
+            None => {
+                self.missing_card_effect(
+                    base_id,
+                    super::support::normalize_base_id(base_id),
+                    "xianMo 5009 repeat missing base-rank card definition",
+                );
+                None
+            }
+        }
+    }
+
     pub(super) fn apply_verified_xian_mo_first_use_upgrade(
         &mut self,
         side: crate::model::PlayerSide,
@@ -327,9 +355,13 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
             player,
             &[(1007, "1007"), (1008, "1008")],
         );
-        if player.xian_mo_strategies.contains(&3001) {
+        if player.xian_mo_strategies.contains(&3001)
+            && player.xian_mo_temp_datas.get("3001").copied().unwrap_or(0) == 0
+        {
             // 26125017: 龙威震慑转移链删除，改为开局直接给对手 JianGong(103) += otherParams[0]=1
             // (XianMoStrategyFunctions.cs:1063-1066)。
+            // 26609075: 策略转 Switch 类，开局门控 IsSwitchActive(src, 3001)
+            // (XianMoStrategyFunctions.cs:1078)；缺 tempDatas 视为 0（开启）。
             self.add_actor_negative_status(super::support::opponent_side(actor_side), 103, 1);
         }
         if player.xian_mo_strategies.contains(&3002) {

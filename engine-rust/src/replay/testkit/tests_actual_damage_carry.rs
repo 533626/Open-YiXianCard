@@ -94,9 +94,10 @@ fn fen_hua_yin_413_reads_carry_with_residue() {
     state.p1.turn.actual_damage_carry = 2; // 残留（如回合末攻击）
     state.test_apply_card_effect(PlayerSide::P1, &card, 0);
 
-    // 本卡 7 实际伤害 → 读值 9 → 削减 9×3 = 27（无残留对照为 7×3 = 21）。
-    assert_eq!(state.p2.core.max_hp, 30 - 27);
-    assert_eq!(state.p1.turn.ji_lu_zong_ji_shang_zhi, 9);
+    // 本卡 8 实际伤害（26609075：attack 7→8）→ 读值 10 → 削减 10×3 = 30
+    //（无残留对照为 8×3 = 24）。
+    assert_eq!(state.p2.core.max_hp, 30 - 30);
+    assert_eq!(state.p1.turn.ji_lu_zong_ji_shang_zhi, 10);
     assert_eq!(state.p1.turn.actual_damage_carry, 0);
 }
 

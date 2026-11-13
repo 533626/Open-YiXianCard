@@ -281,13 +281,13 @@
       "kind": "exclusive",
       "key": "exclusive:2000005",
       "label": "吴策仙命",
-      "totalCount": 5,
+      "totalCount": 10,
       "battleCount": 2,
       "implementedCount": 3,
       "missingBattleCount": 0,
       "recordOnlyCount": 2,
-      "unclassifiedNonBattleCount": 0,
-      "variantCount": 5
+      "unclassifiedNonBattleCount": 5,
+      "variantCount": 10
     },
     {
       "kind": "exclusive",
@@ -5587,6 +5587,60 @@
       ]
     },
     {
+      "talentId": 274,
+      "name": "兵贵神速",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:2000005",
+      "archiveLabel": "吴策仙命",
+      "battle": false,
+      "status": "unclassified-nonbattle",
+      "variants": [
+        {
+          "id": 274,
+          "levelName": "HuaShen",
+          "battle": false,
+          "status": "unclassified-nonbattle",
+          "isMiJingTalent": false
+        }
+      ]
+    },
+    {
+      "talentId": 275,
+      "name": "博古通今",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:2000005",
+      "archiveLabel": "吴策仙命",
+      "battle": false,
+      "status": "unclassified-nonbattle",
+      "variants": [
+        {
+          "id": 275,
+          "levelName": "FanXu",
+          "battle": false,
+          "status": "unclassified-nonbattle",
+          "isMiJingTalent": false
+        }
+      ]
+    },
+    {
+      "talentId": 272,
+      "name": "调虎离山",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:2000005",
+      "archiveLabel": "吴策仙命",
+      "battle": false,
+      "status": "unclassified-nonbattle",
+      "variants": [
+        {
+          "id": 272,
+          "levelName": "JinDan",
+          "battle": false,
+          "status": "unclassified-nonbattle",
+          "isMiJingTalent": true
+        }
+      ]
+    },
+    {
       "talentId": 141,
       "name": "计出万全",
       "archiveKind": "exclusive",
@@ -5637,6 +5691,42 @@
           "battle": false,
           "status": "record-only",
           "isMiJingTalent": false
+        }
+      ]
+    },
+    {
+      "talentId": 271,
+      "name": "无中生有",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:2000005",
+      "archiveLabel": "吴策仙命",
+      "battle": false,
+      "status": "unclassified-nonbattle",
+      "variants": [
+        {
+          "id": 271,
+          "levelName": "ZhuJi",
+          "battle": false,
+          "status": "unclassified-nonbattle",
+          "isMiJingTalent": true
+        }
+      ]
+    },
+    {
+      "talentId": 273,
+      "name": "星渊",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:2000005",
+      "archiveLabel": "吴策仙命",
+      "battle": false,
+      "status": "unclassified-nonbattle",
+      "variants": [
+        {
+          "id": 273,
+          "levelName": "YuanYing",
+          "battle": false,
+          "status": "unclassified-nonbattle",
+          "isMiJingTalent": true
         }
       ]
     },
@@ -10196,7 +10286,7 @@
       "id": 190,
       "talentId": 190,
       "name": "观壁悟道",
-      "desc": "修为+1；\n额外领悟1张金丹期或以上的随机“剑”牌加入悟剑天赋。",
+      "desc": "修为+1；\n从随机2张金丹期或以上的“剑”牌中选择1张加入悟剑天赋。",
       "otherParams": [],
       "levelName": "JinDan",
       "battle": false,
@@ -12004,6 +12094,79 @@
       ]
     },
     {
+      "id": 274,
+      "talentId": 274,
+      "name": "兵贵神速",
+      "desc": "获得1张3级【{otherParams[0]}】；【{otherParams[0]}】在首次使用时额外加10[身法]",
+      "otherParams": [
+        20022
+      ],
+      "levelName": "HuaShen",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:2000005",
+      "archiveLabel": "吴策仙命",
+      "characterRefs": [
+        {
+          "characterId": 2000005,
+          "characterName": "吴策",
+          "sectName": "QiXingGe"
+        }
+      ]
+    },
+    {
+      "id": 275,
+      "talentId": 275,
+      "name": "博古通今",
+      "desc": "从《弈仙牌》的随机{otherParams[0]}张化神期牌中选择{otherParams[1]}次，每次获得1张所选的3级牌；自身体魄及体魄上限变为100，卡牌中的[连云]、[五行]效果可无视条件触发。\n\n<color=#808080><size=25><i>我看到了过去和现在的一切。未来？我会替作者去书写。</i></size></color>",
+      "otherParams": [
+        20,
+        2
+      ],
+      "levelName": "FanXu",
+      "battle": false,
+      "isMiJingTalent": false,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:2000005",
+      "archiveLabel": "吴策仙命",
+      "characterRefs": [
+        {
+          "characterId": 2000005,
+          "characterName": "吴策",
+          "sectName": "QiXingGe"
+        }
+      ]
+    },
+    {
+      "id": 272,
+      "talentId": 272,
+      "name": "调虎离山",
+      "desc": "获得1张【{otherParams[0]}】",
+      "otherParams": [
+        446
+      ],
+      "levelName": "JinDan",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:2000005",
+      "archiveLabel": "吴策仙命",
+      "characterRefs": [
+        {
+          "characterId": 2000005,
+          "characterName": "吴策",
+          "sectName": "QiXingGe"
+        }
+      ]
+    },
+    {
       "id": 141,
       "talentId": 141,
       "name": "计出万全",
@@ -12064,6 +12227,52 @@
       "battle": false,
       "isMiJingTalent": false,
       "status": "record-only",
+      "registrationStatus": "missing",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:2000005",
+      "archiveLabel": "吴策仙命",
+      "characterRefs": [
+        {
+          "characterId": 2000005,
+          "characterName": "吴策",
+          "sectName": "QiXingGe"
+        }
+      ]
+    },
+    {
+      "id": 271,
+      "talentId": 271,
+      "name": "无中生有",
+      "desc": "若在换牌机会为0时进入战斗，加1次换牌机会",
+      "otherParams": [],
+      "levelName": "ZhuJi",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "unclassified-nonbattle",
+      "registrationStatus": "missing",
+      "archiveKind": "exclusive",
+      "archiveKey": "exclusive:2000005",
+      "archiveLabel": "吴策仙命",
+      "characterRefs": [
+        {
+          "characterId": 2000005,
+          "characterName": "吴策",
+          "sectName": "QiXingGe"
+        }
+      ]
+    },
+    {
+      "id": 273,
+      "talentId": 273,
+      "name": "星渊",
+      "desc": "使用[星位]上的牌时向对方施加1层[内伤]（每场战斗限{otherParams[0]}次）",
+      "otherParams": [
+        3
+      ],
+      "levelName": "YuanYing",
+      "battle": false,
+      "isMiJingTalent": true,
+      "status": "unclassified-nonbattle",
       "registrationStatus": "missing",
       "archiveKind": "exclusive",
       "archiveKey": "exclusive:2000005",

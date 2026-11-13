@@ -1490,19 +1490,22 @@ fn opening_physique_follows_actor_and_talent_order() {
 fn cloud_sword_starry_sky_grants_base_def_before_lianyun_def() {
     // Card_141.cs:115（cardConfig.def）先于 :99-100（连云 anima×op0）。
     // 顺序决定天机•逆施两次反射的先后：4 防→2 伤先（雪羽清风 64 +1 防），
-    // 3 防→1 伤后（被该 1 防全吸收，不再触发 64）。反序则终局多 1 防。
+    // 2 防→1 伤后（被该 1 防全吸收，不再触发 64）。反序则终局多 1 防。
     // 锚点：pa_b90a1351 卡#4（p1 hp-2、防 0）。
+    // 26609075：op0 1→2（CardConfig），灵气取 1 使连云增益恰为 2（反射 1），
+    // 保留“后反射被全吸收→64 静默→终局防 0”的顺序可观测性；灵气 3 时两序
+    // 同为（hp-4、防 1），顺序不可辨，故改场景而非仅同步数值。
     let mut battle = fixture(deck(basic_attack()), deck(original(141)));
     battle.players.p1.talents = vec![64];
     battle.players.p2.talents = vec![14];
     let mut state = ReplayState::test_from_fixture(&battle);
     let p1_hp = state.p1.core.hp;
-    state.p2.core.anima = 3;
+    state.p2.core.anima = 1;
     state.p2.fate.heavenly_secret_reverse = 1;
     state.p2.deck.queue = vec![0];
     state.current_actor = PlayerSide::P2;
     let _ = state.test_execute_one_card(PlayerSide::P2);
-    assert_eq!(state.p2.core.defense, 7);
+    assert_eq!(state.p2.core.defense, 6);
     assert_eq!(state.p1.core.hp, p1_hp - 2);
     assert_eq!(state.p1.core.defense, 0);
 }

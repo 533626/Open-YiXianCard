@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
   "steamAppId": 1948800,
-  "projectTargetSteamBuild": "26477585",
+  "projectTargetSteamBuild": "26614559",
   "runtimeSupportedSteamBuilds": [
-    "26477585"
+    "26614559"
   ],
   "capabilities": {
     "beforeExecuteClearsActualDamage": true,
@@ -389,6 +389,30 @@
     },
     {
       "steamBuild": "26477585",
+      "capabilities": {
+        "beforeExecuteClearsActualDamage": true,
+        "dreamThunderRefundsHexagramLoss": true,
+        "fate324GrantsCloudChain": true,
+        "fate335GrantsMomentum": true,
+        "hexagramLossDoesNotSpendCard422StarPower": true,
+        "lostHexagramLedgerAccumulatesPositiveLoss": true,
+        "spiritFormationEchoUsesBaseCard": true
+      }
+    },
+    {
+      "steamBuild": "26609075",
+      "capabilities": {
+        "beforeExecuteClearsActualDamage": true,
+        "dreamThunderRefundsHexagramLoss": true,
+        "fate324GrantsCloudChain": true,
+        "fate335GrantsMomentum": true,
+        "hexagramLossDoesNotSpendCard422StarPower": true,
+        "lostHexagramLedgerAccumulatesPositiveLoss": true,
+        "spiritFormationEchoUsesBaseCard": true
+      }
+    },
+    {
+      "steamBuild": "26614559",
       "capabilities": {
         "beforeExecuteClearsActualDamage": true,
         "dreamThunderRefundsHexagramLoss": true,
