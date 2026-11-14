@@ -18,15 +18,17 @@ not licensed for distribution under the project MIT License.
 
 ## Public source boundary
 
-The public source surface is the Rust canonical engine, browser UI, neutral
-contracts/data, and stable rule-development documentation. The private
-development tree stays in one canonical `main`; the public tree is exported
-from it mechanically and never edited or merged back.
+The public source surface is the Rust canonical engine, neutral card/level
+data, and this policy/notice set. The private development tree stays in one
+canonical `main`; the public tree is exported from it mechanically and never
+edited or merged back.
 
-The public static artifact is zero-fixture and local-only. It contains no fixture,
-fixture index, replay payload, original replay identifier, player identifier,
-local path, or network upload channel. Users may explicitly select their own
-supported local JSON input; the browser processes it locally.
+The public tree is zero-fixture and local-only. It contains no fixture, fixture
+index, replay payload, original replay identifier, player identifier, local
+path, or network upload channel. The bundled `replay_import` tool reads a
+user-selected local `.bin` or JSON/JSONL record, converts it to an engine
+fixture, and runs it entirely on the user's machine; it does not upload or
+retain the input.
 
 Repository archives are not public artifacts. `.gitattributes` marks the fixture
 tree `export-ignore` as an additional local-archive safeguard, but that does not

@@ -132,9 +132,6 @@ mod tests_build_2026_08;
 #[cfg(test)]
 #[path = "replay/testkit/tests_build_2026_08_oracle_batch_027.rs"]
 mod tests_build_2026_08_oracle_batch_027;
-#[cfg(all(test, feature = "private-fixtures"))]
-#[path = "replay/testkit/tests_build_2026_08_rotation_fixtures.rs"]
-mod tests_build_2026_08_rotation_fixtures;
 #[cfg(test)]
 #[path = "replay/testkit/tests_build_2026_09_season.rs"]
 mod tests_build_2026_09_season;

@@ -30,5 +30,5 @@ pub mod events;
 pub mod full_state;
 pub mod synthetic;
 
-#[cfg(test)]
+#[cfg(all(test, feature = "private-fixtures"))]
 mod tests;

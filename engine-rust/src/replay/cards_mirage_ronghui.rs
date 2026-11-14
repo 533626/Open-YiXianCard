@@ -4,7 +4,7 @@ use super::effect_invocation::{
 use super::flow_card_effect::{param0, param1, param2};
 use super::original_config::{original_card_definition, original_card_realm_level};
 use super::support::{
-    card_rarity, has_cloud_chain, normalized_base_id, opponent_side,
+    card_rarity, div_ceil_signed, has_cloud_chain, normalized_base_id, opponent_side,
     other_param, other_param_or, wu_xing_count_in_deck,
 };
 use super::{Element, ReplayState};
@@ -1366,11 +1366,18 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 Some(false)
             }
             176 => {
-                let anima_loss = (self.actor(target_side).core.anima.max(0) + 1) / 2;
+                // Card_176.cs OnExecuted: ModifyAnima/ModifyHp/ModifyMaxHp take
+                // -Mathf.CeilToInt(value / 2). At negative hp the ceiling is
+                // negative, i.e. a heal (same as Card_3000014). Clamping to
+                // zero would swallow that branch.
+                // oracle: pa_bbf13c88 [20] (p2 -7 -> -4).
+                let anima_loss =
+                    div_ceil_signed(self.actor(target_side).core.anima, 2);
                 self.spend_anima_unchecked(target_side, anima_loss);
-                let hp_loss = (self.actor(target_side).core.hp.max(0) + 1) / 2;
+                let hp_loss = div_ceil_signed(self.actor(target_side).core.hp, 2);
                 self.modify_actor_hp(target_side, -hp_loss, false, false);
-                let max_hp_loss = (self.actor(target_side).core.max_hp.max(0) + 1) / 2;
+                let max_hp_loss =
+                    div_ceil_signed(self.actor(target_side).core.max_hp, 2);
                 self.modify_actor_max_hp(target_side, -max_hp_loss);
                 self.add_actor_negative_status(target_side, 104, param0(card));
                 Some(false)

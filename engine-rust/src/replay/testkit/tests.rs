@@ -962,6 +962,45 @@ fn card_3000014_applies_negative_percent_loss_as_heal() {
 }
 
 #[test]
+fn card_176_halves_with_signed_ceil_so_negative_hp_heals() {
+    // Card_176.cs OnExecuted applies -CeilToInt(value / 2) to anima/hp/maxHp.
+    // At negative hp the ceiling is negative, i.e. a heal through the shared
+    // ModifyHp pipeline (Talent64/AddHp ledgers included).
+    // Oracle anchor: pa_bbf13c88 [20] (p2 -7 -> -4, max 38 -> 19,
+    // anima 5 -> 2, KunFu +4).
+    let fixture = minimal_fixture(
+        filler_cards(basic_attack_test_card()),
+        filler_cards(basic_attack_test_card()),
+        FixtureExpected {
+            winner_side: PlayerSide::P1,
+            actor_turn_count: 1,
+            hp_delta_p1_minus_p2: 0,
+            final_hp: None,
+        },
+    );
+    let mut state = ReplayState::test_from_fixture(&fixture);
+    let card = super::test_support::original_card(176);
+    state.p2.core.hp = -7;
+    state.p2.core.max_hp = 38;
+    state.p2.core.anima = 5;
+    state.test_apply_card_effect(PlayerSide::P1, &card, 0);
+    assert_eq!(state.p2.core.hp, -4);
+    assert_eq!(state.p2.core.max_hp, 19);
+    assert_eq!(state.p2.core.anima, 2);
+    assert_eq!(state.p2.status.entangle, 4);
+    // Positive hp keeps the existing halving behavior.
+    state.p2.core.hp = 157;
+    state.p2.core.max_hp = 167;
+    state.p2.core.anima = 0;
+    state.p2.status.entangle = 0;
+    state.test_apply_card_effect(PlayerSide::P1, &card, 0);
+    assert_eq!(state.p2.core.hp, 78);
+    assert_eq!(state.p2.core.max_hp, 83);
+    assert_eq!(state.p2.core.anima, 0);
+    assert_eq!(state.p2.status.entangle, 4);
+}
+
+#[test]
 fn opening_retrigger_excludes_sub_yuanying_1000086() {
     // BattleCharacter.TriggerOpening:11509-11518 returns false for base
     // 1000086 below YuanYing (realm 4): no YunHai grant, no re-trigger.

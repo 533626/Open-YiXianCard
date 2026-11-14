@@ -1308,6 +1308,7 @@ fn xianshou_10060_life_applies_both_hands_unconditionally() {
     assert_eq!(state.p2.core.hp, plain.p2.core.hp + 10);
 }
 
+#[cfg(feature = "private-fixtures")]
 #[test]
 fn xianshou_10060_taptap_freeze_matches_client_video() {
     // 冻结回归：pa_d7b90378（HF 34096731_p3 = pa_d40b4116
@@ -1553,6 +1554,7 @@ fn luo_sha_pu_attacks_before_granting_anima() {
     assert_eq!(state.p1.core.anima, 2);
 }
 
+#[cfg(feature = "private-fixtures")]
 #[test]
 fn xianmo_7116_yields_fate_cycle_on_grid5_overlap() {
     // 反编译三版 BattleExecuter 都是 7116（:1951）在洞烛机先（:2013）之前，
@@ -1581,6 +1583,7 @@ fn xianmo_7116_yields_fate_cycle_on_grid5_overlap() {
     );
 }
 
+#[cfg(feature = "private-fixtures")]
 #[test]
 fn turn_end_formation_order_bloom_before_maze() {
     // OnTurnEnded 阵法三相位的源码顺序是生机绽放（states 21-23）→

@@ -651,15 +651,6 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         }
     }
 
-    pub(super) fn consume_required_decision(&mut self) -> i64 {
-        if self.decision_tape.is_empty() {
-            self.missing_decision("required decision");
-            0
-        } else {
-            self.decision_tape.remove(0)
-        }
-    }
-
     /// Synthetic-seed gate shared with the typed decision providers: a
     /// battle is synthetic for `side` when a seeded decision mode is
     /// configured for it (env/solver-generated fixtures). Replay fixtures

@@ -236,6 +236,7 @@ pub(crate) fn find_mapping_entry<'a>(
         .ok_or_else(|| format!("unknown mapping entry {module}::{old_test}"))
 }
 
+#[cfg(feature = "private-fixtures")]
 const REAL_MAPPING_JSON: &str = include_str!("../../../tests/data-driven/mapping.json");
 
 #[cfg(test)]
@@ -356,6 +357,7 @@ mod loader_tests {
         assert!(find_mapping_entry(&entries, "replay::tests_other", "old_test").is_err());
     }
 
+    #[cfg(feature = "private-fixtures")]
     #[test]
     fn committed_mapping_parses_and_validates() {
         let entries = parse_mapping(REAL_MAPPING_JSON).expect("mapping.json validates");

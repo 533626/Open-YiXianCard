@@ -1,5 +1,7 @@
 use super::*;
-use crate::fixture::{load_fixture_file, BattleFixture, FixturePlayer};
+use crate::fixture::{BattleFixture, FixturePlayer};
+#[cfg(feature = "private-fixtures")]
+use crate::fixture::load_fixture_file;
 use crate::model::{CardDefinition, PlayerSide};
 
 fn original_card(id: i64) -> CardDefinition {
@@ -93,6 +95,7 @@ fn ming_ye_mi_zong_uses_current_stack_for_first_hp_loss_reward() {
     );
 }
 
+#[cfg(feature = "private-fixtures")]
 #[test]
 fn ming_ye_mi_zong_resets_after_all_late_turn_end_hp_changes() {
     let fixture = load_fixture_file("tests/data-driven/mirror_32028000_round-14.json")
@@ -474,6 +477,7 @@ fn inherited_beng_quan_chan_is_prevented_by_exorcism() {
     assert_eq!(state.p2.status.external_injury, 0);
 }
 
+#[cfg(feature = "private-fixtures")]
 #[test]
 fn eswmbqw_round19_wan_mo_shi_xin_qu_before_frenzy_sword_zero_lifesteal_is_exact() {
     // 偏差 C 端到端回归：pa_79bca52d/pa_43f28c44/round-19。

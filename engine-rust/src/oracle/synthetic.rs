@@ -1243,6 +1243,6 @@ pub fn rust_fixture(
     Ok(Value::Object(fixture))
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "private-fixtures"))]
 #[path = "synthetic_tests.rs"]
 mod tests;
