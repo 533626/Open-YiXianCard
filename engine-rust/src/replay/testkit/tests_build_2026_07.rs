@@ -474,6 +474,57 @@ fn resolved_overheal_consumes_wild_ferry_before_after_hp_hooks() {
 }
 
 #[test]
+fn wild_ferry_seal_hp_gain_consumes_only_on_own_turn() {
+    // BattleCharacter.cs:10124: YeDuZhiYin(364) -> ExActionAgain requires
+    // ZiShenHuiHe(9997), i.e. the gaining side must be the acting side.
+    // oracle: pa_6f7c9169 [7] own-turn heal converts the seal.
+    let mut state =
+        ReplayState::test_from_fixture(&fixture(deck(basic_attack()), deck(basic_attack())));
+    // Default test fixture acts first as P1, so P2 gains are opponent-turn gains.
+    assert_eq!(state.current_actor, PlayerSide::P1);
+    state.p2.core.hp = 10;
+    state.p2.core.max_hp = 30;
+    state.p2.fate.wild_ferry_seal = 1;
+
+    state.mutate_actor_hp(PlayerSide::P2, 5, false, false);
+
+    assert_eq!(state.p2.core.hp, 15);
+    assert_eq!(state.p2.fate.wild_ferry_seal, 1);
+    assert_eq!(state.p2.turn.extra_actions, 0);
+
+    state.current_actor = PlayerSide::P2;
+    state.mutate_actor_hp(PlayerSide::P2, 5, false, false);
+
+    assert_eq!(state.p2.core.hp, 20);
+    assert_eq!(state.p2.fate.wild_ferry_seal, 0);
+    assert_eq!(state.p2.turn.extra_actions, 1);
+}
+
+#[test]
+fn wild_ferry_seal_anima_gain_consumes_only_on_own_turn() {
+    // BattleCharacter.cs:9802 mirrors the HP gate for ModifyAnima.
+    // oracle: pa_6f7c9169 [2] opponent-turn anima (T3 兑卦)
+    // preserves p2's seal, [7] own-turn anima (T8 飞云丹) converts it.
+    let mut state =
+        ReplayState::test_from_fixture(&fixture(deck(basic_attack()), deck(basic_attack())));
+    assert_eq!(state.current_actor, PlayerSide::P1);
+    state.p2.fate.wild_ferry_seal = 1;
+
+    state.gain_anima(PlayerSide::P2, 2);
+
+    assert_eq!(state.p2.core.anima, 2);
+    assert_eq!(state.p2.fate.wild_ferry_seal, 1);
+    assert_eq!(state.p2.turn.extra_actions, 0);
+
+    state.current_actor = PlayerSide::P2;
+    state.gain_anima(PlayerSide::P2, 2);
+
+    assert_eq!(state.p2.core.anima, 4);
+    assert_eq!(state.p2.fate.wild_ferry_seal, 0);
+    assert_eq!(state.p2.turn.extra_actions, 1);
+}
+
+#[test]
 fn heavenly_secret_reverse_resolves_before_dream_unmoving_gain_damage() {
     let mut state =
         ReplayState::test_from_fixture(&fixture(deck(basic_attack()), deck(basic_attack())));

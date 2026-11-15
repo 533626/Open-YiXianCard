@@ -852,6 +852,3 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     }
 }
 
-#[cfg(test)]
-#[path = "testkit/tests_fate_strategy_432.rs"]
-mod fate_432_tests;

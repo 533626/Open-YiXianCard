@@ -1,6 +1,6 @@
 use super::cards_dream_mirage::DreamMirageValue;
 use super::*;
-use crate::fixture::{BattleFixture, FixtureExpected, FixturePlayer, FixturePlayers};
+use crate::fixture::{BattleFixture, FixturePlayer};
 use crate::model::{CardDefinition, PlayerSide, DECK_SIZE};
 
 fn original_card(id: i64) -> CardDefinition {
@@ -21,26 +21,7 @@ fn fixture() -> BattleFixture {
     p2_cards.resize_with(DECK_SIZE, || original_card(0));
     p2_cards[3] = original_card(7_000_027);
     p2_cards[5] = original_card(7_000_022);
-    BattleFixture {
-        schema_version: 1,
-        source: None,
-        first_player_side: PlayerSide::P1,
-        decision_tape: Vec::new(),
-        random_fallback_tape: Vec::new(),
-        expected: FixtureExpected {
-            winner_side: PlayerSide::P1,
-            actor_turn_count: 1,
-            hp_delta_p1_minus_p2: 0,
-            final_hp: None,
-        },
-        max_actor_turns: Some(1),
-        historical_card_overrides: Vec::new(),
-        catalog_cards: Vec::new(),
-        players: FixturePlayers {
-            p1: player(p1_cards, DECK_SIZE),
-            p2: player(p2_cards, DECK_SIZE),
-        },
-    }
+    super::test_support::default_fixture(player(p1_cards, DECK_SIZE), player(p2_cards, DECK_SIZE))
 }
 
 #[test]

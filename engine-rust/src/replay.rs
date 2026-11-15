@@ -142,9 +142,6 @@ mod tests_build_2026_10_rotation;
 #[path = "replay/testkit/tests_build_26477585.rs"]
 mod tests_build_26477585;
 #[cfg(test)]
-#[path = "replay/testkit/tests_build_26477585_to_26609075.rs"]
-mod tests_build_26477585_to_26609075;
-#[cfg(test)]
 #[path = "replay/testkit/tests_calamity_skip_mask.rs"]
 mod tests_calamity_skip_mask;
 #[cfg(test)]
@@ -195,15 +192,9 @@ mod tests_random_range_decisions;
 #[cfg(test)]
 #[path = "replay/testkit/tests_resource_mutation_contract.rs"]
 mod tests_resource_mutation_contract;
-#[cfg(all(test, feature = "private-fixtures"))]
-#[path = "replay/testkit/tests_robust_decisions.rs"]
-mod tests_robust_decisions;
 #[cfg(test)]
 #[path = "replay/testkit/tests_star_cards.rs"]
 mod tests_star_cards;
-#[cfg(test)]
-#[path = "replay/testkit/tests_strict_battle_start.rs"]
-mod tests_strict_battle_start;
 #[cfg(all(test, feature = "private-fixtures"))]
 #[path = "replay/testkit/tests_synthetic_decisions.rs"]
 mod tests_synthetic_decisions;

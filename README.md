@@ -4,7 +4,7 @@
 
 ## 引擎
 
-引擎从已解析的战斗初始状态运行至终局，处理卡牌、状态、伤害、治疗、资源与行动，并提供战斗结果、事件和追踪数据。Rust 库同时支持原生和 WebAssembly 构建；规则以原作 Steam build **26614559** 为目标。
+引擎从已解析的战斗初始状态运行至终局，处理卡牌、状态、伤害、治疗、资源与行动，并提供战斗结果、事件和追踪数据。Rust 库同时支持原生和 WebAssembly 构建；规则以原作 Steam build **26660739** 为目标。
 
 ## 本地回放转换
 
@@ -25,7 +25,7 @@ cargo run --release --manifest-path engine-rust/Cargo.toml --bin replay_import -
 
 ## 回放验证
 
-开发仓使用本地采集的记录和[sharpobject/yxp_replays](https://huggingface.co/datasets/sharpobject/yxp_replays) 的 **138,805 条**可执行回放做内部验证，胜负、行动方与生命值变化三项精确匹配率 **100%**，覆盖普通、练习、天梯模式的 36 个分片（34523000–34558000）。该语料及其 fixture 属于私有工程证据，不随公开树分发；持有对应记录的读者可以用上面的转换器在本地复跑同一流程。
+开发仓使用本地采集的记录和[sharpobject/yxp_replays](https://huggingface.co/datasets/sharpobject/yxp_replays) 的 **81,688 条**可执行回放做内部验证，胜负、行动方与生命值变化三项精确匹配率 **100%**，覆盖普通、练习、天梯模式的 21 个分片（34560000–34580000）。该语料及其 fixture 属于私有工程证据，不随公开树分发；持有对应记录的读者可以用上面的转换器在本地复跑同一流程。
 
 致谢：感谢 Hugging Face 数据集 [sharpobject/yxp_replays](https://huggingface.co/datasets/sharpobject/yxp_replays) 维护者 **sharpobject** 收集并持续公开弈仙牌对局语料，为引擎校验与规则精确复现提供了宝贵的数据基准。
 

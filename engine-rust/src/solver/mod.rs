@@ -2,9 +2,7 @@ mod advisor;
 mod counterfactual;
 mod exact_search;
 #[cfg(test)]
-mod tests_advisor;
-#[cfg(test)]
-mod tests_solver;
+mod tests;
 mod variant;
 
 pub use advisor::{
