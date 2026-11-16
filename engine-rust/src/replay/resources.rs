@@ -881,6 +881,20 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         );
     }
 
+    #[inline(always)]
+    fn on_actor_anima_gained_hooks(&mut self, actor_side: PlayerSide, amount: i64) {
+        if amount <= 0 {
+            return;
+        }
+        // 与 ModifyHp 同门 (BattleCharacter.cs:9802): YeDuZhiYin(364) 转 ExActionAgain
+        // 要求 ZiShenHuiHe(9997), 即加灵气者须为本回合行动方。oracle 锚点同上
+        // (pa_6f7c9169 [2] 对手回合加灵不消耗、[7] 自回合加灵消耗)。
+        if self.is_own_turn(actor_side) && self.actor(actor_side).fate.wild_ferry_seal > 0 {
+            self.actor_mut(actor_side).fate.wild_ferry_seal -= 1;
+            self.modify_extra_actions(actor_side, 1);
+        }
+    }
+
     pub(super) fn gain_anima(&mut self, actor_side: PlayerSide, amount: i64) {
         let mut amount = amount;
         if amount <= 0 {
@@ -1000,13 +1014,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         if dream_defense > 0 {
             self.gain_defense(actor_side, dream_defense);
         }
-        // 与 ModifyHp 同门 (BattleCharacter.cs:9802): YeDuZhiYin(364) 转 ExActionAgain
-        // 要求 ZiShenHuiHe(9997), 即加灵气者须为本回合行动方。oracle 锚点同上
-        // (pa_6f7c9169 [2] 对手回合加灵不消耗、[7] 自回合加灵消耗)。
-        if self.current_actor == actor_side && self.actor(actor_side).fate.wild_ferry_seal > 0 {
-            self.actor_mut(actor_side).fate.wild_ferry_seal -= 1;
-            self.modify_extra_actions(actor_side, 1);
-        }
+        self.on_actor_anima_gained_hooks(actor_side, amount);
         let feng_ling_zhan_yi = self.actor(actor_side).fate.feng_ling_zhan_yi.max(0);
         if feng_ling_zhan_yi > 0 {
             self.actor_mut(actor_side).fate.feng_ling_zhan_yi = 0;

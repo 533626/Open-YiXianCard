@@ -1565,6 +1565,29 @@ impl ReplayPlayer {
 }
 
 impl<const OBSERVE: bool> ReplayState<OBSERVE> {
+    #[inline(always)]
+    fn on_actor_hp_mutated_hooks(
+        &mut self,
+        actor_side: PlayerSide,
+        receipt: &HpMutationReceipt,
+    ) {
+        // Card_55 grants YeDuZhiYin(364); BattleCharacter.ModifyHp only converts it to
+        // ExActionAgain on the owner's own turn (HasBuff(YeDuZhiYin) &&
+        // HasBuff(ZiShenHuiHe), BattleCharacter.cs:10124; ZiShenHuiHe is set at
+        // OnTurnStarted and removed at OnTurnEnded, :3654/:6892). `is_own_turn`
+        // covers the whole turn including its start/end phases, matching that lifetime.
+        // oracle 锚点: hf-auto-deafedf4a321-0000 pa_6f7c9169 [2]
+        // (T3 p1 兑卦给 p2 加灵气后 p2 的 364=1 未消耗) 与 [7] (T8 p2 自回合
+        // 飞云丹加灵气后 364 消失、315=1 出现)。
+        if receipt.ledger > 0
+            && self.is_own_turn(actor_side)
+            && self.actor(actor_side).fate.wild_ferry_seal > 0
+        {
+            self.actor_mut(actor_side).fate.wild_ferry_seal -= 1;
+            self.modify_extra_actions(actor_side, 1);
+        }
+    }
+
     pub(super) fn mutate_actor_hp(
         &mut self,
         actor_side: PlayerSide,
@@ -1577,21 +1600,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         let hp_events_before = self.actor(actor_side).dream_mirage.hp_gain_event_count;
         let hp_gained_before = self.actor(actor_side).dream_mirage.turn_hp_gained;
         let receipt = self.mutate_actor_hp_inner(actor_side, delta, is_cost, ignore_guard);
-        // Card_55 grants YeDuZhiYin(364); BattleCharacter.ModifyHp only converts it to
-        // ExActionAgain on the owner's own turn (HasBuff(YeDuZhiYin) &&
-        // HasBuff(ZiShenHuiHe), BattleCharacter.cs:10124; ZiShenHuiHe is set at
-        // OnTurnStarted and removed at OnTurnEnded, :3654/:6892). `current_actor`
-        // covers the whole turn including its start/end phases, matching that lifetime.
-        // oracle 锚点: hf-auto-deafedf4a321-0000 pa_6f7c9169 [2]
-        // (T3 p1 兑卦给 p2 加灵气后 p2 的 364=1 未消耗) 与 [7] (T8 p2 自回合
-        // 飞云丹加灵气后 364 消失、315=1 出现)。
-        if receipt.ledger > 0
-            && self.current_actor == actor_side
-            && self.actor(actor_side).fate.wild_ferry_seal > 0
-        {
-            self.actor_mut(actor_side).fate.wild_ferry_seal -= 1;
-            self.modify_extra_actions(actor_side, 1);
-        }
+        self.on_actor_hp_mutated_hooks(actor_side, &receipt);
         self.record_mutation_receipt(
             actor_side,
             super::ReplayMutationKind::Hp,

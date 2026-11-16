@@ -80,6 +80,11 @@ impl<const OBSERVE: bool> std::fmt::Debug for ReplayState<OBSERVE> {
 
 impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     #[inline(always)]
+    pub(crate) fn is_own_turn(&self, side: PlayerSide) -> bool {
+        self.current_actor == side
+    }
+
+    #[inline(always)]
     pub(crate) fn refresh_active_mechanisms(&mut self) {
         #[cfg(feature = "perf-ceiling")]
         let _timer = crate::performance::Timer::new(14);

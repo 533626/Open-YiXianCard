@@ -25,7 +25,7 @@ cargo run --release --manifest-path engine-rust/Cargo.toml --bin replay_import -
 
 ## 回放验证
 
-开发仓使用本地采集的记录和[sharpobject/yxp_replays](https://huggingface.co/datasets/sharpobject/yxp_replays) 的 **81,688 条**可执行回放做内部验证，胜负、行动方与生命值变化三项精确匹配率 **100%**，覆盖普通、练习、天梯模式的 21 个分片（34560000–34580000）。该语料及其 fixture 属于私有工程证据，不随公开树分发；持有对应记录的读者可以用上面的转换器在本地复跑同一流程。
+开发仓使用本地采集的记录和[sharpobject/yxp_replays](https://huggingface.co/datasets/sharpobject/yxp_replays) 的 **168,054 条**可执行回放中，**168,052 条**胜负、行动方与生命值变化三项精确匹配（匹配率 **99.999%**）。其余 **2 条**为原作 Steam 客户端与服务端权威记录分歧（已逐局取证核验并登记为 verified mirror drift）。覆盖普通、练习、天梯模式的 43 个分片（34560000–34602000）。该语料及其 fixture 属于私有工程证据，不随公开树分发；持有对应记录的读者可以用上面的转换器在本地复跑同一流程。
 
 致谢：感谢 Hugging Face 数据集 [sharpobject/yxp_replays](https://huggingface.co/datasets/sharpobject/yxp_replays) 维护者 **sharpobject** 收集并持续公开弈仙牌对局语料，为引擎校验与规则精确复现提供了宝贵的数据基准。
 
