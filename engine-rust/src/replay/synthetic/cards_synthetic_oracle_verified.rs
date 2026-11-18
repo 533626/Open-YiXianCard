@@ -88,13 +88,17 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             }
             10_000_062 => {
                 // 破茧化蝶：移除的负面状态层数，而非种类数，决定体魄与回血。
+                // build 26724401: Card_10000062.cs TiPo 改读 cardConfig.physique(=2)，
+                // HP 仍读 otherParams[1](=2)；数值同源但字段分立。
                 self.gain_agility(actor_side, param0(card));
                 let removed_layers = self.negative_status_stack_count(actor_side);
                 self.reduce_all_actor_negative_statuses(actor_side, i64::MAX);
                 if removed_layers > 0 {
-                    let gain = removed_layers * param1(card);
-                    self.apply_physique_amount(actor_side, gain);
-                    self.modify_actor_hp(actor_side, gain, false, false);
+                    let physique_gain =
+                        removed_layers * card.physique.unwrap_or(0).max(0);
+                    let hp_gain = removed_layers * param1(card);
+                    self.apply_physique_amount(actor_side, physique_gain);
+                    self.modify_actor_hp(actor_side, hp_gain, false, false);
                 }
                 Some(false)
             }

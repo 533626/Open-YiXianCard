@@ -106,6 +106,32 @@ fn break_cocoon_clears_every_negative_layer_including_lost_mind() {
 }
 
 #[test]
+fn break_cocoon_build26724401_physique_field_split_from_hp_param() {
+    // build 26724401: Card_10000062.cs TiPo 改读 physique，HP 仍读 otherParams[1]。
+    // 原配置两字段同为 2，数值无差；本用例以分叉值钉住字段来源。
+    let mut cocoon = original_card_definition_by_id(10_000_062).expect("missing break cocoon");
+    cocoon.physique = Some(3);
+    cocoon.other_params = vec![5, 7].into();
+    let mut cocoon_fixture = fixture(deck(cocoon), deck(basic_attack()));
+    cocoon_fixture.players.p1.initial_agility = 1;
+    cocoon_fixture
+        .players
+        .p1
+        .permanent_buff_temp_datas
+        .insert("10024".to_string(), 100);
+    let mut state = ReplayState::test_from_fixture(&cocoon_fixture);
+    state.p1.core.hp = 30;
+    state.p1.status.internal_injury = 2;
+
+    assert!(!state.test_execute_one_card(PlayerSide::P1));
+    assert_eq!(state.p1.turn.agility, 6);
+    assert_eq!(state.p1.core.physique, 6);
+    assert_eq!(state.p1.core.max_hp, 56);
+    assert_eq!(state.p1.core.hp, 44);
+    assert_eq!(state.negative_status_stack_count(PlayerSide::P1), 0);
+}
+
+#[test]
 fn ultimate_dark_crow_sword_uses_post_gain_anima_for_defense() {
     let crow = original_card_definition_by_id(1_000_097).expect("missing dark crow sword");
     let mut crow_fixture = fixture(deck(crow), deck(basic_attack()));
