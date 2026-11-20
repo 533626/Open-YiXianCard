@@ -317,22 +317,23 @@ fn yin_fu_jue_zhen_fate_405_grants_opponent_anima_on_weakness() {
 }
 
 #[test]
-fn extreme_five_elements_spirit_strike_config_matches_build_24610558() {
+fn extreme_five_elements_spirit_strike_config_matches_build_26776454() {
+    // 26724401→26776454：otherParams[0] 各档 +1（2/3/4 → 3/4/5）。攻击与灵气不变。
     let base = original_card_definition_by_id(7000107).expect("missing 极•五行灵击");
     assert_eq!(base.attack, Some(15));
     assert_eq!(base.anima, Some(-5));
-    assert_eq!(base.other_params, vec![2]);
+    assert_eq!(base.other_params, vec![3]);
     assert_eq!(
         original_card_definition_by_id(7010107)
             .unwrap()
             .other_params,
-        vec![3]
+        vec![4]
     );
     assert_eq!(
         original_card_definition_by_id(7020107)
             .unwrap()
             .other_params,
-        vec![4]
+        vec![5]
     );
 }
 
@@ -340,12 +341,13 @@ fn extreme_five_elements_spirit_strike_config_matches_build_24610558() {
 fn extreme_five_elements_spirit_strike_scales_with_remaining_anima() {
     // Card_7000107.cs: Attack(dst, attack + anima * otherParams[0], attackCount)。
     // 24811621 起 attack=15（24705509 为 12，24666769 为 8）。
+    // 26776454 起 otherParams[0]=3（此前为 2）。
     let strike = original_card_definition_by_id(7000107).expect("missing 极•五行灵击");
     let mut battle = fixture(deck(strike.clone()), deck(basic_attack()));
     battle.players.p1.initial_anima = 10;
     let mut state = ReplayState::test_from_fixture(&battle);
     state.test_apply_card_effect(PlayerSide::P1, &strike, 0);
-    assert_eq!(state.p2.core.hp, 30 - (15 + 10 * 2));
+    assert_eq!(state.p2.core.hp, 30 - (15 + 10 * 3));
 }
 
 #[test]

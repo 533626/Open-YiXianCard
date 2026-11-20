@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "steamBuild": "26724401",
+  "steamBuild": "26776454",
   "strategies": [
     {
       "id": 1001,
@@ -192,6 +192,27 @@
       "sources": [
         "XianMoStrategyConfig.isBattleEffect",
         "XianMoStrategyFunctions.cs"
+      ]
+    },
+    {
+      "id": 5012,
+      "sources": [
+        "CardActionBase.cs",
+        "XianMoStrategyConfig.unconfigured(dead-ref)"
+      ]
+    },
+    {
+      "id": 5013,
+      "sources": [
+        "CardActionBase.cs",
+        "XianMoStrategyConfig.unconfigured(dead-ref)"
+      ]
+    },
+    {
+      "id": 5014,
+      "sources": [
+        "CardActionBase.cs",
+        "XianMoStrategyConfig.unconfigured(dead-ref)"
       ]
     },
     {
@@ -834,7 +855,8 @@
     {
       "id": 7139,
       "sources": [
-        "XianMoStrategyConfig.isBattleEffect"
+        "XianMoStrategyConfig.unconfigured(dead-ref)",
+        "XianMoStrategyFunctions.cs"
       ]
     },
     {

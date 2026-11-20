@@ -709,6 +709,33 @@ fn yin_fu_214_raises_max_hp_and_hp_first() {
 }
 
 #[test]
+fn extreme_yin_fu_457_sets_debuffs_and_extra_action() {
+    // Card_457.cs：dst 虚弱(XuRuo 101)+otherParams[0] → dst 破绽(PoZhan 102)+otherParams[1]
+    // → dst 阴符玉简(YinFuYuJian 440)=otherParams[2]（Set）→ src 再次行动(ExActionAgain 315)+1。
+    // CardConfig 457/10457/20457 otherParams=[1,2,50]/[2,2,50]/[3,2,50]，actionAgain=true。
+    // HF b9654ae79 frozen run 35 selected blocked 均缺 457 可执行行为（oracle-batches hf-auto-8734e1e96c24-0000）。
+    for (id, expected_weakness) in [(457, 1), (10_457, 2), (20_457, 3)] {
+        let jade = original(id);
+        assert_eq!(jade.action_again, Some(true), "id={id}");
+        assert_eq!(other_param(&jade, 1), 2, "id={id}");
+        assert_eq!(other_param(&jade, 2), 50, "id={id}");
+        let battle = fixture(deck(jade.clone()), deck(basic_attack()));
+        let mut state = ReplayState::test_from_fixture(&battle);
+        let (hp, max_hp) = (state.p1.core.hp, state.p1.core.max_hp);
+        // Set 语义：预置 30，打出后应覆写为 50 而非累加到 80。
+        state.p2.status.yin_fu = 30;
+        state.test_apply_card_effect(PlayerSide::P1, &jade, 0);
+        assert_eq!(other_param(&jade, 0), expected_weakness, "id={id}");
+        assert_eq!(state.p2.status.weakness, expected_weakness, "id={id}");
+        assert_eq!(state.p2.status.flaw, 2, "id={id}");
+        assert_eq!(state.p2.status.yin_fu, 50, "id={id}");
+        assert_eq!(state.p1.turn.extra_actions, 1, "id={id}");
+        assert_eq!(state.p1.core.hp, hp, "id={id}");
+        assert_eq!(state.p1.core.max_hp, max_hp, "id={id}");
+    }
+}
+
+#[test]
 fn fate_36_counts_hidden_basic_attack_286() {
     // FateStrategyFunctions.OnPlayCard：32/33/36 改用 IsPuTongGongJi（基础 id 0 或 286）。
     let hidden_attack = card(286, 286, "隐藏普通攻击");

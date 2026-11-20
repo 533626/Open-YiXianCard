@@ -250,6 +250,21 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 self.actor_mut(target_side).status.yin_fu = target_yin_fu;
                 Some(false)
             }
+            457 => {
+                // 极•阴符玉简 Card_457.cs：dst 虚弱(XuRuo 101)+otherParams[0] → dst 破绽(PoZhan 102)+otherParams[1]
+                // → dst 阴符玉简(YinFuYuJian 440)=otherParams[2]（Set，非累加）→ src 再次行动(ExActionAgain 315)+1。
+                // CardConfig 457/10457/20457 otherParams=[1,2,50]/[2,2,50]/[3,2,50]，actionAgain=true；Sustain。
+                // 持续放大（破绽加伤/虚弱减伤从 40% 提至 YinFu 值%）由共享攻击结算承担
+                // （combat_core.rs factor_percent，对应 BattleCharacter.cs:12133-12155），与卡 214 同 buff。
+                // 显式 ExActionAgain 与配置 actionAgain 并存时仍单次再动（BattleExecuter.cs:2317 flag3 或分支，
+                // Rust consume_action_again 以 Card 源优先并清 ExtraAction），与 4000105 同构。
+                let target_side = opponent_side(actor_side);
+                self.add_actor_negative_status(target_side, 101, param0(card));
+                self.add_actor_negative_status(target_side, 102, param1(card));
+                self.actor_mut(target_side).status.yin_fu = param2(card);
+                self.modify_extra_actions(actor_side, 1);
+                Some(false)
+            }
             38 | 426 => {
                 // 锟铻金环 Card_38.cs 与极•锟铻金环 Card_426.cs 同构：
                 // JiHuoTuLing+1、JiHuoJinLing+1、KunWuJinHuan+=otherParams[0]。

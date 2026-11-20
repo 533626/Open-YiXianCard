@@ -3065,6 +3065,17 @@
       ]
     },
     {
+      "baseId": 457,
+      "routes": [
+        {
+          "path": "src/replay/flow_card_effect_primary_early.rs",
+          "line": 10,
+          "function": "apply_card_effect_primary_early",
+          "kind": "typed"
+        }
+      ]
+    },
+    {
       "baseId": 1000002,
       "routes": [
         {
@@ -9063,7 +9074,7 @@
     }
   ],
   "totals": {
-    "handlerRoutes": 819,
-    "routedCards": 814
+    "handlerRoutes": 820,
+    "routedCards": 815
   }
 }
