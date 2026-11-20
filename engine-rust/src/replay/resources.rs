@@ -1100,7 +1100,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
 
     pub(super) fn modify_temp_life(&mut self, actor_side: PlayerSide, delta: i64) -> i64 {
         let before = self.actor(actor_side).core.temp_life;
-        self.actor_mut(actor_side).core.temp_life = (before + delta).max(0);
+        self.actor_mut(actor_side).core.temp_life = before + delta;
         self.actor(actor_side).core.temp_life - before
     }
 

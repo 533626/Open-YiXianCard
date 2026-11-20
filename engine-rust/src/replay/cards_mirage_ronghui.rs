@@ -60,6 +60,7 @@ pub(super) enum MirageRonghuiValue {
     ActionAgainIgnoresBinding,
     FiveElementsCardsUsed,
     CannotGainHp,
+    PanGuFu,
 }
 
 /*
@@ -171,6 +172,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             MirageRonghuiValue::ActionAgainIgnoresBinding => state.action_again_ignores_binding,
             MirageRonghuiValue::FiveElementsCardsUsed => state.five_elements_cards_used,
             MirageRonghuiValue::CannotGainHp => state.cannot_gain_hp,
+            MirageRonghuiValue::PanGuFu => state.pan_gu_fu,
         }
     }
 
@@ -229,6 +231,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             }
             MirageRonghuiValue::FiveElementsCardsUsed => &mut state.five_elements_cards_used,
             MirageRonghuiValue::CannotGainHp => &mut state.cannot_gain_hp,
+            MirageRonghuiValue::PanGuFu => &mut state.pan_gu_fu,
         };
         let before = *field;
         *field = (*field + delta).max(0);
@@ -1352,6 +1355,13 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                     MirageRonghuiValue::CannotGainHp,
                     param1(card),
                 );
+                if self.active_effect_wounded_count() > 0 {
+                    self.modify_mirage_ronghui_value(
+                        target_side,
+                        MirageRonghuiValue::PanGuFu,
+                        param0(card).max(0),
+                    );
+                }
                 Some(attacked)
             }
             175 => {

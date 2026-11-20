@@ -28,6 +28,8 @@ fn random_attack_fixture(card: CardDefinition) -> BattleFixture {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     )
 }

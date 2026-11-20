@@ -92,6 +92,11 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             p2,
             first_player: fixture.first_player_side,
             battle_round: fixture.source.as_ref().and_then(|source| source.round),
+            life_settle_game_mode: fixture.source.as_ref().and_then(|source| source.game_mode),
+            life_settle_sides: [
+                super::life_settle::LifeSettleSideCtx::capture(&fixture.players.p1),
+                super::life_settle::LifeSettleSideCtx::capture(&fixture.players.p2),
+            ],
             current_actor: fixture.first_player_side,
             actor_turn: 0,
             max_actor_turns: fixture

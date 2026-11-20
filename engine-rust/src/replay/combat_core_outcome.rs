@@ -3,17 +3,60 @@ use crate::model::PlayerSide;
 
 impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     pub(super) fn summary(&self, winner_side: PlayerSide) -> ReplaySummary {
+        let settled = self.settle_battle_life(winner_side);
         ReplaySummary {
             winner_side,
             actor_turn_count: self.actor_turn,
             hp_delta_p1_minus_p2: self.p1.core.hp - self.p2.core.hp,
+            final_life: settled.as_ref().map(|outcome| outcome.final_life.clone()),
+            life_damage: settled.as_ref().map(|outcome| outcome.dealt_signed),
+            life_detail: settled.map(|outcome| outcome.detail),
         }
+    }
+
+    fn settle_battle_life(
+        &self,
+        winner_side: PlayerSide,
+    ) -> Option<super::life_settle::LifeSettleOutcome> {
+        let side_inputs = |index: usize| {
+            let ctx = &self.life_settle_sides[index];
+            let actor = if index == 0 { &self.p1 } else { &self.p2 };
+            super::life_settle::LifeSettleSideInputs {
+                talents: &ctx.talents,
+                talent_temp_datas: &ctx.talent_temp_datas,
+                fate_strategies: &ctx.fate_strategies,
+                xian_mo_strategies: &ctx.xian_mo_strategies,
+                permanent_buff_temp_datas: &ctx.permanent_buff_temp_datas,
+                is_mirror: ctx.is_mirror,
+                pre_battle_life: ctx.pre_battle_life,
+                talent_resonance_id: ctx.talent_resonance_id,
+                resonance_talent_flags: &ctx.resonance_talent_flags,
+                battle_end_temp_life: actor.core.temp_life,
+                battle_end_hp: actor.core.hp,
+                battle_end_ci_nian_qu: actor.music.compassionate_tune.max(0),
+            }
+        };
+        super::life_settle::settle_battle_life(&super::life_settle::LifeSettleInputs {
+            round: self.battle_round,
+            game_mode: self.life_settle_game_mode,
+            winner_side,
+            p1: side_inputs(0),
+            p2: side_inputs(1),
+        })
     }
 
     pub(super) fn death_winner(&mut self) -> Option<PlayerSide> {
         // Every resurrection entry already returns immediately for positive HP.
         if self.p1.core.hp > 0 && self.p2.core.hp > 0 {
             return None;
+        }
+        // BattleExecuter revive check order: PanGuFu temp cost first, one-shot.
+        for side in [PlayerSide::P1, PlayerSide::P2] {
+            if self.actor(side).core.hp <= 0 && self.actor(side).mirage_ronghui.pan_gu_fu > 0 {
+                let value = self.actor(side).mirage_ronghui.pan_gu_fu;
+                self.actor_mut(side).mirage_ronghui.pan_gu_fu = 0;
+                self.modify_temp_life(side, -value);
+            }
         }
         // Revive checks run in the original client's order and return typed
         // receipts; the outcome loop only needs the final alive/dead result
@@ -184,8 +227,8 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         None
     }
 
-    /// BattleCharacter.CanRevive:12583-12613。PanGuFu（裂穹开天斧）与
-    /// KeYinXuTianMing 属历史赛季，未建模。
+    /// BattleCharacter.CanRevive:12583-12613。KeYinXuTianMing 属历史赛季，
+    /// 未建模；PanGuFu 命元代价在 death_winner 入口按复活检查序扣除。
     pub(super) fn can_revive(&self, side: PlayerSide) -> bool {
         let actor = self.actor(side);
         if actor.core.hp > 0 || actor.chance.cannot_revive > 0 {

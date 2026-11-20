@@ -19,6 +19,8 @@ fn turn_end_water_attack_consumes_sword_intent_at_next_own_card() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -65,6 +67,8 @@ fn nested_temporary_effect_frames_preserve_origin_effective_and_physical_identit
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -159,6 +163,8 @@ fn settlement_consumes_and_clears_all_invocation_local_ledgers() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -212,6 +218,8 @@ fn run_shatter_blocker_case(case: &ShatterBlockerCase) {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p2.initial_defense = 30;
@@ -274,6 +282,8 @@ fn generic_temporary_effect_runs_pre_body_hooks_and_preserves_had_used_for_rear_
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut cloud = test_card(9_999_992, 145, "云剑·临时");
@@ -306,6 +316,8 @@ fn after_card_attack_does_not_inherit_main_card_attack_windows() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p2.initial_defense = 10;
@@ -390,6 +402,8 @@ fn dream_forge_fist_consumes_on_attacking_card_even_when_defense_absorbs_all_dam
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -421,6 +435,8 @@ fn qi_sinks_dantian_expires_before_shared_follow_up_but_not_for_temporary_cards(
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut ordinary = ReplayState::test_from_fixture(&fixture);
@@ -488,6 +504,8 @@ fn fate_on_play_updates_star_slots_before_body_and_precedes_counter_element() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     star_fixture.players.p1.active_slot_count = 3;
@@ -523,6 +541,8 @@ fn fate_on_play_updates_star_slots_before_body_and_precedes_counter_element() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     counter_fixture.players.p1.active_slot_count = 2;

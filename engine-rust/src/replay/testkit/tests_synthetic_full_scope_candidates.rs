@@ -9,6 +9,8 @@ fn placeholder_expected() -> FixtureExpected {
         actor_turn_count: 1,
         hp_delta_p1_minus_p2: 0,
         final_hp: None,
+        final_life: None,
+        life_damage: None,
     }
 }
 
@@ -104,6 +106,8 @@ fn card_329_sets_hp_through_defense_and_guard_then_exhausts() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 29,
             final_hp: Some(FinalHp { p1: 30, p2: 1 }),
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p2.initial_defense = 30;

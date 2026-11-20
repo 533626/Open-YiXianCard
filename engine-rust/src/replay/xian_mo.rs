@@ -1407,6 +1407,10 @@ pub(super) fn battle_relevant_xian_mo_strategy_ids() -> &'static BTreeSet<i64> {
             // 26001 只写/减 Hidden 计数（HunDunQianYing 788/789），反编译全部源码里没有任何读取方，对战斗无影响。
             // 2011 唯一调用点是 BattleExecuter.CalLifeDamage（战后命元 -otherParams[0]），
             // 不进 winner/actorTurn/hpDelta 三元：已验证无战斗影响（同址 fate 21 亦不建模）。
+            // 7121 全树零引用 + R4a 十轮剔除重放全 exact：战斗惰性已验证（见契约测试）。
+            // 2015 全树零引用 + R4b 十四轮剔除重放全 exact：战斗惰性已验证（见契约测试）。
+            // 3013 全树零引用 + R5a 十二轮剔除重放全 exact：战斗惰性已验证（见契约测试）。
+            // 3005 全树零引用 + R5b 九轮剔除重放全 exact：战斗惰性已验证（见契约测试）。
             .filter(|id| {
                 ![
                     2011, 2015, 3005, 3013, 7011, 7012, 7038, 7062, 7114, 7121, 7134, 26001,

@@ -534,6 +534,8 @@ mod tests {
             last_round_exp: 0,
             hand_cards: Vec::new(),
             used_ke_yin_cards: Vec::new(),
+            is_mirror: false,
+            resonance_talent_flags: Default::default(),
             cards,
         };
         BattleFixture {
@@ -547,6 +549,8 @@ mod tests {
                 actor_turn_count: 1,
                 hp_delta_p1_minus_p2: 0,
                 final_hp: None,
+                final_life: None,
+                life_damage: None,
             },
             max_actor_turns: Some(1),
             historical_card_overrides: Vec::new(),

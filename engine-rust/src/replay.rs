@@ -100,6 +100,7 @@ mod flow_support;
 mod formations;
 mod hexagram_cards;
 mod hook_trace;
+mod life_settle;
 mod mechanic_cards_extra;
 mod player;
 mod resources;
@@ -178,6 +179,9 @@ mod tests_hf1012_d;
 #[path = "replay/testkit/tests_hold.rs"]
 mod tests_hold;
 #[cfg(test)]
+#[path = "replay/testkit/tests_life_settle.rs"]
+mod tests_life_settle;
+#[cfg(test)]
 #[path = "replay/testkit/tests_original_grants.rs"]
 mod tests_original_grants;
 #[cfg(all(test, feature = "private-fixtures"))]
@@ -255,6 +259,7 @@ pub use decisions::{
 };
 pub use error::BattleError;
 pub use api_types::{ReplayEvaluationRun, ReplayRun, ReplaySummary, ReplayTerminationCause, ReplayUiRun};
+pub use life_settle::LifeSettleDetail;
 pub(crate) use state_impl::ReplayState;
 
 const DEFAULT_MAX_ACTOR_TURNS: i64 = 64;
@@ -848,6 +853,7 @@ struct ReplayMusicState {
     xiaoyao_tune: i64,
     xiaoyao_guqin: i64,
     chaotic_mind_tune: i64,
+    compassionate_tune: i64,
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
@@ -1176,6 +1182,7 @@ struct ReplayMirageRonghuiState {
     action_again_ignores_binding: i64,
     five_elements_cards_used: i64,
     cannot_gain_hp: i64,
+    pan_gu_fu: i64,
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Eq)]

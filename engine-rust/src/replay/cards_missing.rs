@@ -51,9 +51,12 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 self.modify_actor_max_hp(actor_side, param0(card));
                 Some(false)
             }
-            433 | 434 => {
-                // 狸之力 / 鹦之力: Card_433 / Card_434 heal. 命元 / copy /
-                // cultivation are outside battle; mirror skips the life write.
+            433 => {
+                self.modify_actor_hp(actor_side, param0(card), false, false);
+                self.modify_temp_life(actor_side, param1(card).max(0));
+                Some(false)
+            }
+            434 => {
                 self.modify_actor_hp(actor_side, param0(card), false, false);
                 Some(false)
             }

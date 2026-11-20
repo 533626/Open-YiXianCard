@@ -1,8 +1,9 @@
 //! Public replay API types (split from `replay`).
 
-use crate::fixture::BattleFixture;
+use crate::fixture::{BattleFixture, FinalLife};
 use crate::model::PlayerSide;
 
+use super::life_settle::LifeSettleDetail;
 use super::{ReplayDecisionEvent, ReplayEvent, ReplayPlayerSnapshot, ReplayPreventionPair, ReplayUiEvent};
 
 #[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
@@ -11,6 +12,9 @@ pub struct ReplaySummary {
     pub winner_side: PlayerSide,
     pub actor_turn_count: i64,
     pub hp_delta_p1_minus_p2: i64,
+    pub final_life: Option<FinalLife>,
+    pub life_damage: Option<i64>,
+    pub life_detail: Option<LifeSettleDetail>,
 }
 
 impl ReplaySummary {
@@ -18,6 +22,8 @@ impl ReplaySummary {
         self.winner_side == fixture.expected.winner_side
             && self.actor_turn_count == fixture.expected.actor_turn_count
             && self.hp_delta_p1_minus_p2 == fixture.expected.hp_delta_p1_minus_p2
+            && fixture.expected.final_life.as_ref().map(|expected| Some(expected) == self.final_life.as_ref()).unwrap_or(true)
+            && fixture.expected.life_damage.map(|expected| Some(expected) == self.life_damage).unwrap_or(true)
     }
 }
 

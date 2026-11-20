@@ -56,6 +56,8 @@ fn synthetic_exorcism_pill_logs_exact_live_choice_without_consuming_replay_tape(
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.source = Some(FixtureSource {
@@ -105,6 +107,8 @@ fn replay_exorcism_pill_consumes_tape_through_typed_resolver() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.decision_tape = vec![101, 9_999];
@@ -137,6 +141,8 @@ fn typed_fallback_selects_negative_status_only_after_tape_exhaustion() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.source = Some(FixtureSource {
@@ -170,6 +176,8 @@ fn replay_exorcism_pill_consumes_and_rejects_a_non_status_value() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.decision_tape = vec![9_999, 101];
@@ -214,6 +222,8 @@ fn repeated_same_card_effects_receive_distinct_execution_and_decision_occurrence
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.source = Some(FixtureSource {
@@ -326,6 +336,8 @@ fn fixture_with(p1: CardDefinition, p2: CardDefinition) -> BattleFixture {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.source = Some(FixtureSource {

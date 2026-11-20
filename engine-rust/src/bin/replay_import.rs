@@ -498,6 +498,9 @@ fn build_fixture(record: &Value, battle: &Value) -> Result<Value, String> {
 
     let mut source = Map::new();
     source.insert("round".to_string(), json!(round));
+    if let Some(game_mode) = int_value(battle.get("gameMode")) {
+        source.insert("gameMode".to_string(), json!(game_mode));
+    }
     source.insert("seasonMechanism".to_string(), json!(season_mechanism));
     if let Some(version) = record
         .get("gameVersion")
@@ -515,16 +518,32 @@ fn build_fixture(record: &Value, battle: &Value) -> Result<Value, String> {
         source.insert("steamBuild".to_string(), json!(build));
     }
 
+    let mut expected = Map::new();
+    expected.insert("winnerSide".to_string(), json!(winner_side));
+    expected.insert("actorTurnCount".to_string(), json!(actor_turn_count));
+    expected.insert("hpDeltaP1MinusP2".to_string(), json!(hp_delta));
+    let loser_public = if winner_side == "p1" { p2_public } else { p1_public };
+    let loser_pre = loser_public
+        .get("lastRound")
+        .and_then(|round| round.get("life"))
+        .and_then(|value| int_value(Some(value)));
+    if loser_pre.is_some_and(|life| life > 0) {
+        let p1_end = int_value(p1_public.get("life"));
+        let p2_end = int_value(p2_public.get("life"));
+        if let (Some(p1_life), Some(p2_life)) = (p1_end, p2_end) {
+            expected.insert("finalLife".to_string(), json!({"p1": p1_life, "p2": p2_life}));
+        }
+        if let Some(dealt) = int_value(battle.get("lifeDamage")) {
+            expected.insert("lifeDamage".to_string(), json!(dealt));
+        }
+    }
+
     Ok(json!({
         "schemaVersion": 1,
         "source": Value::Object(source),
         "firstPlayerSide": first_player_side,
         "decisionTape": int_list(battle.get("battleParams")),
-        "expected": {
-            "winnerSide": winner_side,
-            "actorTurnCount": actor_turn_count,
-            "hpDeltaP1MinusP2": hp_delta,
-        },
+        "expected": Value::Object(expected),
         "players": {
             "p1": build_player(p1)?,
             "p2": build_player(p2)?,
@@ -620,6 +639,17 @@ fn build_player(player: &Value) -> Result<Value, String> {
     let used_ke_yin = int_list(last_round.get("usedKeYinCards"));
     if !used_ke_yin.is_empty() {
         object.insert("usedKeYinCards".to_string(), json!(used_ke_yin));
+    }
+    if public.get("isMirror").and_then(Value::as_bool) == Some(true) {
+        object.insert("isMirror".to_string(), json!(true));
+    }
+    if let Some(selected) = private
+        .get("talentResonanceData")
+        .and_then(|data| data.get("selectionData"))
+        .and_then(|data| data.get("selected"))
+        .and_then(|value| int_value(Some(value)))
+    {
+        object.insert("talentResonanceId".to_string(), json!(selected));
     }
     let fate_strategies = int_list(last_round.get("fateStrategies"));
     if !fate_strategies.is_empty() {
@@ -863,6 +893,11 @@ const PUBLIC_PLAYER: &[FieldSpec] = &[
         kind: Kind::String,
     },
     FieldSpec {
+        number: 3,
+        name: "life",
+        kind: Kind::Int,
+    },
+    FieldSpec {
         number: 4,
         name: "extraMaxHp",
         kind: Kind::Int,
@@ -881,6 +916,11 @@ const PUBLIC_PLAYER: &[FieldSpec] = &[
         number: 8,
         name: "career",
         kind: Kind::Int,
+    },
+    FieldSpec {
+        number: 11,
+        name: "isMirror",
+        kind: Kind::Bool,
     },
     FieldSpec {
         number: 12,
@@ -932,6 +972,29 @@ const XIAN_MO_DATA: &[FieldSpec] = &[
     },
 ];
 
+const TALENT_RESONANCE_DATA: &[FieldSpec] = &[
+    FieldSpec {
+        number: 1,
+        name: "selectionData",
+        kind: Kind::Nested(SELECTION_DATA),
+    },
+    FieldSpec {
+        number: 2,
+        name: "hasRefresh",
+        kind: Kind::Bool,
+    },
+    FieldSpec {
+        number: 3,
+        name: "refreshChance",
+        kind: Kind::Int,
+    },
+    FieldSpec {
+        number: 4,
+        name: "refreshedIds",
+        kind: Kind::PackedInt,
+    },
+];
+
 const PRIVATE_PLAYER: &[FieldSpec] = &[
     FieldSpec {
         number: 1,
@@ -952,6 +1015,11 @@ const PRIVATE_PLAYER: &[FieldSpec] = &[
         number: 10,
         name: "talentDatas",
         kind: Kind::TalentDataMap,
+    },
+    FieldSpec {
+        number: 11,
+        name: "talentResonanceData",
+        kind: Kind::Nested(TALENT_RESONANCE_DATA),
     },
     FieldSpec {
         number: 19,

@@ -411,6 +411,8 @@ mod tests {
                 actor_turn_count: 1,
                 hp_delta_p1_minus_p2: 0,
                 final_hp: None,
+                final_life: None,
+                life_damage: None,
             },
         );
         let mut state = ReplayState::test_from_fixture(&fixture);

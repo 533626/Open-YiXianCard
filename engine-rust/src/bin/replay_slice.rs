@@ -598,6 +598,8 @@ fn admission_fixture_result_from_fixture(
             actual_winner: None,
             actual_turn: None,
             actual_delta: None,
+            actual_final_life: None,
+            actual_life_damage: None,
             first_deviation: Some(AdmissionDeviation {
                 kind: "blocked",
                 message: "scope=invalid".to_string(),
@@ -614,7 +616,7 @@ fn admission_fixture_result_from_fixture(
     };
     let actual_winner = player_side(summary.winner_side).to_string();
     let expected_winner = player_side(fixture.expected.winner_side).to_string();
-    let first_deviation = if actual_winner != expected_winner {
+    let mut first_deviation = if actual_winner != expected_winner {
         Some(AdmissionDeviation {
             kind: "winner",
             message: format!("winner mismatch: expected={expected_winner} actual={actual_winner}"),
@@ -644,6 +646,47 @@ fn admission_fixture_result_from_fixture(
     } else {
         None
     };
+    if first_deviation.is_none() {
+        if let Some(expected) = fixture.expected.final_life.as_ref() {
+            if Some(expected) != summary.final_life.as_ref() {
+                first_deviation = Some(AdmissionDeviation {
+                    kind: "finalLife",
+                    message: format!(
+                        "finalLife mismatch: expected=p1:{} p2:{} actual={}",
+                        expected.p1,
+                        expected.p2,
+                        summary
+                            .final_life
+                            .as_ref()
+                            .map(|actual| format!("p1:{} p2:{}", actual.p1, actual.p2))
+                            .unwrap_or_else(|| "unknown".to_string()),
+                    ),
+                    actual: summary.final_life.as_ref().map(|actual| {
+                        format!("p1:{} p2:{}", actual.p1, actual.p2)
+                    }),
+                    expected: Some(format!("p1:{} p2:{}", expected.p1, expected.p2)),
+                });
+            }
+        }
+    }
+    if first_deviation.is_none() {
+        if let Some(expected) = fixture.expected.life_damage {
+            if Some(expected) != summary.life_damage {
+                first_deviation = Some(AdmissionDeviation {
+                    kind: "lifeDamage",
+                    message: format!(
+                        "lifeDamage mismatch: expected={expected} actual={}",
+                        summary
+                            .life_damage
+                            .map(|actual| actual.to_string())
+                            .unwrap_or_else(|| "unknown".to_string()),
+                    ),
+                    actual: summary.life_damage.map(|actual| actual.to_string()),
+                    expected: Some(expected.to_string()),
+                });
+            }
+        }
+    }
     AdmissionFixtureResult {
         fixture: fixture_label,
         result: if first_deviation.is_none() {
@@ -654,6 +697,8 @@ fn admission_fixture_result_from_fixture(
         actual_winner: Some(actual_winner),
         actual_turn: Some(summary.actor_turn_count),
         actual_delta: Some(summary.hp_delta_p1_minus_p2),
+        actual_final_life: summary.final_life.clone(),
+        actual_life_damage: summary.life_damage,
         first_deviation,
         warnings: Vec::new(),
         missing_cards: Vec::new(),
@@ -695,6 +740,8 @@ fn admission_error(fixture: String, error: EngineError) -> AdmissionFixtureResul
         actual_winner: None,
         actual_turn: None,
         actual_delta: None,
+        actual_final_life: None,
+        actual_life_damage: None,
         first_deviation: Some(AdmissionDeviation {
             kind,
             message: error.to_string(),

@@ -35,6 +35,10 @@ pub struct AdmissionFixtureResult {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub actual_delta: Option<i64>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub actual_final_life: Option<crate::fixture::FinalLife>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub actual_life_damage: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub first_deviation: Option<AdmissionDeviation>,
     pub warnings: Vec<AdmissionWarning>,
     pub missing_cards: Vec<AdmissionMissingCard>,

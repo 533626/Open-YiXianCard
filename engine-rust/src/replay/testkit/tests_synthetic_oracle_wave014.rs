@@ -53,6 +53,8 @@ fn player(cards: Vec<CardDefinition>, active_slot_count: usize) -> FixturePlayer
         permanent_buff_temp_datas,
         talent_resonance_id: None,
         used_ke_yin_cards: Vec::new(),
+        is_mirror: false,
+        resonance_talent_flags: Default::default(),
         talent_temp_datas: Default::default(),
         talent_card_params: Default::default(),
         last_round_used_card_base_ids: Vec::new(),

@@ -14,6 +14,8 @@ fn add_hp_count_survives_turn_hp_gained_reset_for_lifetime_consumers() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -43,6 +45,8 @@ fn turn_start_clears_stale_hp_gain_before_dynamic_action_again() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -70,6 +74,8 @@ fn next_turn_defense_is_applied_after_tune_negative_status_reflect() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -103,6 +109,8 @@ fn rejuvenation_tune_opens_healing_cap_before_flower_maze_drain() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -135,6 +143,8 @@ fn turn_end_consumes_turn_hp_gain_before_clearing_ledger() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.initial_anima = 1;
@@ -164,6 +174,8 @@ fn turn_end_formations_read_action_again_count_before_final_reset() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 6,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -229,6 +241,8 @@ fn water_month_sword_formation_skips_turn_start_defense_decay() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.validate().expect("fixture valid");
@@ -260,6 +274,8 @@ fn defense_decay_healing_uses_gross_loss_through_eight_wastes_refund() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.validate().expect("fixture valid");
@@ -293,6 +309,8 @@ fn talent_200_activation_runs_before_next_card_action_again_conversion() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.validate().expect("fixture valid");
@@ -362,6 +380,8 @@ fn talent_101_grants_peach_blossom_extra_action_without_generating_chain() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.validate().expect("fixture valid");
@@ -434,6 +454,8 @@ fn talent_101_blocks_peach_blossom_extra_action_without_water_spirit() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.validate().expect("fixture valid");
@@ -463,6 +485,8 @@ fn talent_101_does_not_treat_seasonal_card_7010020_as_peach_blossom() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -528,6 +552,8 @@ fn spirit_snake_coils_pillar_grants_defense_and_action_again() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.validate().expect("fixture valid");
@@ -600,6 +626,8 @@ fn adaptation_boosts_positive_defense_gain() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.validate().expect("fixture valid");
@@ -662,6 +690,8 @@ fn star_chess_contest_applies_flaw_and_action_again_in_star_slot() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: -1,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.validate().expect("fixture valid");
@@ -737,6 +767,8 @@ fn immortal_binding_tune_blocks_action_again() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     ));
     state.test_configure_p1(|player| {
@@ -799,6 +831,8 @@ fn entangle_blocks_action_again_before_ling_qi_ben_yong_reward() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     ));
     state.test_configure_p1(|player| {
@@ -874,6 +908,8 @@ fn eight_gates_formation_damages_actor_on_action_again() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: -3,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     ));
     state.test_configure_p2(|player| {
@@ -938,6 +974,8 @@ fn reflect_mindset_damages_attacker_when_attack_is_fully_absorbed() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     ));
     state.test_configure_p1(|player| {
@@ -968,6 +1006,8 @@ fn internal_injury_ticks_after_turn_start_healing() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -998,6 +1038,8 @@ fn dream_great_return_pill_compares_hp_before_internal_injury_tick() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);

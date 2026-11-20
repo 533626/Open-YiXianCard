@@ -7,6 +7,8 @@ fn external_repeat_sources_are_checked_after_each_prior_effect() {
         actor_turn_count: 1,
         hp_delta_p1_minus_p2: 0,
         final_hp: None,
+        final_life: None,
+        life_damage: None,
     };
 
     // The Plum effect itself installs 崩拳•双影. Its later source branch must
@@ -53,6 +55,8 @@ fn profound_spirit_healing_reads_anima_and_debuffs_after_inner_injury() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
 
@@ -80,6 +84,8 @@ fn profound_spirit_healing_respects_exorcism_before_counting_debuffs() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
 
@@ -111,6 +117,8 @@ fn spirit_formation_echo_base_lifecycle_keeps_primary_action_again_snapshot() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.fate_strategies = vec![135];
@@ -132,6 +140,8 @@ fn hound_and_alchemy_read_explicit_rarity_instead_of_id_segments() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -196,6 +206,8 @@ fn resonance_ten_spirit_sword_preserves_real_chain_and_updates_temp_flag() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -223,6 +235,8 @@ fn hp_cost_post_payment_hooks_include_one_shot_refund_and_full_combo() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -266,6 +280,8 @@ fn card_322_missing_opponent_same_slot_runs_empty_body_without_error() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);

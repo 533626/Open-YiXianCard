@@ -163,6 +163,7 @@ impl<'a> BattleFixtureView<'a> {
 #[serde(rename_all = "camelCase", default)]
 pub struct FixtureSource {
     pub round: Option<i64>,
+    pub game_mode: Option<i64>,
     pub game_version: Option<String>,
     pub steam_build: Option<String>,
     pub recent_battle_file: Option<String>,
@@ -336,10 +337,20 @@ pub struct FixtureExpected {
     pub hp_delta_p1_minus_p2: i64,
     #[serde(rename = "finalHp", default)]
     pub final_hp: Option<FinalHp>,
+    #[serde(rename = "finalLife", default)]
+    pub final_life: Option<FinalLife>,
+    #[serde(rename = "lifeDamage", default)]
+    pub life_damage: Option<i64>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct FinalHp {
+    pub p1: i64,
+    pub p2: i64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, schemars::JsonSchema)]
+pub struct FinalLife {
     pub p1: i64,
     pub p2: i64,
 }
@@ -409,6 +420,10 @@ pub struct FixturePlayer {
     pub hand_cards: Vec<i64>,
     #[serde(rename = "usedKeYinCards", default)]
     pub used_ke_yin_cards: Vec<i64>,
+    #[serde(rename = "isMirror", default)]
+    pub is_mirror: bool,
+    #[serde(rename = "resonanceTalentFlags", default)]
+    pub resonance_talent_flags: BTreeMap<String, i64>,
     pub cards: Vec<CardDefinition>,
 }
 

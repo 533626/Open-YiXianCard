@@ -492,6 +492,14 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 Some(false)
             }
             5_000_006 => {
+                let value = param0(card);
+                if self.actor(actor_side).music.compassionate_tune <= 0 {
+                    self.actor_mut(actor_side).music.compassionate_tune = value;
+                }
+                let foe = opponent_side(actor_side);
+                if self.actor(foe).music.compassionate_tune <= 0 {
+                    self.actor_mut(foe).music.compassionate_tune = value;
+                }
                 self.actor_mut(actor_side).music.music_cards_played += 1;
                 Some(false)
             }

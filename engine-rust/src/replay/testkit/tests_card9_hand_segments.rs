@@ -16,6 +16,8 @@ fn fixture_with_hand(hand: usize, tape: Vec<i64>) -> (BattleFixture, CardDefinit
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.hand_cards = vec![1_000_001; hand];

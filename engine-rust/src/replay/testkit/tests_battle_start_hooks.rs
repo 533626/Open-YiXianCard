@@ -23,6 +23,8 @@ fn fate_strategy_battle_start_hooks_apply_through_fixture_startup() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.fate_strategies = vec![89, 138, 143, 146];
@@ -83,6 +85,8 @@ fn talent_199_activates_bottle_element_for_wood_spirit_revival() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.first_player_side = PlayerSide::P2;
@@ -130,6 +134,8 @@ fn run_talent_199_case(case: &Talent199Case) {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.talents = vec![199];
@@ -193,6 +199,8 @@ fn wood_spirit_all_growth_grants_hp_and_turn_start_attack_bonus() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.active_slot_count = 1;
@@ -225,6 +233,8 @@ fn xian_mo_7103_samples_hp_before_11004_physique() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p2.base_max_hp = 28;
@@ -261,6 +271,8 @@ fn xian_mo_16024_battle_start_param_branches() {
                 actor_turn_count: 1,
                 hp_delta_p1_minus_p2: 0,
                 final_hp: None,
+                final_life: None,
+                life_damage: None,
             },
         );
         fixture.players.p1.xian_mo_strategies = vec![16024];
@@ -292,6 +304,8 @@ fn xian_mo_16024_two_sided_consumes_in_first_player_order() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.xian_mo_strategies = vec![16024];

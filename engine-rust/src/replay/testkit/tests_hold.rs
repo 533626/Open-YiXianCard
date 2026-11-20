@@ -43,6 +43,8 @@ fn hold_fixture(p1_card: CardDefinition, p2_card: CardDefinition) -> BattleFixtu
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
         max_actor_turns: Some(1),
         historical_card_overrides: Vec::new(),

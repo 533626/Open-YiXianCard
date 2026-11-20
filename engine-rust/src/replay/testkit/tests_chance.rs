@@ -725,6 +725,8 @@ fn one_slot_player(cards: Vec<CardDefinition>) -> FixturePlayer {
         permanent_buff_temp_datas: BTreeMap::new(),
         talent_resonance_id: None,
         used_ke_yin_cards: Vec::new(),
+        is_mirror: false,
+        resonance_talent_flags: Default::default(),
         talent_temp_datas: BTreeMap::new(),
         talent_card_params: BTreeMap::new(),
         last_round_used_card_base_ids: Vec::new(),

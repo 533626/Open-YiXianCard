@@ -14,6 +14,8 @@ fn temporary_effect_skips_entire_adjacent_after_card_hook() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.active_slot_count = 2;
@@ -42,6 +44,8 @@ fn temporary_after_skips_ordinary_segment_but_keeps_common_tail() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let arm = |state: &mut ReplayState| {
@@ -96,6 +100,8 @@ fn dream_star_board_zhuji_prints_anima_before_the_self_trigger() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -117,6 +123,8 @@ fn dream_star_board_consumes_two_charges_and_skips_star_slots() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
 
@@ -168,6 +176,8 @@ fn gather_flame_adds_a_complete_execute_effect_lifecycle() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.initial_momentum_limit = Some(99);
@@ -204,6 +214,8 @@ fn next_beng_quan_physique_is_consumed_before_a_non_beng_quan_card() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -234,6 +246,8 @@ fn public_adjacent_beng_quan_is_snapshotted_before_cost() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.active_slot_count = 2;
@@ -262,6 +276,8 @@ fn hp_cost_hooks_use_printed_cost_and_public_adjacent_beng_identity() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.active_slot_count = 2;
@@ -309,6 +325,8 @@ fn zero_printed_hp_cost_does_not_trigger_runtime_cost_hooks() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -353,6 +371,8 @@ fn private_before_card_hooks_run_per_effect_and_not_on_cost_failure() {
                 actor_turn_count: 1,
                 hp_delta_p1_minus_p2: 0,
                 final_hp: None,
+                final_life: None,
+                life_damage: None,
             },
         );
         fixture.players.p1.active_slot_count = 2;

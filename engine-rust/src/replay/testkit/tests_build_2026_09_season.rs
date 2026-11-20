@@ -1326,6 +1326,201 @@ fn xian_guo_bao_zong_converts_negative_gain_to_recovery() {
 }
 
 #[test]
+fn xian_mo_2011_held_runs_with_exact_triple_and_no_battle_effect() {
+    // 2011 广结善缘：全树唯一调用点 BattleExecuter.CalLifeDamage:2800（战后命元
+    // -otherParams[0]，下限 1），不进 winner/actorTurn/hpDelta 三元；同址 fate 21
+    // 亦不建模。P1 probe turkey R5 选中（season-xianmo-probe-turkey），P3 未再选中。
+    // 持有 2011 的 fixture 必须正常跑完且三元与无策略完全一致。
+    let mut battle = fixture(deck(basic_attack()), deck(basic_attack()));
+    battle.players.p1.xian_mo_strategies = vec![2011];
+    battle.players.p2.xian_mo_strategies = vec![2011];
+    let with = run_replay_fixture(&battle).unwrap();
+    let plain = fixture(deck(basic_attack()), deck(basic_attack()));
+    let without = run_replay_fixture(&plain).unwrap();
+    assert_eq!(
+        (
+            with.winner_side,
+            with.actor_turn_count,
+            with.hp_delta_p1_minus_p2
+        ),
+        (
+            without.winner_side,
+            without.actor_turn_count,
+            without.hp_delta_p1_minus_p2
+        )
+    );
+    assert_eq!(with.winner_side, PlayerSide::P1);
+    assert_eq!(with.actor_turn_count, 1);
+    assert_eq!(with.hp_delta_p1_minus_p2, 3);
+}
+
+#[test]
+fn xian_mo_2015_held_runs_with_exact_triple_and_no_battle_effect() {
+    // 2015：全树零客户端代码引用；R4b p1-turkey（G2）R1–R16 十四轮实战
+    // （L1–L5，3 轮带磁带，2 轮因对手温敏仙魔过滤，xianmo_battle_prove
+    // 剔除重放）三元全 exact → 战斗惰性。持有 2015 的 fixture 必须正常跑完
+    // 且三元与无策略完全一致。
+    let mut battle = fixture(deck(basic_attack()), deck(basic_attack()));
+    battle.players.p1.xian_mo_strategies = vec![2015];
+    battle.players.p2.xian_mo_strategies = vec![2015];
+    let with = run_replay_fixture(&battle).unwrap();
+    let plain = fixture(deck(basic_attack()), deck(basic_attack()));
+    let without = run_replay_fixture(&plain).unwrap();
+    assert_eq!(
+        (
+            with.winner_side,
+            with.actor_turn_count,
+            with.hp_delta_p1_minus_p2
+        ),
+        (
+            without.winner_side,
+            without.actor_turn_count,
+            without.hp_delta_p1_minus_p2
+        )
+    );
+    assert_eq!(with.winner_side, PlayerSide::P1);
+    assert_eq!(with.actor_turn_count, 1);
+    assert_eq!(with.hp_delta_p1_minus_p2, 3);
+}
+
+#[test]
+fn xian_mo_3005_held_runs_with_exact_triple_and_no_battle_effect() {
+    // 3005：全树零客户端代码引用；R5b 两局九轮实战（G2-p64 R9–R15 七轮、
+    // W5-p1 R13/R15 两轮，L4–L5，4 轮带磁带，多轮因对手温敏仙魔过滤，
+    // xianmo_battle_prove 剔除重放）三元全 exact → 战斗惰性。持有 3005
+    // 的 fixture 必须正常跑完且三元与无策略完全一致。
+    let mut battle = fixture(deck(basic_attack()), deck(basic_attack()));
+    battle.players.p1.xian_mo_strategies = vec![3005];
+    battle.players.p2.xian_mo_strategies = vec![3005];
+    let with = run_replay_fixture(&battle).unwrap();
+    let plain = fixture(deck(basic_attack()), deck(basic_attack()));
+    let without = run_replay_fixture(&plain).unwrap();
+    assert_eq!(
+        (
+            with.winner_side,
+            with.actor_turn_count,
+            with.hp_delta_p1_minus_p2
+        ),
+        (
+            without.winner_side,
+            without.actor_turn_count,
+            without.hp_delta_p1_minus_p2
+        )
+    );
+    assert_eq!(with.winner_side, PlayerSide::P1);
+    assert_eq!(with.actor_turn_count, 1);
+    assert_eq!(with.hp_delta_p1_minus_p2, 3);
+}
+
+#[test]
+fn xian_mo_3013_held_runs_with_exact_triple_and_no_battle_effect() {
+    // 3013：全树零客户端代码引用；R5a 两局十二轮实战（V2-p4 R9–R15、
+    // V4-p4 R8–R15，4 轮因对手温敏仙魔过滤，xianmo_battle_prove 剔除重放）
+    // 三元全 exact → 战斗惰性。持有 3013 的 fixture 必须正常跑完且三元
+    // 与无策略完全一致。
+    let mut battle = fixture(deck(basic_attack()), deck(basic_attack()));
+    battle.players.p1.xian_mo_strategies = vec![3013];
+    battle.players.p2.xian_mo_strategies = vec![3013];
+    let with = run_replay_fixture(&battle).unwrap();
+    let plain = fixture(deck(basic_attack()), deck(basic_attack()));
+    let without = run_replay_fixture(&plain).unwrap();
+    assert_eq!(
+        (
+            with.winner_side,
+            with.actor_turn_count,
+            with.hp_delta_p1_minus_p2
+        ),
+        (
+            without.winner_side,
+            without.actor_turn_count,
+            without.hp_delta_p1_minus_p2
+        )
+    );
+    assert_eq!(with.winner_side, PlayerSide::P1);
+    assert_eq!(with.actor_turn_count, 1);
+    assert_eq!(with.hp_delta_p1_minus_p2, 3);
+}
+
+#[test]
+fn xian_mo_7121_held_runs_with_exact_triple_and_no_battle_effect() {
+    // 7121：全树零客户端代码引用；R4a zhang R10–R19 十轮实战（L4–L5，
+    // 2 轮带磁带，xianmo_battle_prove 剔除重放）三元全 exact → 战斗惰性。
+    // 持有 7121 的 fixture 必须正常跑完且三元与无策略完全一致。
+    let mut battle = fixture(deck(basic_attack()), deck(basic_attack()));
+    battle.players.p1.xian_mo_strategies = vec![7121];
+    battle.players.p2.xian_mo_strategies = vec![7121];
+    let with = run_replay_fixture(&battle).unwrap();
+    let plain = fixture(deck(basic_attack()), deck(basic_attack()));
+    let without = run_replay_fixture(&plain).unwrap();
+    assert_eq!(
+        (
+            with.winner_side,
+            with.actor_turn_count,
+            with.hp_delta_p1_minus_p2
+        ),
+        (
+            without.winner_side,
+            without.actor_turn_count,
+            without.hp_delta_p1_minus_p2
+        )
+    );
+    assert_eq!(with.winner_side, PlayerSide::P1);
+    assert_eq!(with.actor_turn_count, 1);
+    assert_eq!(with.hp_delta_p1_minus_p2, 3);
+}
+
+const XIAN_MO_DEAD_REF_CASES: &[StrategyCase] = &[
+    StrategyCase { strategy: 30003 },
+    StrategyCase { strategy: 30005 },
+    StrategyCase { strategy: 30010 },
+    StrategyCase { strategy: 30014 },
+    StrategyCase { strategy: 30015 },
+    StrategyCase { strategy: 30017 },
+    StrategyCase { strategy: 30023 },
+    StrategyCase { strategy: 5012 },
+    StrategyCase { strategy: 5013 },
+    StrategyCase { strategy: 5014 },
+    StrategyCase { strategy: 7139 },
+];
+
+fn run_xian_mo_dead_ref_case(case: &StrategyCase) {
+    // 11 死引用：两代配置皆无（或本代删除 7139），见
+    // BUILD_26477585-to-26609075 §2.6 / BUILD_26724401-to-26776454 §1.2+§2.3；
+    // 与 build_xian_mo_battle_strategies.py KNOWN_UNCONFIGURED_REFS 一致。
+    // 持有即 MissingRule，永不静默。
+    let strategy = case.strategy;
+    let mut battle = fixture(deck(basic_attack()), deck(basic_attack()));
+    battle.players.p1.xian_mo_strategies = vec![strategy];
+    let error = run_replay_fixture(&battle).unwrap_err().to_string();
+    assert_eq!(
+        error,
+        format!(
+            "battle error: card catalog error: card:0 base:0 xianMo strategy {strategy} affects battle but is not implemented; turn=0"
+        )
+    );
+}
+
+crate::data_driven_cases! {
+    table: XIAN_MO_DEAD_REF_CASES,
+    run: run_xian_mo_dead_ref_case,
+    suite: "replay::tests_build_2026_09_season::xian_mo_dead_refs_fail_closed",
+    valid: xian_mo_dead_refs_fail_closed_case_table_is_valid,
+    cases: [
+        xian_mo_dead_refs_fail_closed_30003 => 0,
+        xian_mo_dead_refs_fail_closed_30005 => 1,
+        xian_mo_dead_refs_fail_closed_30010 => 2,
+        xian_mo_dead_refs_fail_closed_30014 => 3,
+        xian_mo_dead_refs_fail_closed_30015 => 4,
+        xian_mo_dead_refs_fail_closed_30017 => 5,
+        xian_mo_dead_refs_fail_closed_30023 => 6,
+        xian_mo_dead_refs_fail_closed_5012 => 7,
+        xian_mo_dead_refs_fail_closed_5013 => 8,
+        xian_mo_dead_refs_fail_closed_5014 => 9,
+        xian_mo_dead_refs_fail_closed_7139 => 10,
+    ]
+}
+
+#[test]
 fn xian_guo_bao_zong_skips_meditation() {
     let mut state =
         ReplayState::test_from_fixture(&fixture(deck(basic_attack()), deck(basic_attack())));

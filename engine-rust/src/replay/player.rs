@@ -408,6 +408,7 @@ impl ReplayPlayer {
                 xiaoyao_tune: 0,
                 xiaoyao_guqin: 0,
                 chaotic_mind_tune: 0,
+                compassionate_tune: 0,
             }
             .into(),
             astrology: ReplayAstrologyState {

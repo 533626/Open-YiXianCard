@@ -40,6 +40,8 @@ pub(crate) struct ReplayState<const OBSERVE: bool = true> {
     pub(crate) termination_cause: Option<ReplayTerminationCause>,
     pub(crate) completed_checkpoint_count: usize,
     pub(crate) active_mechanisms: ActiveMechanisms,
+    pub(crate) life_settle_game_mode: Option<i64>,
+    pub(crate) life_settle_sides: [super::life_settle::LifeSettleSideCtx; 2],
 }
 
 impl<const OBSERVE: bool> std::fmt::Debug for ReplayState<OBSERVE> {

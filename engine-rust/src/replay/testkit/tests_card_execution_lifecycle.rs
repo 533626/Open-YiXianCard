@@ -63,6 +63,8 @@ fn talent_52_replaces_eighth_basic_attack_with_seven_stars_stabilize_soul() {
             actor_turn_count: 2,
             hp_delta_p1_minus_p2: 26,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
         max_actor_turns: Some(2),
         historical_card_overrides: Vec::new(),
@@ -90,6 +92,8 @@ fn talent_52_replaces_eighth_basic_attack_with_seven_stars_stabilize_soul() {
                 permanent_buff_temp_datas: Default::default(),
                 talent_resonance_id: None,
                 used_ke_yin_cards: Vec::new(),
+                is_mirror: false,
+                resonance_talent_flags: Default::default(),
                 talent_temp_datas: Default::default(),
                 talent_card_params: Default::default(),
                 last_round_used_card_base_ids: Vec::new(),
@@ -120,6 +124,8 @@ fn talent_52_replaces_eighth_basic_attack_with_seven_stars_stabilize_soul() {
                 permanent_buff_temp_datas: Default::default(),
                 talent_resonance_id: None,
                 used_ke_yin_cards: Vec::new(),
+                is_mirror: false,
+                resonance_talent_flags: Default::default(),
                 talent_temp_datas: Default::default(),
                 talent_card_params: Default::default(),
                 last_round_used_card_base_ids: Vec::new(),
@@ -216,6 +222,8 @@ fn wood_spirit_array_increases_max_hp_without_healing_current_hp() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -336,6 +344,8 @@ fn talent_198_upgrades_solitary_void_golden_book_without_adjacent_basics() {
         permanent_buff_temp_datas: Default::default(),
         talent_resonance_id: None,
         used_ke_yin_cards: Vec::new(),
+        is_mirror: false,
+        resonance_talent_flags: Default::default(),
         talent_temp_datas: Default::default(),
         talent_card_params: Default::default(),
         last_round_used_card_base_ids: vec![],
@@ -464,6 +474,8 @@ fn talent_198_upgrades_solitary_void_golden_book_from_tier_one_without_overshoot
         permanent_buff_temp_datas: Default::default(),
         talent_resonance_id: None,
         used_ke_yin_cards: Vec::new(),
+        is_mirror: false,
+        resonance_talent_flags: Default::default(),
         talent_temp_datas: Default::default(),
         talent_card_params: Default::default(),
         last_round_used_card_base_ids: vec![],
@@ -526,6 +538,8 @@ fn talent_125_checks_boundary_hp_instead_of_max_hp() {
         permanent_buff_temp_datas: Default::default(),
         talent_resonance_id: None,
         used_ke_yin_cards: Vec::new(),
+        is_mirror: false,
+        resonance_talent_flags: Default::default(),
         talent_temp_datas: Default::default(),
         talent_card_params: Default::default(),
         last_round_used_card_base_ids: vec![],
@@ -601,6 +615,8 @@ fn tiger_body_fixture(cards: Vec<CardDefinition>) -> FixturePlayer {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     )
     .players
@@ -632,6 +648,8 @@ fn chain_sword_formation_reuses_outer_slot_and_runs_temporary_on_play_hooks() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.active_slot_count = 8;
@@ -675,6 +693,8 @@ fn temporary_effect_restores_outer_context_and_clears_shared_attack_window() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -820,6 +840,8 @@ fn chain_sword_formation_replays_only_nearest_sword_formation_recursively() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 6,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.active_slot_count = 8;
@@ -908,6 +930,8 @@ fn impact_pattern_doubles_attack_when_array_echo_is_active() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.active_slot_count = 8;
@@ -979,6 +1003,8 @@ fn turn_start_illusory_tune_death_skips_card_play() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 10,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.first_player_side = PlayerSide::P2;

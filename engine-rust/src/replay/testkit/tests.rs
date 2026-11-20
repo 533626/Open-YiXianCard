@@ -36,6 +36,8 @@ fn strength_grass_attack_bonus_passes_through_fate_148_conversion() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture
@@ -67,6 +69,8 @@ fn earth_fiend_defense_uses_actual_damage_not_fire_blade_max_hp_loss() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.talents.push(67);
@@ -104,6 +108,8 @@ fn parity_events_sample_completed_phase_boundaries() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 3,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.initial_defense = 6;
@@ -143,6 +149,8 @@ fn parity_events_do_not_invent_turn_end_after_a_lethal_card() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 30,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
 
@@ -191,6 +199,8 @@ fn dream_fire_formation_7000090_terminates_during_action_again() {
         actor_turn_count: 51,
         hp_delta_p1_minus_p2: 103,
         final_hp: None,
+        final_life: None,
+        life_damage: None,
     };
     let mut fixture = minimal_fixture(p1_cards, p2_cards, expected.clone());
     fixture.source = Some(crate::fixture::FixtureSource {
@@ -246,6 +256,8 @@ fn turn_end_water_momentum_lethal_has_distinct_termination_cause() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 43,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -272,6 +284,8 @@ fn turn_start_internal_injury_lethal_has_distinct_termination_cause() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: -30,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -298,6 +312,8 @@ fn battle_start_nonpositive_hp_still_terminates_after_turn_start() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 32,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p2.base_max_hp = 3;
@@ -331,6 +347,8 @@ fn actor_order_controls_protective_talisman_and_golden_shuttle_orchid() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture
@@ -380,6 +398,8 @@ fn surviving_last_turn_uses_max_turn_termination_cause() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 3,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
 
@@ -401,6 +421,8 @@ fn forget_worries_reduces_every_negative_status_by_the_configured_amount() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -453,6 +475,8 @@ fn talent_208_ling_qi_ben_yong_grants_agility_on_momentum_gain() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.character_id = Some(4_000_005);
@@ -481,6 +505,8 @@ fn fate_strategy_on_play_basic_attack_modifies_before_attack_body() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.fate_strategies = vec![32, 36];
@@ -507,6 +533,8 @@ fn fate_strategy_on_play_clear_heart_sword_embryo_requires_exact_card_id_19() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.fate_strategies = vec![100, 101, 102, 103, 324];
@@ -535,6 +563,8 @@ fn fate_strategy_on_play_clear_heart_sword_embryo_requires_exact_card_id_19() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     upgraded_fixture.players.p1.fate_strategies = vec![100, 101, 102, 103, 324];
@@ -563,6 +593,8 @@ fn clear_heart_sword_embryo_reads_talent_10095_and_30094() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.talents = vec![10_095, 30_094];
@@ -587,6 +619,8 @@ fn frenzy_heart_talent_gives_clear_heart_bonus_attack_and_frenzy_identity() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.talents = vec![10_096];
@@ -618,6 +652,8 @@ fn sword_formation_guard_talent_triggers_on_first_slot() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.talents = vec![30_057];
@@ -639,6 +675,8 @@ fn sword_formation_guard_talent_levels_stack_independently() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.talents = vec![57, 20_057];
@@ -660,6 +698,8 @@ fn target_anima_loss_triggers_spirit_control_defense() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.cards[0].hexagram = Some(4);
@@ -685,6 +725,8 @@ fn upgraded_regenerative_body_heals_two_on_first_slot() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.base_max_hp = 20;
@@ -709,6 +751,8 @@ fn regenerative_body_stacks_each_active_realm_talent_on_first_slot() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.base_max_hp = 20;
@@ -733,6 +777,8 @@ fn fate_strategy_on_play_family_slot_cost_and_anima_burn_hooks() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     cloud_fixture.players.p1.fate_strategies = vec![97, 320];
@@ -749,6 +795,8 @@ fn fate_strategy_on_play_family_slot_cost_and_anima_burn_hooks() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     frenzy_fixture.players.p1.fate_strategies = vec![325];
@@ -764,6 +812,8 @@ fn fate_strategy_on_play_family_slot_cost_and_anima_burn_hooks() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     metal_fixture.players.p1.fate_strategies = vec![128];
@@ -781,6 +831,8 @@ fn fate_strategy_on_play_family_slot_cost_and_anima_burn_hooks() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     eighth_fixture.players.p1.active_slot_count = 8;
@@ -800,6 +852,8 @@ fn fate_strategy_on_play_family_slot_cost_and_anima_burn_hooks() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     hp_cost_fixture.players.p1.fate_strategies = vec![153];
@@ -816,6 +870,8 @@ fn fate_strategy_on_play_family_slot_cost_and_anima_burn_hooks() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     tear_fixture.players.p1.initial_anima = 6;
@@ -847,6 +903,8 @@ fn card_402_odd_slot_repeats_the_next_cloud_sword_without_fate_strategies() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.active_slot_count = 2;
@@ -889,6 +947,8 @@ fn card_437_physique_uses_lose_hp_divided_by_param() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.active_slot_count = 1;
@@ -920,6 +980,8 @@ fn last_turn_start_hp_samples_after_first_actor_opening_damage() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let state = ReplayState::test_from_fixture(&fixture);
@@ -948,6 +1010,8 @@ fn card_3000014_applies_negative_percent_loss_as_heal() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -976,6 +1040,8 @@ fn card_176_halves_with_signed_ceil_so_negative_hp_heals() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);

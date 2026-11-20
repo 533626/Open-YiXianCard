@@ -40,6 +40,8 @@ fn plum_blossom_twice_grants_repeat_buff_from_mei_kai_er_du() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.first_player_side = PlayerSide::P2;
@@ -73,6 +75,8 @@ fn repeated_card_effects_mark_used_after_each_complete_effect() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.base_max_hp = 100;
@@ -109,6 +113,8 @@ fn temporary_upgrades_wait_until_anima_cost_succeeds() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut paint = ReplayState::test_from_fixture(&paint_fixture);
@@ -135,6 +141,8 @@ fn temporary_upgrades_wait_until_anima_cost_succeeds() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut generating = ReplayState::test_from_fixture(&generating_fixture);
@@ -164,6 +172,8 @@ fn paint_finishing_touch_does_not_upgrade_no_upgrade_sword_embryo() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 28,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p2.base_max_hp = 100;
@@ -195,6 +205,8 @@ fn meditation_pays_anima_shortage_before_the_card_is_rejected() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.character_id = Some(4_000_003);
@@ -225,6 +237,8 @@ fn execute_internal_card_transforms_wait_until_printed_cost_succeeds() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut replica_state = ReplayState::test_from_fixture(&replica_fixture);
@@ -250,6 +264,8 @@ fn execute_internal_card_transforms_wait_until_printed_cost_succeeds() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     ordered_fixture.players.p1.active_slot_count = 2;
@@ -289,6 +305,8 @@ fn execute_internal_card_transforms_wait_until_printed_cost_succeeds() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     tune_hound_fixture.players.p1.active_slot_count = 2;
@@ -321,6 +339,8 @@ fn generating_upgrade_precedes_paint_and_alchemy_transforms() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.initial_anima = 1;
@@ -351,6 +371,8 @@ fn alchemy_life_transfer_waits_until_printed_cost_succeeds() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -382,6 +404,8 @@ fn transformed_cloud_and_beng_mindset_hooks_run_per_effect() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.talents = vec![15];
@@ -420,6 +444,8 @@ fn temporary_cloud_hooks_run_but_beng_mindset_and_virtual_chain_stay_distinct() 
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     fixture.players.p1.talents = vec![14, 15];
@@ -450,6 +476,8 @@ fn generating_interaction_upgrade_respects_no_upgrade_cards() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -476,6 +504,8 @@ fn dan_ka_gong_ji_ji_shu_persists_across_turn_end_attack_and_triggers_heaven_cyc
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -516,6 +546,8 @@ fn paint_finishing_touch_runs_before_frenzy_sword_upgrade_and_blocks_it() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -540,6 +572,8 @@ fn metal_return_edge_state(with_dream_five_elements: bool) -> ReplayState {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -589,6 +623,8 @@ fn earth_shake_halves_defense_only_with_earth_activated() {
                 actor_turn_count: 1,
                 hp_delta_p1_minus_p2: 0,
                 final_hp: None,
+                final_life: None,
+                life_damage: None,
             },
         );
         let mut state = ReplayState::test_from_fixture(&fixture);
@@ -618,6 +654,8 @@ fn dream_counter_shock_reflects_after_frenzy_sword_lifesteal() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -663,6 +701,8 @@ fn run_stance_switch_case(case: &StanceSwitchCase) {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let mut state = ReplayState::test_from_fixture(&fixture);
@@ -700,6 +740,8 @@ fn second_actor_opening_reads_deck_downgraded_by_first_actor() {
             actor_turn_count: 1,
             hp_delta_p1_minus_p2: 0,
             final_hp: None,
+            final_life: None,
+            life_damage: None,
         },
     );
     let base_max_hp = {
