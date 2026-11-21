@@ -247,8 +247,13 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             local: fresh_invocation_local(),
         };
         if self.effect_invocation_stack.is_empty() {
-            let pending = self.actor(actor_side).sword.pending_sword_intent_outside_card;
-            self.actor_mut(actor_side).sword.pending_sword_intent_outside_card = 0;
+            let pending = self
+                .actor(actor_side)
+                .sword
+                .pending_sword_intent_outside_card;
+            self.actor_mut(actor_side)
+                .sword
+                .pending_sword_intent_outside_card = 0;
             frame.local.borrow_mut().pending_sword_intent = pending;
         }
         self.effect_invocation_stack.push(frame);

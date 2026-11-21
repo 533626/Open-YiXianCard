@@ -1222,12 +1222,17 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             0
         };
         let next_attack_wound_bonus = if wound_triggered {
-            self.actor(intent.actor_side).turn.next_attack_wound_bonus.max(0)
+            self.actor(intent.actor_side)
+                .turn
+                .next_attack_wound_bonus
+                .max(0)
         } else {
             0
         };
         if next_attack_wound_bonus > 0 {
-            self.actor_mut(intent.actor_side).turn.next_attack_wound_bonus = 0;
+            self.actor_mut(intent.actor_side)
+                .turn
+                .next_attack_wound_bonus = 0;
         }
         remaining += wound
             + if wound_triggered {
@@ -1241,7 +1246,8 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         if wound_triggered && intent.post_wound_multiplier_percent != 100 {
             remaining = remaining * intent.post_wound_multiplier_percent.max(0) / 100;
         }
-        let hp_receipt = self.mutate_actor_hp(intent.target, -remaining, false, intent.ignore_guard);
+        let hp_receipt =
+            self.mutate_actor_hp(intent.target, -remaining, false, intent.ignore_guard);
         if consume_zhu_chen_bu && hp_receipt.prevention != Some(super::HpMutationPrevention::Guard)
         {
             let actual_wound = (-hp_receipt.applied).max(0);

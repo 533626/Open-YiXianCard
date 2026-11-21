@@ -311,15 +311,18 @@ mod tests {
         // Return value is the action-again flag (false here), not success.
         let _ = state.apply_temporary_card_effect(PlayerSide::P1, &seed, 0);
         assert!(state.evaluation_error.is_none());
-        assert_eq!((state.p1.core.hp, state.p2.core.hp, state.p1.core.defense), hp_before);
+        assert_eq!(
+            (state.p1.core.hp, state.p2.core.hp, state.p1.core.defense),
+            hp_before
+        );
     }
 
     #[test]
     fn temporary_scope_excluded_card_applies_printed_defense() {
         // 293 (幻·灵犀剑阵) likewise has no Card_* class; its printed
         // defense (2) applies through FallbackCardAction when copied.
-        let card = super::super::original_card_definition_by_id(293)
-            .expect("missing 293 definition");
+        let card =
+            super::super::original_card_definition_by_id(293).expect("missing 293 definition");
         let mut state = state_with_active_card(basic_attack_test_card());
         state.fail_on_missing_decision = true;
         let def_before = state.p1.core.defense;

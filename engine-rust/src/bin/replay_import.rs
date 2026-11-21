@@ -522,7 +522,11 @@ fn build_fixture(record: &Value, battle: &Value) -> Result<Value, String> {
     expected.insert("winnerSide".to_string(), json!(winner_side));
     expected.insert("actorTurnCount".to_string(), json!(actor_turn_count));
     expected.insert("hpDeltaP1MinusP2".to_string(), json!(hp_delta));
-    let loser_public = if winner_side == "p1" { p2_public } else { p1_public };
+    let loser_public = if winner_side == "p1" {
+        p2_public
+    } else {
+        p1_public
+    };
     let loser_pre = loser_public
         .get("lastRound")
         .and_then(|round| round.get("life"))
@@ -531,7 +535,10 @@ fn build_fixture(record: &Value, battle: &Value) -> Result<Value, String> {
         let p1_end = int_value(p1_public.get("life"));
         let p2_end = int_value(p2_public.get("life"));
         if let (Some(p1_life), Some(p2_life)) = (p1_end, p2_end) {
-            expected.insert("finalLife".to_string(), json!({"p1": p1_life, "p2": p2_life}));
+            expected.insert(
+                "finalLife".to_string(),
+                json!({"p1": p1_life, "p2": p2_life}),
+            );
         }
         if let Some(dealt) = int_value(battle.get("lifeDamage")) {
             expected.insert("lifeDamage".to_string(), json!(dealt));

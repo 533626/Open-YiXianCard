@@ -2,7 +2,10 @@
 
 use super::active_mechanisms;
 use super::effect_invocation;
-use super::{ActiveMechanisms, BattleError, PlayerSide, ReplayCardExecution, ReplayDecisionEvent, ReplayObservationRuntime, ReplayPlayer, ReplayTerminationCause, TraceAttributionBlock};
+use super::{
+    ActiveMechanisms, BattleError, PlayerSide, ReplayCardExecution, ReplayDecisionEvent,
+    ReplayObservationRuntime, ReplayPlayer, ReplayTerminationCause, TraceAttributionBlock,
+};
 
 #[derive(Clone)]
 pub(crate) struct ReplayState<const OBSERVE: bool = true> {
@@ -59,21 +62,30 @@ impl<const OBSERVE: bool> std::fmt::Debug for ReplayState<OBSERVE> {
             .field("initial_hand_card_ids", &self.initial_hand_card_ids)
             .field("synthetic_decision_seed", &self.synthetic_decision_seed)
             .field("synthetic_decision_sides", &self.synthetic_decision_sides)
-            .field("synthetic_decision_fallback_seed", &self.synthetic_decision_fallback_seed)
+            .field(
+                "synthetic_decision_fallback_seed",
+                &self.synthetic_decision_fallback_seed,
+            )
             .field("robust_decisions", &self.robust_decisions)
             .field("decision_occurrence", &self.decision_occurrence)
             .field("card_execution_occurrence", &self.card_execution_occurrence)
             .field("current_card_execution", &self.current_card_execution)
             .field("decision_events", &self.decision_events)
             .field("capture_decision_events", &self.capture_decision_events)
-            .field("uncaptured_synthetic_seeds", &self.uncaptured_synthetic_seeds)
+            .field(
+                "uncaptured_synthetic_seeds",
+                &self.uncaptured_synthetic_seeds,
+            )
             .field("effect_invocation_stack", &self.effect_invocation_stack)
             .field("attribution_block", &self.attribution_block)
             .field("fail_on_missing_decision", &self.fail_on_missing_decision)
             .field("evaluation_error", &self.evaluation_error)
             .field("observation", &self.observation)
             .field("termination_cause", &self.termination_cause)
-            .field("completed_checkpoint_count", &self.completed_checkpoint_count)
+            .field(
+                "completed_checkpoint_count",
+                &self.completed_checkpoint_count,
+            )
             .finish()
     }
 }

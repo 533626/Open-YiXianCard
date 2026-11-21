@@ -98,7 +98,9 @@ fn power_loss_grass_from_first_actor_ignores_not_yet_granted_gun_stance() {
     // 206 正常抵扣 1 层。HF 锚点：pa_769a28d0、
     // pa_48411345 的 cp0 减攻 1 vs 引擎 0。
     let mut owner = player();
-    owner.permanent_buff_temp_datas.insert("10018".to_string(), 1);
+    owner
+        .permanent_buff_temp_datas
+        .insert("10018".to_string(), 1);
     let mut recipient = player();
     recipient.character_id = Some(4_000_005);
     recipient.xian_mo_strategies = vec![7111];
@@ -117,7 +119,9 @@ fn power_loss_grass_from_second_actor_is_reduced_by_granted_gun_stance() {
     recipient.xian_mo_strategies = vec![7111];
     recipient.talents = vec![206];
     let mut owner = player();
-    owner.permanent_buff_temp_datas.insert("10018".to_string(), 1);
+    owner
+        .permanent_buff_temp_datas
+        .insert("10018".to_string(), 1);
 
     let state = ReplayState::test_from_fixture(&fixture(recipient, owner));
 

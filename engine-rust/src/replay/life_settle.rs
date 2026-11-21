@@ -117,13 +117,21 @@ fn cal_base_damage(round: i64, hp_gap: i64, fast: bool, fate_21: bool, xm_2011: 
     let num = if fast { num * 3 / 2 } else { num };
     // FateStrategyConfig 21 otherParams[0] = 1 (not TalentConfig 21's 3).
     let num = if fate_21 { (num - 1).max(1) } else { num };
-    if xm_2011 { (num - 1).max(1) } else { num }
+    if xm_2011 {
+        (num - 1).max(1)
+    } else {
+        num
+    }
 }
 
 fn resonance_effective_84(round: i64) -> Option<i64> {
     // 共鸣·历战不屈 (84): TalentResonanceConfig otherParams [2],
     // effectRound 6, no effectLevel gate.
-    if round >= 6 { Some(2) } else { None }
+    if round >= 6 {
+        Some(2)
+    } else {
+        None
+    }
 }
 
 /// Original `BattleCharacter.ShowDeathDamage`, state effects only. Returns
@@ -188,7 +196,8 @@ fn apply_death_damage(
         .into_iter()
         .find(|id| has(*id) && damage >= temp);
     if survival.is_some()
-        || (temp_count(loser.permanent_buff_temp_datas, BUFF_TIAN_YAN_HUA_SHEN) > 0 && damage >= temp)
+        || (temp_count(loser.permanent_buff_temp_datas, BUFF_TIAN_YAN_HUA_SHEN) > 0
+            && damage >= temp)
     {
         if temp <= 0 {
             return None;
@@ -203,12 +212,7 @@ fn apply_death_damage(
     {
         return Some((0, loser.battle_end_temp_life, None, true));
     }
-    Some((
-        damage,
-        loser.battle_end_temp_life - damage,
-        None,
-        false,
-    ))
+    Some((damage, loser.battle_end_temp_life - damage, None, false))
 }
 
 pub fn settle_battle_life(inputs: &LifeSettleInputs<'_>) -> Option<LifeSettleOutcome> {
@@ -261,9 +265,17 @@ pub fn settle_battle_life(inputs: &LifeSettleInputs<'_>) -> Option<LifeSettleOut
     };
     let actual_dealt = if loser.is_mirror { 0 } else { dealt };
     Some(LifeSettleOutcome {
-        final_life: FinalLife { p1: p1_end, p2: p2_end },
+        final_life: FinalLife {
+            p1: p1_end,
+            p2: p2_end,
+        },
         dealt_signed,
-        detail: LifeSettleDetail { base_damage: base, actual_dealt, survival_talent: survival, jiangsha_105: jiangsha },
+        detail: LifeSettleDetail {
+            base_damage: base,
+            actual_dealt,
+            survival_talent: survival,
+            jiangsha_105: jiangsha,
+        },
     })
 }
 
@@ -295,8 +307,19 @@ mod tests {
         }
     }
 
-    fn inputs<'a>(round: i64, game_mode: i64, p1: LifeSettleSideInputs<'a>, p2: LifeSettleSideInputs<'a>) -> LifeSettleInputs<'a> {
-        LifeSettleInputs { round: Some(round), game_mode: Some(game_mode), winner_side: PlayerSide::P1, p1, p2 }
+    fn inputs<'a>(
+        round: i64,
+        game_mode: i64,
+        p1: LifeSettleSideInputs<'a>,
+        p2: LifeSettleSideInputs<'a>,
+    ) -> LifeSettleInputs<'a> {
+        LifeSettleInputs {
+            round: Some(round),
+            game_mode: Some(game_mode),
+            winner_side: PlayerSide::P1,
+            p1,
+            p2,
+        }
     }
 
     #[test]
@@ -453,7 +476,10 @@ mod tests {
         };
         for mode in [13, 121, 16, 14, 11] {
             let (p1, p2) = mk();
-            assert!(settle_battle_life(&inputs(12, mode, p1, p2)).is_none(), "mode {mode}");
+            assert!(
+                settle_battle_life(&inputs(12, mode, p1, p2)).is_none(),
+                "mode {mode}"
+            );
         }
         let (p1, p2) = mk();
         let mut no_round = inputs(12, 2, p1, p2);

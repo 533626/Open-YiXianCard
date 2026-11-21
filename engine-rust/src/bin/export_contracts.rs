@@ -17,9 +17,11 @@ fn main() {
     };
     let dir = std::path::Path::new(dir);
     let result = if check {
-        yixian_engine::contracts::check(dir).map(|()| "wire contract schemas are current".to_string())
+        yixian_engine::contracts::check(dir)
+            .map(|()| "wire contract schemas are current".to_string())
     } else {
-        yixian_engine::contracts::write(dir).map(|()| format!("wrote wire contract schemas to {}", dir.display()))
+        yixian_engine::contracts::write(dir)
+            .map(|()| format!("wrote wire contract schemas to {}", dir.display()))
     };
     match result {
         Ok(message) => println!("{message}"),

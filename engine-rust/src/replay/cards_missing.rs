@@ -2,9 +2,9 @@ use super::cards_dream_mirage::DreamMirageValue;
 use super::flow_card_effect::{param0, param1, param2, param3};
 use super::original_config::original_card_realm_level;
 use super::support::{
-    active_neighbor_card, card_rarity, div_ceil_signed, element_from_card,
-    elements_in_card_name, is_element_generated_by,
-    neighbor_card as support_neighbor_card, normalized_base_id, opponent_side, other_param,
+    active_neighbor_card, card_rarity, div_ceil_signed, element_from_card, elements_in_card_name,
+    is_element_generated_by, neighbor_card as support_neighbor_card, normalized_base_id,
+    opponent_side, other_param,
 };
 use super::ReplayState;
 use crate::model::{CardDefinition, PlayerSide};
@@ -333,12 +333,10 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 // 已激活数 × otherParams[0]。相邻按 GetPreviousGrid/GetNextGrid 在
                 // unlockGrids 内回绕（含 FanZhuanChuPai 反向），即 active_neighbor。
                 self.apply_configured_anima(actor_side, card);
-                let previous =
-                    active_neighbor_card(self.actor(actor_side), slot, -1).cloned();
+                let previous = active_neighbor_card(self.actor(actor_side), slot, -1).cloned();
                 let next = active_neighbor_card(self.actor(actor_side), slot, 1).cloned();
                 if let (Some(previous), Some(next)) = (previous.as_ref(), next.as_ref()) {
-                    let fire_generates_all =
-                        self.actor(actor_side).identity.talents.contains(&137);
+                    let fire_generates_all = self.actor(actor_side).identity.talents.contains(&137);
                     let previous_elements = elements_in_card_name(previous);
                     let next_elements = elements_in_card_name(next);
                     let generated = previous_elements.iter().any(|a| {
@@ -348,10 +346,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                         })
                     });
                     if generated {
-                        for element in previous_elements
-                            .into_iter()
-                            .chain(next_elements)
-                        {
+                        for element in previous_elements.into_iter().chain(next_elements) {
                             self.activate_element(actor_side, element);
                         }
                         self.modify_extra_actions(actor_side, 1);
@@ -610,9 +605,12 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                     // Synthetic battle: server pick among realm>=4
                     // Pet/Artifact/MiShu cards (the card text's pool).
                     let options = super::original_config::synthetic_special_card_ids(4);
-                    self.consume_required_decision_or_synthetic(actor_side, 341, options, |state, opts| {
-                        state.synthetic_pick(actor_side, 341, opts)
-                    })
+                    self.consume_required_decision_or_synthetic(
+                        actor_side,
+                        341,
+                        options,
+                        |state, opts| state.synthetic_pick(actor_side, 341, opts),
+                    )
                     .unwrap_or(-1)
                 } else {
                     self.consume_optional_decision()
@@ -1021,9 +1019,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     /// 元婴以下显式 return false（BattleCharacter.cs:11509-11518），不授云海也不重触发。
     pub(super) fn card_triggers_opening(card: &CardDefinition) -> bool {
         let base_id = normalized_base_id(card);
-        if base_id == 1_000_086
-            && original_card_realm_level(card.id).unwrap_or(0) < 4
-        {
+        if base_id == 1_000_086 && original_card_realm_level(card.id).unwrap_or(0) < 4 {
             return false;
         }
         Self::card_has_opening_effect(base_id) && !matches!(base_id, 348 | 378 | 4_000_079)

@@ -135,9 +135,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 .identity
                 .xian_mo_strategies
                 .contains(&7118);
-            if (has_347 || has_7118)
-                && self.actor(actor_side).fate.hot_blood_to_qi_triggered <= 0
-            {
+            if (has_347 || has_7118) && self.actor(actor_side).fate.hot_blood_to_qi_triggered <= 0 {
                 self.actor_mut(actor_side).fate.hot_blood_to_qi_triggered = 1;
                 self.gain_anima(actor_side, 1);
                 if has_7118 {
@@ -663,12 +661,20 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     }
 
     /// Seeded uniform pick from `options` (synthetic server choice).
-    pub(super) fn synthetic_pick(&self, side: PlayerSide, card_id: i64, options: &[i64]) -> Option<i64> {
+    pub(super) fn synthetic_pick(
+        &self,
+        side: PlayerSide,
+        card_id: i64,
+        options: &[i64],
+    ) -> Option<i64> {
         let seed = self.synthetic_seed_for(side)?;
         if options.is_empty() {
             return None;
         }
-        let execution_occurrence = self.current_card_execution.map(|e| e.occurrence).unwrap_or(0);
+        let execution_occurrence = self
+            .current_card_execution
+            .map(|e| e.occurrence)
+            .unwrap_or(0);
         let index = seeded_decision_choice_index(
             seed,
             side,

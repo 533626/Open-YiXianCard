@@ -89,7 +89,9 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         #[cfg(all(feature = "perf-ceiling", not(target_arch = "wasm32")))]
         let _timer = crate::performance::Timer::new(9);
         self.apply_card_classification_completed_hooks(actor_side, card);
-        if self.active_mechanisms.has(super::ActiveMechanisms::BENG_QUAN)
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::BENG_QUAN)
             && self.actor(actor_side).beng.triggered_startled_touch > 0
         {
             self.actor_mut(actor_side).beng.triggered_startled_touch = 0;

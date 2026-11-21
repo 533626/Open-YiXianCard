@@ -196,8 +196,7 @@ pub(super) fn adapt_cheng_xin_card(
     let sharp_sword_pattern_penalty = if talents.contains(&30_094) { 2 } else { 0 };
     // Card_19.UpdateCardInfo：30096（无极）恒 +1 攻（num=1 后
     // cardConfig.attack += num），不以前置 92/20093 为条件。
-    let attack = card.attack.unwrap_or(0) + forged_sword_attack + sword_forging_bonus
-        + wuji_bonus
+    let attack = card.attack.unwrap_or(0) + forged_sword_attack + sword_forging_bonus + wuji_bonus
         - if stable_sword_edge { 2 } else { 0 }
         - sharp_sword_pattern_penalty
         - moon_shadow_penalty;

@@ -208,8 +208,7 @@ fn run() -> Result<(), String> {
                 (Side::P1, &o.p1_state, &r.p1),
                 (Side::P2, &o.p2_state, &r.p2),
             ] {
-                let original_snapshot =
-                    original_side_snapshot(original_state);
+                let original_snapshot = original_side_snapshot(original_state);
                 let compared = compare_side(side, &original_snapshot, rust_state, &map.entries);
                 side_diffs.extend(compared.core_diffs);
                 buff_side_diffs.extend(compared.buff_diffs);
@@ -326,9 +325,7 @@ fn run() -> Result<(), String> {
             terminal.winner_side.as_str(),
             terminal.actor_turn,
             terminal.hp_delta,
-            rust_end
-                .map(|end| end.actor.as_str())
-                .unwrap_or("?"),
+            rust_end.map(|end| end.actor.as_str()).unwrap_or("?"),
             rust_end
                 .map(|end| end.turn.to_string())
                 .unwrap_or_else(|| "?".to_string()),
@@ -396,15 +393,15 @@ fn run() -> Result<(), String> {
         || !terminal_exact;
 
     if let Some(json_path) = &options.json_path {
-    let report = case_report_json(
-        &options,
-        &trace_path,
-        &trace_sha256,
-        &run,
-        &fixture_path,
-        obs,
-        &archive,
-        rust_checkpoints.len(),
+        let report = case_report_json(
+            &options,
+            &trace_path,
+            &trace_sha256,
+            &run,
+            &fixture_path,
+            obs,
+            &archive,
+            rust_checkpoints.len(),
             compared_checkpoints,
             &core_diffs_all,
             (mapped_compared, only_original, only_rust, value_mismatch),
@@ -483,23 +480,28 @@ fn parse_args(trace_root: &Path) -> Result<Options, String> {
     let mut positionals = positionals.into_iter();
     let case_id = positionals.next();
     let Some(case_id) = case_id else {
-        return Err(
-            "usage: oracle_full_state_diff <caseId> [fromIdx] [toIdx] \
+        return Err("usage: oracle_full_state_diff <caseId> [fromIdx] [toIdx] \
              [--manifest <path>] [--trace <path>] [--json <report.json>] \
              [--batch <batchId>] [--run <runId>] [--fixture <fixture.json>]"
-                .to_string(),
-        );
+            .to_string());
     };
     let from = parse_index_arg(positionals.next(), "fromIdx", 0)?;
     let to = parse_index_arg(positionals.next(), "toIdx", 9999)?;
-    let default_manifest = trace_root.join("original-oracle-cases").join("oracle-manifest.json");
+    let default_manifest = trace_root
+        .join("original-oracle-cases")
+        .join("oracle-manifest.json");
     Ok(Options {
         case_id,
         from,
         to,
-        manifest_path: resolve_path(None, manifest_path.as_deref().unwrap_or(
-            default_manifest.to_str().expect("default manifest is utf-8"),
-        )),
+        manifest_path: resolve_path(
+            None,
+            manifest_path.as_deref().unwrap_or(
+                default_manifest
+                    .to_str()
+                    .expect("default manifest is utf-8"),
+            ),
+        ),
         trace_path: trace_path.map(|path| resolve_path(None, &path)),
         json_path: json_path.map(|path| resolve_path(None, &path)),
         batch_id,
@@ -536,12 +538,11 @@ fn json_quote(text: &str) -> String {
 }
 
 fn latest_trace_path(root: &Path) -> Result<PathBuf, String> {
-    let entries = std::fs::read_dir(root)
-        .map_err(|error| format!("readdir {}: {error}", root.display()))?;
+    let entries =
+        std::fs::read_dir(root).map_err(|error| format!("readdir {}: {error}", root.display()))?;
     let mut latest: Option<(PathBuf, std::time::SystemTime)> = None;
     for entry in entries {
-        let entry =
-            entry.map_err(|error| format!("readdir {}: {error}", root.display()))?;
+        let entry = entry.map_err(|error| format!("readdir {}: {error}", root.display()))?;
         let name = entry.file_name();
         let name = name.to_string_lossy();
         if !name.starts_with("yixian-trace-") || !name.ends_with(".jsonl") {
@@ -579,8 +580,8 @@ fn resolve_runtime_case_from_manifest(
             format!("read manifest {}: {error}", manifest_path.display())
         }
     })?;
-    let manifest: Value = serde_json::from_str(&text)
-        .map_err(|error| format!("manifest JSON error: {error}"))?;
+    let manifest: Value =
+        serde_json::from_str(&text).map_err(|error| format!("manifest JSON error: {error}"))?;
     let cases = manifest
         .get("cases")
         .and_then(Value::as_array)
@@ -600,7 +601,9 @@ fn fixture_path_from_runtime_case(
     fixture: &str,
 ) -> Result<PathBuf, String> {
     if Path::new(fixture).is_absolute() {
-        return Err(format!("{case_id} runtime fixture path must be repo-relative"));
+        return Err(format!(
+            "{case_id} runtime fixture path must be repo-relative"
+        ));
     }
     let path = resolve_path(Some(repo_root), fixture);
     let within = path == repo_root || path.starts_with(repo_root);
@@ -725,7 +728,10 @@ fn case_report_json(
         .map(|name| name.to_string_lossy().to_string())
         .unwrap_or_default();
     source.insert("traceFile".into(), Value::String(trace_file));
-    source.insert("traceSha256".into(), Value::String(trace_sha256.to_string()));
+    source.insert(
+        "traceSha256".into(),
+        Value::String(trace_sha256.to_string()),
+    );
     report.insert("source".into(), Value::Object(source));
     let mut run_json = Map::new();
     run_json.insert("batchId".into(), Value::String(run.batch_id.clone()));
@@ -742,16 +748,17 @@ fn case_report_json(
     checkpoint_count.insert("rust".into(), Value::from(rust_checkpoint_count as u64));
     report.insert("checkpointCount".into(), Value::Object(checkpoint_count));
     let mut core = Map::new();
-    core.insert("compared".into(), Value::from((compared_checkpoints * 2 * 4) as u64));
+    core.insert(
+        "compared".into(),
+        Value::from((compared_checkpoints * 2 * 4) as u64),
+    );
     core.insert("mismatch".into(), Value::from(core_diffs_all.len() as u64));
     report.insert("core".into(), Value::Object(core));
     let mut mapped_buffs = Map::new();
     mapped_buffs.insert("compared".into(), Value::from(mapped_compared as u64));
     mapped_buffs.insert(
         "match".into(),
-        Value::from(
-            (mapped_compared - only_original - only_rust - value_mismatch) as u64,
-        ),
+        Value::from((mapped_compared - only_original - only_rust - value_mismatch) as u64),
     );
     mapped_buffs.insert("onlyOriginal".into(), Value::from(only_original as u64));
     mapped_buffs.insert("onlyRust".into(), Value::from(only_rust as u64));
@@ -866,19 +873,21 @@ fn sha256_hex(data: &[u8]) -> String {
             w[index] = u32::from_be_bytes([word[0], word[1], word[2], word[3]]);
         }
         for index in 16..64 {
-            let s0 = w[index - 15].rotate_right(7) ^ w[index - 15].rotate_right(18)
+            let s0 = w[index - 15].rotate_right(7)
+                ^ w[index - 15].rotate_right(18)
                 ^ (w[index - 15] >> 3);
-            let s1 = w[index - 2].rotate_right(17) ^ w[index - 2].rotate_right(19)
+            let s1 = w[index - 2].rotate_right(17)
+                ^ w[index - 2].rotate_right(19)
                 ^ (w[index - 2] >> 10);
-            w[index] = w[index - 16]
-                .wrapping_add(s0.wrapping_add(w[index - 7].wrapping_add(s1)));
+            w[index] = w[index - 16].wrapping_add(s0.wrapping_add(w[index - 7].wrapping_add(s1)));
         }
         let (mut a, mut b, mut c, mut d, mut e, mut f, mut g, mut hh) =
             (h[0], h[1], h[2], h[3], h[4], h[5], h[6], h[7]);
         for index in 0..64 {
             let s1 = e.rotate_right(6) ^ e.rotate_right(11) ^ e.rotate_right(25);
             let ch = (e & f) ^ ((!e) & g);
-            let temp1 = hh.wrapping_add(s1.wrapping_add(ch.wrapping_add(K[index].wrapping_add(w[index]))));
+            let temp1 =
+                hh.wrapping_add(s1.wrapping_add(ch.wrapping_add(K[index].wrapping_add(w[index]))));
             let s0 = a.rotate_right(2) ^ a.rotate_right(13) ^ a.rotate_right(22);
             let maj = (a & b) ^ (a & c) ^ (b & c);
             let temp2 = s0.wrapping_add(maj);

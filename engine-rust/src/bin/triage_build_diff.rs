@@ -27,19 +27,22 @@ const CURRENT_SEASON_NOTE: &str = "0/9/10";
 
 mod sha256 {
     const K: [u32; 64] = [
-        0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
-        0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
-        0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
-        0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
-        0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
-        0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
-        0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
-        0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2,
+        0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4,
+        0xab1c5ed5, 0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe,
+        0x9bdc06a7, 0xc19bf174, 0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f,
+        0x4a7484aa, 0x5cb0a9dc, 0x76f988da, 0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7,
+        0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967, 0x27b70a85, 0x2e1b2138, 0x4d2c6dfc,
+        0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85, 0xa2bfe8a1, 0xa81a664b,
+        0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070, 0x19a4c116,
+        0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+        0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7,
+        0xc67178f2,
     ];
 
     pub fn digest(data: &[u8]) -> [u8; 32] {
         let mut h: [u32; 8] = [
-            0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19,
+            0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab,
+            0x5be0cd19,
         ];
         let mut msg = data.to_vec();
         let bit_len = (data.len() as u64) * 8;
@@ -258,8 +261,16 @@ fn parse_args(argv: &[String]) -> Args {
     }
     Args {
         diff_path: resolve_path(&diff_path),
-        corpus_dir: if corpus_dir.is_empty() { String::new() } else { resolve_path(&corpus_dir) },
-        index_path: if index_path.is_empty() { String::new() } else { resolve_path(&index_path) },
+        corpus_dir: if corpus_dir.is_empty() {
+            String::new()
+        } else {
+            resolve_path(&corpus_dir)
+        },
+        index_path: if index_path.is_empty() {
+            String::new()
+        } else {
+            resolve_path(&index_path)
+        },
         refresh_index,
         json,
     }
@@ -310,7 +321,11 @@ impl Sources {
         self.changed.as_deref().unwrap_or(&[])
     }
     fn all(&self) -> Vec<&str> {
-        self.added().iter().chain(self.changed().iter()).map(String::as_str).collect()
+        self.added()
+            .iter()
+            .chain(self.changed().iter())
+            .map(String::as_str)
+            .collect()
     }
 }
 
@@ -333,9 +348,10 @@ struct BuildDiff {
 impl BuildDiff {
     fn sources(&self) -> Sources {
         // sources 缺失时 TS 会读到 undefined?.added → 崩溃；这里按空表处理（真实 diff 恒有）。
-        self.sources
-            .clone()
-            .unwrap_or(Sources { added: None, changed: None })
+        self.sources.clone().unwrap_or(Sources {
+            added: None,
+            changed: None,
+        })
     }
     fn steam_build(info: &BuildInfo) -> &str {
         info.steam_build.as_deref().unwrap_or("undefined")
@@ -391,7 +407,12 @@ fn deserialize_corpus_index(value: SerializedCorpusIndex, corpus_dir: &str) -> O
     if value.schema_version != 1 || value.corpus_dir != corpus_dir {
         return None;
     }
-    let decode = |entries: Vec<(i64, Vec<i64>)>| entries.into_iter().map(|(id, seasons)| (id, seasons.into_iter().collect())).collect();
+    let decode = |entries: Vec<(i64, Vec<i64>)>| {
+        entries
+            .into_iter()
+            .map(|(id, seasons)| (id, seasons.into_iter().collect()))
+            .collect()
+    };
     Some(CorpusIndex {
         fixture_count: value.fixture_count,
         fingerprint: value.fingerprint,
@@ -407,7 +428,11 @@ fn collect_fixtures(root: &str) -> io::Result<Vec<String>> {
     fn walk(dir: &str, out: &mut Vec<String>) -> io::Result<()> {
         for entry in fs::read_dir(dir)? {
             let entry = entry?;
-            let path = format!("{}/{}", dir.trim_end_matches('/'), entry.file_name().to_string_lossy());
+            let path = format!(
+                "{}/{}",
+                dir.trim_end_matches('/'),
+                entry.file_name().to_string_lossy()
+            );
             if entry.metadata().map(|m| m.is_dir()).unwrap_or(false) {
                 walk(&path, out)?;
             } else if entry.file_name().to_string_lossy().ends_with(".json") {
@@ -432,7 +457,9 @@ fn corpus_fingerprint(root: &str, paths: &[String]) -> io::Result<String> {
         let (secs, nanos) = match info.modified()? {
             std::time::SystemTime::UNIX_EPOCH => (0i64, 0u32),
             t => {
-                let d = t.duration_since(std::time::SystemTime::UNIX_EPOCH).unwrap_or_default();
+                let d = t
+                    .duration_since(std::time::SystemTime::UNIX_EPOCH)
+                    .unwrap_or_default();
                 (d.as_secs() as i64, d.subsec_nanos())
             }
         };
@@ -480,8 +507,12 @@ fn build_corpus_index(corpus_dir: &str) -> io::Result<CorpusIndex> {
     let fixture_paths = collect_fixtures(corpus_dir)?;
     let fingerprint = corpus_fingerprint(corpus_dir, &fixture_paths)?;
     for path in &fixture_paths {
-        let Ok(text) = fs::read_to_string(path) else { continue };
-        let Ok(fixture) = serde_json::from_str::<serde_json::Value>(&text) else { continue };
+        let Ok(text) = fs::read_to_string(path) else {
+            continue;
+        };
+        let Ok(fixture) = serde_json::from_str::<serde_json::Value>(&text) else {
+            continue;
+        };
         // fixture?.source?.seasonMechanism ?? 0
         let season_f = fixture
             .get("source")
@@ -495,7 +526,9 @@ fn build_corpus_index(corpus_dir: &str) -> io::Result<CorpusIndex> {
         fixture_count += 1;
 
         for side in ["p1", "p2"] {
-            let Some(player) = fixture.get("players").and_then(|p| p.get(side)) else { continue };
+            let Some(player) = fixture.get("players").and_then(|p| p.get(side)) else {
+                continue;
+            };
 
             if let Some(cards) = player.get("cards").and_then(|v| v.as_array()) {
                 for card in cards {
@@ -522,7 +555,10 @@ fn build_corpus_index(corpus_dir: &str) -> io::Result<CorpusIndex> {
                 }
             }
             // pendings 是已抽出但未选中的候选，同样证明该条目在当前赛季可达。
-            if let Some(selections) = player.get("fateStrategySelections").and_then(|v| v.as_array()) {
+            if let Some(selections) = player
+                .get("fateStrategySelections")
+                .and_then(|v| v.as_array())
+            {
                 for selection in selections {
                     if let Some(pendings) = selection.get("pendings").and_then(|v| v.as_array()) {
                         for id in pendings {
@@ -567,14 +603,20 @@ fn build_corpus_index(corpus_dir: &str) -> io::Result<CorpusIndex> {
 // ---------- 判定 ----------
 
 fn load_executable_base_ids(repo_root: &str) -> HashSet<i64> {
-    let text = fs::read_to_string(format!("{repo_root}/engine-rust/data/card-effect-catalog.json"))
-        .unwrap_or_else(|e| fatal(&format!("card-effect-catalog.json read failed: {e}")));
-    let catalog: serde_json::Value =
-        serde_json::from_str(&text).unwrap_or_else(|e| fatal(&format!("card-effect-catalog.json parse failed: {e}")));
+    let text = fs::read_to_string(format!(
+        "{repo_root}/engine-rust/data/card-effect-catalog.json"
+    ))
+    .unwrap_or_else(|e| fatal(&format!("card-effect-catalog.json read failed: {e}")));
+    let catalog: serde_json::Value = serde_json::from_str(&text)
+        .unwrap_or_else(|e| fatal(&format!("card-effect-catalog.json parse failed: {e}")));
     catalog
         .get("executableBaseIds")
         .and_then(|v| v.as_array())
-        .map(|ids| ids.iter().filter_map(|v| canonical_id(js_number(v))).collect())
+        .map(|ids| {
+            ids.iter()
+                .filter_map(|v| canonical_id(js_number(v)))
+                .collect()
+        })
         .unwrap_or_default()
 }
 
@@ -651,7 +693,11 @@ fn classify(
         return None;
     }
     // 卡表里 401/10401/20401 是同一张卡的三个稀有度变体，按 base id 归并成一条。
-    let key = if table == "cards" { normalize_base_id(raw_key) } else { raw_key };
+    let key = if table == "cards" {
+        normalize_base_id(raw_key)
+    } else {
+        raw_key
+    };
 
     let source_touched = match_source_file(table, &js_num_string(key), sources);
     let hit_map = match (table, corpus) {
@@ -688,7 +734,10 @@ fn classify(
     }
     if corpus_hits > 0 {
         entry.verdict = "reachable";
-        entry.reason = format!("当前赛季语料出现（season {}）", join_seasons(&entry.seasons));
+        entry.reason = format!(
+            "当前赛季语料出现（season {}）",
+            join_seasons(&entry.seasons)
+        );
         return Some(entry);
     }
     if let Some(source) = &entry.source_touched {
@@ -728,7 +777,10 @@ fn find_repo_root() -> String {
         }
     }
     for dir in candidates {
-        if Path::new(&dir).join("engine-rust/data/card-effect-catalog.json").is_file() {
+        if Path::new(&dir)
+            .join("engine-rust/data/card-effect-catalog.json")
+            .is_file()
+        {
             return dir;
         }
     }
@@ -767,8 +819,8 @@ fn main() {
     let repo_root = find_repo_root();
     let diff_text = fs::read_to_string(&args.diff_path)
         .unwrap_or_else(|e| fatal(&format!("diff read failed: {}: {e}", args.diff_path)));
-    let diff: BuildDiff =
-        serde_json::from_str(&diff_text).unwrap_or_else(|e| fatal(&format!("diff parse failed: {e}")));
+    let diff: BuildDiff = serde_json::from_str(&diff_text)
+        .unwrap_or_else(|e| fatal(&format!("diff parse failed: {e}")));
     let executable = load_executable_base_ids(&repo_root);
     let sources = diff.sources();
 
@@ -810,10 +862,23 @@ fn main() {
     let mut entries: Vec<Entry> = Vec::new();
     let mut seen: HashSet<String> = HashSet::new();
     for table in ["cards", "buffs", "fateStrategies"] {
-        let Some(Some(table_diff)) = diff.tables.get(table) else { continue };
-        let push = |record: &DiffRecord, kind: &'static str, entries: &mut Vec<Entry>, seen: &mut HashSet<String>| {
-            let Some(entry) = classify(table, record, kind, &executable, corpus.as_ref(), &sources) else { return };
-            let dedupe_key = format!("{}/{}/{}", entry.table, js_num_string(entry.key), entry.kind);
+        let Some(Some(table_diff)) = diff.tables.get(table) else {
+            continue;
+        };
+        let push = |record: &DiffRecord,
+                    kind: &'static str,
+                    entries: &mut Vec<Entry>,
+                    seen: &mut HashSet<String>| {
+            let Some(entry) = classify(table, record, kind, &executable, corpus.as_ref(), &sources)
+            else {
+                return;
+            };
+            let dedupe_key = format!(
+                "{}/{}/{}",
+                entry.table,
+                js_num_string(entry.key),
+                entry.kind
+            );
             if seen.insert(dedupe_key) {
                 entries.push(entry);
             }
@@ -829,10 +894,16 @@ fn main() {
     // 源码改了但配置表没动的卡不会出现在任何 table 里，而这类纯行为变更恰恰最危险：
     // 配置无差异，回放却可能静默改变。从 sources 反向补齐。
     for file in sources.added().iter().chain(sources.changed().iter()) {
-        let Some(raw) = match_card_source_file(file) else { continue };
+        let Some(raw) = match_card_source_file(file) else {
+            continue;
+        };
         let key = normalize_base_id(raw as f64);
-        let Some(key_i) = canonical_id(key) else { continue };
-        if seen.contains(&format!("cards/{key_i}/added")) || seen.contains(&format!("cards/{key_i}/changed")) {
+        let Some(key_i) = canonical_id(key) else {
+            continue;
+        };
+        if seen.contains(&format!("cards/{key_i}/added"))
+            || seen.contains(&format!("cards/{key_i}/changed"))
+        {
             continue;
         }
         seen.insert(format!("cards/{key_i}/source-only"));
@@ -844,12 +915,19 @@ fn main() {
             key,
             name: None,
             kind: "changed",
-            verdict: if reachable { "reachable" } else { "needs-review" },
+            verdict: if reachable {
+                "reachable"
+            } else {
+                "needs-review"
+            },
             corpus_hits,
             seasons: seasons.clone(),
             source_touched: Some(file.clone()),
             reason: if reachable {
-                format!("{file} 行为变更，配置表无差异，当前赛季语料出现（season {}）", join_seasons(&seasons))
+                format!(
+                    "{file} 行为变更，配置表无差异，当前赛季语料出现（season {}）",
+                    join_seasons(&seasons)
+                )
             } else {
                 format!("{file} 行为变更，但配置表无差异——纯逻辑改动需人工核对")
             },
@@ -862,10 +940,8 @@ fn main() {
     for (idx, entry) in entries.iter().enumerate() {
         buckets.entry(entry.verdict).or_default().push(idx);
     }
-    let bucket = |verdict: &str| -> &[usize] {
-        buckets.get(verdict).map(Vec::as_slice).unwrap_or(&[])
-    };
-
+    let bucket =
+        |verdict: &str| -> &[usize] { buckets.get(verdict).map(Vec::as_slice).unwrap_or(&[]) };
 
     if args.json {
         let out = JsonOut {
@@ -882,7 +958,10 @@ fn main() {
             },
             entries,
         };
-        println!("{}", serde_json::to_string_pretty(&out).expect("entry json serialize"));
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&out).expect("entry json serialize")
+        );
     } else {
         let header = format!(
             "build {} -> {}",
@@ -890,7 +969,10 @@ fn main() {
             BuildDiff::steam_build(&diff.new)
         );
         let corpus_note = match &corpus {
-            Some(c) => format!("语料 {} 份（仅计当前赛季 {CURRENT_SEASON_NOTE}）", c.fixture_count),
+            Some(c) => format!(
+                "语料 {} 份（仅计当前赛季 {CURRENT_SEASON_NOTE}）",
+                c.fixture_count
+            ),
             None => "无语料索引：可达性未判定，全部条目落入待审".to_string(),
         };
         println!("{header}\n{corpus_note}\n");
@@ -902,7 +984,10 @@ fn main() {
             ("implemented", "已实现（无需动作）"),
         ];
         for (verdict, label) in LABELS {
-            let list: &[usize] = buckets.get(verdict).map(Vec::as_slice).unwrap_or_else(|| empty_ref());
+            let list: &[usize] = buckets
+                .get(verdict)
+                .map(Vec::as_slice)
+                .unwrap_or_else(|| empty_ref());
             println!("## {label}: {}", list.len());
             // 已实现与零覆盖不需要逐条读，列出来只会淹没真正要看的条目。
             if verdict == "implemented" || verdict == "zero-coverage" {

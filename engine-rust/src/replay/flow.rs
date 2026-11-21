@@ -1400,9 +1400,11 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         let shadow_strike_skip =
             player.fate.instant_shadow_strike > 0 && drawn.card.hp_cost.unwrap_or(0) > 0;
         let skipped_opening = drawn.skipped_opening_slots.iter().any(|&skipped_slot| {
-            player.deck.slots.get(skipped_slot).is_some_and(|slot| {
-                Self::card_triggers_opening_on_skip(&slot.card)
-            })
+            player
+                .deck
+                .slots
+                .get(skipped_slot)
+                .is_some_and(|slot| Self::card_triggers_opening_on_skip(&slot.card))
         });
         if !shadow_strike_skip && !skipped_opening {
             let was_used_before_effect = player
@@ -1554,6 +1556,17 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             .is_none()
         {
             return false;
+        }
+        // Settlement follows usedCards (per-slot first use): a repeat doubles
+        // the trigger only on the slot's first play. Later-cycle repeats
+        // (slots already used) are invisible to settlement (灵田 7 executions
+        // → 2 grants); 梅开→10434 first-use adjacency doubles 7/7.
+        if invocation_kind == EffectInvocationKind::Repeated && !ctx.was_slot_used {
+            let def = effect_card.definition();
+            self.actor_mut(actor_side).chance.repeated_settle_plays.push((
+                super::support::normalized_base_id(def),
+                super::support::card_rarity(def),
+            ));
         }
         let public_beng_for_effect = repetition == 0 && ctx.public_adjacent_beng_quan;
         // ExecuteEffect snapshots 连云 independently at each entry. A prior

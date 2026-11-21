@@ -241,11 +241,7 @@ fn dream_water_doubling_heals_before_internal_injury_tick() {
     state.p1.elements.water_momentum = 9;
     state.p1.fate.quiet_mindset = 4;
     state.p1.status.internal_injury = 30;
-    state.modify_dream_mirage_value(
-        PlayerSide::P1,
-        DreamMirageValue::TemporaryWaterDouble,
-        1,
-    );
+    state.modify_dream_mirage_value(PlayerSide::P1, DreamMirageValue::TemporaryWaterDouble, 1);
     state.apply_turn_start_phases(PlayerSide::P1);
     assert_eq!(state.p1.core.anima, 30);
     assert_eq!(state.p1.elements.water_momentum, 18);
@@ -275,11 +271,7 @@ fn dream_mystic_footwork_suppressed_during_opponent_turn_end_water() {
     state.p2.core.max_hp = 30;
     state.p2.elements.water_momentum = 3;
     state.p1.status.blood_calamity = 3;
-    state.modify_dream_mirage_value(
-        PlayerSide::P1,
-        DreamMirageValue::DreamMysticFootwork,
-        2,
-    );
+    state.modify_dream_mirage_value(PlayerSide::P1, DreamMirageValue::DreamMysticFootwork, 2);
     state.modify_dream_mirage_value(
         PlayerSide::P1,
         DreamMirageValue::DreamMysticFootworkSuppressed,
@@ -414,13 +406,7 @@ fn card_277_new_configured_heal_flows_into_settlement() {
         let battle = fixture(deck(card.clone()), deck(basic_attack()));
         let mut state = ReplayState::test_from_fixture(&battle);
         state.p1.core.hp = 10;
-        state.apply_synthetic_oracle_dream_mirage_card_effect(
-            PlayerSide::P1,
-            &card,
-            0,
-            false,
-            277,
-        );
+        state.apply_synthetic_oracle_dream_mirage_card_effect(PlayerSide::P1, &card, 0, false, 277);
         assert_eq!(state.p1.core.hp, 10 + expected, "card {id} heal");
     }
 }

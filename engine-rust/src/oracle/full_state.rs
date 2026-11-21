@@ -186,10 +186,11 @@ pub fn validate_original_oracle_contract_buff_declarations(
     let expected_source_build = build_profiles
         .get("projectTargetSteamBuild")
         .and_then(Value::as_str)
-        .ok_or_else(|| "original-build-profiles.json has no authoritative Steam build".to_string())?;
-    let expected_source = format!(
-        "research/original-game/extracted/build-{expected_source_build}/BuffConfig.json"
-    );
+        .ok_or_else(|| {
+            "original-build-profiles.json has no authoritative Steam build".to_string()
+        })?;
+    let expected_source =
+        format!("research/original-game/extracted/build-{expected_source_build}/BuffConfig.json");
     let buff_config_evidence = evidence
         .get("files")
         .and_then(Value::as_array)
@@ -203,7 +204,9 @@ pub fn validate_original_oracle_contract_buff_declarations(
         && modeled.get("sourceSha256").and_then(Value::as_str)
             == buff_config_evidence.get("sha256").and_then(Value::as_str);
     if !declared_ok {
-        return Err("modeled original Buff declaration has an unsupported schema/build/source".into());
+        return Err(
+            "modeled original Buff declaration has an unsupported schema/build/source".into(),
+        );
     }
     let declarations = modeled
         .get("declarations")
@@ -497,8 +500,11 @@ fn side_projection(
     observable: &[&OriginalOracleContractBuffDeclaration],
     map: &RustBuffKeyMap,
 ) -> FullStateSideProjection {
-    let snapshot_value =
-        |field: &str| snapshot.get(field).expect("extended snapshot fields are const");
+    let snapshot_value = |field: &str| {
+        snapshot
+            .get(field)
+            .expect("extended snapshot fields are const")
+    };
     let core = CoreResources {
         hp: snapshot_value("hp"),
         max_hp: snapshot_value("max_hp"),
@@ -514,8 +520,9 @@ fn side_projection(
         .iter()
         .map(|(field, rust_key)| (*field, snapshot_value(rust_key)))
         .collect();
-    let protocol = serde_json::from_value::<ProtocolSnapshot>(build_protocol_json(&protocol_values))
-        .expect("protocol projection builds from the const field list");
+    let protocol =
+        serde_json::from_value::<ProtocolSnapshot>(build_protocol_json(&protocol_values))
+            .expect("protocol projection builds from the const field list");
     let modeled_buffs = OrderedNumberRecord(
         observable
             .iter()
@@ -706,8 +713,9 @@ fn project_original_side(
             ("anima", anima),
         ])
         .collect();
-    let protocol = serde_json::from_value::<ProtocolSnapshot>(build_protocol_json(&protocol_values))
-        .expect("protocol projection covers every const field");
+    let protocol =
+        serde_json::from_value::<ProtocolSnapshot>(build_protocol_json(&protocol_values))
+            .expect("protocol projection covers every const field");
     let declared_ids: BTreeSet<String> = declarations
         .iter()
         .map(|declaration| declaration.original_id.to_string())
@@ -727,7 +735,12 @@ fn project_original_side(
         modeled_buffs: OrderedNumberRecord(
             declarations
                 .iter()
-                .map(|declaration| (declaration.original_id.to_string(), buff(declaration.original_id)))
+                .map(|declaration| {
+                    (
+                        declaration.original_id.to_string(),
+                        buff(declaration.original_id),
+                    )
+                })
                 .collect(),
         ),
         unmapped_buffs: OrderedNumberRecord(
@@ -800,7 +813,12 @@ pub fn compare_original_oracle_full_state(
             expected.checkpoint_count, actual.checkpoint_count
         ));
     }
-    for (index, (left, right)) in expected.checkpoints.iter().zip(&actual.checkpoints).enumerate() {
+    for (index, (left, right)) in expected
+        .checkpoints
+        .iter()
+        .zip(&actual.checkpoints)
+        .enumerate()
+    {
         if left.actor_turn != right.actor_turn {
             return deviation(format!(
                 "checkpoint[{index}].actorTurn: expected={} actual={}",
@@ -820,11 +838,9 @@ pub fn compare_original_oracle_full_state(
                 left.card_id, right.card_id
             ));
         }
-        if let Some(state_deviation) = compare_sides(
-            &format!("checkpoint[{index}]"),
-            &left.sides,
-            &right.sides,
-        ) {
+        if let Some(state_deviation) =
+            compare_sides(&format!("checkpoint[{index}]"), &left.sides, &right.sides)
+        {
             return deviation(state_deviation);
         }
     }
@@ -869,19 +885,33 @@ fn compare_sides(prefix: &str, expected: &Sides, actual: &Sides) -> Option<Strin
         let left_protocol = serde_json::to_value(&left.protocol).expect("protocol serializes");
         let right_protocol = serde_json::to_value(&right.protocol).expect("protocol serializes");
         for field in ORIGINAL_ORACLE_PROTOCOL_SNAPSHOT_FIELDS {
-            let left_value = left_protocol.get(field).and_then(Value::as_i64).unwrap_or(0);
-            let right_value = right_protocol.get(field).and_then(Value::as_i64).unwrap_or(0);
+            let left_value = left_protocol
+                .get(field)
+                .and_then(Value::as_i64)
+                .unwrap_or(0);
+            let right_value = right_protocol
+                .get(field)
+                .and_then(Value::as_i64)
+                .unwrap_or(0);
             if left_value != right_value {
                 return Some(format!(
                     "{prefix}.{side}.protocol.{field}: expected={left_value} actual={right_value}"
                 ));
             }
         }
-        let mut expected_buff_keys: Vec<String> =
-            left.modeled_buffs.0.iter().map(|(key, _)| key.clone()).collect();
+        let mut expected_buff_keys: Vec<String> = left
+            .modeled_buffs
+            .0
+            .iter()
+            .map(|(key, _)| key.clone())
+            .collect();
         expected_buff_keys.sort();
-        let mut actual_buff_keys: Vec<String> =
-            right.modeled_buffs.0.iter().map(|(key, _)| key.clone()).collect();
+        let mut actual_buff_keys: Vec<String> = right
+            .modeled_buffs
+            .0
+            .iter()
+            .map(|(key, _)| key.clone())
+            .collect();
         actual_buff_keys.sort();
         if expected_buff_keys != actual_buff_keys {
             return Some(format!(
@@ -898,9 +928,11 @@ fn compare_sides(prefix: &str, expected: &Sides, actual: &Sides) -> Option<Strin
                 ));
             }
         }
-        if let Some(unmapped_deviation) =
-            compare_number_records(&format!("{prefix}.{side}.unmappedBuffs"), &left.unmapped_buffs, &right.unmapped_buffs)
-        {
+        if let Some(unmapped_deviation) = compare_number_records(
+            &format!("{prefix}.{side}.unmappedBuffs"),
+            &left.unmapped_buffs,
+            &right.unmapped_buffs,
+        ) {
             return Some(unmapped_deviation);
         }
         if left.active_slot_count != right.active_slot_count {
@@ -927,7 +959,11 @@ fn compare_sides(prefix: &str, expected: &Sides, actual: &Sides) -> Option<Strin
     None
 }
 
-fn compare_number_records(prefix: &str, expected: &OrderedNumberRecord, actual: &OrderedNumberRecord) -> Option<String> {
+fn compare_number_records(
+    prefix: &str,
+    expected: &OrderedNumberRecord,
+    actual: &OrderedNumberRecord,
+) -> Option<String> {
     let mut expected_keys: Vec<String> = expected.0.iter().map(|(key, _)| key.clone()).collect();
     expected_keys.sort();
     let mut actual_keys: Vec<String> = actual.0.iter().map(|(key, _)| key.clone()).collect();
@@ -950,7 +986,11 @@ fn compare_number_records(prefix: &str, expected: &OrderedNumberRecord, actual: 
     None
 }
 
-fn compare_deck_slots(prefix: &str, expected: &[OracleDeckSlot], actual: &[OracleDeckSlot]) -> Option<String> {
+fn compare_deck_slots(
+    prefix: &str,
+    expected: &[OracleDeckSlot],
+    actual: &[OracleDeckSlot],
+) -> Option<String> {
     if expected.len() != actual.len() {
         return Some(format!(
             "{prefix}.length: expected={} actual={}",
@@ -960,10 +1000,26 @@ fn compare_deck_slots(prefix: &str, expected: &[OracleDeckSlot], actual: &[Oracl
     }
     for (index, (expected_slot, actual_slot)) in expected.iter().zip(actual).enumerate() {
         for (field, expected_value, actual_value) in [
-            ("id", expected_slot.id.to_string(), actual_slot.id.to_string()),
-            ("grid", expected_slot.grid.to_string(), actual_slot.grid.to_string()),
-            ("skip", expected_slot.skip.to_string(), actual_slot.skip.to_string()),
-            ("hadUsed", expected_slot.had_used.to_string(), actual_slot.had_used.to_string()),
+            (
+                "id",
+                expected_slot.id.to_string(),
+                actual_slot.id.to_string(),
+            ),
+            (
+                "grid",
+                expected_slot.grid.to_string(),
+                actual_slot.grid.to_string(),
+            ),
+            (
+                "skip",
+                expected_slot.skip.to_string(),
+                actual_slot.skip.to_string(),
+            ),
+            (
+                "hadUsed",
+                expected_slot.had_used.to_string(),
+                actual_slot.had_used.to_string(),
+            ),
         ] {
             if expected_value != actual_value {
                 return Some(format!(

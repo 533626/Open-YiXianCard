@@ -239,19 +239,22 @@ pub fn stable_json(value: &JsonValue) -> String {
 
 mod sha256 {
     const K: [u32; 64] = [
-        0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
-        0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
-        0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
-        0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
-        0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
-        0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
-        0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
-        0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2,
+        0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4,
+        0xab1c5ed5, 0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe,
+        0x9bdc06a7, 0xc19bf174, 0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f,
+        0x4a7484aa, 0x5cb0a9dc, 0x76f988da, 0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7,
+        0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967, 0x27b70a85, 0x2e1b2138, 0x4d2c6dfc,
+        0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85, 0xa2bfe8a1, 0xa81a664b,
+        0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070, 0x19a4c116,
+        0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+        0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7,
+        0xc67178f2,
     ];
 
     pub fn digest(data: &[u8]) -> [u8; 32] {
         let mut h: [u32; 8] = [
-            0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19,
+            0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab,
+            0x5be0cd19,
         ];
         let mut msg = data.to_vec();
         let bit_len = (data.len() as u64) * 8;
@@ -357,7 +360,9 @@ pub struct TraceSliceError {
 }
 
 fn err<T>(message: impl Into<String>) -> Result<T, TraceSliceError> {
-    Err(TraceSliceError { message: message.into() })
+    Err(TraceSliceError {
+        message: message.into(),
+    })
 }
 
 #[derive(Debug)]
@@ -441,7 +446,9 @@ fn parse_trace_records(jsonl: &str) -> Result<Vec<ParsedTraceRecord>, TraceSlice
             ));
         }
         // 安全整数已验证，i64 无损。
-        let seq = seq_number.as_i64().unwrap_or_else(|| seq_number.as_f64().unwrap() as i64);
+        let seq = seq_number
+            .as_i64()
+            .unwrap_or_else(|| seq_number.as_f64().unwrap() as i64);
         records.push(ParsedTraceRecord {
             line: index + 1,
             seq,
@@ -524,7 +531,9 @@ pub fn slice_original_oracle_run_trace(
         ));
     };
     if start_index >= end_index {
-        return err(format!("invalid original-oracle trace interval {batch_id}/{run_id}"));
+        return err(format!(
+            "invalid original-oracle trace interval {batch_id}/{run_id}"
+        ));
     }
 
     let selected: Vec<&ParsedTraceRecord> = records[start_index..=end_index].iter().collect();
@@ -790,7 +799,11 @@ mod tests {
             "forward-1",
         )
         .unwrap_err();
-        assert!(err.message.contains("trace has no start"), "{}", err.message);
+        assert!(
+            err.message.contains("trace has no start"),
+            "{}",
+            err.message
+        );
         let err = slice_original_oracle_run_trace(
             &trace(&[
                 started(2, "batch", "forward-1"),
@@ -801,7 +814,8 @@ mod tests {
         )
         .unwrap_err();
         assert!(
-            err.message.contains("trace sequence is not strictly increasing"),
+            err.message
+                .contains("trace sequence is not strictly increasing"),
             "{}",
             err.message
         );
@@ -846,7 +860,9 @@ mod tests {
             completed(5, "batch", "forward-1"),
         ]);
         assert_eq!(
-            slice(&unscoped_card, "batch", "forward-1").evidence.record_count,
+            slice(&unscoped_card, "batch", "forward-1")
+                .evidence
+                .record_count,
             5
         );
     }
@@ -906,7 +922,10 @@ mod tests {
         assert_eq!(f(json!(0.1)), "0.1");
         assert_eq!(f(json!(-2.5)), "-2.5");
         assert_eq!(f(json!(0)), "0");
-        assert_eq!(f(serde_json::from_str::<serde_json::Value>("-0").unwrap()), "0");
+        assert_eq!(
+            f(serde_json::from_str::<serde_json::Value>("-0").unwrap()),
+            "0"
+        );
         assert_eq!(f(json!(1e21)), "1e+21");
         assert_eq!(f(json!(1e20)), "100000000000000000000");
         assert_eq!(f(json!(1e-6)), "0.000001");
@@ -923,9 +942,12 @@ mod tests {
     fn canonical_strings_and_key_order_match_js_json_stringify() {
         let f = |v: serde_json::Value| stable_json(&JsonValue::from(&v));
         assert_eq!(f(json!("a\"b\\c")), "\"a\\\"b\\\\c\"");
-        assert_eq!(f(json!("\u{1}\u{8}\t\n\u{c}\r\u{1f}")), "\"\\u0001\\b\\t\\n\\f\\r\\u001f\"");
+        assert_eq!(
+            f(json!("\u{1}\u{8}\t\n\u{c}\r\u{1f}")),
+            "\"\\u0001\\b\\t\\n\\f\\r\\u001f\""
+        );
         assert_eq!(f(json!("中文/emoji😀")), "\"中文/emoji😀\""); // 非 ASCII 原样
-        // 键序：UTF-16 code unit 序；非 BMP 键排在 ≥0xE000 BMP 键之前（与 UTF-8 字节序不同）。
+                                                                  // 键序：UTF-16 code unit 序；非 BMP 键排在 ≥0xE000 BMP 键之前（与 UTF-8 字节序不同）。
         assert_eq!(
             f(json!({"b": 1, "A": 2, "a": 3})),
             "{\"A\":2,\"a\":3,\"b\":1}"
@@ -956,15 +978,15 @@ mod tests {
             "{\"a\":2}"
         );
         // 嵌套数组与 null/bool。
-        assert_eq!(f(json!([1, null, true, {"z": [], "y": {}}])), "[1,null,true,{\"y\":{},\"z\":[]}]");
+        assert_eq!(
+            f(json!([1, null, true, {"z": [], "y": {}}])),
+            "[1,null,true,{\"y\":{},\"z\":[]}]"
+        );
     }
 
     #[test]
     fn seq_safety_and_empty_ids_match_ts() {
-        let line = format!(
-            "{{\"seq\":{},\"kind\":\"x\"}}\n",
-            9_007_199_254_740_991i64
-        );
+        let line = format!("{{\"seq\":{},\"kind\":\"x\"}}\n", 9_007_199_254_740_991i64);
         assert!(parse_trace_records(&line).is_ok());
         let too_big = "{\"seq\":9007199254740993,\"kind\":\"x\"}\n";
         let err = parse_trace_records(too_big).unwrap_err();
@@ -978,7 +1000,10 @@ mod tests {
             "invalid trace JSONL line 1: seq is not a safe integer"
         );
         let err = parse_trace_records("[1,2]\n").unwrap_err();
-        assert_eq!(err.message, "invalid trace JSONL line 1: record is not an object");
+        assert_eq!(
+            err.message,
+            "invalid trace JSONL line 1: record is not an object"
+        );
         // /\r?\n/ 切分、空白行跳过、行号按切分序号。
         let ok = parse_trace_records("\r\n{\"seq\":1}\r\n   \n{\"seq\":2}\n\n").unwrap();
         assert_eq!(ok.len(), 2);
@@ -1000,17 +1025,16 @@ mod tests {
             record_count: 4,
             sha256: "a".repeat(64),
         };
-        let err = build_original_oracle_trace_slice_report(
-            &evidence("f", 2, 9),
-            &evidence("r", 6, 11),
-        )
-        .unwrap_err();
-        assert_eq!(err.message, "forward/reverse original-oracle trace slices overlap");
-        let report = build_original_oracle_trace_slice_report(
-            &evidence("f", 2, 5),
-            &evidence("r", 6, 9),
-        )
-        .unwrap();
+        let err =
+            build_original_oracle_trace_slice_report(&evidence("f", 2, 9), &evidence("r", 6, 11))
+                .unwrap_err();
+        assert_eq!(
+            err.message,
+            "forward/reverse original-oracle trace slices overlap"
+        );
+        let report =
+            build_original_oracle_trace_slice_report(&evidence("f", 2, 5), &evidence("r", 6, 9))
+                .unwrap();
         // combinedSha256 = sha256(stableJson({forward, reverse}))，键序 UTF-16。
         let combined = JsonValue::Object(vec![
             ("forward".into(), evidence("f", 2, 5).to_json()),

@@ -4,8 +4,8 @@ use super::effect_invocation::{
 use super::flow_card_effect::{param0, param1, param2};
 use super::original_config::{original_card_definition, original_card_realm_level};
 use super::support::{
-    card_rarity, div_ceil_signed, has_cloud_chain, normalized_base_id, opponent_side,
-    other_param, other_param_or, wu_xing_count_in_deck,
+    card_rarity, div_ceil_signed, has_cloud_chain, normalized_base_id, opponent_side, other_param,
+    other_param_or, wu_xing_count_in_deck,
 };
 use super::{Element, ReplayState};
 use crate::model::{CardDefinition, PlayerSide};
@@ -550,11 +550,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     /// oracle 锚点：pa_3844ef5a cp[17]（t12 回春曲 +6 上限：原版 73 血
     /// 不动、锋锐 +6；旧顺序回 6 血、锋锐不动，终局 hpDelta -114 非 -120）。
     pub(super) fn decay_mirage_healing_conversion_turns(&mut self, actor_side: PlayerSide) {
-        if self
-            .mirage_ronghui_value(
-                actor_side,
-                MirageRonghuiValue::MirageHealingConversionTurns,
-            )
+        if self.mirage_ronghui_value(actor_side, MirageRonghuiValue::MirageHealingConversionTurns)
             > 0
         {
             self.modify_mirage_ronghui_value(
@@ -1381,13 +1377,11 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 // negative, i.e. a heal (same as Card_3000014). Clamping to
                 // zero would swallow that branch.
                 // oracle: pa_bbf13c88 [20] (p2 -7 -> -4).
-                let anima_loss =
-                    div_ceil_signed(self.actor(target_side).core.anima, 2);
+                let anima_loss = div_ceil_signed(self.actor(target_side).core.anima, 2);
                 self.spend_anima_unchecked(target_side, anima_loss);
                 let hp_loss = div_ceil_signed(self.actor(target_side).core.hp, 2);
                 self.modify_actor_hp(target_side, -hp_loss, false, false);
-                let max_hp_loss =
-                    div_ceil_signed(self.actor(target_side).core.max_hp, 2);
+                let max_hp_loss = div_ceil_signed(self.actor(target_side).core.max_hp, 2);
                 self.modify_actor_max_hp(target_side, -max_hp_loss);
                 self.add_actor_negative_status(target_side, 104, param0(card));
                 Some(false)

@@ -96,7 +96,9 @@ fn parse_args(args: &[String]) -> Result<Options, String> {
         return Err("--source is required".into());
     }
     if mode_count != 1 {
-        return Err("exactly one of --baseline-report, --trace, or --observations is required".into());
+        return Err(
+            "exactly one of --baseline-report, --trace, or --observations is required".into(),
+        );
     }
     if (options.batch.is_some() || options.run.is_some()) && options.trace.is_none() {
         return Err("--batch/--run require --trace".into());
@@ -108,8 +110,12 @@ fn run(repo_root: &Path, args: &[String]) -> Result<(), String> {
     let options = parse_args(args)?;
     let context = SyntheticOracleContext::load(repo_root)?;
 
-    let source_text = std::fs::read_to_string(&options.source)
-        .map_err(|error| format!("cannot read source manifest {}: {error}", options.source.display()))?;
+    let source_text = std::fs::read_to_string(&options.source).map_err(|error| {
+        format!(
+            "cannot read source manifest {}: {error}",
+            options.source.display()
+        )
+    })?;
     let source: Value = serde_json::from_str(&source_text)
         .map_err(|error| format!("source manifest JSON error: {error}"))?;
     let batch_id = source
@@ -134,10 +140,18 @@ fn run(repo_root: &Path, args: &[String]) -> Result<(), String> {
     } else {
         "observations"
     };
-    match (&options.baseline_report, &options.trace, &options.observations) {
+    match (
+        &options.baseline_report,
+        &options.trace,
+        &options.observations,
+    ) {
         (Some(report_path), _, _) => {
-            let report_text = std::fs::read_to_string(report_path)
-                .map_err(|error| format!("cannot read admission report {}: {error}", report_path.display()))?;
+            let report_text = std::fs::read_to_string(report_path).map_err(|error| {
+                format!(
+                    "cannot read admission report {}: {error}",
+                    report_path.display()
+                )
+            })?;
             let report: Value = serde_json::from_str(&report_text)
                 .map_err(|error| format!("admission report JSON error: {error}"))?;
             let baselines = report
@@ -189,12 +203,13 @@ fn run(repo_root: &Path, args: &[String]) -> Result<(), String> {
             }
         }
         (_, _, Some(observations_path)) => {
-            let observations_text = std::fs::read_to_string(observations_path).map_err(|error| {
-                format!(
-                    "cannot read observations {}: {error}",
-                    observations_path.display()
-                )
-            })?;
+            let observations_text =
+                std::fs::read_to_string(observations_path).map_err(|error| {
+                    format!(
+                        "cannot read observations {}: {error}",
+                        observations_path.display()
+                    )
+                })?;
             let observations: Value = serde_json::from_str(&observations_text)
                 .map_err(|error| format!("observations JSON error: {error}"))?;
             let observations = observations
@@ -208,13 +223,14 @@ fn run(repo_root: &Path, args: &[String]) -> Result<(), String> {
                 let observation = observations
                     .get(&synthetic_case.case_id)
                     .map(|value| {
-                        serde_json::from_value::<OriginalOracleObservation>(value.clone())
-                            .map_err(|error| {
+                        serde_json::from_value::<OriginalOracleObservation>(value.clone()).map_err(
+                            |error| {
                                 format!(
                                     "observation for {} JSON error: {error}",
                                     synthetic_case.case_id
                                 )
-                            })
+                            },
+                        )
                     })
                     .transpose()?;
                 results.push(compare_synthetic_oracle_rust_case(
@@ -248,7 +264,10 @@ fn run(repo_root: &Path, args: &[String]) -> Result<(), String> {
     output.insert("mode".into(), Value::String(mode.to_string()));
     output.insert("results".into(), Value::Array(result_values));
     output.insert("summary".into(), Value::Object(summary));
-    let rendered = format!("{}\n", serde_json::to_string_pretty(&Value::Object(output)).expect("report serializes"));
+    let rendered = format!(
+        "{}\n",
+        serde_json::to_string_pretty(&Value::Object(output)).expect("report serializes")
+    );
     match &options.json {
         Some(path) => {
             std::fs::write(path, rendered)

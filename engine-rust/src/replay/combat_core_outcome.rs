@@ -11,6 +11,40 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             final_life: settled.as_ref().map(|outcome| outcome.final_life.clone()),
             life_damage: settled.as_ref().map(|outcome| outcome.dealt_signed),
             life_detail: settled.map(|outcome| outcome.detail),
+            battle_end_intents: super::BattleEndIntents {
+                p1: self.side_end_intents(PlayerSide::P1),
+                p2: self.side_end_intents(PlayerSide::P2),
+            },
+        }
+    }
+
+    fn side_end_intents(&self, side: PlayerSide) -> super::SideEndIntents {
+        let actor = self.actor(side);
+        let mut played: Vec<(i64, i64)> = actor
+            .deck
+            .slots
+            .iter()
+            .filter(|slot| slot.used)
+            .map(|slot| {
+                let def = slot.card.definition();
+                (
+                    super::support::normalized_base_id(def),
+                    super::support::card_rarity(def),
+                )
+            })
+            .collect();
+        played.sort_unstable();
+        let (bases, stars): (Vec<i64>, Vec<i64>) = played.into_iter().unzip();
+        let mut doubled = actor.chance.repeated_settle_plays.clone();
+        doubled.sort_unstable();
+        let (doubled_bases, doubled_stars): (Vec<i64>, Vec<i64>) = doubled.into_iter().unzip();
+        super::SideEndIntents {
+            played_base_ids: bases,
+            played_card_stars: stars,
+            doubled_effect_base_ids: doubled_bases,
+            doubled_effect_stars: doubled_stars,
+            jin_mao_shu_draws: actor.chance.jin_mao_shu.max(0),
+            san_wei_huan_replace: actor.chance.san_wei_huan_replace.max(0),
         }
     }
 

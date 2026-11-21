@@ -207,8 +207,12 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         temporary_replay: bool,
     ) {
         let base_id = normalized_base_id(card);
-        let has_sword = self.active_mechanisms.has(super::ActiveMechanisms::SWORD_SECT);
-        let has_fate = self.active_mechanisms.has(super::ActiveMechanisms::FATE_STRATEGY);
+        let has_sword = self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::SWORD_SECT);
+        let has_fate = self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::FATE_STRATEGY);
 
         if has_sword {
             self.apply_ordinary_sword_action_again_before_card(actor_side, card);

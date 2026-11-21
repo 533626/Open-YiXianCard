@@ -1202,11 +1202,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 }
                 Some(_) => {}
                 None => {
-                    self.missing_card_effect(
-                        0,
-                        0,
-                        "xianMo strategy 7133 missing original round",
-                    );
+                    self.missing_card_effect(0, 0, "xianMo strategy 7133 missing original round");
                 }
             }
         }

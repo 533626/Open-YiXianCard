@@ -281,7 +281,10 @@ pub(super) fn synthetic_special_card_ids(min_realm: i64) -> Vec<i64> {
         .iter()
         .filter(|(_, meta)| {
             meta.realm_level.is_some_and(|r| r >= min_realm)
-                && matches!(meta.subcategory_name.as_deref(), Some("Pet" | "Artifact" | "MiShu"))
+                && matches!(
+                    meta.subcategory_name.as_deref(),
+                    Some("Pet" | "Artifact" | "MiShu")
+                )
         })
         .map(|(id, _)| *id)
         .collect();
@@ -492,4 +495,3 @@ fn load_original_card_catalog() -> OriginalCardCatalog {
         rear_move_desc_card_ids,
     }
 }
-

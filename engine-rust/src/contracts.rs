@@ -11,9 +11,7 @@ use std::path::Path;
 use schemars::Schema;
 
 use crate::identity::EngineIdentity;
-use crate::replay::wire::{
-    AdmissionReport, EventStream, ExtendedEventStream,
-};
+use crate::replay::wire::{AdmissionReport, EventStream, ExtendedEventStream};
 
 /// 一条线合同的导出项：入库文件名与对应 serde 类型的 Schema。
 pub struct WireContract {
@@ -44,8 +42,8 @@ pub fn wire_contracts() -> Vec<WireContract> {
 }
 
 fn render(contract: &WireContract) -> String {
-    let mut json = serde_json::to_string_pretty(&contract.schema)
-        .expect("wire contract schema serializes");
+    let mut json =
+        serde_json::to_string_pretty(&contract.schema).expect("wire contract schema serializes");
     json.push('\n');
     json
 }
@@ -70,7 +68,10 @@ pub fn check(dir: &Path) -> Result<(), String> {
         let expected = render(&contract);
         match fs::read_to_string(&path) {
             Ok(actual) if actual == expected => {}
-            Ok(_) => stale.push(format!("{}: bytes differ — re-run export_contracts", path.display())),
+            Ok(_) => stale.push(format!(
+                "{}: bytes differ — re-run export_contracts",
+                path.display()
+            )),
             Err(e) => stale.push(format!("{}: missing ({e})", path.display())),
         }
     }

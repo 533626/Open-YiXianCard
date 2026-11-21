@@ -1,7 +1,7 @@
 use super::*;
-use crate::fixture::{BattleFixture, FixturePlayer};
 #[cfg(feature = "private-fixtures")]
 use crate::fixture::load_fixture_file;
+use crate::fixture::{BattleFixture, FixturePlayer};
 use crate::model::{CardDefinition, PlayerSide};
 
 fn original_card(id: i64) -> CardDefinition {
@@ -485,9 +485,8 @@ fn eswmbqw_round19_wan_mo_shi_xin_qu_before_frenzy_sword_zero_lifesteal_is_exact
     // 「万魔噬心曲自伤（CalculateAttack）→ 伤害 → 狂剑灵石吸血（ApplyDamage）」；
     // 满血首段吸血受 maxHp 截断（original 121）。整轮须 exact
     // （winner/actorTurn/hpDelta 同时匹配，oracle 9/9 已确认服务端 expected 正确）。
-    let fixture =
-        load_fixture_file("tests/data-driven/eswmbqw_round-19.json")
-            .expect("offline pa_43f28c44/round-19 fixture");
+    let fixture = load_fixture_file("tests/data-driven/eswmbqw_round-19.json")
+        .expect("offline pa_43f28c44/round-19 fixture");
     let mut state = ReplayState::test_from_fixture(&fixture);
     let summary = state.test_run();
     assert!(

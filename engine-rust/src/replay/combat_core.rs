@@ -73,7 +73,10 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         let target_side = opponent_side(actor_side);
         // 26125017: 惊雷 (KeYinJingLei) moved to CalculateAttack: every attack
         // segment checks the currently executing card for 雷 first.
-        if self.active_mechanisms.has(super::ActiveMechanisms::THUNDER_MINDSET) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::THUNDER_MINDSET)
+        {
             self.apply_jing_lei_on_attack_segment(actor_side);
         }
         // Per-hit sampling: record the target's hp/def before this hit lands,
@@ -87,8 +90,9 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         let segment_hp_before = self.actor(target_side).core.hp;
         let segment_def_before = self.actor(target_side).core.defense;
         let reverse_gu_flat_bonus = self.apply_reverse_gu_before_attack(actor_side);
-        let earth_fiend_active_before_attack = self.active_mechanisms.has(super::ActiveMechanisms::RONGHUI)
-            && self.actor(actor_side).ronghui.earth_fiend_defense > 0;
+        let earth_fiend_active_before_attack =
+            self.active_mechanisms.has(super::ActiveMechanisms::RONGHUI)
+                && self.actor(actor_side).ronghui.earth_fiend_defense > 0;
         self.apply_delayed_attack_status_triggers(actor_side, target_side);
         let fire_blade_wound = self.actor(actor_side).identity.talents.contains(&67);
         let actor = self.actor(actor_side);
@@ -343,7 +347,9 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             );
         }
         if self.effect_invocation_stack.is_empty() && sword_intent > 0 {
-            self.actor_mut(actor_side).sword.pending_sword_intent_outside_card = sword_intent;
+            self.actor_mut(actor_side)
+                .sword
+                .pending_sword_intent_outside_card = sword_intent;
         } else {
             self.update_active_effect_pending_sword_intent(sword_intent);
         }
@@ -395,7 +401,10 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 40
             };
         }
-        if self.active_mechanisms.has(super::ActiveMechanisms::THUNDER_MINDSET) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::THUNDER_MINDSET)
+        {
             factor_percent +=
                 super::cards_synthetic_oracle_verified_secret_misc::thunder_mindset_attack_bonus_percent(
                     actor,
@@ -851,4 +860,3 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         self.apply_verified_xian_mo_after_damage(actor_side, target_side);
     }
 }
-

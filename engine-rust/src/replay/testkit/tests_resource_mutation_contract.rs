@@ -430,7 +430,9 @@ fn fire_phoenix_revive_observes_adaptation_for_max_hp_and_healing() {
     state.p1.fate.fire_phoenix_revive_hp = 10;
     state.p1.turn.adaptation = 1;
 
-    let receipt = state.check_fire_phoenix_revive(PlayerSide::P1).expect("revive");
+    let receipt = state
+        .check_fire_phoenix_revive(PlayerSide::P1)
+        .expect("revive");
     assert_eq!((receipt.hp_after, receipt.max_hp_after), (14, 14));
     assert_eq!(state.p1.fate.fire_phoenix_revive_hp, 0);
 }

@@ -24,7 +24,11 @@ fn player_with(first: CardDefinition) -> FixturePlayer {
 }
 
 fn quad_source(round: i64, game_mode: i64) -> FixtureSource {
-    FixtureSource { round: Some(round), game_mode: Some(game_mode), ..FixtureSource::default() }
+    FixtureSource {
+        round: Some(round),
+        game_mode: Some(game_mode),
+        ..FixtureSource::default()
+    }
 }
 
 #[test]
@@ -96,10 +100,8 @@ fn civet_heals_temp_life_unconditionally() {
 
 #[test]
 fn pangu_fu_costs_temp_on_lethal_once() {
-    let mut state = ReplayState::test_from_fixture(&super::test_support::default_fixture(
-        player(),
-        player(),
-    ));
+    let mut state =
+        ReplayState::test_from_fixture(&super::test_support::default_fixture(player(), player()));
     let before = state.p2.core.temp_life;
     state.test_configure_p2(|actor| {
         actor.core.hp = 0;
@@ -116,15 +118,92 @@ fn pangu_fu_costs_temp_on_lethal_once() {
 
 #[test]
 fn temp_life_has_no_floor() {
-    let mut state = ReplayState::test_from_fixture(&super::test_support::default_fixture(
-        player(),
-        player(),
-    ));
+    let mut state =
+        ReplayState::test_from_fixture(&super::test_support::default_fixture(player(), player()));
     state.test_configure_p2(|actor| {
         actor.core.temp_life = 1;
     });
     state.modify_temp_life(PlayerSide::P2, -4);
     assert_eq!(state.p2.core.temp_life, -3);
+}
+
+#[test]
+fn battle_end_intents_report_plays_and_pet_counters() {
+    let rat = original_card(99_000_203);
+    let huan = original_card(99_000_212);
+    let fixture = super::test_support::make_fixture(
+        player_with(rat.clone()),
+        player_with(huan.clone()),
+        PlayerSide::P1,
+        1,
+        0,
+        64,
+    );
+    let mut state = ReplayState::test_from_fixture(&fixture);
+    let summary = state.test_run();
+    assert!(
+        state.evaluation_error.is_none(),
+        "{:?}",
+        state.evaluation_error
+    );
+    assert!(summary
+        .battle_end_intents
+        .p1
+        .played_base_ids
+        .contains(&99_000_203));
+    assert!(summary
+        .battle_end_intents
+        .p2
+        .played_base_ids
+        .contains(&99_000_212));
+    assert!(summary.battle_end_intents.p1.jin_mao_shu_draws >= 1);
+    assert!(summary.battle_end_intents.p2.san_wei_huan_replace >= 1);
+    assert_eq!(
+        summary.battle_end_intents.p1.played_base_ids.len(),
+        summary.battle_end_intents.p1.played_card_stars.len()
+    );
+    let pos = summary
+        .battle_end_intents
+        .p1
+        .played_base_ids
+        .iter()
+        .position(|&id| id == 99_000_203)
+        .unwrap();
+    assert_eq!(summary.battle_end_intents.p1.played_card_stars[pos], 0);
+}
+
+#[test]
+fn mei_kai_er_du_marks_next_settle_card_doubled() {
+    let cards = super::test_support::fill_deck(
+        vec![original_card(4_000_041), original_card(434)],
+        basic_attack(),
+    );
+    let p1 = super::test_support::make_player(cards, 5, 50, Some(0), 8, Some(6));
+    let fixture = super::test_support::make_fixture(
+        p1,
+        player(),
+        PlayerSide::P1,
+        1,
+        0,
+        64,
+    );
+    let mut state = ReplayState::test_from_fixture(&fixture);
+    let summary = state.test_run();
+    assert!(
+        state.evaluation_error.is_none(),
+        "{:?}",
+        state.evaluation_error
+    );
+    assert!(summary
+        .battle_end_intents
+        .p1
+        .played_base_ids
+        .contains(&434));
+    assert!(summary
+        .battle_end_intents
+        .p1
+        .doubled_effect_base_ids
+        .contains(&434));
 }
 
 #[test]

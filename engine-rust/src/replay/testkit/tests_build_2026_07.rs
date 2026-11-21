@@ -1602,9 +1602,15 @@ fn synthetic_cloud_sword_bonus_comes_from_hand_cloud_swords() {
     // Deck draw order is engine-internal; execute until the sword lands.
     for _ in 0..8 {
         state.test_execute_one_card(PlayerSide::P1);
-        if state.p2.core.hp < 100 { break; }
+        if state.p2.core.hp < 100 {
+            break;
+        }
     }
-    assert!(state.evaluation_error.is_none(), "synthetic battle must not fail: {:?}", state.evaluation_error);
+    assert!(
+        state.evaluation_error.is_none(),
+        "synthetic battle must not fail: {:?}",
+        state.evaluation_error
+    );
     assert_eq!(state.p2.core.hp, 100 - (8 + 4 * 8));
 }
 
@@ -1624,9 +1630,17 @@ fn synthetic_stroke_of_genius_picks_a_sect_card() {
     let mut state = ReplayState::test_from_fixture(&battle);
     state.fail_on_missing_decision = true;
     state.test_execute_one_card(PlayerSide::P1);
-    assert!(state.evaluation_error.is_none(), "synthetic battle must not fail: {:?}", state.evaluation_error);
+    assert!(
+        state.evaluation_error.is_none(),
+        "synthetic battle must not fail: {:?}",
+        state.evaluation_error
+    );
     assert_eq!(state.p1.core.defense, 6);
-    let picked = state.decision_events.iter().find(|e| e.card_id == 6_000_011).and_then(|e| e.selected_option);
+    let picked = state
+        .decision_events
+        .iter()
+        .find(|e| e.card_id == 6_000_011)
+        .and_then(|e| e.selected_option);
     let picked = picked.expect("synthetic pick must be recorded as a decision event");
     assert_eq!(
         super::original_config::original_card_sect_name(picked).as_deref(),
@@ -1650,9 +1664,19 @@ fn synthetic_dream_genius_picks_a_high_realm_special_card() {
     let mut state = ReplayState::test_from_fixture(&battle);
     state.fail_on_missing_decision = true;
     state.test_execute_one_card(PlayerSide::P1);
-    assert!(state.evaluation_error.is_none(), "synthetic battle must not fail: {:?}", state.evaluation_error);
-    let picked = state.decision_events.iter().find(|e| e.card_id == 341).and_then(|e| e.selected_option);
+    assert!(
+        state.evaluation_error.is_none(),
+        "synthetic battle must not fail: {:?}",
+        state.evaluation_error
+    );
+    let picked = state
+        .decision_events
+        .iter()
+        .find(|e| e.card_id == 341)
+        .and_then(|e| e.selected_option);
     let picked = picked.expect("synthetic pick must be recorded as a decision event");
-    assert!(super::original_config::original_card_realm_level(picked).is_some_and(|r| r >= 4),
-        "picked card {picked} must be realm>=4");
+    assert!(
+        super::original_config::original_card_realm_level(picked).is_some_and(|r| r >= 4),
+        "picked card {picked} must be realm>=4"
+    );
 }

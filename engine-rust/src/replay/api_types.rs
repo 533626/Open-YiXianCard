@@ -4,7 +4,9 @@ use crate::fixture::{BattleFixture, FinalLife};
 use crate::model::PlayerSide;
 
 use super::life_settle::LifeSettleDetail;
-use super::{ReplayDecisionEvent, ReplayEvent, ReplayPlayerSnapshot, ReplayPreventionPair, ReplayUiEvent};
+use super::{
+    ReplayDecisionEvent, ReplayEvent, ReplayPlayerSnapshot, ReplayPreventionPair, ReplayUiEvent,
+};
 
 #[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
@@ -15,6 +17,27 @@ pub struct ReplaySummary {
     pub final_life: Option<FinalLife>,
     pub life_damage: Option<i64>,
     pub life_detail: Option<LifeSettleDetail>,
+    pub battle_end_intents: BattleEndIntents,
+}
+
+/// Battle-end settlement intents for the match layer (draws/copies/chance
+/// triggers). Sim-only channel: nothing here is replay-admitted.
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct BattleEndIntents {
+    pub p1: SideEndIntents,
+    pub p2: SideEndIntents,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, schemars::JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct SideEndIntents {
+    pub played_base_ids: Vec<i64>,
+    pub played_card_stars: Vec<i64>,
+    pub doubled_effect_base_ids: Vec<i64>,
+    pub doubled_effect_stars: Vec<i64>,
+    pub jin_mao_shu_draws: i64,
+    pub san_wei_huan_replace: i64,
 }
 
 impl ReplaySummary {
@@ -22,8 +45,17 @@ impl ReplaySummary {
         self.winner_side == fixture.expected.winner_side
             && self.actor_turn_count == fixture.expected.actor_turn_count
             && self.hp_delta_p1_minus_p2 == fixture.expected.hp_delta_p1_minus_p2
-            && fixture.expected.final_life.as_ref().map(|expected| Some(expected) == self.final_life.as_ref()).unwrap_or(true)
-            && fixture.expected.life_damage.map(|expected| Some(expected) == self.life_damage).unwrap_or(true)
+            && fixture
+                .expected
+                .final_life
+                .as_ref()
+                .map(|expected| Some(expected) == self.final_life.as_ref())
+                .unwrap_or(true)
+            && fixture
+                .expected
+                .life_damage
+                .map(|expected| Some(expected) == self.life_damage)
+                .unwrap_or(true)
     }
 }
 
@@ -52,7 +84,9 @@ pub struct ReplayUiRun {
     pub decision_events: Vec<ReplayDecisionEvent>,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize, schemars::JsonSchema)]
+#[derive(
+    Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize, schemars::JsonSchema,
+)]
 #[serde(rename_all = "camelCase")]
 pub enum ReplayTerminationCause {
     TurnStartLethal,

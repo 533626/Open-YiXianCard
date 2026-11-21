@@ -8,8 +8,8 @@ use yixian_engine::{
     load_fixture_file, original_card_definition_by_id, run_replay_fixture,
     run_replay_fixture_with_detailed_events, run_replay_fixture_with_parity_events, BattleError,
     BattleFixture, EngineError, PlayerSide, ReplayDetailEntry, ReplayDetailedEvent,
-    ReplayDetailedRun, ReplayDetailedSideState, ReplayEvent, ReplayEventKind,
-    ReplayPlayerSnapshot, ReplayTerminationCause,
+    ReplayDetailedRun, ReplayDetailedSideState, ReplayEvent, ReplayEventKind, ReplayPlayerSnapshot,
+    ReplayTerminationCause,
 };
 /// `--admission-stream` 输入行：fixture 路径加完整 payload。
 #[derive(Deserialize)]
@@ -20,8 +20,8 @@ struct AdmissionJsonInput {
 
 use yixian_engine::replay::wire::{
     event_snapshot, AdmissionDeviation, AdmissionFixtureResult, AdmissionMissingCard,
-    AdmissionReport, DisplayGapSnapshot, EventRow, EventStream,
-    ExtendedEventRow, ExtendedEventSnapshot, ExtendedEventStream, ExtendedTerminal,
+    AdmissionReport, DisplayGapSnapshot, EventRow, EventStream, ExtendedEventRow,
+    ExtendedEventSnapshot, ExtendedEventStream, ExtendedTerminal,
 };
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -72,7 +72,6 @@ enum ScreenFixtureResult {
     Executed(FixtureResult),
     Skipped,
 }
-
 
 fn main() {
     if let Err(error) = run() {
@@ -661,9 +660,10 @@ fn admission_fixture_result_from_fixture(
                             .map(|actual| format!("p1:{} p2:{}", actual.p1, actual.p2))
                             .unwrap_or_else(|| "unknown".to_string()),
                     ),
-                    actual: summary.final_life.as_ref().map(|actual| {
-                        format!("p1:{} p2:{}", actual.p1, actual.p2)
-                    }),
+                    actual: summary
+                        .final_life
+                        .as_ref()
+                        .map(|actual| format!("p1:{} p2:{}", actual.p1, actual.p2)),
                     expected: Some(format!("p1:{} p2:{}", expected.p1, expected.p2)),
                 });
             }

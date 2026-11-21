@@ -1469,6 +1469,162 @@ fn xian_mo_7121_held_runs_with_exact_triple_and_no_battle_effect() {
     assert_eq!(with.hp_delta_p1_minus_p2, 3);
 }
 
+#[test]
+fn xian_mo_7011_held_runs_with_exact_triple_and_no_battle_effect() {
+    // 7011：全树零引用；R12 H1-p0-zhang R8–R14 七轮实战持/剔全 exact → 战斗惰性。
+    let mut battle = fixture(deck(basic_attack()), deck(basic_attack()));
+    battle.players.p1.xian_mo_strategies = vec![7011];
+    battle.players.p2.xian_mo_strategies = vec![7011];
+    let with = run_replay_fixture(&battle).unwrap();
+    let plain = fixture(deck(basic_attack()), deck(basic_attack()));
+    let without = run_replay_fixture(&plain).unwrap();
+    assert_eq!(
+        (
+            with.winner_side,
+            with.actor_turn_count,
+            with.hp_delta_p1_minus_p2
+        ),
+        (
+            without.winner_side,
+            without.actor_turn_count,
+            without.hp_delta_p1_minus_p2
+        )
+    );
+    assert_eq!(with.winner_side, PlayerSide::P1);
+    assert_eq!(with.actor_turn_count, 1);
+    assert_eq!(with.hp_delta_p1_minus_p2, 3);
+}
+
+#[test]
+fn xian_mo_7134_held_runs_with_exact_triple_and_no_battle_effect() {
+    // 7134：全树零引用；R12 H1-p2-zhang R9–R10 两轮实战持/剔全 exact → 战斗惰性。
+    let mut battle = fixture(deck(basic_attack()), deck(basic_attack()));
+    battle.players.p1.xian_mo_strategies = vec![7134];
+    battle.players.p2.xian_mo_strategies = vec![7134];
+    let with = run_replay_fixture(&battle).unwrap();
+    let plain = fixture(deck(basic_attack()), deck(basic_attack()));
+    let without = run_replay_fixture(&plain).unwrap();
+    assert_eq!(
+        (
+            with.winner_side,
+            with.actor_turn_count,
+            with.hp_delta_p1_minus_p2
+        ),
+        (
+            without.winner_side,
+            without.actor_turn_count,
+            without.hp_delta_p1_minus_p2
+        )
+    );
+    assert_eq!(with.winner_side, PlayerSide::P1);
+    assert_eq!(with.actor_turn_count, 1);
+    assert_eq!(with.hp_delta_p1_minus_p2, 3);
+}
+
+#[test]
+fn xian_mo_7038_held_runs_with_exact_triple_and_no_battle_effect() {
+    // 7038：全树零引用；R12 H2-p2-turkey R8–R18 十轮实战持/剔全 exact → 战斗惰性。
+    let mut battle = fixture(deck(basic_attack()), deck(basic_attack()));
+    battle.players.p1.xian_mo_strategies = vec![7038];
+    battle.players.p2.xian_mo_strategies = vec![7038];
+    let with = run_replay_fixture(&battle).unwrap();
+    let plain = fixture(deck(basic_attack()), deck(basic_attack()));
+    let without = run_replay_fixture(&plain).unwrap();
+    assert_eq!(
+        (
+            with.winner_side,
+            with.actor_turn_count,
+            with.hp_delta_p1_minus_p2
+        ),
+        (
+            without.winner_side,
+            without.actor_turn_count,
+            without.hp_delta_p1_minus_p2
+        )
+    );
+    assert_eq!(with.winner_side, PlayerSide::P1);
+    assert_eq!(with.actor_turn_count, 1);
+    assert_eq!(with.hp_delta_p1_minus_p2, 3);
+}
+
+#[test]
+fn xian_mo_7062_held_runs_with_exact_triple_and_no_battle_effect() {
+    // 7062：全树零引用；R12 H3-p0-turkey R7–R11 四轮实战持/剔全 exact → 战斗惰性。
+    let mut battle = fixture(deck(basic_attack()), deck(basic_attack()));
+    battle.players.p1.xian_mo_strategies = vec![7062];
+    battle.players.p2.xian_mo_strategies = vec![7062];
+    let with = run_replay_fixture(&battle).unwrap();
+    let plain = fixture(deck(basic_attack()), deck(basic_attack()));
+    let without = run_replay_fixture(&plain).unwrap();
+    assert_eq!(
+        (
+            with.winner_side,
+            with.actor_turn_count,
+            with.hp_delta_p1_minus_p2
+        ),
+        (
+            without.winner_side,
+            without.actor_turn_count,
+            without.hp_delta_p1_minus_p2
+        )
+    );
+    assert_eq!(with.winner_side, PlayerSide::P1);
+    assert_eq!(with.actor_turn_count, 1);
+    assert_eq!(with.hp_delta_p1_minus_p2, 3);
+}
+
+#[test]
+fn xian_mo_7012_held_runs_with_exact_triple_and_no_battle_effect() {
+    // 7012：全树零引用；R13 V1-p0-turkey R7–R13 七轮实战持/剔全 exact → 战斗惰性。
+    let mut battle = fixture(deck(basic_attack()), deck(basic_attack()));
+    battle.players.p1.xian_mo_strategies = vec![7012];
+    battle.players.p2.xian_mo_strategies = vec![7012];
+    let with = run_replay_fixture(&battle).unwrap();
+    let plain = fixture(deck(basic_attack()), deck(basic_attack()));
+    let without = run_replay_fixture(&plain).unwrap();
+    assert_eq!(
+        (
+            with.winner_side,
+            with.actor_turn_count,
+            with.hp_delta_p1_minus_p2
+        ),
+        (
+            without.winner_side,
+            without.actor_turn_count,
+            without.hp_delta_p1_minus_p2
+        )
+    );
+    assert_eq!(with.winner_side, PlayerSide::P1);
+    assert_eq!(with.actor_turn_count, 1);
+    assert_eq!(with.hp_delta_p1_minus_p2, 3);
+}
+
+#[test]
+fn xian_mo_7114_held_runs_with_exact_triple_and_no_battle_effect() {
+    // 7114：全树零引用；R12 H4 双局二十轮实战持/剔全 exact → 战斗惰性。
+    let mut battle = fixture(deck(basic_attack()), deck(basic_attack()));
+    battle.players.p1.xian_mo_strategies = vec![7114];
+    battle.players.p2.xian_mo_strategies = vec![7114];
+    let with = run_replay_fixture(&battle).unwrap();
+    let plain = fixture(deck(basic_attack()), deck(basic_attack()));
+    let without = run_replay_fixture(&plain).unwrap();
+    assert_eq!(
+        (
+            with.winner_side,
+            with.actor_turn_count,
+            with.hp_delta_p1_minus_p2
+        ),
+        (
+            without.winner_side,
+            without.actor_turn_count,
+            without.hp_delta_p1_minus_p2
+        )
+    );
+    assert_eq!(with.winner_side, PlayerSide::P1);
+    assert_eq!(with.actor_turn_count, 1);
+    assert_eq!(with.hp_delta_p1_minus_p2, 3);
+}
+
 const XIAN_MO_DEAD_REF_CASES: &[StrategyCase] = &[
     StrategyCase { strategy: 30003 },
     StrategyCase { strategy: 30005 },

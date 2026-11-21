@@ -89,7 +89,8 @@ fn run() -> OracleResult<()> {
     )
     .map_err(|error| format!("manifest JSON error: {error}"))?;
     let manifest: yixian_engine::oracle::diff::OriginalOracleRuntimeManifest =
-        serde_json::from_value(manifest).map_err(|error| format!("manifest is invalid: {error}"))?;
+        serde_json::from_value(manifest)
+            .map_err(|error| format!("manifest is invalid: {error}"))?;
 
     let trace = std::fs::read_to_string(&trace_path)
         .map_err(|error| format!("trace read failed: {error}"))?;
@@ -122,9 +123,8 @@ fn run() -> OracleResult<()> {
     let declarations: Vec<OriginalOracleContractBuffDeclaration> = if diagnosis {
         Vec::new()
     } else {
-        let declarations_path = declarations.unwrap_or_else(|| {
-            repo_root.join("battle-evaluator/data/modeled-original-buffs.json")
-        });
+        let declarations_path = declarations
+            .unwrap_or_else(|| repo_root.join("battle-evaluator/data/modeled-original-buffs.json"));
         load_original_oracle_contract_buff_declarations(
             &declarations_path,
             &repo_root.join("battle-evaluator/data/original-build-profiles.json"),
@@ -165,9 +165,9 @@ fn run() -> OracleResult<()> {
             .cases
             .iter()
             .map(|runtime_case| {
-                let engine = engines
-                    .get(&runtime_case.case_id)
-                    .ok_or_else(|| format!("missing Rust engine run for {}", runtime_case.case_id))?;
+                let engine = engines.get(&runtime_case.case_id).ok_or_else(|| {
+                    format!("missing Rust engine run for {}", runtime_case.case_id)
+                })?;
                 Ok(compare_original_oracle_case(
                     runtime_case,
                     run.observation(&runtime_case.case_id),

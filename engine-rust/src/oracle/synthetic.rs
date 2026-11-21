@@ -32,8 +32,8 @@ use serde::Deserialize;
 use serde_json::{Map, Value};
 
 use super::buff_map::{
-    OracleResult, RustBuffKeyMap, RustBuffMapEntry, RustExtendedSnapshot, RustQueuedCard, Side,
-    load_rust_buff_key_map,
+    load_rust_buff_key_map, OracleResult, RustBuffKeyMap, RustBuffMapEntry, RustExtendedSnapshot,
+    RustQueuedCard, Side,
 };
 use super::diff::{
     OriginalOracleCharacterState, OriginalOracleCheckpoint, OriginalOracleDeckSlot,
@@ -75,8 +75,9 @@ impl SyntheticOracleContext {
             &repo_root.join("battle-evaluator/generated/buff-id-rust-key-map.json"),
             &repo_root.join("battle-evaluator/generated/buff-category-archive.json"),
         )?;
-        let cards_text = std::fs::read_to_string(repo_root.join("shared/data/original-card-configs.json"))
-            .map_err(|error| format!("original-card-configs read failed: {error}"))?;
+        let cards_text =
+            std::fs::read_to_string(repo_root.join("shared/data/original-card-configs.json"))
+                .map_err(|error| format!("original-card-configs read failed: {error}"))?;
         let cards: Value = serde_json::from_str(&cards_text)
             .map_err(|error| format!("original-card-configs JSON error: {error}"))?;
         let cards = cards
@@ -90,8 +91,9 @@ impl SyntheticOracleContext {
                 .ok_or_else(|| "original-card-configs entry has no integer id".to_string())?;
             card_config_by_id.insert(id, config.clone());
         }
-        let levels_text = std::fs::read_to_string(repo_root.join("battle-evaluator/data/level-config.json"))
-            .map_err(|error| format!("level-config read failed: {error}"))?;
+        let levels_text =
+            std::fs::read_to_string(repo_root.join("battle-evaluator/data/level-config.json"))
+                .map_err(|error| format!("level-config read failed: {error}"))?;
         let levels: Value = serde_json::from_str(&levels_text)
             .map_err(|error| format!("level-config JSON error: {error}"))?;
         let records = levels
@@ -242,7 +244,9 @@ impl SyntheticOracleCase {
             .buff_ids_by_side
             .as_ref()
             .and_then(|map| map.get(side.as_str()));
-        by_side.cloned().unwrap_or_else(|| self.witness.buff_ids.clone())
+        by_side
+            .cloned()
+            .unwrap_or_else(|| self.witness.buff_ids.clone())
     }
 }
 
@@ -312,7 +316,11 @@ impl SyntheticOracleEngineDiff {
     }
 }
 
-fn failure(case_id: &str, status: &'static str, first_deviation: String) -> SyntheticOracleEngineDiff {
+fn failure(
+    case_id: &str,
+    status: &'static str,
+    first_deviation: String,
+) -> SyntheticOracleEngineDiff {
     SyntheticOracleEngineDiff {
         case_id: case_id.to_string(),
         status,
@@ -335,12 +343,10 @@ pub fn run_synthetic_oracle_rust_case(
     let fixture_text = serde_json::to_string(&fixture_value)
         .map_err(|error| format!("Rust extended event replay failed (1): Error: {error}"))?;
     // 与 replay_slice --events-extended 的 parse→validate 相同。
-    let fixture: BattleFixture = serde_json::from_str(&fixture_text).map_err(|error| {
-        format!("Rust extended event replay failed (1): Error: {error}")
-    })?;
-    let stream = run_replay_event_stream_extended(&fixture, "case.json").map_err(|error| {
-        format!("Rust extended event replay failed (1): Error: {error}")
-    })?;
+    let fixture: BattleFixture = serde_json::from_str(&fixture_text)
+        .map_err(|error| format!("Rust extended event replay failed (1): Error: {error}"))?;
+    let stream = run_replay_event_stream_extended(&fixture, "case.json")
+        .map_err(|error| format!("Rust extended event replay failed (1): Error: {error}"))?;
     Ok(SyntheticRustRunResult {
         case_id: synthetic_case.case_id.clone(),
         checkpoints: stream
@@ -519,7 +525,12 @@ pub fn compare_synthetic_oracle_rust_baseline_case(
             ),
         );
     }
-    compare_against_rust(synthetic_case, &baseline.terminal, &baseline.witness, context)
+    compare_against_rust(
+        synthetic_case,
+        &baseline.terminal,
+        &baseline.witness,
+        context,
+    )
 }
 
 fn compare_against_rust(
@@ -593,10 +604,7 @@ fn select_engine_witness_checkpoint<'a>(
         })
 }
 
-fn checkpoint_state(
-    checkpoint: &SyntheticRustCheckpoint,
-    side: Side,
-) -> &ProjectableState {
+fn checkpoint_state(checkpoint: &SyntheticRustCheckpoint, side: Side) -> &ProjectableState {
     match side {
         Side::P1 => &checkpoint.p1_state,
         Side::P2 => &checkpoint.p2_state,
@@ -656,15 +664,16 @@ fn original_witness_projection(
     synthetic_case: &SyntheticOracleCase,
     observation: &OriginalOracleObservation,
 ) -> OracleResult<Value> {
-    let checkpoint = select_witness_checkpoint(synthetic_case, &observation.checkpoints, |checkpoint| {
-        checkpoint.actor_side
-    })
-    .ok_or_else(|| {
-        format!(
-            "{} original witness checkpoint is missing",
-            synthetic_case.case_id
-        )
-    })?;
+    let checkpoint =
+        select_witness_checkpoint(synthetic_case, &observation.checkpoints, |checkpoint| {
+            checkpoint.actor_side
+        })
+        .ok_or_else(|| {
+            format!(
+                "{} original witness checkpoint is missing",
+                synthetic_case.case_id
+            )
+        })?;
     build_witness_projection(synthetic_case, |side| {
         let state = match side {
             Side::P1 => &checkpoint.p1_state,
@@ -740,7 +749,10 @@ pub fn build_witness_projection(
         if synthetic_case.witness.deck {
             projection.insert(
                 "deck".into(),
-                current.deck.clone().unwrap_or_else(|| Value::Array(Vec::new())),
+                current
+                    .deck
+                    .clone()
+                    .unwrap_or_else(|| Value::Array(Vec::new())),
             );
         }
         sides.insert(side.as_str().to_string(), Value::Object(projection));
@@ -814,20 +826,19 @@ pub fn first_json_deviation(
                         ));
                     }
                     for (index, (l, r)) in left.iter().zip(right.iter()).enumerate() {
-                        if let Some(deviation) =
-                            first_json_deviation(&format!("{path}[{index}]"), Some(l), Some(r), right_label)
-                        {
+                        if let Some(deviation) = first_json_deviation(
+                            &format!("{path}[{index}]"),
+                            Some(l),
+                            Some(r),
+                            right_label,
+                        ) {
                             return Some(deviation);
                         }
                     }
                     None
                 }
                 (Value::Object(left), Value::Object(right)) => {
-                    let mut keys: Vec<String> = left
-                        .keys()
-                        .chain(right.keys())
-                        .cloned()
-                        .collect();
+                    let mut keys: Vec<String> = left.keys().chain(right.keys()).cloned().collect();
                     keys.sort();
                     keys.dedup();
                     for key in keys {
@@ -873,9 +884,11 @@ fn json_object_is(left: &Value, right: &Value) -> bool {
         }
         (Value::Object(left), Value::Object(right)) => {
             left.len() == right.len()
-                && left
-                    .iter()
-                    .all(|(key, value)| right.get(key).is_some_and(|other| json_object_is(value, other)))
+                && left.iter().all(|(key, value)| {
+                    right
+                        .get(key)
+                        .is_some_and(|other| json_object_is(value, other))
+                })
         }
         _ => false,
     }
@@ -1053,7 +1066,12 @@ fn synthetic_player(
     if let Some(fate_strategies) = &player.fate_strategies {
         object.insert(
             "fateStrategies".into(),
-            Value::Array(fate_strategies.iter().map(|value| Value::from(*value)).collect()),
+            Value::Array(
+                fate_strategies
+                    .iter()
+                    .map(|value| Value::from(*value))
+                    .collect(),
+            ),
         );
     }
     if let Some(selections) = &player.fate_strategy_selections {
@@ -1132,11 +1150,7 @@ fn string_i64_map(record: &BTreeMap<String, i64>) -> Map<String, Value> {
     map
 }
 
-fn exact_card_config(
-    id: i64,
-    side: &str,
-    context: &SyntheticOracleContext,
-) -> OracleResult<Value> {
+fn exact_card_config(id: i64, side: &str, context: &SyntheticOracleContext) -> OracleResult<Value> {
     context
         .card_config_by_id
         .get(&id)
@@ -1180,7 +1194,10 @@ pub fn validate_synthetic_case(synthetic_case: &SyntheticOracleCase) -> OracleRe
             synthetic_case.case_id
         ));
     }
-    for (side, player) in [("p1", &synthetic_case.players.p1), ("p2", &synthetic_case.players.p2)] {
+    for (side, player) in [
+        ("p1", &synthetic_case.players.p1),
+        ("p2", &synthetic_case.players.p2),
+    ] {
         if player.cards.len() != 8 {
             return Err(format!("{side} synthetic deck must contain 8 cards"));
         }
@@ -1198,11 +1215,12 @@ fn synthetic_case_id_valid(case_id: &str) -> bool {
     };
     let segments: Vec<&str> = rest.split('/').collect();
     segments.len() >= 2
-        && segments
-            .iter()
-            .all(|segment| !segment.is_empty() && segment.chars().all(|c| {
-                c.is_ascii_lowercase() || c.is_ascii_digit() || c == '.' || c == '_' || c == '-'
-            }))
+        && segments.iter().all(|segment| {
+            !segment.is_empty()
+                && segment.chars().all(|c| {
+                    c.is_ascii_lowercase() || c.is_ascii_digit() || c == '.' || c == '_' || c == '-'
+                })
+        })
 }
 
 fn strip_case_insensitive_prefix<'a>(value: &'a str, prefix: &str) -> Option<&'a str> {

@@ -7,13 +7,13 @@
 //! detail_entries 9 个持久计数），但输出收敛为 TS 解析后可见的形状
 //! （`parseRustReplayEventStream` / `parseRustExtendedReplayEventStream`）。
 
-use serde_json::{Map, Value};
+use crate::replay::wire::{event_snapshot, EventRow, EventStream};
 use crate::ReplayDetailedEvent;
-use crate::replay::wire::{event_snapshot, EventStream, EventRow};
 use crate::{
     run_replay_fixture_with_detailed_events, run_replay_fixture_with_parity_events, BattleFixture,
     EngineError, PlayerSide, ReplayEventKind, ReplayRun,
 };
+use serde_json::{Map, Value};
 
 use super::buff_map::{
     RustExtendedEvent, RustExtendedEventStream, RustExtendedSnapshot, RustExtendedTerminal,
@@ -34,10 +34,7 @@ pub fn run_replay_event_stream(
 }
 
 /// `replay_slice --events` 的线协议行（wire 合同原样）。
-pub fn parity_event_row(
-    event: &crate::ReplayEvent,
-    run: &ReplayRun,
-) -> EventRow {
+pub fn parity_event_row(event: &crate::ReplayEvent, run: &ReplayRun) -> EventRow {
     EventRow {
         kind: event_kind(event.kind).to_string(),
         turn: event.turn,
@@ -58,7 +55,11 @@ pub fn parity_event_row(
 pub fn parity_event_stream(fixture: &str, run: &ReplayRun) -> EventStream {
     EventStream {
         fixture: fixture.to_string(),
-        events: run.events.iter().map(|event| parity_event_row(event, run)).collect(),
+        events: run
+            .events
+            .iter()
+            .map(|event| parity_event_row(event, run))
+            .collect(),
     }
 }
 
@@ -142,7 +143,10 @@ pub fn run_replay_event_stream_extended(
 /// 与 replay_slice `extended_event_stream` 同语义，但只保留 TS 解析层可见的
 /// fixture/terminal/events（decisionEvents/attackSegments/turnEndHooks 不进
 /// oracle 对照形状）。
-pub fn extended_oracle_stream(fixture_label: &str, run: &crate::ReplayDetailedRun) -> RustExtendedEventStream {
+pub fn extended_oracle_stream(
+    fixture_label: &str,
+    run: &crate::ReplayDetailedRun,
+) -> RustExtendedEventStream {
     let last = run
         .events
         .last()
@@ -169,16 +173,8 @@ pub fn extended_oracle_event(detailed: &ReplayDetailedEvent) -> RustExtendedEven
         slot: detailed.event.slot.map(|slot| slot as i64),
         card_id: detailed.event.card_id,
         card_name: detailed.event.card_name.clone(),
-        p1: RustExtendedSnapshot::from_engine(
-            &detailed.event.p1,
-            &detailed.p1,
-            &detailed.p1_state,
-        ),
-        p2: RustExtendedSnapshot::from_engine(
-            &detailed.event.p2,
-            &detailed.p2,
-            &detailed.p2_state,
-        ),
+        p1: RustExtendedSnapshot::from_engine(&detailed.event.p1, &detailed.p1, &detailed.p1_state),
+        p2: RustExtendedSnapshot::from_engine(&detailed.event.p2, &detailed.p2, &detailed.p2_state),
         p1_card_queue: queued_cards(&detailed.p1_state.card_queue),
         p2_card_queue: queued_cards(&detailed.p2_state.card_queue),
         p1_physical_deck: queued_cards(&detailed.p1_state.physical_deck),

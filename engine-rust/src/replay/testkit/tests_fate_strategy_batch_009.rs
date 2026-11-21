@@ -467,7 +467,11 @@ fn fate_335_takes_precedence_over_349_when_both_are_present() {
 
 // Merged from tests_fate_strategy_432.rs (2026-11-14).
 
-fn fate_432_player(cards: Vec<CardDefinition>, fate_strategies: Vec<i64>, anima: i64) -> FixturePlayer {
+fn fate_432_player(
+    cards: Vec<CardDefinition>,
+    fate_strategies: Vec<i64>,
+    anima: i64,
+) -> FixturePlayer {
     FixturePlayer {
         level: 5,
         base_max_hp: 100,
@@ -534,7 +538,8 @@ fn fate_432_fixture(card: CardDefinition, fate_strategies: Vec<i64>, anima: i64)
 
 fn attack_damage(anima: i64, after_action: bool) -> (i64, i64) {
     let card = original_card_definition_by_id(10_000_013).expect("missing 崩拳•撼");
-    let mut state = ReplayState::test_from_fixture(&fate_432_fixture(card.clone(), vec![432], anima));
+    let mut state =
+        ReplayState::test_from_fixture(&fate_432_fixture(card.clone(), vec![432], anima));
     let kind = super::effect_invocation::EffectInvocationKind::Played;
     state.begin_effect_invocation(PlayerSide::P1, &card, &card, &card, 0, 0, kind, true);
     state.set_active_effect_after_action(after_action);

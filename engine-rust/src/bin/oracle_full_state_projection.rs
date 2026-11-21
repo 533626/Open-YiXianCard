@@ -67,12 +67,19 @@ fn run() -> Result<(), String> {
         &repo_root,
         "battle-evaluator/data/original-build-profiles.json",
     );
-    let evidence_manifest_path = default_path(&repo_root, "research/original-game/EVIDENCE_MANIFEST.json");
+    let evidence_manifest_path =
+        default_path(&repo_root, "research/original-game/EVIDENCE_MANIFEST.json");
     let map_path = buff_map.unwrap_or_else(|| {
-        default_path(&repo_root, "battle-evaluator/generated/buff-id-rust-key-map.json")
+        default_path(
+            &repo_root,
+            "battle-evaluator/generated/buff-id-rust-key-map.json",
+        )
     });
     let archive_path = buff_archive.unwrap_or_else(|| {
-        default_path(&repo_root, "battle-evaluator/generated/buff-category-archive.json")
+        default_path(
+            &repo_root,
+            "battle-evaluator/generated/buff-category-archive.json",
+        )
     });
 
     let map = load_rust_buff_key_map(&map_path, &archive_path)?;
@@ -81,7 +88,8 @@ fn run() -> Result<(), String> {
         &build_profiles_path,
         &evidence_manifest_path,
     )?;
-    let fixture = yixian_engine::load_fixture_file(&fixture_path).map_err(|error| error.to_string())?;
+    let fixture =
+        yixian_engine::load_fixture_file(&fixture_path).map_err(|error| error.to_string())?;
     let fixture_label = fixture_label.unwrap_or_else(|| case_id.clone());
     let full_state = run_original_oracle_rust_full_state(
         &case_id,

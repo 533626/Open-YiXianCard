@@ -11,12 +11,12 @@
 //! [`validate_rust_buff_key_map`] 在加载时抛错。逐帧对照（[`compare_side`]
 //! 四分类）也落在这里，供 bin 与单测共用。
 
+use crate::replay::wire::{event_snapshot, DisplayGapSnapshot, EventSnapshot};
+use crate::{ReplayDetailEntry, ReplayDetailedSideState, ReplayPlayerSnapshot};
 use serde::de::{Deserializer, MapAccess, Visitor};
 use serde::ser::SerializeMap;
 use serde::{Deserialize, Serialize, Serializer};
 use serde_json::{Map, Value};
-use crate::{ReplayDetailEntry, ReplayDetailedSideState, ReplayPlayerSnapshot};
-use crate::replay::wire::{event_snapshot, DisplayGapSnapshot, EventSnapshot};
 
 /// 对照层错误：文案与 TS 抛错逐字一致。
 pub type OracleResult<T> = Result<T, String>;
@@ -194,7 +194,10 @@ impl RustBuffMapEntry {
     pub fn to_json(&self) -> Value {
         let mut map = Map::new();
         map.insert("buffTypeId".into(), json_i64(self.buff_type_id));
-        map.insert("archiveEnum".into(), Value::String(self.archive_enum.clone()));
+        map.insert(
+            "archiveEnum".into(),
+            Value::String(self.archive_enum.clone()),
+        );
         map.insert(
             "originalName".into(),
             match &self.original_name {
@@ -231,7 +234,10 @@ impl RustBuffKeyMap {
 }
 
 /// 加载并重新锚定映射表；任何漂移都 fail closed。
-pub fn load_rust_buff_key_map(map_path: &std::path::Path, archive_path: &std::path::Path) -> OracleResult<RustBuffKeyMap> {
+pub fn load_rust_buff_key_map(
+    map_path: &std::path::Path,
+    archive_path: &std::path::Path,
+) -> OracleResult<RustBuffKeyMap> {
     let map_text = std::fs::read_to_string(map_path)
         .map_err(|error| format!("buff-id-rust-key-map read failed: {error}"))?;
     let archive_text = std::fs::read_to_string(archive_path)
@@ -246,7 +252,10 @@ pub fn load_rust_buff_key_map(map_path: &std::path::Path, archive_path: &std::pa
 /// 重新锚定映射表：每个 entry 的枚举名必须在 archive 中存在，且 id/原文名
 /// 逐字一致、rustKey 必须是 extended 快照字段、buffTypeId 不得重复。
 /// 任何漂移都 fail closed（返回 Err）。导出供单测注入漂移用例。
-pub fn validate_rust_buff_key_map(value: &Value, archive_value: &Value) -> OracleResult<RustBuffKeyMap> {
+pub fn validate_rust_buff_key_map(
+    value: &Value,
+    archive_value: &Value,
+) -> OracleResult<RustBuffKeyMap> {
     let map = assert_object(value, "buff-id-rust-key-map")?;
     if map.get("schemaVersion").and_then(Value::as_i64) != Some(1) {
         return Err("buff-id-rust-key-map has an unsupported schema".into());
@@ -273,10 +282,7 @@ pub fn validate_rust_buff_key_map(value: &Value, archive_value: &Value) -> Oracl
     let mut seen: Vec<i64> = Vec::new();
     let mut parsed = Vec::with_capacity(entries.len());
     for (index, raw) in entries.iter().enumerate() {
-        let entry = assert_object(
-            raw,
-            &format!("buff-id-rust-key-map.entries[{index}]"),
-        )?;
+        let entry = assert_object(raw, &format!("buff-id-rust-key-map.entries[{index}]"))?;
         let buff_type_id = json_number(
             entry.get("buffTypeId").unwrap_or(&Value::Null),
             &format!("entries[{index}].buffTypeId"),
@@ -290,14 +296,14 @@ pub fn validate_rust_buff_key_map(value: &Value, archive_value: &Value) -> Oracl
             &format!("entries[{index}].rustKey"),
         )?;
         if seen.contains(&buff_type_id) {
-            return Err(format!("entries[{index}]: duplicate buffTypeId {buff_type_id}"));
+            return Err(format!(
+                "entries[{index}]: duplicate buffTypeId {buff_type_id}"
+            ));
         }
         seen.push(buff_type_id);
         // 裸键兜底必须能解析到锚定：枚举名在 archive 里存在，且 id/原文名逐字一致。
         let anchored = assert_object(
-            archive_buffs
-                .get(&archive_enum)
-                .unwrap_or(&Value::Null),
+            archive_buffs.get(&archive_enum).unwrap_or(&Value::Null),
             &format!("archive[{archive_enum}]"),
         )?;
         let anchored_id = anchored.get("id").unwrap_or(&Value::Null);
@@ -338,7 +344,9 @@ pub fn validate_rust_buff_key_map(value: &Value, archive_value: &Value) -> Oracl
         let rust_label = entry.get("rustLabel").unwrap_or(&Value::Null);
         let category = entry.get("category").unwrap_or(&Value::Null);
         if !rust_label.is_string() || !category.is_string() {
-            return Err(format!("entries[{index}]: rustLabel/category must be strings"));
+            return Err(format!(
+                "entries[{index}]: rustLabel/category must be strings"
+            ));
         }
         parsed.push(RustBuffMapEntry {
             buff_type_id,
@@ -373,7 +381,9 @@ impl Default for RustExtendedSnapshot {
 
 impl RustExtendedSnapshot {
     pub fn field_index(field: &str) -> Option<usize> {
-        RUST_EXTENDED_SNAPSHOT_FIELDS.iter().position(|name| *name == field)
+        RUST_EXTENDED_SNAPSHOT_FIELDS
+            .iter()
+            .position(|name| *name == field)
     }
 
     pub fn get(&self, field: &str) -> Option<i64> {
@@ -412,10 +422,7 @@ impl RustExtendedSnapshot {
             (&mut gap.lose_hp_times_count, "loseHpTimesCount"),
             (&mut gap.actual_damage_carry, "actualDamageCarry"),
             (&mut gap.wounded_count_carry, "woundedCountCarry"),
-            (
-                &mut gap.ji_lu_zong_ji_shang_zhi,
-                "jiLuZongJiShangZhi",
-            ),
+            (&mut gap.ji_lu_zong_ji_shang_zhi, "jiLuZongJiShangZhi"),
             (&mut gap.last_stand_intent, "lastStandIntent"),
             (&mut gap.last_stand_unyielding, "lastStandUnyielding"),
         ] {
@@ -534,8 +541,14 @@ impl RustQueuedCard {
             return Err(format!("{label}.skip/hadUsed must be booleans"));
         }
         Ok(RustQueuedCard {
-            id: json_number(row.get("id").unwrap_or(&Value::Null), &format!("{label}.id"))?,
-            grid: json_number(row.get("grid").unwrap_or(&Value::Null), &format!("{label}.grid"))?,
+            id: json_number(
+                row.get("id").unwrap_or(&Value::Null),
+                &format!("{label}.id"),
+            )?,
+            grid: json_number(
+                row.get("grid").unwrap_or(&Value::Null),
+                &format!("{label}.grid"),
+            )?,
             skip: skip.as_bool().unwrap(),
             had_used: had_used.as_bool().unwrap(),
         })
@@ -590,7 +603,10 @@ pub struct RustExtendedEventStream {
 impl RustExtendedTerminal {
     pub fn to_json(&self) -> Value {
         let mut map = Map::new();
-        map.insert("winnerSide".into(), Value::String(self.winner_side.as_str().into()));
+        map.insert(
+            "winnerSide".into(),
+            Value::String(self.winner_side.as_str().into()),
+        );
         map.insert("actorTurn".into(), json_i64(self.actor_turn));
         map.insert("hpDelta".into(), json_i64(self.hp_delta));
         map.insert("p1Hp".into(), json_i64(self.p1_hp));
@@ -622,19 +638,39 @@ impl RustExtendedEvent {
         map.insert("p2".into(), self.p2.to_json());
         map.insert(
             "p1CardQueue".into(),
-            Value::Array(self.p1_card_queue.iter().map(RustQueuedCard::to_json).collect()),
+            Value::Array(
+                self.p1_card_queue
+                    .iter()
+                    .map(RustQueuedCard::to_json)
+                    .collect(),
+            ),
         );
         map.insert(
             "p2CardQueue".into(),
-            Value::Array(self.p2_card_queue.iter().map(RustQueuedCard::to_json).collect()),
+            Value::Array(
+                self.p2_card_queue
+                    .iter()
+                    .map(RustQueuedCard::to_json)
+                    .collect(),
+            ),
         );
         map.insert(
             "p1PhysicalDeck".into(),
-            Value::Array(self.p1_physical_deck.iter().map(RustQueuedCard::to_json).collect()),
+            Value::Array(
+                self.p1_physical_deck
+                    .iter()
+                    .map(RustQueuedCard::to_json)
+                    .collect(),
+            ),
         );
         map.insert(
             "p2PhysicalDeck".into(),
-            Value::Array(self.p2_physical_deck.iter().map(RustQueuedCard::to_json).collect()),
+            Value::Array(
+                self.p2_physical_deck
+                    .iter()
+                    .map(RustQueuedCard::to_json)
+                    .collect(),
+            ),
         );
         Value::Object(map)
     }
@@ -654,16 +690,19 @@ impl RustExtendedEventStream {
 }
 
 /// 解析 `replay_slice --events-extended` 的 JSON 输出。
-pub fn parse_rust_extended_replay_event_stream(value: &Value) -> OracleResult<RustExtendedEventStream> {
+pub fn parse_rust_extended_replay_event_stream(
+    value: &Value,
+) -> OracleResult<RustExtendedEventStream> {
     let root = assert_object(value, "Rust extended replay event stream")?;
-    let fixture = assert_string(root.get("fixture").unwrap_or(&Value::Null), "stream.fixture")?;
+    let fixture = assert_string(
+        root.get("fixture").unwrap_or(&Value::Null),
+        "stream.fixture",
+    )?;
     let events = root
         .get("events")
         .and_then(Value::as_array)
         .ok_or_else(|| "stream.events must be an array".to_string())?;
-    let terminal = parse_extended_terminal(
-        root.get("terminal").unwrap_or(&Value::Null),
-    )?;
+    let terminal = parse_extended_terminal(root.get("terminal").unwrap_or(&Value::Null))?;
     Ok(RustExtendedEventStream {
         fixture,
         terminal,
@@ -685,10 +724,22 @@ fn parse_extended_terminal(value: &Value) -> OracleResult<RustExtendedTerminal> 
         .ok_or_else(|| "stream.terminal.winnerSide must be p1 or p2".to_string())?;
     Ok(RustExtendedTerminal {
         winner_side,
-        actor_turn: json_number(row.get("actorTurn").unwrap_or(&Value::Null), "stream.terminal.actorTurn")?,
-        hp_delta: json_number(row.get("hpDelta").unwrap_or(&Value::Null), "stream.terminal.hpDelta")?,
-        p1_hp: json_number(row.get("p1Hp").unwrap_or(&Value::Null), "stream.terminal.p1Hp")?,
-        p2_hp: json_number(row.get("p2Hp").unwrap_or(&Value::Null), "stream.terminal.p2Hp")?,
+        actor_turn: json_number(
+            row.get("actorTurn").unwrap_or(&Value::Null),
+            "stream.terminal.actorTurn",
+        )?,
+        hp_delta: json_number(
+            row.get("hpDelta").unwrap_or(&Value::Null),
+            "stream.terminal.hpDelta",
+        )?,
+        p1_hp: json_number(
+            row.get("p1Hp").unwrap_or(&Value::Null),
+            "stream.terminal.p1Hp",
+        )?,
+        p2_hp: json_number(
+            row.get("p2Hp").unwrap_or(&Value::Null),
+            "stream.terminal.p2Hp",
+        )?,
         remaining_decision_params: json_number(
             row.get("remainingDecisionParams").unwrap_or(&Value::Null),
             "stream.terminal.remainingDecisionParams",
@@ -709,11 +760,17 @@ fn parse_extended_event(value: &Value, index: usize) -> OracleResult<RustExtende
             row.get("kind").unwrap_or(&Value::Null),
             &format!("stream.events[{index}].kind"),
         )?,
-        turn: json_number(row.get("turn").unwrap_or(&Value::Null), &format!("stream.events[{index}].turn"))?,
+        turn: json_number(
+            row.get("turn").unwrap_or(&Value::Null),
+            &format!("stream.events[{index}].turn"),
+        )?,
         actor,
         slot: optional_number(row.get("slot")),
         card_id: optional_number(row.get("card_id")),
-        card_name: row.get("card_name").and_then(Value::as_str).map(str::to_string),
+        card_name: row
+            .get("card_name")
+            .and_then(Value::as_str)
+            .map(str::to_string),
         p1: RustExtendedSnapshot::from_json(
             row.get("p1").unwrap_or(&Value::Null),
             &format!("stream.events[{index}].p1"),
@@ -751,7 +808,12 @@ pub enum CoreField {
 }
 
 impl CoreField {
-    pub const ALL: [CoreField; 4] = [CoreField::Hp, CoreField::MaxHp, CoreField::Def, CoreField::Anima];
+    pub const ALL: [CoreField; 4] = [
+        CoreField::Hp,
+        CoreField::MaxHp,
+        CoreField::Def,
+        CoreField::Anima,
+    ];
 
     pub fn as_str(self) -> &'static str {
         match self {
@@ -823,7 +885,10 @@ impl BuffDiff {
         map.insert("entry".into(), self.entry.to_json());
         map.insert("original".into(), json_i64(self.original));
         map.insert("rust".into(), json_i64(self.rust));
-        map.insert("classification".into(), Value::String(self.classification.into()));
+        map.insert(
+            "classification".into(),
+            Value::String(self.classification.into()),
+        );
         Value::Object(map)
     }
 }
@@ -863,7 +928,12 @@ impl SideComparison {
         );
         map.insert(
             "unmapped".into(),
-            Value::Array(self.unmapped.iter().map(UnmappedBuffEntry::to_json).collect()),
+            Value::Array(
+                self.unmapped
+                    .iter()
+                    .map(UnmappedBuffEntry::to_json)
+                    .collect(),
+            ),
         );
         Value::Object(map)
     }
@@ -900,10 +970,16 @@ pub fn rust_snapshot_value(snapshot: &RustExtendedSnapshot, field: CoreField) ->
 /// 映射内 BuffType ID 的 Rust 语义值。入口只接收已通过
 /// `validate_rust_buff_key_map` 重锚定的 in-map entry；`expect` 对应 TS 的
 /// `?? 0` 类型收窄（parse 已强制 104 个字段全部为有限数，不可达）。
-pub fn original_oracle_rust_buff_value(entry: &RustBuffMapEntry, snapshot: &RustExtendedSnapshot) -> i64 {
-    snapshot
-        .get(&entry.rust_key)
-        .unwrap_or_else(|| panic!("rustKey {} is not an extended snapshot field", entry.rust_key))
+pub fn original_oracle_rust_buff_value(
+    entry: &RustBuffMapEntry,
+    snapshot: &RustExtendedSnapshot,
+) -> i64 {
+    snapshot.get(&entry.rust_key).unwrap_or_else(|| {
+        panic!(
+            "rustKey {} is not an extended snapshot field",
+            entry.rust_key
+        )
+    })
 }
 
 /// 未映射的原版 buff 显式归类入口（引擎覆盖缺口）：值为 0 的键不报告。
@@ -917,8 +993,13 @@ pub fn unmapped_original_buff_entries(
             let buff_type_id = key.parse::<i64>().ok()?;
             let value = value.as_i64()?;
             (value != 0
-                && !entries.iter().any(|entry| entry.buff_type_id == buff_type_id))
-            .then_some(UnmappedBuffEntry { buff_type_id, value })
+                && !entries
+                    .iter()
+                    .any(|entry| entry.buff_type_id == buff_type_id))
+            .then_some(UnmappedBuffEntry {
+                buff_type_id,
+                value,
+            })
         })
         .collect();
     unmapped.sort_by_key(|entry| entry.buff_type_id);
@@ -935,8 +1016,8 @@ pub fn compare_side(
 ) -> SideComparison {
     let mut core_diffs = Vec::new();
     for field in CoreField::ALL {
-        let original_value = core_snapshot_value(original, field)
-            .unwrap_or_else(|error| panic!("{error}"));
+        let original_value =
+            core_snapshot_value(original, field).unwrap_or_else(|error| panic!("{error}"));
         let rust_value = rust_snapshot_value(rust, field);
         if original_value != rust_value {
             core_diffs.push(CoreDiff {
@@ -1005,7 +1086,10 @@ pub fn original_buff_archive_anchor(
         if record.get("id").and_then(Value::as_i64) == Some(buff_type_id) {
             return Ok(Some(OriginalBuffAnchor {
                 archive_enum: archive_enum.clone(),
-                original_name: record.get("name").and_then(Value::as_str).map(str::to_string),
+                original_name: record
+                    .get("name")
+                    .and_then(Value::as_str)
+                    .map(str::to_string),
                 category: record
                     .get("category")
                     .map(js_string)
@@ -1018,7 +1102,10 @@ pub fn original_buff_archive_anchor(
 
 // ---- 共享解析助手（错误文案与 TS _shared.ts / 局部助手逐字一致） ----
 
-pub(crate) fn assert_object<'a>(value: &'a Value, label: &str) -> OracleResult<&'a Map<String, Value>> {
+pub(crate) fn assert_object<'a>(
+    value: &'a Value,
+    label: &str,
+) -> OracleResult<&'a Map<String, Value>> {
     value
         .as_object()
         .ok_or_else(|| format!("{label} must be an object"))
@@ -1098,10 +1185,7 @@ impl<'de> Deserialize<'de> for OrderedNumberRecord {
                 formatter.write_str("a record of finite numbers")
             }
 
-            fn visit_map<A: MapAccess<'de>>(
-                self,
-                mut access: A,
-            ) -> Result<Self::Value, A::Error> {
+            fn visit_map<A: MapAccess<'de>>(self, mut access: A) -> Result<Self::Value, A::Error> {
                 let mut entries = Vec::new();
                 while let Some((key, value)) = access.next_entry::<String, i64>()? {
                     entries.push((key, value));

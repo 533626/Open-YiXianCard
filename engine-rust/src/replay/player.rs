@@ -801,8 +801,7 @@ impl ReplayPlayer {
             let mut flag = false;
             // XingYi_Duan while (:1898-1903).
             while self.astrology.star_chess_break > 0 {
-                self.astrology.star_chess_break =
-                    (self.astrology.star_chess_break - 1).max(0);
+                self.astrology.star_chess_break = (self.astrology.star_chess_break - 1).max(0);
                 skipped_slot_indices.push(current);
                 last_break_progress = skipped_slot_indices.len();
                 self.deck.queue.push(current);
@@ -843,7 +842,9 @@ impl ReplayPlayer {
                 skipped_slot_indices.push(current);
                 self.deck.queue.push(current);
                 flag = true;
-                if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                if skipped_slot_indices
+                    .len()
+                    .saturating_sub(last_break_progress)
                     >= active_slot_count
                 {
                     return Some(DrawnCard {
@@ -882,7 +883,9 @@ impl ReplayPlayer {
                 skipped_slot_indices.push(current);
                 self.deck.queue.push(current);
                 flag = true;
-                if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                if skipped_slot_indices
+                    .len()
+                    .saturating_sub(last_break_progress)
                     >= active_slot_count
                 {
                     return Some(DrawnCard {
@@ -930,7 +933,9 @@ impl ReplayPlayer {
                 skipped_slot_indices.push(current);
                 self.deck.queue.push(current);
                 flag = true;
-                if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                if skipped_slot_indices
+                    .len()
+                    .saturating_sub(last_break_progress)
                     >= active_slot_count
                 {
                     return Some(DrawnCard {
@@ -979,7 +984,9 @@ impl ReplayPlayer {
                 skipped_slot_indices.push(current);
                 self.deck.queue.push(current);
                 flag = true;
-                if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                if skipped_slot_indices
+                    .len()
+                    .saturating_sub(last_break_progress)
                     >= active_slot_count
                 {
                     return Some(DrawnCard {
@@ -1015,14 +1022,18 @@ impl ReplayPlayer {
             // 5010 while (:1962-1966).
             while current >= 5
                 && self.xian_mo_switch_active(5010)
-                && self.deck.slots.get(current).is_some_and(|slot| {
-                    !is_pu_tong_gong_ji_base_id(normalized_base_id(&slot.card))
-                })
+                && self
+                    .deck
+                    .slots
+                    .get(current)
+                    .is_some_and(|slot| !is_pu_tong_gong_ji_base_id(normalized_base_id(&slot.card)))
             {
                 skipped_slot_indices.push(current);
                 self.deck.queue.push(current);
                 flag = true;
-                if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                if skipped_slot_indices
+                    .len()
+                    .saturating_sub(last_break_progress)
                     >= active_slot_count
                 {
                     return Some(DrawnCard {
@@ -1067,7 +1078,9 @@ impl ReplayPlayer {
                 skipped_slot_indices.push(current);
                 self.deck.queue.push(current);
                 flag = true;
-                if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                if skipped_slot_indices
+                    .len()
+                    .saturating_sub(last_break_progress)
                     >= active_slot_count
                 {
                     return Some(DrawnCard {
@@ -1110,7 +1123,9 @@ impl ReplayPlayer {
                 skipped_slot_indices.push(current);
                 self.deck.queue.push(current);
                 flag = true;
-                if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                if skipped_slot_indices
+                    .len()
+                    .saturating_sub(last_break_progress)
                     >= active_slot_count
                 {
                     return Some(DrawnCard {
@@ -1155,7 +1170,9 @@ impl ReplayPlayer {
                 skipped_slot_indices.push(current);
                 self.deck.queue.push(current);
                 flag = true;
-                if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                if skipped_slot_indices
+                    .len()
+                    .saturating_sub(last_break_progress)
                     >= active_slot_count
                 {
                     return Some(DrawnCard {
@@ -1203,7 +1220,9 @@ impl ReplayPlayer {
                     skipped_opening_slot_indices.push(current);
                     self.deck.queue.push(current);
                     flag = true;
-                    if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                    if skipped_slot_indices
+                        .len()
+                        .saturating_sub(last_break_progress)
                         >= active_slot_count
                     {
                         return Some(DrawnCard {
@@ -1237,8 +1256,7 @@ impl ReplayPlayer {
                     }
                 }
                 let jump_value = self.ronghui.star_chess_jump;
-                self.ronghui.star_chess_jump =
-                    (self.ronghui.star_chess_jump - jump_value).max(0);
+                self.ronghui.star_chess_jump = (self.ronghui.star_chess_jump - jump_value).max(0);
             }
             // DongZhu (fate-cycle) while (:2014-2030): consecutive fate grids with
             // opening, 1 per skip. Inner-while batching preserves fc621a 4→2.
@@ -1248,7 +1266,9 @@ impl ReplayPlayer {
                 skipped_opening_slot_indices.push(current);
                 self.deck.queue.push(current);
                 flag = true;
-                if skipped_slot_indices.len().saturating_sub(last_break_progress)
+                if skipped_slot_indices
+                    .len()
+                    .saturating_sub(last_break_progress)
                     >= active_slot_count
                 {
                     return Some(DrawnCard {
@@ -1567,11 +1587,7 @@ impl ReplayPlayer {
 
 impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     #[inline(always)]
-    fn on_actor_hp_mutated_hooks(
-        &mut self,
-        actor_side: PlayerSide,
-        receipt: &HpMutationReceipt,
-    ) {
+    fn on_actor_hp_mutated_hooks(&mut self, actor_side: PlayerSide, receipt: &HpMutationReceipt) {
         // Card_55 grants YeDuZhiYin(364); BattleCharacter.ModifyHp only converts it to
         // ExActionAgain on the owner's own turn (HasBuff(YeDuZhiYin) &&
         // HasBuff(ZiShenHuiHe), BattleCharacter.cs:10124; ZiShenHuiHe is set at

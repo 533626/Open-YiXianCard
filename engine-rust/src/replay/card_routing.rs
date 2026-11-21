@@ -93,7 +93,10 @@ impl CardLifecycle {
         {
             flags |= Self::BATTLE_START.0;
         }
-        if matches!(base_id, 7_000_058 | 7_000_073 | 7_000_074 | 7_040_019 | 7_040_020) {
+        if matches!(
+            base_id,
+            7_000_058 | 7_000_073 | 7_000_074 | 7_040_019 | 7_040_020
+        ) {
             flags |= Self::TURN_END.0;
         }
         Self(flags)
@@ -341,10 +344,15 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 let target_side = super::support::opponent_side(actor_side);
                 if let Some(target_slot) = self.actor(target_side).deck.slots.get(trigger_grid) {
                     let target_card = target_slot.card.clone();
-                    if super::original_config::original_config_rarity(target_card.id) >= 1 && target_card.id != 19 {
+                    if super::original_config::original_config_rarity(target_card.id) >= 1
+                        && target_card.id != 19
+                    {
                         let lower_id = target_card.id - 10_000;
-                        if let Some(lowered) = super::original_config::known_card_definition(catalog_cards, lower_id) {
-                            self.actor_mut(target_side).deck.slots[trigger_grid].card = lowered.into();
+                        if let Some(lowered) =
+                            super::original_config::known_card_definition(catalog_cards, lower_id)
+                        {
+                            self.actor_mut(target_side).deck.slots[trigger_grid].card =
+                                lowered.into();
                         }
                     } else {
                         let current_card = self
@@ -373,7 +381,12 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             11_000_023 => {
                 let loss = super::support::other_param(card, 1).max(0);
                 if loss > 0 {
-                    self.modify_actor_hp(super::support::opponent_side(actor_side), -loss, false, false);
+                    self.modify_actor_hp(
+                        super::support::opponent_side(actor_side),
+                        -loss,
+                        false,
+                        false,
+                    );
                     self.modify_actor_hp(actor_side, -loss, false, false);
                 }
             }
@@ -523,17 +536,29 @@ mod tests {
 
     #[test]
     fn card_domain_partitions_entire_architecture() {
-        assert_eq!(card_domain_for_base_id(1_000_001), CardDomain::YunLingJianZong);
+        assert_eq!(
+            card_domain_for_base_id(1_000_001),
+            CardDomain::YunLingJianZong
+        );
         assert_eq!(card_domain_for_base_id(2_000_001), CardDomain::FuZhouShi);
         assert_eq!(card_domain_for_base_id(3_000_001), CardDomain::QinShi);
         assert_eq!(card_domain_for_base_id(4_000_001), CardDomain::QiXingGe);
         assert_eq!(card_domain_for_base_id(5_000_001), CardDomain::LianDanShi);
         assert_eq!(card_domain_for_base_id(6_000_001), CardDomain::ZhenFaShi);
-        assert_eq!(card_domain_for_base_id(7_000_001), CardDomain::WuXingDaoMeng);
+        assert_eq!(
+            card_domain_for_base_id(7_000_001),
+            CardDomain::WuXingDaoMeng
+        );
         assert_eq!(card_domain_for_base_id(8_000_001), CardDomain::LingZhiShi);
         assert_eq!(card_domain_for_base_id(9_000_001), CardDomain::HuaShi);
-        assert_eq!(card_domain_for_base_id(10_000_001), CardDomain::DuanXuanZong);
-        assert_eq!(card_domain_for_base_id(11_000_001), CardDomain::SeasonRotation);
+        assert_eq!(
+            card_domain_for_base_id(10_000_001),
+            CardDomain::DuanXuanZong
+        );
+        assert_eq!(
+            card_domain_for_base_id(11_000_001),
+            CardDomain::SeasonRotation
+        );
         assert_eq!(card_domain_for_base_id(0), CardDomain::Universal);
         assert_eq!(card_domain_for_base_id(55), CardDomain::Universal);
     }
@@ -543,8 +568,14 @@ mod tests {
         // Universal opening cards
         for &id in OPENING_CORE_BASE_IDS {
             let lc = CardLifecycle::for_base_id::<true>(id);
-            assert!(lc.contains(CardLifecycle::BATTLE_START), "id {id} must have BATTLE_START");
-            assert!(lc.contains(CardLifecycle::ON_PLAY), "id {id} must have ON_PLAY");
+            assert!(
+                lc.contains(CardLifecycle::BATTLE_START),
+                "id {id} must have BATTLE_START"
+            );
+            assert!(
+                lc.contains(CardLifecycle::ON_PLAY),
+                "id {id} must have ON_PLAY"
+            );
         }
         // Ordinary non-opening card
         let basic = CardLifecycle::for_base_id::<true>(0);

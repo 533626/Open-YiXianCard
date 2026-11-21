@@ -343,6 +343,8 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             }
             99_000_212 => {
                 self.actor_mut(actor_side).chance.san_wei_huan += other_param(card, 1).max(0);
+                self.actor_mut(actor_side).chance.san_wei_huan_replace +=
+                    other_param(card, 0).max(0);
                 Some(false)
             }
             99_000_216 => {

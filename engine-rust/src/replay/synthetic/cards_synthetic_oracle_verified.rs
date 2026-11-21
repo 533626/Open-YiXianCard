@@ -94,8 +94,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 let removed_layers = self.negative_status_stack_count(actor_side);
                 self.reduce_all_actor_negative_statuses(actor_side, i64::MAX);
                 if removed_layers > 0 {
-                    let physique_gain =
-                        removed_layers * card.physique.unwrap_or(0).max(0);
+                    let physique_gain = removed_layers * card.physique.unwrap_or(0).max(0);
                     let hp_gain = removed_layers * param1(card);
                     self.apply_physique_amount(actor_side, physique_gain);
                     self.modify_actor_hp(actor_side, hp_gain, false, false);

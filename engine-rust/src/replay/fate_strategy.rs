@@ -71,7 +71,11 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                     .identity
                     .xian_mo_strategies
                     .contains(&7071));
-        if !(is_spirit_sword || is_sword_energy_granted_card || is_fate_379_cloud_sword || is_wan_shi_ru_yi) {
+        if !(is_spirit_sword
+            || is_sword_energy_granted_card
+            || is_fate_379_cloud_sword
+            || is_wan_shi_ru_yi)
+        {
             return;
         }
         self.apply_damage(actor_side, sword_energy, false, false, false);

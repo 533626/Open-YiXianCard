@@ -10,9 +10,9 @@ use serde_json::{Map, Value};
 use super::buff_map::{optional_number, OracleResult, Side};
 use super::events;
 use super::full_state::{
-    compare_original_oracle_full_state, project_original_oracle_observation,
-    FrozenFullStateCase, OriginalOracleContractBuffDeclaration,
-    ORIGINAL_ORACLE_FULL_STATE_CHECKPOINT_BOUNDARY, ORIGINAL_ORACLE_PLUGIN_VERSION,
+    compare_original_oracle_full_state, project_original_oracle_observation, FrozenFullStateCase,
+    OriginalOracleContractBuffDeclaration, ORIGINAL_ORACLE_FULL_STATE_CHECKPOINT_BOUNDARY,
+    ORIGINAL_ORACLE_PLUGIN_VERSION,
 };
 
 pub type OriginalOracleDiffStatus = &'static str;
@@ -102,7 +102,10 @@ pub struct OriginalOracleCharacterState {
     pub def: Option<i64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub anima: Option<i64>,
-    #[serde(rename = "actionAgainPerRound", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "actionAgainPerRound",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub action_again_per_round: Option<i64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub buffs: Option<Map<String, Value>>,
@@ -159,7 +162,11 @@ pub struct OriginalOracleTerminal {
 #[serde(rename_all = "camelCase")]
 pub struct OriginalOracleObservation {
     pub case_id: String,
-    #[serde(rename = "inputSha256", default, skip_serializing_if = "String::is_empty")]
+    #[serde(
+        rename = "inputSha256",
+        default,
+        skip_serializing_if = "String::is_empty"
+    )]
     pub input_sha256: String,
     pub checkpoints: Vec<OriginalOracleCheckpoint>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -293,8 +300,7 @@ pub fn run_original_oracle_rust_engine(fixture_path: &std::path::Path) -> Origin
         Err(error) => {
             // 与 TS spawn 路径同形：replay_slice 失败时 stderr 以
             // "Error: {error}" 退出（exit code 1）。
-            let message =
-                format!("Rust extended event replay failed (1): Error: {error}");
+            let message = format!("Rust extended event replay failed (1): Error: {error}");
             let result = if message.contains("missing rule")
                 || message.contains("missing original decision")
                 || message.contains("invalid decision")
@@ -329,7 +335,10 @@ pub struct OriginalOracleCaseDiff {
     pub checkpoints_match: bool,
     pub baseline_ready: bool,
     pub original_matches_baseline: bool,
-    #[serde(rename = "fullStateObligation", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "fullStateObligation",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub full_state_obligation: Option<String>,
     #[serde(rename = "firstDeviation", skip_serializing_if = "Option::is_none")]
     pub first_deviation: Option<String>,
@@ -431,10 +440,14 @@ pub fn parse_original_oracle_run(
                 ));
             }
             let case_id = required_string(record, "caseId")?;
-            if observations.iter().any(|(candidate, _)| candidate == &case_id)
+            if observations
+                .iter()
+                .any(|(candidate, _)| candidate == &case_id)
                 || completed_cases.contains(&case_id)
             {
-                return Err(format!("original-oracle case started more than once: {case_id}"));
+                return Err(format!(
+                    "original-oracle case started more than once: {case_id}"
+                ));
             }
             let input_sha256 = required_string(record, "inputSha256")?;
             observations.push((
@@ -453,12 +466,11 @@ pub fn parse_original_oracle_run(
             continue;
         }
         if kind == "cardCompleted" && record.get("oracleCaseId").is_some() {
-            let active = active_case_id
-                .as_deref()
-                .ok_or_else(|| "original-oracle card checkpoint appeared outside an active case".to_string())?;
+            let active = active_case_id.as_deref().ok_or_else(|| {
+                "original-oracle card checkpoint appeared outside an active case".to_string()
+            })?;
             require_run_identity(record, &batch_id, run_id.as_deref(), &kind)?;
-            let observation =
-                require_active_observation(&mut observations, active, &kind)?;
+            let observation = require_active_observation(&mut observations, active, &kind)?;
             require_case_identity(record, active, &observation.input_sha256, "oracleCaseId")?;
             observation
                 .checkpoints
@@ -469,9 +481,13 @@ pub fn parse_original_oracle_run(
             let active = active_case_id
                 .as_ref()
                 .ok_or_else(|| format!("{kind} appeared outside an active original-oracle case"))?;
-            let observation =
-                require_active_observation(&mut observations, active, &kind)?;
-            require_case_identity(record, &observation.case_id, &observation.input_sha256, "caseId")?;
+            let observation = require_active_observation(&mut observations, active, &kind)?;
+            require_case_identity(
+                record,
+                &observation.case_id,
+                &observation.input_sha256,
+                "caseId",
+            )?;
             observation.timeout = true;
             continue;
         }
@@ -479,9 +495,13 @@ pub fn parse_original_oracle_run(
             let active = active_case_id
                 .as_ref()
                 .ok_or_else(|| format!("{kind} appeared outside an active original-oracle case"))?;
-            let observation =
-                require_active_observation(&mut observations, active, &kind)?;
-            require_case_identity(record, &observation.case_id, &observation.input_sha256, "caseId")?;
+            let observation = require_active_observation(&mut observations, active, &kind)?;
+            require_case_identity(
+                record,
+                &observation.case_id,
+                &observation.input_sha256,
+                "caseId",
+            )?;
             observation.terminal = Some(terminal_from_record(record)?);
             completed_cases.push(observation.case_id.clone());
             active_case_id = None;
@@ -491,9 +511,13 @@ pub fn parse_original_oracle_run(
             let active = active_case_id
                 .as_ref()
                 .ok_or_else(|| format!("{kind} appeared outside an active original-oracle case"))?;
-            let observation =
-                require_active_observation(&mut observations, active, &kind)?;
-            require_case_identity(record, &observation.case_id, &observation.input_sha256, "caseId")?;
+            let observation = require_active_observation(&mut observations, active, &kind)?;
+            require_case_identity(
+                record,
+                &observation.case_id,
+                &observation.input_sha256,
+                "caseId",
+            )?;
             observation.error = Some(
                 optional_string(record.get("error"))
                     .unwrap_or_else(|| "unknown original-oracle error".to_string()),
@@ -547,11 +571,15 @@ pub fn expected_original_oracle_runtime_provenance(
         steam_app_id: evidence_manifest
             .get("steamAppId")
             .and_then(Value::as_i64)
-            .ok_or_else(|| "EVIDENCE_MANIFEST has invalid DarkSun.HotUpdate.dll identity".to_string())?,
+            .ok_or_else(|| {
+                "EVIDENCE_MANIFEST has invalid DarkSun.HotUpdate.dll identity".to_string()
+            })?,
         steam_build: evidence_manifest
             .get("steamBuild")
             .and_then(Value::as_str)
-            .ok_or_else(|| "EVIDENCE_MANIFEST has invalid DarkSun.HotUpdate.dll identity".to_string())?
+            .ok_or_else(|| {
+                "EVIDENCE_MANIFEST has invalid DarkSun.HotUpdate.dll identity".to_string()
+            })?
             .to_string(),
         hot_update: HotUpdateProvenance {
             path: "DarkSun.HotUpdate.dll".to_string(),
@@ -738,13 +766,11 @@ pub fn compare_original_oracle_case(
             false,
             Some(observation),
             None,
-            Some(
-                if observation.timeout {
-                    "original oracle timed out without terminal output".to_string()
-                } else {
-                    "original oracle terminal output is missing".to_string()
-                },
-            ),
+            Some(if observation.timeout {
+                "original oracle timed out without terminal output".to_string()
+            } else {
+                "original oracle terminal output is missing".to_string()
+            }),
         );
     };
     let full_state = assess_full_state(runtime_case, observation, frozen_baseline, declarations);
@@ -756,7 +782,11 @@ pub fn compare_original_oracle_case(
         return case_diff(
             runtime_case,
             engine,
-            if engine.result == "blocked" { "blocked" } else { "error" },
+            if engine.result == "blocked" {
+                "blocked"
+            } else {
+                "error"
+            },
             terminal_matches_expected(terminal, &runtime_case.expected),
             false,
             false,
@@ -765,7 +795,10 @@ pub fn compare_original_oracle_case(
             Some(format!(
                 "Rust {}: {}",
                 engine.result,
-                engine.message.clone().unwrap_or_else(|| "no terminal".to_string())
+                engine
+                    .message
+                    .clone()
+                    .unwrap_or_else(|| "no terminal".to_string())
             )),
         );
     }
@@ -800,22 +833,27 @@ pub fn compare_original_oracle_case(
             )
         })
         .or_else(|| {
-            terminal_deviation("Rust vs original", &engine_terminal, &EngineShapedTerminal {
-                winner_side: terminal.winner_side.as_str(),
-                actor_turn: terminal.actor_turn,
-                hp_delta: terminal.hp_delta,
-            })
+            terminal_deviation(
+                "Rust vs original",
+                &engine_terminal,
+                &EngineShapedTerminal {
+                    winner_side: terminal.winner_side.as_str(),
+                    actor_turn: terminal.actor_turn,
+                    hp_delta: terminal.hp_delta,
+                },
+            )
         })
         .or_else(|| full_state.first_deviation.clone());
-    let status = if terminal_exact && full_state.baseline_ready && full_state.original_matches_baseline {
-        "exact"
-    } else if !terminal_exact {
-        "mismatch"
-    } else if full_state.full_state_obligation.is_some() {
-        "blocked"
-    } else {
-        "mismatch"
-    };
+    let status =
+        if terminal_exact && full_state.baseline_ready && full_state.original_matches_baseline {
+            "exact"
+        } else if !terminal_exact {
+            "mismatch"
+        } else if full_state.full_state_obligation.is_some() {
+            "blocked"
+        } else {
+            "mismatch"
+        };
     case_diff(
         runtime_case,
         engine,
@@ -837,7 +875,13 @@ pub fn compare_original_oracle_run(
     declarations: &[OriginalOracleContractBuffDeclaration],
 ) -> OracleResult<Vec<OriginalOracleCaseDiff>> {
     let expected_order: Vec<&str> = manifest.cases.iter().map(|c| c.case_id.as_str()).collect();
-    if run.case_order.iter().map(String::as_str).collect::<Vec<_>>() != expected_order {
+    if run
+        .case_order
+        .iter()
+        .map(String::as_str)
+        .collect::<Vec<_>>()
+        != expected_order
+    {
         return Err(format!(
             "original-oracle case order mismatch: trace={} manifest={}",
             run.case_order.join(","),
@@ -920,7 +964,9 @@ fn assess_full_state(
     if frozen_baseline.input_sha256 != runtime_case.battle_result_fingerprint {
         let obligation = format!(
             "{}: frozen full-state input fingerprint drift: baseline={} manifest={}",
-            runtime_case.case_id, frozen_baseline.input_sha256, runtime_case.battle_result_fingerprint
+            runtime_case.case_id,
+            frozen_baseline.input_sha256,
+            runtime_case.battle_result_fingerprint
         );
         return FullStateAssessment {
             full_state_obligation: Some(obligation.clone()),
@@ -966,9 +1012,8 @@ fn parse_jsonl(jsonl: &str) -> OracleResult<Vec<Value>> {
         if line.trim().is_empty() {
             continue;
         }
-        let parsed: Value = serde_json::from_str(line).map_err(|error| {
-            format!("invalid trace JSONL line {}: {error}", index + 1)
-        })?;
+        let parsed: Value = serde_json::from_str(line)
+            .map_err(|error| format!("invalid trace JSONL line {}: {error}", index + 1))?;
         if !parsed.is_object() {
             return Err(format!(
                 "invalid trace JSONL line {}: record is not an object",
@@ -993,8 +1038,7 @@ fn require_run_identity(
     run_id: Option<&str>,
     kind: &str,
 ) -> OracleResult<()> {
-    if record.get("batchId").and_then(Value::as_str) != Some(batch_id)
-        || !same_run(record, run_id)
+    if record.get("batchId").and_then(Value::as_str) != Some(batch_id) || !same_run(record, run_id)
     {
         return Err(format!(
             "{kind} belongs to a foreign original-oracle run: batch={} run={}",
@@ -1031,7 +1075,9 @@ fn require_case_identity(
     }
     let observed_input = optional_string(record.get("inputSha256"));
     let Some(observed_input) = observed_input else {
-        return Err(format!("{case_id}: trace field inputSha256 is not a string"));
+        return Err(format!(
+            "{case_id}: trace field inputSha256 is not a string"
+        ));
     };
     if observed_input != input_sha256 {
         return Err(format!(
@@ -1113,7 +1159,10 @@ fn terminal_from_record(record: &Value) -> OracleResult<OriginalOracleTerminal> 
 
 fn terminal_states(
     value: Option<&Value>,
-) -> OracleResult<(Option<OriginalOracleCharacterState>, Option<OriginalOracleCharacterState>)> {
+) -> OracleResult<(
+    Option<OriginalOracleCharacterState>,
+    Option<OriginalOracleCharacterState>,
+)> {
     let Some(value) = value else {
         return Ok((None, None));
     };
@@ -1195,9 +1244,21 @@ fn first_checkpoint_deviation(
         let left = &original[index];
         let right = &engine[index];
         let values: [(&str, String, String); 5] = [
-            ("actorTurn", left.actor_turn.to_string(), right.actor_turn.to_string()),
-            ("actorSide", left.actor_side.as_str().to_string(), right.actor_side.as_str().to_string()),
-            ("cardId", left.card_id.to_string(), right.card_id.to_string()),
+            (
+                "actorTurn",
+                left.actor_turn.to_string(),
+                right.actor_turn.to_string(),
+            ),
+            (
+                "actorSide",
+                left.actor_side.as_str().to_string(),
+                right.actor_side.as_str().to_string(),
+            ),
+            (
+                "cardId",
+                left.card_id.to_string(),
+                right.card_id.to_string(),
+            ),
             ("p1Hp", left.p1_hp.to_string(), right.p1_hp.to_string()),
             ("p2Hp", left.p2_hp.to_string(), right.p2_hp.to_string()),
         ];
@@ -1277,15 +1338,16 @@ fn optional_number_record(value: Option<&Value>) -> OracleResult<Option<Map<Stri
     };
     for (key, entry) in record {
         if entry.as_i64().is_none() {
-            return Err(format!(
-                "trace character buff {key} is not a finite number"
-            ));
+            return Err(format!("trace character buff {key} is not a finite number"));
         }
     }
     Ok(Some(record.clone()))
 }
 
-fn optional_deck(value: Option<&Value>, label: &str) -> OracleResult<Option<Vec<OriginalOracleDeckSlot>>> {
+fn optional_deck(
+    value: Option<&Value>,
+    label: &str,
+) -> OracleResult<Option<Vec<OriginalOracleDeckSlot>>> {
     let Some(value) = value else {
         return Ok(None);
     };

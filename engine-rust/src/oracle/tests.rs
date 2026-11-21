@@ -22,13 +22,13 @@ use serde_json::{json, Value};
 
 fn archive() -> Value {
     json!({
-    "schemaVersion": 1,
-    "buffs": {
-        "JiaGong": { "id": 2, "category": "Positive", "name": "加攻" },
-        "JianQi": { "id": 625, "category": "Positive", "name": "剑气" },
-        "TiPo": { "id": 10023, "category": "Permanent", "name": "体魄" },
-    },
-})
+        "schemaVersion": 1,
+        "buffs": {
+            "JiaGong": { "id": 2, "category": "Positive", "name": "加攻" },
+            "JianQi": { "id": 625, "category": "Positive", "name": "剑气" },
+            "TiPo": { "id": 10023, "category": "Permanent", "name": "体魄" },
+        },
+    })
 }
 
 fn entry_with(overrides: Value) -> Value {
@@ -61,10 +61,8 @@ fn repo_root() -> std::path::PathBuf {
 
 fn evidence_manifest() -> Value {
     serde_json::from_str(
-        &std::fs::read_to_string(
-            repo_root().join("research/original-game/EVIDENCE_MANIFEST.json"),
-        )
-        .expect("EVIDENCE_MANIFEST exists"),
+        &std::fs::read_to_string(repo_root().join("research/original-game/EVIDENCE_MANIFEST.json"))
+            .expect("EVIDENCE_MANIFEST exists"),
     )
     .expect("EVIDENCE_MANIFEST parses")
 }
@@ -181,13 +179,13 @@ fn inconsistent_count_fails_closed() {
 
 fn terminal() -> Value {
     json!({
-    "winnerSide": "p1",
-    "actorTurn": 12,
-    "hpDelta": 5,
-    "p1Hp": 5,
-    "p2Hp": 0,
-    "remainingDecisionParams": 0,
-})
+        "winnerSide": "p1",
+        "actorTurn": 12,
+        "hpDelta": 5,
+        "p1Hp": 5,
+        "p2Hp": 0,
+        "remainingDecisionParams": 0,
+    })
 }
 
 fn snapshot_json(overrides: Value) -> Value {
@@ -232,13 +230,12 @@ fn stream_with(events: Value) -> Value {
 
 #[test]
 fn valid_extended_stream_parses_with_all_fields() {
-    let stream = parse_rust_extended_replay_event_stream(&stream_with(json!([
-        valid_stream_event(json!({
+    let stream =
+        parse_rust_extended_replay_event_stream(&stream_with(json!([valid_stream_event(json!({
             "card_id": 1000019,
             "card_name": "轻剑",
-        }))
-    ])))
-    .expect("valid stream");
+        }))])))
+        .expect("valid stream");
     assert_eq!(stream.events.len(), 1);
     assert_eq!(stream.events[0].p1.get("hp"), Some(80));
     assert_eq!(stream.events[0].p1.get("sword_energy"), Some(0));
@@ -457,8 +454,14 @@ fn unmapped_filters_zero_and_mapped_keys() {
     assert_eq!(
         unmapped,
         vec![
-            super::buff_map::UnmappedBuffEntry { buff_type_id: 998, value: 2 },
-            super::buff_map::UnmappedBuffEntry { buff_type_id: 10023, value: 1 },
+            super::buff_map::UnmappedBuffEntry {
+                buff_type_id: 998,
+                value: 2
+            },
+            super::buff_map::UnmappedBuffEntry {
+                buff_type_id: 10023,
+                value: 1
+            },
         ]
     );
 }
@@ -466,7 +469,10 @@ fn unmapped_filters_zero_and_mapped_keys() {
 #[test]
 fn unmapped_all_zero_is_empty() {
     let unmapped = unmapped_original_buff_entries(
-        &json!({ "999": 0, "998": 0 }).as_object().expect("buffs object").clone(),
+        &json!({ "999": 0, "998": 0 })
+            .as_object()
+            .expect("buffs object")
+            .clone(),
         &compare_entries()[..1],
     );
     assert!(unmapped.is_empty());
@@ -553,11 +559,18 @@ fn sequence_events(lines: &mut Vec<String>, sequence: &mut i64, kind: &str, fiel
 }
 
 fn provenance() -> Value {
-    serde_json::to_value(expected_original_oracle_runtime_provenance(&evidence_manifest()).expect("provenance"))
-        .expect("provenance serializes")
+    serde_json::to_value(
+        expected_original_oracle_runtime_provenance(&evidence_manifest()).expect("provenance"),
+    )
+    .expect("provenance serializes")
 }
 
-fn batch_started(lines: &mut Vec<String>, sequence: &mut i64, batch_id: &str, run_id: Option<&str>) {
+fn batch_started(
+    lines: &mut Vec<String>,
+    sequence: &mut i64,
+    batch_id: &str,
+    run_id: Option<&str>,
+) {
     let mut fields = json!({ "batchId": batch_id, "runtimeProvenance": provenance() });
     if let Some(run_id) = run_id {
         fields["runId"] = json!(run_id);
@@ -565,8 +578,14 @@ fn batch_started(lines: &mut Vec<String>, sequence: &mut i64, batch_id: &str, ru
     sequence_events(lines, sequence, "originalOracleBatchStarted", fields);
 }
 
-fn batch_completed(lines: &mut Vec<String>, sequence: &mut i64, batch_id: &str, run_id: Option<&str>) {
-    let mut fields = json!({ "batchId": batch_id, "status": "completed", "runtimeProvenance": provenance() });
+fn batch_completed(
+    lines: &mut Vec<String>,
+    sequence: &mut i64,
+    batch_id: &str,
+    run_id: Option<&str>,
+) {
+    let mut fields =
+        json!({ "batchId": batch_id, "status": "completed", "runtimeProvenance": provenance() });
     if let Some(run_id) = run_id {
         fields["runId"] = json!(run_id);
     }
@@ -607,7 +626,10 @@ fn requires_a_unique_measured_runtime_provenance_at_batch_start() {
         None,
     )
     .expect_err("must fail");
-    assert!(error.contains("trace field runtimeProvenance is not an object"), "{error}");
+    assert!(
+        error.contains("trace field runtimeProvenance is not an object"),
+        "{error}"
+    );
 }
 
 #[test]
@@ -814,7 +836,13 @@ fn selects_latest_completed_batch_and_associates_card_checkpoints() {
         .collect();
     assert_eq!(
         keys,
-        vec!["caseId", "inputSha256", "checkpoints", "terminal", "timeout"]
+        vec![
+            "caseId",
+            "inputSha256",
+            "checkpoints",
+            "terminal",
+            "timeout"
+        ]
     );
 }
 
@@ -854,9 +882,8 @@ fn isolates_repeated_runs_that_share_one_stable_batch_id() {
         );
         batch_completed(&mut lines, &mut sequence, "stable-batch", Some(run_id));
     }
-    let run =
-        parse_original_oracle_run(&lines.join("\n"), Some("stable-batch"), Some("run-a"))
-            .expect("run parses");
+    let run = parse_original_oracle_run(&lines.join("\n"), Some("stable-batch"), Some("run-a"))
+        .expect("run parses");
     assert_eq!(run.run_id.as_deref(), Some("run-a"));
     let observation = run.observation("example/round-01").expect("observation");
     assert_eq!(
@@ -869,9 +896,10 @@ fn frozen_baseline(
     observation: &super::diff::OriginalOracleObservation,
     trace_sha: &str,
 ) -> FrozenFullStateCase {
-    let projection = project_original_oracle_observation(observation, &oracle_contract_declarations())
-        .value
-        .expect("projection");
+    let projection =
+        project_original_oracle_observation(observation, &oracle_contract_declarations())
+            .value
+            .expect("projection");
     FrozenFullStateCase {
         projection,
         input_sha256: "input-sha".to_string(),
@@ -1018,14 +1046,18 @@ fn reports_the_first_per_card_divergence_without_hiding_a_terminal_match() {
 
 #[test]
 fn provenance_validation_reports_each_drift_field() {
-    let expected = expected_original_oracle_runtime_provenance(&evidence_manifest()).expect("provenance");
+    let expected =
+        expected_original_oracle_runtime_provenance(&evidence_manifest()).expect("provenance");
     let mut actual = expected.clone();
     actual.hot_update.sha256 = "f".repeat(64);
     actual.steam_build = "999".into();
     let errors = validate_original_oracle_runtime_provenance(&actual, &expected, "label");
     assert_eq!(errors.len(), 2);
     assert!(errors[0].contains("Steam build mismatch"), "{errors:?}");
-    assert!(errors[1].contains("HotUpdate SHA-256 mismatch"), "{errors:?}");
+    assert!(
+        errors[1].contains("HotUpdate SHA-256 mismatch"),
+        "{errors:?}"
+    );
     let identical = validate_original_oracle_runtime_provenance(&expected, &expected, "label");
     assert!(identical.is_empty());
 }
@@ -1034,8 +1066,7 @@ fn provenance_validation_reports_each_drift_field() {
 
 #[test]
 fn replays_an_admitted_fixture_through_the_extended_stream() {
-    let fixture_path = repo_root()
-        .join("engine-rust/tests/data-driven/eswmbqw_round-19.json");
+    let fixture_path = repo_root().join("engine-rust/tests/data-driven/eswmbqw_round-19.json");
     let run = run_original_oracle_rust_engine(&fixture_path);
     assert_eq!(run.result, "ran");
     assert_eq!(run.winner, Some(Side::P2));

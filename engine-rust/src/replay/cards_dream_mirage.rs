@@ -1524,7 +1524,10 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
 
     /// BattleCharacter.OnBattleStarted 开头（:880-893，天赋循环之前）：卡组每张
     /// 4000079 系梦•斗转星移把前后格补成星位（已是星位则跳过，不触发星位聚灵）。
-    pub(super) fn place_dream_star_shift_star_slots_at_battle_start(&mut self, actor_side: PlayerSide) {
+    pub(super) fn place_dream_star_shift_star_slots_at_battle_start(
+        &mut self,
+        actor_side: PlayerSide,
+    ) {
         let count = self.actor(actor_side).deck.active_slot_count;
         for slot in 0..count {
             let Some(entry) = self.actor(actor_side).deck.slots.get(slot) else {

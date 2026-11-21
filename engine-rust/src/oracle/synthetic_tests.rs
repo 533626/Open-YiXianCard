@@ -8,13 +8,13 @@ use std::path::{Path, PathBuf};
 
 use serde_json::Value;
 
+use crate::oracle::buff_map::Side;
 use crate::oracle::diff::OriginalOracleObservation;
 use crate::oracle::synthetic::{
     compare_synthetic_oracle_rust_baseline_case, compare_synthetic_oracle_rust_case,
     synthetic_oracle_input, SyntheticOracleCase, SyntheticOracleContext,
     SyntheticOracleOriginalBaselineCase,
 };
-use crate::oracle::buff_map::Side;
 
 fn repo_root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("..")
@@ -46,11 +46,15 @@ const LATEST_BASELINE_SOURCES: [(&str, &str); 2] = [
 ];
 
 fn source_manifest_path(batch_id: &str) -> PathBuf {
-    data_root().join("data/synthetic-oracle-cases").join(format!("{batch_id}.json"))
+    data_root()
+        .join("data/synthetic-oracle-cases")
+        .join(format!("{batch_id}.json"))
 }
 
 fn admission_report_path(file: &str) -> PathBuf {
-    data_root().join("generated/synthetic-oracle-admission").join(file)
+    data_root()
+        .join("generated/synthetic-oracle-admission")
+        .join(file)
 }
 
 fn raw_baseline_cases(report: &Value) -> Vec<Value> {
@@ -74,7 +78,10 @@ fn baseline_cases(report: &Value) -> Vec<SyntheticOracleOriginalBaselineCase> {
 }
 
 fn case_from_manifest(manifest: &Value, case_id: &str) -> SyntheticOracleCase {
-    let cases = manifest.get("cases").and_then(Value::as_array).expect("manifest cases");
+    let cases = manifest
+        .get("cases")
+        .and_then(Value::as_array)
+        .expect("manifest cases");
     let case = cases
         .iter()
         .find(|case| case.get("caseId").and_then(Value::as_str) == Some(case_id))
@@ -96,9 +103,14 @@ fn latest_admitted_original_baselines_are_exact_on_the_rust_canonical_engine() {
         let manifest = load_json(&source_manifest_path(batch_id));
         for baseline in &baselines {
             let synthetic_case = case_from_manifest(&manifest, &baseline.case_id);
-            let diff = compare_synthetic_oracle_rust_baseline_case(&synthetic_case, baseline, &context);
+            let diff =
+                compare_synthetic_oracle_rust_baseline_case(&synthetic_case, baseline, &context);
             assert_eq!(diff.case_id, baseline.case_id);
-            assert_eq!(diff.status, "exact", "{}: {:?}", baseline.case_id, diff.first_deviation);
+            assert_eq!(
+                diff.status, "exact",
+                "{}: {:?}",
+                baseline.case_id, diff.first_deviation
+            );
             assert!(diff.first_deviation.is_none());
         }
     }
@@ -125,7 +137,9 @@ fn legacy_boundary_baselines_are_refused_instead_of_approximated() {
     let diff = compare_synthetic_oracle_rust_baseline_case(&synthetic_case, &legacy, &context);
 
     assert_eq!(diff.status, "error");
-    let deviation = diff.first_deviation.expect("legacy refusal carries a reason");
+    let deviation = diff
+        .first_deviation
+        .expect("legacy refusal carries a reason");
     assert!(
         deviation.contains("recollect with the current runner"),
         "unexpected deviation: {deviation}"
@@ -205,7 +219,10 @@ fn original_observation_error_classes_match_ts_messages() {
 
     let missing = compare_synthetic_oracle_rust_case(&synthetic_case, None, &context);
     assert_eq!(missing.status, "error");
-    assert_eq!(missing.first_deviation.as_deref(), Some("original observation is missing"));
+    assert_eq!(
+        missing.first_deviation.as_deref(),
+        Some("original observation is missing")
+    );
 
     let empty = || OriginalOracleObservation {
         case_id: synthetic_case.case_id.clone(),
@@ -219,7 +236,8 @@ fn original_observation_error_classes_match_ts_messages() {
     // original error 分类。
     let mut with_error = empty();
     with_error.error = Some("trace record truncated".into());
-    let error_diff = compare_synthetic_oracle_rust_case(&synthetic_case, Some(&with_error), &context);
+    let error_diff =
+        compare_synthetic_oracle_rust_case(&synthetic_case, Some(&with_error), &context);
     assert_eq!(error_diff.status, "error");
     assert_eq!(
         error_diff.first_deviation.as_deref(),
@@ -229,7 +247,8 @@ fn original_observation_error_classes_match_ts_messages() {
     // timeout 优先于 terminal 缺失。
     let mut timed_out = empty();
     timed_out.timeout = true;
-    let timeout_diff = compare_synthetic_oracle_rust_case(&synthetic_case, Some(&timed_out), &context);
+    let timeout_diff =
+        compare_synthetic_oracle_rust_case(&synthetic_case, Some(&timed_out), &context);
     assert_eq!(timeout_diff.status, "error");
     assert_eq!(
         timeout_diff.first_deviation.as_deref(),
@@ -237,7 +256,8 @@ fn original_observation_error_classes_match_ts_messages() {
     );
 
     // terminal 缺失。
-    let no_terminal_diff = compare_synthetic_oracle_rust_case(&synthetic_case, Some(&empty()), &context);
+    let no_terminal_diff =
+        compare_synthetic_oracle_rust_case(&synthetic_case, Some(&empty()), &context);
     assert_eq!(no_terminal_diff.status, "error");
     assert_eq!(
         no_terminal_diff.first_deviation.as_deref(),
@@ -268,11 +288,8 @@ fn original_observation_boundary_gate_and_exact_roundtrip() {
     };
 
     // legacy 边界观测先被拒绝（不做近似换算）。
-    let legacy_diff = compare_synthetic_oracle_rust_case(
-        &synthetic_case,
-        Some(&legacy_observation),
-        &context,
-    );
+    let legacy_diff =
+        compare_synthetic_oracle_rust_case(&synthetic_case, Some(&legacy_observation), &context);
     assert_eq!(legacy_diff.status, "error");
     assert!(
         legacy_diff
@@ -307,7 +324,10 @@ fn original_observation_boundary_gate_and_exact_roundtrip() {
         run.terminal.hp_delta + 1,
         run.terminal.hp_delta
     );
-    assert_eq!(drifted_diff.first_deviation.as_deref(), Some(expected_drift.as_str()));
+    assert_eq!(
+        drifted_diff.first_deviation.as_deref(),
+        Some(expected_drift.as_str())
+    );
 }
 
 fn observation_from_engine(
@@ -326,17 +346,19 @@ fn observation_from_engine(
             .checkpoints
             .iter()
             .enumerate()
-            .map(|(index, checkpoint)| crate::oracle::diff::OriginalOracleCheckpoint {
-                trace_sequence: index as i64 + 1,
-                checkpoint_boundary: boundary.clone(),
-                actor_turn: checkpoint.actor_turn,
-                actor_side: checkpoint.actor_side,
-                card_id: checkpoint.card_id,
-                p1_hp: checkpoint.p1_state.hp,
-                p2_hp: checkpoint.p2_state.hp,
-                p1_state: character_state_json_roundtrip(&checkpoint.p1_state),
-                p2_state: character_state_json_roundtrip(&checkpoint.p2_state),
-            })
+            .map(
+                |(index, checkpoint)| crate::oracle::diff::OriginalOracleCheckpoint {
+                    trace_sequence: index as i64 + 1,
+                    checkpoint_boundary: boundary.clone(),
+                    actor_turn: checkpoint.actor_turn,
+                    actor_side: checkpoint.actor_side,
+                    card_id: checkpoint.card_id,
+                    p1_hp: checkpoint.p1_state.hp,
+                    p2_hp: checkpoint.p2_state.hp,
+                    p1_state: character_state_json_roundtrip(&checkpoint.p1_state),
+                    p2_state: character_state_json_roundtrip(&checkpoint.p2_state),
+                },
+            )
             .collect(),
         terminal: Some(run.terminal.clone()),
         error: None,
@@ -378,8 +400,7 @@ fn synthetic_case_validation_matches_ts_messages() {
     let case_value = manifest
         .get("cases")
         .and_then(Value::as_array)
-        .expect("cases")
-        [0]
+        .expect("cases")[0]
         .clone();
 
     // invalid evidence contract
@@ -422,7 +443,9 @@ fn synthetic_case_validation_matches_ts_messages() {
     // 未知卡 id
     let mut mutated = case_value.clone();
     mutated["players"]["p1"]["cards"] = Value::Array(
-        (0..8).map(|index| Value::from(if index == 0 { 42_000_001 } else { 1000 + index })).collect(),
+        (0..8)
+            .map(|index| Value::from(if index == 0 { 42_000_001 } else { 1000 + index }))
+            .collect(),
     );
     let case = SyntheticOracleCase::from_json(&mutated).expect("case parses");
     assert_eq!(

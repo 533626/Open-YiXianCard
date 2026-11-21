@@ -83,7 +83,8 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                         card_type.name.eq_ignore_ascii_case("refine")
                             || card_type.name.eq_ignore_ascii_case("change")
                     })
-                    && !super::card_effect_catalog::RECORD_ONLY_CARD_BASE_IDS.contains(&base_id) =>
+                    && !super::card_effect_catalog::RECORD_ONLY_CARD_BASE_IDS
+                        .contains(&base_id) =>
             {
                 self.missing_card_effect(
                     card.id,
@@ -110,13 +111,19 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         // OnBeforeExecuted first opens temporary sword-identity windows, then
         // runs its private adjacent-card helper. The counter-element branch
         // occurs later in that same method, after the shared selected hooks.
-        if self.active_mechanisms.has(super::ActiveMechanisms::SWORD_SECT) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::SWORD_SECT)
+        {
             self.start_dream_mirage_selected_card(actor_side);
         }
         if self.active_mechanisms.has(super::ActiveMechanisms::MIRAGE) {
             self.apply_dream_mirage_before_card_hooks(actor_side, card, slot);
         }
-        if self.active_mechanisms.has(super::ActiveMechanisms::FATE_STRATEGY) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::FATE_STRATEGY)
+        {
             self.apply_qi_xing_lian_zhu(actor_side, card, slot);
         }
         // 7022 七星伤魂先于 13017（XianMo OnPlayCard :1304 先于 :1386），且二者
@@ -154,7 +161,9 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         if self.active_mechanisms.has(super::ActiveMechanisms::MIRAGE) {
             self.consume_pending_next_beng_quan_physique(actor_side);
         }
-        if self.active_mechanisms.has(super::ActiveMechanisms::ASTROLOGY)
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::ASTROLOGY)
             || self.actor(actor_side).fate.xing_yi_lian > 0
         {
             self.apply_xing_yi_lian(actor_side, card, slot);
@@ -163,7 +172,9 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         // FateStrategy 380 御云结阵 is an OnPlayCard hook: a sword-formation
         // card first adds one 云海 marker.  The shared post-body cloud-chain
         // path then consumes that marker and applies its +2 defense bonus.
-        if self.active_mechanisms.has(super::ActiveMechanisms::FATE_STRATEGY)
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::FATE_STRATEGY)
             && (self
                 .actor(actor_side)
                 .identity
@@ -177,7 +188,9 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             self.apply_verified_xian_mo_on_play_card(actor_side, card, slot, is_temporary);
         }
         // OnBeforeExecuted :3319 cloud-sword hooks follow XianMo.OnPlayCard.
-        if self.active_mechanisms.has(super::ActiveMechanisms::SWORD_SECT)
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::SWORD_SECT)
             && is_cloud_sword(self.actor(actor_side), card)
         {
             let healing = self.actor(actor_side).sword.cloud_sword_soft_heart;
@@ -194,7 +207,9 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         }
         // OnBeforeExecuted: XianMo.OnPlayCard (:3300) precedes 崩灭心法 (:3369).
         // Damage from the former can consume defense-loss hooks before QiShi overflows.
-        if self.active_mechanisms.has(super::ActiveMechanisms::BENG_QUAN)
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::BENG_QUAN)
             && !is_temporary
             && card.hp_cost.unwrap_or(0) > 0
         {
@@ -203,7 +218,10 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 self.modify_momentum(actor_side, momentum);
             }
         }
-        if self.active_mechanisms.has(super::ActiveMechanisms::FORMATION | super::ActiveMechanisms::ELEMENT_FLOW) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::FORMATION | super::ActiveMechanisms::ELEMENT_FLOW)
+        {
             self.apply_muling_healing_formation_on_play_card(actor_side, card);
         }
         if self.active_mechanisms.has(super::ActiveMechanisms::RONGHUI) {
@@ -211,7 +229,10 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         }
         self.apply_selected_card_talent_loop_hooks(actor_side, card, slot, is_temporary);
         self.apply_next_card_action_again_conversion(actor_side);
-        if self.active_mechanisms.has(super::ActiveMechanisms::MIRAGE | super::ActiveMechanisms::RONGHUI) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::MIRAGE | super::ActiveMechanisms::RONGHUI)
+        {
             self.apply_counter_element_before_card(actor_side, card, slot);
         }
         // 26125017 moved 惊雷 (KeYinJingLei) from OnBeforeExecuted to
@@ -220,10 +241,15 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         // 星缘 FateStrategy 402（CardActionBase.OnBeforeExecuted IL_245a）
         // 必须在牌体执行前检查星位；例如天元心法会在牌体内把全槽变星，
         // 但原版不会因此把该张牌自身追认为星位牌。
-        if self.active_mechanisms.has(super::ActiveMechanisms::FATE_STRATEGY) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::FATE_STRATEGY)
+        {
             self.apply_xing_yuan_before_card_hook(actor_side, slot);
         }
-        if self.active_mechanisms.has(super::ActiveMechanisms::ELEMENT_FLOW)
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::ELEMENT_FLOW)
             && self.actor(actor_side).elements.wood_scattered_branches > 0
         {
             // CardActionBase.OnBeforeExecuted MuLingSanZhiYe (BuffType 777):
@@ -392,6 +418,9 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         card: &CardDefinition,
         spec: TemporaryInvocationSpec,
     ) -> bool {
+        // No settle recording: temp executions double only 机缘 counters
+        // (锦毛鼠×回响 observed via the effect arm); played-list doubling
+        // via temp cards is unobserved, fail closed.
         let cloud_chain_before_effect = has_cloud_chain(self.actor(actor_side));
         self.with_temporary_effect_invocation(
             actor_side,
@@ -691,14 +720,20 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         self.apply_after_card_effect_early_cleanup(actor_side, card);
         // 万世如意转灵（387/7071 + id 19）：原版 OnAfterExecuted :4354-4365，
         // 紧随清理块、先于全部 after 钩子。梦•相邻被动等采样的是转后灵气。
-        if self.active_mechanisms.has(super::ActiveMechanisms::FATE_STRATEGY | super::ActiveMechanisms::XIAN_MO) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::FATE_STRATEGY | super::ActiveMechanisms::XIAN_MO)
+        {
             self.convert_wan_shi_ru_yi_anima_to_sword_energy(actor_side, card);
         }
         self.set_active_effect_after_action(true);
         self.set_active_effect_phase(EffectInvocationPhase::AfterHooks);
         if !is_temporary {
             self.apply_ordinary_only_after_card_effect_hooks(actor_side, card, slot);
-            if self.active_mechanisms.has(super::ActiveMechanisms::MIRAGE | super::ActiveMechanisms::RONGHUI) {
+            if self
+                .active_mechanisms
+                .has(super::ActiveMechanisms::MIRAGE | super::ActiveMechanisms::RONGHUI)
+            {
                 self.complete_mirage_ronghui_anima_attack_card(actor_side);
             }
         }
@@ -707,7 +742,10 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         }
         self.apply_common_after_card_effect_hooks(actor_side, slot);
         // Execute IL_1abe -> 1be0/common -> 213c/CuJuFeiXi -> adjacent.
-        if self.active_mechanisms.has(super::ActiveMechanisms::FATE_STRATEGY) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::FATE_STRATEGY)
+        {
             self.apply_cu_ju_fei_xi_after_card_hook(actor_side, card, slot);
         }
         if !is_temporary && self.active_mechanisms.has(super::ActiveMechanisms::MIRAGE) {
@@ -749,35 +787,57 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         // CardActionBase.OnAfterExecuted !isTempCard branch, in exact source
         // order. Keep each source dynamic: an earlier hook may change the
         // state read by a later one.
-        if self.active_mechanisms.has(super::ActiveMechanisms::FORMATION | super::ActiveMechanisms::SWORD_SECT) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::FORMATION | super::ActiveMechanisms::SWORD_SECT)
+        {
             self.apply_secret_sword_formation_follow_up(actor_side, card, slot, false);
         }
-        if self.active_mechanisms.has(super::ActiveMechanisms::FORMATION)
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::FORMATION)
             || self.actor(actor_side).formations.body_observation > 0
         {
             // CardActionBase.cs IL_066f (周天剑阵) / IL_078b (察体) 先于 IL_0f82 (灵玄不息)：
             // 阵法追加攻击检查当前单卡攻击计数，非攻击牌（如 416 灵玄不息持续牌）出牌时不应因后续融汇追击而触发。
             self.apply_after_attack_formation_hooks(actor_side, slot);
         }
-        if self.active_mechanisms.has(super::ActiveMechanisms::RONGHUI | super::ActiveMechanisms::SWORD_SECT) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::RONGHUI | super::ActiveMechanisms::SWORD_SECT)
+        {
             self.apply_ronghui_after_card_effect(actor_side, card, slot);
         }
-        if self.active_mechanisms.has(super::ActiveMechanisms::FORMATION)
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::FORMATION)
             || self.actor(actor_side).formations.body_observation > 0
         {
             self.apply_hundred_beast_spirit_sword_formation_after_card(actor_side, card);
         }
-        if self.active_mechanisms.has(super::ActiveMechanisms::SWORD_SECT) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::SWORD_SECT)
+        {
             self.apply_sword_energy_after_card_hook(actor_side, card);
         }
         self.apply_physique_173_after_card_hook(actor_side, card, slot);
-        if self.active_mechanisms.has(super::ActiveMechanisms::ASTROLOGY) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::ASTROLOGY)
+        {
             self.apply_after_card_fortune_hooks(actor_side, card);
         }
-        if self.active_mechanisms.has(super::ActiveMechanisms::FORMATION) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::FORMATION)
+        {
             self.apply_after_card_sustain_hooks(actor_side, card, slot);
         }
-        if self.active_mechanisms.has(super::ActiveMechanisms::ASTROLOGY | super::ActiveMechanisms::FATE_STRATEGY) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::ASTROLOGY | super::ActiveMechanisms::FATE_STRATEGY)
+        {
             self.apply_yellow_bird_after_card_hook(actor_side, slot);
         }
         if self.active_mechanisms.has(super::ActiveMechanisms::RONGHUI) {
@@ -833,13 +893,19 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         actor_side: PlayerSide,
         slot: usize,
     ) {
-        if self.active_mechanisms.has(super::ActiveMechanisms::BENG_QUAN) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::BENG_QUAN)
+        {
             self.apply_startled_touch_common_after_card_hook(actor_side, slot);
         }
         if self.active_mechanisms.has(super::ActiveMechanisms::MIRAGE) {
             self.apply_dream_mirage_common_after_effect_hooks(actor_side, slot);
         }
-        if self.active_mechanisms.has(super::ActiveMechanisms::MIRAGE | super::ActiveMechanisms::BENG_QUAN) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::MIRAGE | super::ActiveMechanisms::BENG_QUAN)
+        {
             let dream_chain = self
                 .actor(actor_side)
                 .beng
@@ -862,7 +928,10 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                     .triggered_dream_beng_quan_chain -= dream_chain;
             }
         }
-        if self.active_mechanisms.has(super::ActiveMechanisms::BENG_QUAN) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::BENG_QUAN)
+        {
             self.apply_beng_quan_fu_hu_after_card(actor_side);
         }
     }
@@ -874,7 +943,10 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     ) {
         self.refresh_active_mechanisms();
         let base_id = normalized_base_id(card);
-        if self.active_mechanisms.has(super::ActiveMechanisms::SWORD_SECT) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::SWORD_SECT)
+        {
             let resonance_10_spirit_sword = (self.actor(actor_side).identity.talent_resonance_id
                 == Some(10))
                 && is_spirit_sword_for_actor(self.actor(actor_side), card);
@@ -884,7 +956,9 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             } else if self.actor(actor_side).sword.cloud_sea > 0 {
                 self.gain_cloud_chain(actor_side, 1);
                 self.actor_mut(actor_side).sword.cloud_sea -= 1;
-                if self.active_mechanisms.has(super::ActiveMechanisms::FATE_STRATEGY)
+                if self
+                    .active_mechanisms
+                    .has(super::ActiveMechanisms::FATE_STRATEGY)
                     && self
                         .actor(actor_side)
                         .identity
@@ -908,7 +982,9 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 // (BattleCharacter.cs:12331-12335).  This is the shared timing
                 // path used by 御空剑阵 after 云剑•凌波; omitting it leaves each
                 // such sword-formation checkpoint two defense short.
-                if self.active_mechanisms.has(super::ActiveMechanisms::FATE_STRATEGY)
+                if self
+                    .active_mechanisms
+                    .has(super::ActiveMechanisms::FATE_STRATEGY)
                     && self
                         .actor(actor_side)
                         .identity
@@ -967,7 +1043,10 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         if self.active_mechanisms.has(super::ActiveMechanisms::MIRAGE) {
             self.complete_dream_mirage_card_classification(actor_side, card);
         }
-        if self.active_mechanisms.has(super::ActiveMechanisms::MIRAGE | super::ActiveMechanisms::RONGHUI) {
+        if self
+            .active_mechanisms
+            .has(super::ActiveMechanisms::MIRAGE | super::ActiveMechanisms::RONGHUI)
+        {
             self.complete_mirage_ronghui_card_classification(actor_side, card);
         }
     }
@@ -978,7 +1057,9 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         }
         let pending_sword_intent = self.active_effect_pending_sword_intent();
         if pending_sword_intent > 0 {
-            if !self.active_mechanisms.has(super::ActiveMechanisms::SWORD_SECT)
+            if !self
+                .active_mechanisms
+                .has(super::ActiveMechanisms::SWORD_SECT)
                 || !self.preserve_secret_sword_intent_with_circulation(actor_side)
             {
                 self.modify_sword_intent(actor_side, -pending_sword_intent);

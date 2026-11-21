@@ -321,7 +321,11 @@ fn talent_200_activation_runs_before_next_card_action_again_conversion() {
         player.turn.next_card_action_again = 1;
     });
     state.apply_before_execute_effect_hooks(PlayerSide::P1, &card, 0, false);
-    assert!(state.p1.elements.activated_elements.contains(&Element::Wood));
+    assert!(state
+        .p1
+        .elements
+        .activated_elements
+        .contains(&Element::Wood));
     assert_eq!(state.p1.elements.primordial_infinity_formation, 0);
     assert_eq!(state.p1.turn.next_card_action_again, 0);
     assert_eq!(state.p1.turn.extra_actions, 2);

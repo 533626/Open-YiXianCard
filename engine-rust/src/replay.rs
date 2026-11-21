@@ -31,8 +31,8 @@ pub use turn_end_trace::{
 };
 
 mod action_again;
-mod api_types;
 mod active_mechanisms;
+mod api_types;
 mod identity;
 mod mechanism_state;
 pub(crate) use active_mechanisms::ActiveMechanisms;
@@ -253,12 +253,15 @@ mod tests_turn_action_lifecycle;
 mod turn_end_trace;
 pub mod wire;
 
+pub use api_types::{
+    BattleEndIntents, ReplayEvaluationRun, ReplayRun, ReplaySummary, ReplayTerminationCause,
+    ReplayUiRun, SideEndIntents,
+};
 pub use decisions::{
     ReplayDecisionDomain, ReplayDecisionEvent, ReplayDecisionIntegerRange, ReplayDecisionKind,
     ReplayDecisionProvider,
 };
 pub use error::BattleError;
-pub use api_types::{ReplayEvaluationRun, ReplayRun, ReplaySummary, ReplayTerminationCause, ReplayUiRun};
 pub use life_settle::LifeSettleDetail;
 pub(crate) use state_impl::ReplayState;
 
@@ -1055,7 +1058,12 @@ struct ReplayChanceState {
     ying_xiao_tu: i64,
     you_ming_xu_hun_quan: i64,
     san_wei_huan: i64,
+    san_wei_huan_replace: i64,
     huan_yu_ying_copy_guard: i64,
+    /// Settlement observation (not 机缘): (base_id, star) per repeated
+    /// card-effect execution (梅开二度/回响/etc). Battle-end triggers
+    /// count executions; consume counts physical plays.
+    repeated_settle_plays: Vec<(i64, i64)>,
 }
 
 /// Exact BuffType-backed storage for the dream and mirage runtime.

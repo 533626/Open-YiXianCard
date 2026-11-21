@@ -90,8 +90,9 @@ fn main() {
                 .unwrap_or_else(|e| fatal(&e.message));
             let reverse = slice_original_oracle_run_trace(&jsonl, &args.batch_id, reverse_id)
                 .unwrap_or_else(|e| fatal(&e.message));
-            let report = build_original_oracle_trace_slice_report(&forward.evidence, &reverse.evidence)
-                .unwrap_or_else(|e| fatal(&e.message));
+            let report =
+                build_original_oracle_trace_slice_report(&forward.evidence, &reverse.evidence)
+                    .unwrap_or_else(|e| fatal(&e.message));
             println!("{}", stable_json(&report.to_json()));
         }
         (None, _) => usage(),

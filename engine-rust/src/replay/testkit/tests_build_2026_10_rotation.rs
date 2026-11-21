@@ -1820,7 +1820,11 @@ fn opening_herbs_resolve_before_opening_cards_triggering_star_erosion_on_herb_de
     // 随后的血光之灾内伤保持 1。
     // 锚点：hf-26315169-unverified pa_13fa2682
     let mut battle = fixture(deck(original(11_010_024)), deck(basic_attack()));
-    battle.players.p1.permanent_buff_temp_datas.insert("10018".to_string(), 1);
+    battle
+        .players
+        .p1
+        .permanent_buff_temp_datas
+        .insert("10018".to_string(), 1);
     battle.players.p1.talents.push(10103);
     let state = ReplayState::test_from_fixture(&battle);
     assert_eq!(state.p2.status.attack_reduction, 2);
