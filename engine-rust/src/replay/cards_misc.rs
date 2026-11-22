@@ -123,7 +123,31 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             // 仙魔 13002 同口径（100..=105/367/393），域外 fail closed。
             100 => {
                 self.modify_actor_hp(actor_side, other_param(card, 0), false, false);
-                let selected = self.consume_card_param(actor_side);
+                let selected = if self.decision_tape.is_empty()
+                    && self.synthetic_seed_for(actor_side).is_some()
+                {
+                    let present = self.negative_status_types_present(actor_side);
+                    let options = if present.is_empty() {
+                        vec![-1]
+                    } else {
+                        present
+                    };
+                    self.consume_required_decision_or_synthetic(
+                        actor_side,
+                        100,
+                        options,
+                        |state, opts| {
+                            if opts == [-1] {
+                                Some(-1)
+                            } else {
+                                state.synthetic_pick(actor_side, 100, opts)
+                            }
+                        },
+                    )
+                    .unwrap_or(-1)
+                } else {
+                    self.consume_card_param(actor_side)
+                };
                 if selected != -1 {
                     if !matches!(selected, 100..=105 | 367 | 393) {
                         self.missing_card_effect(

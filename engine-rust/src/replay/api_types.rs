@@ -38,6 +38,10 @@ pub struct SideEndIntents {
     pub doubled_effect_stars: Vec<i64>,
     pub jin_mao_shu_draws: i64,
     pub san_wei_huan_replace: i64,
+    /// End-of-battle negative-status stacks for 7121 telemetry
+    /// (read-only; zero combat-rule change).
+    #[serde(default)]
+    pub end_debuff_stacks: i64,
 }
 
 impl ReplaySummary {

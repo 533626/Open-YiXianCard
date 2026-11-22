@@ -108,10 +108,43 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         let mut attacked = false;
         match base_id {
             7_000_111 => {
-                // Card_7000111：每次 GetNextParam 选中的手牌作为临时牌完整执行（isTempCard），
+                // Card_7000111（五行阵旗）：每次 GetNextParam 选中的手牌作为临时牌完整执行（isTempCard），
                 // 之后若该牌配置 actionAgain 则 ExActionAgain+1（IL_01c1/IL_0419）。奇数格（1 基）自身减
                 // otherParams[1] 生命并再次行动；偶数格再取一个参数执行第二张。
-                let selected = self.consume_card_param(actor_side);
+                // 真实回放缺参数仍按 missing-decision 拒绝；仅当存在 synthetic_seed（env/自对弈合成战斗）
+                // 且 tape 为空时，按卡面从开局手牌推导第 1 张[五行灵阵]（封顶 otherParams[0] 级）与[五行灵印]（无则 -1）。
+                let max_rarity = (other_param(card, 0).max(1) - 1).clamp(0, 2);
+                let selected = if self.decision_tape.is_empty()
+                    && self.synthetic_seed_for(actor_side).is_some()
+                {
+                    self.consume_required_decision_or_synthetic(
+                        actor_side,
+                        7_000_111,
+                        Vec::new(),
+                        |state, _| {
+                            let hand = &state.initial_hand_card_ids
+                                [usize::from(actor_side == PlayerSide::P2)];
+                            let found = hand.iter().copied().find_map(|id| {
+                                let base = super::support::normalize_base_id(id);
+                                let is_formation = matches!(
+                                    base,
+                                    7_000_016 | 7_000_023 | 7_000_029 | 7_000_031 | 7_000_036
+                                ) || (base / 1_000_000 == 7
+                                    && super::original_config::original_card_definition(id)
+                                        .is_some_and(|d| d.name.contains("灵阵")));
+                                if !is_formation {
+                                    return None;
+                                }
+                                let rarity = ((id / 10_000) % 100).clamp(0, max_rarity);
+                                Some(base + rarity * 10_000)
+                            });
+                            Some(found.unwrap_or(-1))
+                        },
+                    )
+                    .unwrap_or(-1)
+                } else {
+                    self.consume_card_param(actor_side)
+                };
                 if selected >= 0 {
                     if let Some(card) = super::original_config::original_card_definition(selected) {
                         if self.apply_temporary_card_effect(actor_side, &card, slot) {
@@ -123,7 +156,32 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                     self.modify_actor_hp(actor_side, -other_param(card, 1).max(0), false, false);
                     self.modify_extra_actions(actor_side, 1);
                 } else {
-                    let selected = self.consume_card_param(actor_side);
+                    let selected = if self.decision_tape.is_empty()
+                        && self.synthetic_seed_for(actor_side).is_some()
+                    {
+                        self.consume_required_decision_or_synthetic(
+                            actor_side,
+                            7_000_111,
+                            Vec::new(),
+                            |state, _| {
+                                let hand = &state.initial_hand_card_ids
+                                    [usize::from(actor_side == PlayerSide::P2)];
+                                let found = hand.iter().copied().find(|&id| {
+                                    let base = super::support::normalize_base_id(id);
+                                    matches!(
+                                        base,
+                                        7_000_001 | 7_000_003 | 7_000_006 | 7_000_009 | 7_000_011
+                                    ) || (base / 1_000_000 == 7
+                                        && super::original_config::original_card_definition(id)
+                                            .is_some_and(|d| d.name.contains("灵印")))
+                                });
+                                Some(found.unwrap_or(-1))
+                            },
+                        )
+                        .unwrap_or(-1)
+                    } else {
+                        self.consume_card_param(actor_side)
+                    };
                     if selected >= 0 {
                         if let Some(card) =
                             super::original_config::original_card_definition(selected)

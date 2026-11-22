@@ -1263,10 +1263,35 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
                 }
                 13002 => {
                     // OnPlayCard 13002（otherParams [2,4]）：4 次 GetNextParam，非 -1 则该 BuffType 减 1 层并计数；
-                    // 未凑够 4 次时每缺一次回复 2 生命。参数是 HF 记录的 battleParams 队列，缺失按 missing-decision 拒绝。
+                    // 未凑够 4 次时每缺一次回复 2 生命。真实回放缺参数仍按 missing-decision 拒绝；
+                    // 仅当存在 synthetic_seed（env/自对弈合成战斗）且 tape 为空时，按当前负面池种子抽选（无负面则 -1）。
                     let mut cleared = 0;
                     for _ in 0..4 {
-                        let selected = self.consume_card_param(actor_side);
+                        let selected = if self.decision_tape.is_empty()
+                            && self.synthetic_seed_for(actor_side).is_some()
+                        {
+                            let present = self.negative_status_types_present(actor_side);
+                            let options = if present.is_empty() {
+                                vec![-1]
+                            } else {
+                                present
+                            };
+                            self.consume_required_decision_or_synthetic(
+                                actor_side,
+                                13002,
+                                options,
+                                |state, opts| {
+                                    if opts == [-1] {
+                                        Some(-1)
+                                    } else {
+                                        state.synthetic_pick(actor_side, 13002, opts)
+                                    }
+                                },
+                            )
+                            .unwrap_or(-1)
+                        } else {
+                            self.consume_card_param(actor_side)
+                        };
                         if selected == -1 {
                             continue;
                         }

@@ -45,6 +45,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             doubled_effect_stars: doubled_stars,
             jin_mao_shu_draws: actor.chance.jin_mao_shu.max(0),
             san_wei_huan_replace: actor.chance.san_wei_huan_replace.max(0),
+            end_debuff_stacks: self.negative_status_stack_count(side),
         }
     }
 

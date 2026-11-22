@@ -421,3 +421,80 @@ fn robust_mode_off_keeps_seeded_synthetic_choices() {
         .iter()
         .all(|e| e.provider == ReplayDecisionProvider::SeededSynthetic));
 }
+
+#[test]
+fn xianmo_13002_fails_closed_without_tape_or_synthetic_seed() {
+    let mut fixture = fixture_with(basic_attack_test_card(), basic_attack_test_card());
+    fixture.source = None;
+    fixture.players.p1.xian_mo_strategies = vec![13002];
+    fixture
+        .players
+        .p1
+        .xian_mo_temp_datas
+        .insert("13002".into(), 0);
+    let err = crate::replay::run_replay_fixture(&fixture).unwrap_err();
+    assert!(
+        err.to_string().contains("card parameter"),
+        "real replay without tape or synthetic seed must fail closed: {err}"
+    );
+}
+
+#[test]
+fn xianmo_13002_synthetic_seed_clears_debuffs_and_heals_remainder() {
+    let mut fixture = fixture_with(basic_attack_test_card(), basic_attack_test_card());
+    fixture.source = Some(FixtureSource {
+        synthetic_decision_fallback_seed: Some(42),
+        ..FixtureSource::default()
+    });
+    fixture.players.p1.base_max_hp = 50;
+    fixture.players.p1.battle_start_hp = Some(30);
+    fixture.players.p1.xian_mo_strategies = vec![13002];
+    fixture
+        .players
+        .p1
+        .xian_mo_temp_datas
+        .insert("13002".into(), 0);
+    let mut state = ReplayState::test_from_fixture(&fixture);
+    state.p1.core.hp = 30;
+    state.add_actor_negative_status(PlayerSide::P1, 100, 1);
+    state.add_actor_negative_status(PlayerSide::P1, 101, 1);
+    let card = basic_attack_test_card();
+    state.apply_verified_xian_mo_on_play_card(PlayerSide::P1, &card, 0, false);
+    assert!(
+        state.evaluation_error.is_none(),
+        "synthetic 13002 must not fail: {:?}",
+        state.evaluation_error
+    );
+    assert_eq!(state.p1.status.internal_injury, 0);
+    assert_eq!(state.p1.status.weakness, 0);
+    // 2 debuffs cleared, 2 remaining slots -> +4 HP (30 -> 34).
+    assert_eq!(state.p1.core.hp, 34);
+    assert!(
+        crate::replay::run_replay_fixture(&fixture).is_ok(),
+        "full synthetic replay with 13002 must succeed"
+    );
+}
+
+#[test]
+fn card_7000111_synthetic_seed_uses_hand_formation_and_seal_while_real_replay_fails_closed() {
+    let flag = crate::replay::original_config::original_card_definition(7_000_111)
+        .expect("7000111 definition");
+    let mut real_fixture = fixture_with(flag.clone(), basic_attack_test_card());
+    real_fixture.source = None;
+    let err = crate::replay::run_replay_fixture(&real_fixture).unwrap_err();
+    assert!(
+        err.to_string().contains("card parameter"),
+        "real replay 7000111 without tape must fail closed: {err}"
+    );
+
+    let mut synth = fixture_with(flag, basic_attack_test_card());
+    synth.source = Some(FixtureSource {
+        synthetic_decision_fallback_seed: Some(77),
+        ..FixtureSource::default()
+    });
+    synth.players.p1.hand_cards = vec![7_010_016, 7_000_001];
+    assert!(
+        crate::replay::run_replay_fixture(&synth).is_ok(),
+        "synthetic 7000111 must resolve hand formation/seal without error"
+    );
+}
