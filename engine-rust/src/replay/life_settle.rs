@@ -199,9 +199,9 @@ fn apply_death_damage(
         || (temp_count(loser.permanent_buff_temp_datas, BUFF_TIAN_YAN_HUA_SHEN) > 0
             && damage >= temp)
     {
-        if temp <= 0 {
-            return None;
-        }
+        // BattleCharacter.ShowDeathDamage (10859-10930): sets tempLife = 1
+        // unconditionally when damage >= tempLife (including temp <= 0 after
+        // in-battle PanGuFu / life-cost cards, yielding dealt = temp - 1).
         let id = survival.or(Some(354));
         return Some((temp - 1, 1, id, false));
     }
@@ -254,7 +254,19 @@ pub fn settle_battle_life(inputs: &LifeSettleInputs<'_>) -> Option<LifeSettleOut
         return None;
     }
     let (dealt, loser_end, survival, jiangsha) = apply_death_damage(base, loser, round)?;
-    let winner_end = winner.battle_end_temp_life;
+    // BattleCharacter.OnBattleWin (8338-8342): if winner.tempLife <= 0 at
+    // battle end (e.g. in-battle life-cost cards), calls ShowDeathDamage(0),
+    // which returns early for mirror / pre_battle_life <= 0 and otherwise
+    // triggers survival talents (7/65/83/154/354) to recover tempLife to 1.
+    let winner_end = if winner.battle_end_temp_life <= 0
+        && !winner.is_mirror
+        && winner.pre_battle_life.is_some_and(|life| life > 0)
+    {
+        let (_, end, _, _) = apply_death_damage(0, winner, round)?;
+        end
+    } else {
+        winner.battle_end_temp_life
+    };
     let (p1_end, p2_end) = match inputs.winner_side {
         PlayerSide::P1 => (winner_end, loser_end),
         PlayerSide::P2 => (loser_end, winner_end),
@@ -544,5 +556,58 @@ mod tests {
         p2.battle_end_hp = 28;
         let out = settle_battle_life(&inputs(12, 17, p1, p2)).unwrap();
         assert_eq!(out.detail.base_damage, 16 * 3 / 2);
+    }
+
+    #[test]
+    fn survival_talent_recovers_negative_temp_life_loser() {
+        // Mirror case pa_f2a56505: p2 starts at life=6, PanGuFu
+        // deducts 20 to tempLife=-14, talent 65 triggers ShowDeathDamage ->
+        // finalLife.p2=1 and dealt = -14 - 1 = -15.
+        let t = BTreeMap::new();
+        let mut tt = BTreeMap::new();
+        tt.insert("65".to_string(), 1);
+        let mut p1 = side(&[], &t, &[], &[], &t, &t);
+        let mut p2 = side(&[65], &tt, &[], &[], &t, &t);
+        p1.pre_battle_life = Some(40);
+        p1.battle_end_temp_life = 40;
+        p1.battle_end_hp = 119;
+        p2.pre_battle_life = Some(6);
+        p2.battle_end_temp_life = -14;
+        p2.battle_end_hp = 0;
+        let out = settle_battle_life(&inputs(18, 3, p1, p2)).unwrap();
+        assert_eq!(out.final_life, FinalLife { p1: 40, p2: 1 });
+        assert_eq!(out.dealt_signed, -15);
+        assert_eq!(out.detail.survival_talent, Some(65));
+    }
+
+    #[test]
+    fn winner_negative_temp_life_triggers_survival_via_show_death_damage_zero() {
+        // Mirror case pa_384a1c27 + BattleCharacter.cs:8338-8342:
+        // winner p1 drops to tempLife=-16 in battle with talent 65 active ->
+        // OnBattleWin calls ShowDeathDamage(0) -> finalLife.p1=1 while loser
+        // p2 still takes normal battle lifeDamage.
+        let t = BTreeMap::new();
+        let mut tt = BTreeMap::new();
+        tt.insert("65".to_string(), 1);
+        let mut p1 = side(&[65], &tt, &[], &[], &t, &t);
+        let mut p2 = side(&[], &t, &[], &[], &t, &t);
+        p1.pre_battle_life = Some(44);
+        p1.battle_end_temp_life = -16;
+        p1.battle_end_hp = -2;
+        p2.pre_battle_life = Some(44);
+        p2.battle_end_temp_life = 44;
+        p2.battle_end_hp = -32;
+        let out = settle_battle_life(&inputs(15, 3, p1, p2.clone())).unwrap();
+        assert_eq!(out.final_life, FinalLife { p1: 1, p2: 23 });
+        assert_eq!(out.dealt_signed, 21);
+
+        // Without survival talent, winner remains at negative tempLife.
+        let mut p1_plain = side(&[], &t, &[], &[], &t, &t);
+        p1_plain.pre_battle_life = Some(44);
+        p1_plain.battle_end_temp_life = -16;
+        p1_plain.battle_end_hp = -2;
+        let out_plain = settle_battle_life(&inputs(15, 3, p1_plain, p2)).unwrap();
+        assert_eq!(out_plain.final_life, FinalLife { p1: -16, p2: 23 });
+        assert_eq!(out_plain.dealt_signed, 21);
     }
 }

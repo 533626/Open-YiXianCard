@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "type": "open-yixiancard-public-export",
-  "sourceCommit": "1638c106ac0f1af4225716e33818bf183f23ea6e",
-  "sourceTree": "449c2b433e728403e927989af21915605b252d3b",
+  "sourceCommit": "a0fb4b47e182d99b17e5722975080f40ed1a706b",
+  "sourceTree": "70f68951f98875f9f64f9e2c7a385b086cae838a",
   "policySha256": "66b73814aff37050a01776c9fb106f38c193c3cb780b4ff95b4ed02afd9674e4",
   "files": [
     {
@@ -38,8 +38,8 @@
     {
       "path": "README.md",
       "mode": "100644",
-      "bytes": 3041,
-      "sha256": "5cf870befaf161d7a02abcca1b503fb345b27a38023ca019b917ac5bc448d8b2"
+      "bytes": 3040,
+      "sha256": "c851a0f2f8282309ff01f9781d27d566df91582991380eba06916c86d0f981c7"
     },
     {
       "path": "engine-rust/Cargo.lock",
@@ -609,8 +609,11 @@
     {
       "path": "engine-rust/src/replay/life_settle.rs",
       "mode": "100644",
-      "bytes": 19344,
-      "sha256": "5891b952676c64e89bdd6c91979c97d9ee36d958db1d428dbae5061fac07ffd5"
+      "bytes": 22479,
+      "sha256": "58d279e13d12532087b13460515801d699de5ea2a4464cbe619faad83bb817fd",
+      "redactions": {
+        "record-digest": 2
+      }
     },
     {
       "path": "engine-rust/src/replay/mechanic_cards_extra.rs",
@@ -1268,5 +1271,5 @@
       "sha256": "f7981b143ca935332a76c20bbc1e6990b84c994f3df1e6058a7a512ca9b2ac0b"
     }
   ],
-  "treeDigest": "25e6ab7f70eea502211e981b8f40c9c0f2d41d56a0e843787697a03d1a73cfec"
+  "treeDigest": "9a7104b74cbde0f12e0248a1b0170f7a6144e78dad2d61abe9965108edebdd39"
 }
