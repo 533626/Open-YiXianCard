@@ -1,6 +1,6 @@
 use super::tests::{basic_attack_test_card, filler_cards, minimal_fixture, test_card};
 use super::*;
-use crate::fixture::FixtureExpected;
+use crate::fixture::{BattleFixture, FixtureExpected, FixtureSource};
 use crate::model::{CardDefinition, PlayerSide};
 
 #[test]
@@ -1184,4 +1184,52 @@ fn card_effect_phase_table_keeps_documented_order() {
     assert!(index(CardEffectPhase::Body) < index(CardEffectPhase::ActionAgain));
     assert!(index(CardEffectPhase::ActionAgain) < index(CardEffectPhase::AfterCardHooks));
     assert!(index(CardEffectPhase::AfterCardHooks) < index(CardEffectPhase::CloseInvocation));
+}
+
+fn xiaoyao_single_card_loop_fixture() -> BattleFixture {
+    // 1-card 逍遥游 (10435, base 435): every play attacks, sets actionAgain
+    // and raises its own per-round limit, so `count < limit` never trips.
+    // P2 is an invulnerable defender (dodge/invulnerability equivalent):
+    // without the per-turn action guard this turn spins forever.
+    let xiaoyao = original_card_definition_by_id(10_435).expect("missing 逍遥游 10435");
+    let mut fixture = minimal_fixture(
+        filler_cards(xiaoyao),
+        filler_cards(basic_attack_test_card()),
+        FixtureExpected {
+            winner_side: PlayerSide::P2,
+            actor_turn_count: 1,
+            hp_delta_p1_minus_p2: 0,
+            final_hp: None,
+            final_life: None,
+            life_damage: None,
+        },
+    );
+    // Effectively unkillable (dodge/invulnerability equivalent): 10435 deals
+    // a flat 10 per play, so the unguarded turn needs ~4e13 plays to end.
+    fixture.players.p2.base_max_hp = 400_000_000_000_000;
+    fixture
+}
+
+#[test]
+fn xiaoyao_single_card_loop_terminates_in_synthetic_evaluation() {
+    let mut fixture = xiaoyao_single_card_loop_fixture();
+    fixture.source = Some(FixtureSource {
+        synthetic_decision_fallback_seed: Some(1),
+        ..Default::default()
+    });
+    let summary = run_replay_fixture(&fixture).expect("synthetic guard must break the loop");
+    assert_eq!(summary.actor_turn_count, 1);
+    assert_eq!(summary.winner_side, PlayerSide::P2);
+}
+
+#[test]
+fn xiaoyao_single_card_loop_fails_closed_in_strict_replay() {
+    let fixture = xiaoyao_single_card_loop_fixture();
+    assert!(fixture.source.is_none());
+    let error =
+        run_replay_fixture(&fixture).expect_err("strict replay must fail closed, not hang");
+    assert!(
+        error.to_string().contains("exceeded max actions per turn"),
+        "unexpected error: {error}"
+    );
 }

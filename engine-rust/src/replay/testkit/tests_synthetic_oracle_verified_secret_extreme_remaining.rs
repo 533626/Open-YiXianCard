@@ -1,7 +1,7 @@
 use super::cards_dream_mirage::DreamMirageValue;
 use super::effect_invocation::EffectInvocationKind;
 use super::*;
-use crate::fixture::{BattleFixture, FixturePlayer};
+use crate::fixture::{BattleFixture, FixturePlayer, FixtureSource};
 use crate::model::{CardDefinition, PlayerSide};
 
 fn original_card(id: i64) -> CardDefinition {
@@ -165,6 +165,121 @@ fn endless_collapse_reports_the_first_missing_required_decision() {
     assert!(state.evaluation_error.as_ref().is_some_and(|error| error
         .to_string()
         .contains("card:10000065:temporaryBengQuan:1")));
+}
+
+#[test]
+fn endless_collapse_synthetic_fallback_seed_picks_level_one_beng_quan_deterministically() {
+    fn run_with_seed(seed: Option<u32>) -> ReplayState {
+        let mut fixture = fixture(&[10_000_065], 1);
+        assert!(fixture.decision_tape.is_empty());
+        fixture.source = Some(FixtureSource {
+            synthetic_decision_fallback_seed: seed,
+            ..FixtureSource::default()
+        });
+        let mut state = ReplayState::test_from_fixture(&fixture);
+        state.p2.core.hp = 200;
+        state.p2.core.max_hp = 200;
+        state.test_execute_one_card(PlayerSide::P1);
+        state
+    }
+
+    fn endless_collapse_picks(state: &ReplayState) -> Vec<i64> {
+        state
+            .decision_events
+            .iter()
+            .filter(|event| {
+                event.card_id == 10_000_065
+                    && event.decision_kind == ReplayDecisionKind::RequiredParam
+            })
+            .map(|event| event.selected_option.expect("fallback pick selected"))
+            .collect()
+    }
+
+    fn outcome(state: &ReplayState) -> (i64, i64, i64, i64, i64, u64, Vec<i64>) {
+        (
+            state.p1.core.hp,
+            state.p2.core.hp,
+            state.p1.core.defense,
+            state.p1.turn.used_card_count,
+            state.p1.turn.hp_cost_cards_used,
+            state.decision_occurrence,
+            endless_collapse_picks(state),
+        )
+    }
+
+    let first = run_with_seed(Some(42));
+    assert!(
+        first.evaluation_error.is_none(),
+        "seeded fallback must complete: {:?}",
+        first.evaluation_error
+    );
+    // All five temporary picks executed (outer card + 5 temporaries).
+    assert_eq!(first.p1.turn.used_card_count, 6);
+    let picks = endless_collapse_picks(&first);
+    assert_eq!(picks.len(), 5);
+    assert!(
+        picks
+            .iter()
+            .all(|id| matches!(id, 10_000_001 | 10_000_002 | 10_000_003)),
+        "fallback picks must come from the Level-1 崩拳 pool: {picks:?}"
+    );
+    assert!(
+        first.decision_events.iter().all(|event| event
+            .seed
+            .is_none_or(|seed| seed == 42)),
+        "every seeded decision must carry the fallback seed"
+    );
+
+    // Exact same outcome across repeated runs with the same seed.
+    // Pinned seed-42 resolution: exact picks and exact battle outcome.
+    assert_eq!(
+        picks,
+        vec![10_000_003, 10_000_002, 10_000_001, 10_000_003, 10_000_002]
+    );
+    assert_eq!(
+        outcome(&first),
+        (
+            91,
+            159,
+            6,
+            6,
+            6,
+            5,
+            vec![10_000_003, 10_000_002, 10_000_001, 10_000_003, 10_000_002]
+        )
+    );
+    let second = run_with_seed(Some(42));
+    assert_eq!(outcome(&first), outcome(&second));
+
+    // A recorded tape still wins over the fallback seed (exact replay fidelity).
+    let mut taped = fixture(&[10_000_065], 1);
+    taped.decision_tape = vec![10_000_001, 10_000_002, 10_000_003, 10_000_001, 10_000_002];
+    taped.source = Some(FixtureSource {
+        synthetic_decision_fallback_seed: Some(42),
+        ..FixtureSource::default()
+    });
+    let mut taped_state = ReplayState::test_from_fixture(&taped);
+    taped_state.p2.core.hp = 200;
+    taped_state.p2.core.max_hp = 200;
+    taped_state.test_execute_one_card(PlayerSide::P1);
+    assert!(taped_state.decision_tape.is_empty());
+    assert!(endless_collapse_picks(&taped_state).is_empty());
+
+    // Still fails closed when the fallback seed is None.
+    let mut unseeded = fixture(&[10_000_065], 1);
+    unseeded.source = Some(FixtureSource {
+        synthetic_decision_fallback_seed: None,
+        ..FixtureSource::default()
+    });
+    let mut unseeded_state = ReplayState::test_from_fixture(&unseeded);
+    unseeded_state.fail_on_missing_decision = true;
+    unseeded_state.test_execute_one_card(PlayerSide::P1);
+    assert!(unseeded_state
+        .evaluation_error
+        .as_ref()
+        .is_some_and(|error| error
+            .to_string()
+            .contains("card:10000065:temporaryBengQuan:1")));
 }
 
 #[test]

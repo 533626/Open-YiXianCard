@@ -28,7 +28,8 @@ pub use model::{CardDefinition, PlayerSide, DECK_SIZE};
 pub use replay::{
     engine_contract_fixture, evaluate_replay_fixture_fallible, original_card_definition_by_id,
     run_replay_fixture, run_replay_fixture_file, run_replay_fixture_with_detailed_events,
-    run_replay_fixture_with_events, run_replay_fixture_with_parity_events,
+    run_replay_fixture_with_events, run_replay_fixture_with_p1_deck,
+    run_replay_fixture_with_parity_events,
     run_replay_fixture_with_ui_events, trace_replay_fixture_hooks, BattleEndIntents, BattleError,
     LifeSettleDetail, ReplayAttackSegment, ReplayDecisionDomain, ReplayDecisionEvent,
     ReplayDecisionIntegerRange, ReplayDecisionKind, ReplayDecisionProvider, ReplayDetailEntry,

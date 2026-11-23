@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "type": "open-yixiancard-public-export",
-  "sourceCommit": "a0fb4b47e182d99b17e5722975080f40ed1a706b",
-  "sourceTree": "70f68951f98875f9f64f9e2c7a385b086cae838a",
+  "sourceCommit": "a3a8fc6cfe63c68b83064cdff40848abc2492bc9",
+  "sourceTree": "2b6e59bfbf9e2853b3e57d6a0721bf6f7bdd0c3f",
   "policySha256": "66b73814aff37050a01776c9fb106f38c193c3cb780b4ff95b4ed02afd9674e4",
   "files": [
     {
@@ -38,8 +38,8 @@
     {
       "path": "README.md",
       "mode": "100644",
-      "bytes": 3040,
-      "sha256": "c851a0f2f8282309ff01f9781d27d566df91582991380eba06916c86d0f981c7"
+      "bytes": 3041,
+      "sha256": "fa327d5753ff7b29cc2cb10fa3a3fe63ae37bea45499b92c1c58fc9fced0555b"
     },
     {
       "path": "engine-rust/Cargo.lock",
@@ -68,8 +68,8 @@
     {
       "path": "engine-rust/data/rule-handler-dependencies.json",
       "mode": "100644",
-      "bytes": 201244,
-      "sha256": "66b86c544e7c63e9ce92c3f6779f9b80f8a9b34976f882a391bef6aec9199d13"
+      "bytes": 201249,
+      "sha256": "0c1e52249c630bf8b7d5a0903a005c86cdf0be09144fac0f7f94a4019bd7f938"
     },
     {
       "path": "engine-rust/data/xian-mo-battle-strategies.json",
@@ -164,8 +164,8 @@
     {
       "path": "engine-rust/src/fixture.rs",
       "mode": "100644",
-      "bytes": 19604,
-      "sha256": "15e7974f8cc9c46d3f12b319629c7df4e15e780ccb1503c20bfaf08cb851ed2a"
+      "bytes": 21235,
+      "sha256": "4e1e0fc101586e398ad50bc690768498a827b39de1e60abf283e76ee6e9bcff4"
     },
     {
       "path": "engine-rust/src/id_hash.rs",
@@ -182,8 +182,8 @@
     {
       "path": "engine-rust/src/lib.rs",
       "mode": "100644",
-      "bytes": 3064,
-      "sha256": "659931636cd2bc4f8d9954fe81e6e92a26fe8bc40aa198979955bcaec7417693"
+      "bytes": 3101,
+      "sha256": "3c2b2a9db3779674b3da9c774b8897273a133e14659f585731a00dc144c5626e"
     },
     {
       "path": "engine-rust/src/model.rs",
@@ -254,8 +254,8 @@
     {
       "path": "engine-rust/src/replay.rs",
       "mode": "100644",
-      "bytes": 63150,
-      "sha256": "d22a2758af881c69d07b24ed57143be11efe0cc3d4092df4a481a0ba4cb8807b"
+      "bytes": 69541,
+      "sha256": "0909c97b8311996d65962a35c5484b3255101aec8d14049acedfb6b1c968a90a"
     },
     {
       "path": "engine-rust/src/replay/action_again.rs",
@@ -401,10 +401,10 @@
     {
       "path": "engine-rust/src/replay/combat_core.rs",
       "mode": "100644",
-      "bytes": 40373,
-      "sha256": "81e298a7bf7e832b555a956449ac29adfd0846a06183431e6dae216a3cd745ff",
+      "bytes": 40845,
+      "sha256": "1d54b86531042f6c8ba588ce13eaa7155e71ffa56733a5e63f8c06c6a6320801",
       "redactions": {
-        "record-digest": 14
+        "record-digest": 15
       }
     },
     {
@@ -464,10 +464,10 @@
     {
       "path": "engine-rust/src/replay/elements.rs",
       "mode": "100644",
-      "bytes": 37905,
-      "sha256": "8e9dfa4266e885dc0641ab848ab4e6cb841e5624390eddb66315caa330d60077",
+      "bytes": 38931,
+      "sha256": "b063ddbf1e36b90b869f04a99f01af8f5f3d02ff461e729eca96419d969dd56d",
       "redactions": {
-        "record-digest": 8
+        "record-digest": 9
       }
     },
     {
@@ -509,8 +509,8 @@
     {
       "path": "engine-rust/src/replay/flow.rs",
       "mode": "100644",
-      "bytes": 92642,
-      "sha256": "f161c89cf44f556635a07e7ea6f5292b38d265d8dfdf156271ce9559cffe2dc2",
+      "bytes": 93757,
+      "sha256": "89944921db3fbb61a81ff9eb2e503089f36261e8b196eb89e0e339d433b027e7",
       "redactions": {
         "mirror-session": 1,
         "record-digest": 9
@@ -519,8 +519,8 @@
     {
       "path": "engine-rust/src/replay/flow_card_effect.rs",
       "mode": "100644",
-      "bytes": 46606,
-      "sha256": "e4c2e2123a948b4884ca0ce3cdf36c09b0a588406034a2953807b30643ad44c6",
+      "bytes": 47032,
+      "sha256": "336557727523245bb9132a7552d450d28a8ea5d781e5b750492e89e08d3f50df",
       "redactions": {
         "record-digest": 5
       }
@@ -718,8 +718,8 @@
     {
       "path": "engine-rust/src/replay/synthetic/cards_synthetic_oracle_verified_secret_extreme_remaining.rs",
       "mode": "100644",
-      "bytes": 5229,
-      "sha256": "a2be3fe531e4a3d5becb88a3b4c05bf653f7e8dcfcb07f21f9e10666560a9ab2"
+      "bytes": 8828,
+      "sha256": "8370962b3b461626c205dc7ea680b0962481e17824532efc5ae33b9a9cf8e77e"
     },
     {
       "path": "engine-rust/src/replay/synthetic/cards_synthetic_oracle_verified_secret_misc.rs",
@@ -840,10 +840,10 @@
     {
       "path": "engine-rust/src/replay/testkit/tests_build_2026_09_season.rs",
       "mode": "100644",
-      "bytes": 68011,
-      "sha256": "bdbeeecfe6a314137541d12a3160bedf34520bd74cdaf2d4e492aacaf71fa6df",
+      "bytes": 69223,
+      "sha256": "1e5b5d69b08116fcda686f1e64b4776d417c28cda7776dfbcf2e6555dbfc96d9",
       "redactions": {
-        "record-digest": 1
+        "record-digest": 2
       }
     },
     {
@@ -958,8 +958,11 @@
     {
       "path": "engine-rust/src/replay/testkit/tests_invocation_frames.rs",
       "mode": "100644",
-      "bytes": 21046,
-      "sha256": "acab2abf705ea76583fafa67a04de6ccd6324f271b1a156e30b20d498973ccee"
+      "bytes": 22060,
+      "sha256": "8ad27b9f6690468c94dfdbc4f61aef449421f587790a254baa120d18665cffd5",
+      "redactions": {
+        "record-digest": 1
+      }
     },
     {
       "path": "engine-rust/src/replay/testkit/tests_life_settle.rs",
@@ -1043,8 +1046,8 @@
     {
       "path": "engine-rust/src/replay/testkit/tests_synthetic_oracle_verified_secret_extreme_remaining.rs",
       "mode": "100644",
-      "bytes": 12961,
-      "sha256": "4937c36318209a3367fc1bb99546e381282bc1139f84b1957bf908e1de9bcf74"
+      "bytes": 17028,
+      "sha256": "d6e8d3a7caa77e13a3df3b767ff039cb913adcb9300680fab65bd9605eabc7cc"
     },
     {
       "path": "engine-rust/src/replay/testkit/tests_synthetic_oracle_verified_secret_misc.rs",
@@ -1124,8 +1127,8 @@
     {
       "path": "engine-rust/src/replay/testkit/tests_turn_action_lifecycle.rs",
       "mode": "100644",
-      "bytes": 41151,
-      "sha256": "9da574fa63243c739a4f0091587f5b0a72390b40bf0cca91dce07febdefa7924",
+      "bytes": 43073,
+      "sha256": "c0a4adbe25a91d79601fd221f73109d6c69e92266a74ff4edd06168f09ddd40b",
       "redactions": {
         "record-digest": 5
       }
@@ -1271,5 +1274,5 @@
       "sha256": "f7981b143ca935332a76c20bbc1e6990b84c994f3df1e6058a7a512ca9b2ac0b"
     }
   ],
-  "treeDigest": "9a7104b74cbde0f12e0248a1b0170f7a6144e78dad2d61abe9965108edebdd39"
+  "treeDigest": "94f602188cd8a83ba0d768efbd4333b3e4f26bfe490f59aa9d9eb256ee32111d"
 }

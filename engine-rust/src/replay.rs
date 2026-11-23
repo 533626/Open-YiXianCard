@@ -1469,6 +1469,146 @@ pub fn run_replay_fixture(fixture: &BattleFixture) -> Result<ReplaySummary> {
         .map_err(EngineError::Battle)
 }
 
+/// Zero-clone candidate-battle evaluation: runs `base` with p1's deck
+/// replaced by `p1_cards` / `p1_active_slot_count`, without cloning either
+/// player or allocating an owned [`BattleFixture`].
+///
+/// Bit-identity contract: the returned summary is identical to
+/// [`run_replay_fixture`] on an owned fixture equal to `base` except for
+/// `players.p1.cards == p1_cards`,
+/// `players.p1.active_slot_count == p1_active_slot_count` and
+/// `first_player_side`. `fallback_seed` overrides
+/// `source.synthetic_decision_fallback_seed` exactly like
+/// `flow_initialization.rs` (`override.or_else(source)`), so passing `None`
+/// when `base.source` already carries the seed is identical to passing
+/// `Some(same_seed)`. `capture_decision_events` is disabled: decision
+/// selection is unaffected (only the `decision_events` audit trail is
+/// skipped), so winner/turn-count/hp-delta are unchanged.
+///
+/// One structural caveat: the talent-gated deck-start helpers
+/// (`deck_start.rs`, `prepare_fixture_deck_card`, `is_talent_52_replacement_slot`)
+/// take `&FixturePlayer` and therefore observe `base.players.p1`'s count
+/// through deref coercion instead of the overlaid count. Callers must keep
+/// `base.players.p1.active_slot_count == p1_active_slot_count` (as the
+/// beam-deploy per-length templates do) unless p1 holds none of talents
+/// {52, 125, 198}, fate strategies {120, 338} or xian-mo strategy 7061.
+/// Strict replay/admission paths keep using [`run_replay_fixture`] unchanged.
+pub fn run_replay_fixture_with_p1_deck(
+    base: &BattleFixture,
+    p1_cards: &[CardDefinition],
+    p1_active_slot_count: usize,
+    first_player_side: PlayerSide,
+    fallback_seed: Option<u32>,
+) -> Result<ReplaySummary> {
+    let mut view = crate::fixture::BattleFixtureView::with_players(
+        base,
+        &base.players.p1,
+        &base.players.p2,
+        first_player_side,
+    );
+    view.with_deck_and_slots(PlayerSide::P1, p1_cards, p1_active_slot_count);
+    view.fallback_seed_override = fallback_seed;
+    view.capture_decision_events = false;
+    execute_replay_view::<false>(&view, ReplayObservationMode::None)
+        .map(|execution| execution.summary)
+        .map_err(EngineError::Battle)
+}
+
+#[cfg(test)]
+mod p1_deck_view_tests {
+    use super::*;
+
+    fn summary_key(summary: &ReplaySummary) -> (PlayerSide, i64, i64) {
+        (
+            summary.winner_side,
+            summary.actor_turn_count,
+            summary.hp_delta_p1_minus_p2,
+        )
+    }
+
+    fn seeded_base() -> BattleFixture {
+        let mut base = engine_contract_fixture().expect("contract fixture builds");
+        base.source
+            .as_mut()
+            .expect("contract fixture has a source")
+            .synthetic_decision_fallback_seed = Some(12345);
+        base
+    }
+
+    #[test]
+    fn p1_deck_view_matches_owned_fixture_for_shorter_and_longer_decks() {
+        let base = seeded_base();
+        // Shorter: 3 overlaid cards against a base count of 8.
+        let short_cards: Vec<CardDefinition> = base.players.p1.cards[..3].to_vec();
+        // Longer: 8 overlaid cards against a base count of 3.
+        let mut long_base = base.clone();
+        long_base.players.p1.active_slot_count = 3;
+        let long_cards: Vec<CardDefinition> = base.players.p1.cards.clone();
+        for side in [PlayerSide::P1, PlayerSide::P2] {
+            let mut owned_short = base.clone();
+            owned_short.first_player_side = side;
+            owned_short.players.p1.cards.clone_from(&short_cards);
+            owned_short.players.p1.active_slot_count = short_cards.len();
+            let expected_short = run_replay_fixture(&owned_short).expect("owned short runs");
+            let viewed_short =
+                run_replay_fixture_with_p1_deck(&base, &short_cards, short_cards.len(), side, Some(12345))
+                    .expect("viewed short runs");
+            assert_eq!(
+                summary_key(&expected_short),
+                summary_key(&viewed_short),
+                "short deck must match owned fixture for {side:?}"
+            );
+            // `None` must resolve to the seed already carried by `base.source`.
+            let viewed_short_none =
+                run_replay_fixture_with_p1_deck(&base, &short_cards, short_cards.len(), side, None)
+                    .expect("viewed short with None seed runs");
+            assert_eq!(
+                summary_key(&expected_short),
+                summary_key(&viewed_short_none),
+                "None seed must match base-carried seed for {side:?}"
+            );
+
+            let mut owned_long = base.clone();
+            owned_long.first_player_side = side;
+            let expected_long = run_replay_fixture(&owned_long).expect("owned long runs");
+            let viewed_long =
+                run_replay_fixture_with_p1_deck(&long_base, &long_cards, long_cards.len(), side, Some(12345))
+                    .expect("viewed long runs");
+            assert_eq!(
+                summary_key(&expected_long),
+                summary_key(&viewed_long),
+                "long deck must match owned fixture for {side:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn p1_deck_view_matches_owned_fixture_on_talent_52_slot_7_replacement() {
+        // Talent-52's slot-7 replacement is one of the deck-start checks that
+        // reads the base count through `&FixturePlayer` deref coercion; with
+        // the deploy invariant (base count == overlaid count) it must agree
+        // exactly with the owned fixture.
+        let mut base = seeded_base();
+        base.players.p1.talents = vec![52];
+        base.players.p1.cards[7] = super::support::basic_attack_card();
+        assert_eq!(base.players.p1.active_slot_count, 8);
+        let deck: Vec<CardDefinition> = base.players.p1.cards.clone();
+        for side in [PlayerSide::P1, PlayerSide::P2] {
+            let mut owned = base.clone();
+            owned.first_player_side = side;
+            let expected = run_replay_fixture(&owned).expect("owned talent-52 runs");
+            let viewed =
+                run_replay_fixture_with_p1_deck(&base, &deck, deck.len(), side, Some(12345))
+                    .expect("viewed talent-52 runs");
+            assert_eq!(
+                summary_key(&expected),
+                summary_key(&viewed),
+                "talent-52 deck must match owned fixture for {side:?}"
+            );
+        }
+    }
+}
+
 pub fn run_replay_fixture_with_events(fixture: &BattleFixture) -> Result<ReplayRun> {
     run_replay_fixture_with_observation(fixture, ReplayObservationMode::Events)
 }

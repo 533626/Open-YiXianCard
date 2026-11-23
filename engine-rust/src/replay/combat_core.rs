@@ -686,10 +686,16 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         if had_shatter_formation {
             self.actor_mut(actor_side).formations.shatter_formation -= 1;
         }
+        // BattleCharacter.ApplyDamage:11165-11172 consumes SuiShaZhen(251) first,
+        // then checks !HasBuff(SuiShaZhen) for XiaCiGongJiSuiFang(383). When
+        // SuiShaZhen drops 1->0 on this segment, 383 is also consumed.
+        // Oracle: hf-auto-a05e9574e1ac pa_5dda987b turn8 1000046
+        // (251 1->0, 383 1->0); turn6 19 with 251 4->1 leaves 383.
+        let still_has_shatter_formation = self.actor(actor_side).formations.shatter_formation > 0;
         if next_attack_shatter_defense
             && !had_current_effect_shatter_defense
             && !had_leaf_blade_flower
-            && !had_shatter_formation
+            && !still_has_shatter_formation
         {
             self.modify_next_attack_shatter_defense(actor_side, -1);
         }

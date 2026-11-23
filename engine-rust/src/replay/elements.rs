@@ -80,6 +80,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         self.apply_qi_xing_lian_zhu(actor_side, card, slot);
         self.apply_xing_yi_lian(actor_side, card, slot);
         self.apply_selected_card_hooks_after_start(actor_side, card, slot, false);
+        self.apply_five_element_formation_before_card(actor_side, card);
         self.apply_selected_card_talent_loop_hooks(actor_side, card, slot, false);
         self.apply_next_card_action_again_conversion(actor_side);
         self.apply_muling_healing_formation_on_play_card(actor_side, card);
@@ -437,6 +438,25 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 slot_state.skipped = true;
             }
         }
+    }
+
+    /// CardActionBase.OnBeforeExecuted IL_0a66-IL_11be: the five-element
+    /// formation triggers (Tu/Shui/Huo/Mu/Jin) run AFTER
+    /// FateStrategyFunctions.OnPlayCard (IL_010a) and
+    /// XianMoStrategyFunctions.OnPlayCard (IL_0174). HuTi blocks the first
+    /// negative ModifyHp, so XianMo 13015 (-6) must precede HuoLingZhen (-2):
+    /// oracle hf-auto-a05e9574e1ac pa_c2542f44 turn5 7000032
+    /// (p1 hp 74->64 = 13015 blocked + Huo -2 + main -8; engine did Huo
+    /// blocked + 13015 -6 + main -8 = 74->60).
+    /// Production flow calls this after apply_verified_xian_mo_on_play_card;
+    /// the #[cfg(test)] selected-hooks harness calls it immediately after
+    /// apply_selected_card_hooks_after_start to preserve unit-test order
+    /// (those tests never install XianMo).
+    pub(super) fn apply_five_element_formation_before_card(
+        &mut self,
+        actor_side: PlayerSide,
+        card: &CardDefinition,
+    ) {
         // CardActionBase.OnBeforeExecuted reads the effective post-transform
         // card once per ExecuteEffect. Unlike the Cloud Sword hooks above,
         let Some(element) = element_from_card(card) else {

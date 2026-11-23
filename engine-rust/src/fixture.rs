@@ -62,6 +62,13 @@ pub(crate) struct FixturePlayerView<'a> {
     base: &'a FixturePlayer,
     pub cards: &'a [CardDefinition],
     pub hand_cards: &'a [i64],
+    /// Deck-size overlay. Field lookup takes precedence over the
+    /// [`Deref`](std::ops::Deref) base, so every `view.active_slot_count`
+    /// read on a [`FixturePlayerView`] observes this value, never
+    /// `base.active_slot_count`. Initialized from the base player; deck
+    /// overlays that change the card count must update it explicitly via
+    /// [`BattleFixtureView::with_deck_and_slots`].
+    pub active_slot_count: usize,
 }
 
 impl<'a> From<&'a FixturePlayer> for FixturePlayerView<'a> {
@@ -70,6 +77,7 @@ impl<'a> From<&'a FixturePlayer> for FixturePlayerView<'a> {
             base,
             cards: &base.cards,
             hand_cards: &base.hand_cards,
+            active_slot_count: base.active_slot_count,
         }
     }
 }
@@ -112,6 +120,10 @@ impl<'a> BattleFixtureView<'a> {
             capture_decision_events: true,
         }
     }
+    /// Overlay `cards` (and optionally `hand`) for `side`, keeping the
+    /// base player's `active_slot_count`. Callers whose overlay changes the
+    /// deck length must use [`Self::with_deck_and_slots`] instead so the
+    /// queue (`0..active_slot_count`) matches the overlaid deck.
     pub fn with_deck(
         &mut self,
         side: PlayerSide,
@@ -136,6 +148,23 @@ impl<'a> BattleFixtureView<'a> {
                 .retain(|entry| entry.side != side);
         }
     }
+    /// Overlay `cards` for `side` together with its `active_slot_count`
+    /// (hand unchanged). Deck-length-changing overlays (e.g. the beam-deploy
+    /// candidate battles) must use this so the queue, the opening-card scan
+    /// and deck construction all observe the overlaid count.
+    pub fn with_deck_and_slots(
+        &mut self,
+        side: PlayerSide,
+        cards: &'a [CardDefinition],
+        active_slot_count: usize,
+    ) {
+        self.with_deck(side, cards, None);
+        let player = match side {
+            PlayerSide::P1 => &mut self.players.p1,
+            PlayerSide::P2 => &mut self.players.p2,
+        };
+        player.active_slot_count = active_slot_count;
+    }
     pub fn reborrow(&self) -> BattleFixtureView<'_> {
         BattleFixtureView {
             base: self.base,
@@ -144,11 +173,13 @@ impl<'a> BattleFixtureView<'a> {
                     base: self.players.p1.base,
                     cards: self.players.p1.cards,
                     hand_cards: self.players.p1.hand_cards,
+                    active_slot_count: self.players.p1.active_slot_count,
                 },
                 p2: FixturePlayerView {
                     base: self.players.p2.base,
                     cards: self.players.p2.cards,
                     hand_cards: self.players.p2.hand_cards,
+                    active_slot_count: self.players.p2.active_slot_count,
                 },
             },
             first_player_side: self.first_player_side,

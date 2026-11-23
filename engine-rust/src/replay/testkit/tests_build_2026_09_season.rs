@@ -687,6 +687,34 @@ crate::data_driven_cases! {
 }
 
 #[test]
+fn xian_mo_13015_precedes_fire_formation_for_huti_blocking() {
+    // CardActionBase.OnBeforeExecuted IL_0174 (XianMo.OnPlayCard) precedes
+    // IL_0d96 (HuoLingZhen). With HuTi 1, the larger XianMo 13015 (-6) is
+    // blocked, the smaller Huo (-2) goes through.
+    // Oracle: hf-auto-a05e9574e1ac pa_c2542f44 turn5 7000032
+    // (p1 74/88 -> hp 72 max 80 after before-hooks; reversed order gives
+    // hp 68).
+    let fire = card(7_000_032, 7_000_032, "火灵•轰爆");
+    let mut battle = fixture(deck(fire.clone()), deck(basic_attack()));
+    battle.players.p1.xian_mo_strategies = vec![13015];
+    let mut state = ReplayState::test_from_fixture(&battle);
+    state.p1.elements.fire_formation = 2;
+    state.p2.core.hp = 74;
+    state.p2.core.max_hp = 88;
+    state.p2.core.guard = 1;
+    state.p2.core.temporary_guard = 1;
+    state.apply_before_execute_effect_hooks(PlayerSide::P1, &fire, 0, false);
+    assert_eq!(state.p2.core.guard, 0);
+    assert_eq!(state.p2.core.temporary_guard, 0);
+    assert_eq!(state.p2.core.hp, 72);
+    assert_eq!(state.p2.core.max_hp, 80);
+    assert_eq!(
+        state.dream_mirage_value(PlayerSide::P2, DreamMirageValue::ConsumeNextCard),
+        1
+    );
+}
+
+#[test]
 fn xian_mo_first_slot_enchantments_preserve_source_amounts_and_exclusions_metal_13005() {
     let metal = original_card_definition_by_id(7_000_016).unwrap();
     let mut battle = fixture(deck(metal.clone()), deck(basic_attack()));

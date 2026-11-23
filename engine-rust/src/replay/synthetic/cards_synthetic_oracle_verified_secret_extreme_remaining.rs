@@ -1,3 +1,7 @@
+use super::decisions::{
+    seeded_decision_choice_index, ReplayDecisionDomain, ReplayDecisionEvent, ReplayDecisionKind,
+    ReplayDecisionProvider,
+};
 use super::effect_invocation::TemporaryInvocationSpec;
 use super::flow_card_effect::{param0, param1};
 use super::support::other_param_or;
@@ -15,7 +19,9 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         match base_id {
             10_000_065 => {
                 for index in 0..param0(card) {
-                    let Some(selected_id) = self.consume_endless_collapse_decision(index) else {
+                    let Some(selected_id) =
+                        self.consume_endless_collapse_decision(actor_side, index)
+                    else {
                         break;
                     };
                     self.execute_endless_collapse_temporary_card(actor_side, slot, selected_id);
@@ -86,12 +92,88 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         total
     }
 
-    fn consume_endless_collapse_decision(&mut self, index: i64) -> Option<i64> {
-        if self.decision_tape.is_empty() {
+    /// Card 10000065 无尽崩绝 synthetic fallback pool: base-rank, realm-level-1
+    /// (LianQi), non-hidden 崩拳 cards. CardConfig.json carries exactly three
+    /// such rows — 10000001/2/3 (崩拳•戳/封/弹); the level-1 梦• rows
+    /// (10000071/74/76/82/89) are hidden DreamCard rows and the +10000/+20000
+    /// ranks are upgraded variants, all excluded. Every candidate is
+    /// re-verified against original_config at runtime (trait + realm level +
+    /// base rank + visibility), so config drift shrinks the pool instead of
+    /// guessing.
+    fn endless_collapse_level_one_beng_quan_pool() -> Vec<i64> {
+        const CANDIDATES: [i64; 3] = [10_000_001, 10_000_002, 10_000_003];
+        CANDIDATES
+            .into_iter()
+            .filter(|id| {
+                *id != 10_000_065
+                    && super::support::normalize_base_id(*id) == *id
+                    && super::original_config::original_card_realm_level(*id) == Some(1)
+                    && !super::original_config::original_card_is_hidden(*id).unwrap_or(true)
+                    && super::original_config::original_card_definition(*id)
+                        .is_some_and(|def| super::support::is_beng_quan_card(&def))
+            })
+            .collect()
+    }
+
+    fn consume_endless_collapse_decision(
+        &mut self,
+        actor_side: PlayerSide,
+        index: i64,
+    ) -> Option<i64> {
+        if !self.decision_tape.is_empty() {
+            return Some(self.decision_tape.remove(0));
+        }
+        let Some(seed) = self.synthetic_decision_fallback_seed else {
             self.missing_decision(&format!("card:10000065:temporaryBengQuan:{}", index + 1));
             return None;
+        };
+        let pool = Self::endless_collapse_level_one_beng_quan_pool();
+        if pool.is_empty() {
+            // No eligible Level-1 崩拳: same no-op skip the original takes for
+            // a -1 pick (cardItem.InitData(-1) resolves to an empty effect).
+            return Some(-1);
         }
-        Some(self.decision_tape.remove(0))
+        self.decision_occurrence += 1;
+        let decision_occurrence = self.decision_occurrence;
+        let card_execution_occurrence = self
+            .current_card_execution
+            .map(|execution| execution.occurrence)
+            .unwrap_or(0);
+        let pick = seeded_decision_choice_index(
+            seed,
+            actor_side,
+            self.actor_turn,
+            10_000_065,
+            ReplayDecisionKind::RequiredParam,
+            card_execution_occurrence,
+            decision_occurrence,
+            index,
+            pool.len(),
+        );
+        let selected = pool[pick];
+        // Same audit split as consume_required_decision_or_synthetic
+        // (note_uncaptured_synthetic_seed is private to decisions.rs, so the
+        // uncaptured branch is inlined here like the sibling helper does).
+        if self.capture_decision_events {
+            self.decision_events.push(ReplayDecisionEvent {
+                provider: ReplayDecisionProvider::SeededSynthetic,
+                seed: Some(seed),
+                side: actor_side,
+                actor_turn: self.actor_turn,
+                card_id: 10_000_065,
+                decision_kind: ReplayDecisionKind::RequiredParam,
+                card_execution_occurrence,
+                decision_occurrence,
+                ordinal: index,
+                domain: ReplayDecisionDomain::Discrete {
+                    legal_options: pool,
+                },
+                selected_option: Some(selected),
+            });
+        } else if !self.uncaptured_synthetic_seeds.contains(&seed) {
+            self.uncaptured_synthetic_seeds.push(seed);
+        }
+        Some(selected)
     }
 
     fn execute_endless_collapse_temporary_card(

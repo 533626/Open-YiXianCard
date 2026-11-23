@@ -44,6 +44,14 @@ enum RepeatSource {
     DreamMirageFireEarth,
 }
 
+/// Hard cap on card transactions within one actor turn. 逍遥游 (base 435)
+/// raises its own per-round action-again limit on every play, so a 1-card
+/// loop against an unkillable defender never trips the `count < limit`
+/// exit and spins forever (RL beam_deploy hang). Real matches stay below
+/// ~20 actions per turn; synthetic evaluation breaks cleanly at the cap
+/// while strict replay fails closed.
+const MAX_ACTIONS_PER_TURN: usize = 64;
+
 const REPEAT_SOURCES: [RepeatSource; 6] = [
     RepeatSource::PlumBlossom,
     RepeatSource::SecretSwordDoubleDragon,
@@ -144,9 +152,23 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             self.actor_mut(actor_side).status.cannot_act -= 1;
         } else {
             let mut continue_acting = true;
+            let mut actions_this_turn: usize = 0;
             while continue_acting {
                 continue_acting = self.execute_card_transaction(actor_side);
+                actions_this_turn += 1;
                 if self.death_winner().is_some() || self.evaluation_error.is_some() {
+                    break;
+                }
+                if continue_acting && actions_this_turn >= MAX_ACTIONS_PER_TURN {
+                    if self.synthetic_decision_fallback_seed.is_some() {
+                        break;
+                    }
+                    self.evaluation_error = Some(super::BattleError::Invariant {
+                        message: format!(
+                            "exceeded max actions per turn ({MAX_ACTIONS_PER_TURN}) at actor_turn={}",
+                            self.actor_turn
+                        ),
+                    });
                     break;
                 }
             }

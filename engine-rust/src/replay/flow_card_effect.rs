@@ -187,6 +187,14 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         if self.active_mechanisms.has(super::ActiveMechanisms::XIAN_MO) {
             self.apply_verified_xian_mo_on_play_card(actor_side, card, slot, is_temporary);
         }
+        // CardActionBase.OnBeforeExecuted IL_0a66: five-element formations
+        // follow XianMo.OnPlayCard (IL_0174). See
+        // apply_five_element_formation_before_card for the HuTi oracle.
+        if self.active_mechanisms.has(
+            super::ActiveMechanisms::FORMATION | super::ActiveMechanisms::ELEMENT_FLOW,
+        ) {
+            self.apply_five_element_formation_before_card(actor_side, card);
+        }
         // OnBeforeExecuted :3319 cloud-sword hooks follow XianMo.OnPlayCard.
         if self
             .active_mechanisms

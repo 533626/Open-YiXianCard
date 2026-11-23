@@ -26,7 +26,7 @@
       "label": "卡牌主体 dispatch",
       "location": {
         "path": "src/replay/flow_card_effect.rs",
-        "line": 383,
+        "line": 391,
         "function": "apply_card_effect_body"
       }
     },
@@ -35,7 +35,7 @@
       "label": "配置印刷字段",
       "location": {
         "path": "src/replay/flow_card_effect.rs",
-        "line": 669,
+        "line": 677,
         "function": "apply_regular_printed_card_effects"
       }
     },
@@ -53,7 +53,7 @@
       "label": "牌后钩子",
       "location": {
         "path": "src/replay/flow_card_effect.rs",
-        "line": 708,
+        "line": 716,
         "function": "apply_regular_after_card_effect_hooks"
       }
     },
@@ -71,7 +71,7 @@
       "label": "完成态结算",
       "location": {
         "path": "src/replay/flow.rs",
-        "line": 1659,
+        "line": 1681,
         "function": "complete_card_effect_repetition"
       }
     }
@@ -192,7 +192,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -280,7 +280,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -841,7 +841,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -2772,7 +2772,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5434,7 +5434,7 @@
       "routes": [
         {
           "path": "src/replay/synthetic/cards_synthetic_oracle_verified_secret_extreme_remaining.rs",
-          "line": 8,
+          "line": 12,
           "function": "apply_synthetic_oracle_verified_secret_extreme_remaining_card_effect",
           "kind": "typed"
         }
@@ -5841,7 +5841,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5852,7 +5852,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5863,7 +5863,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5874,7 +5874,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5885,7 +5885,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5896,7 +5896,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5918,7 +5918,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5929,7 +5929,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5940,7 +5940,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5951,7 +5951,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -5962,7 +5962,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6006,7 +6006,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6017,7 +6017,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6028,7 +6028,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6061,7 +6061,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6072,7 +6072,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6083,7 +6083,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6116,7 +6116,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6127,7 +6127,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6138,7 +6138,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6149,7 +6149,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6160,7 +6160,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6226,7 +6226,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6457,7 +6457,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6468,7 +6468,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6562,7 +6562,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6942,7 +6942,7 @@
       "routes": [
         {
           "path": "src/replay/elements.rs",
-          "line": 564,
+          "line": 584,
           "function": "apply_element_card_effect",
           "kind": "typed"
         }
@@ -6953,7 +6953,7 @@
       "routes": [
         {
           "path": "src/replay/synthetic/cards_synthetic_oracle_verified_secret_extreme_remaining.rs",
-          "line": 8,
+          "line": 12,
           "function": "apply_synthetic_oracle_verified_secret_extreme_remaining_card_effect",
           "kind": "typed"
         }
@@ -8010,7 +8010,7 @@
       "routes": [
         {
           "path": "src/replay/synthetic/cards_synthetic_oracle_verified_secret_extreme_remaining.rs",
-          "line": 8,
+          "line": 12,
           "function": "apply_synthetic_oracle_verified_secret_extreme_remaining_card_effect",
           "kind": "typed"
         }
@@ -8021,7 +8021,7 @@
       "routes": [
         {
           "path": "src/replay/synthetic/cards_synthetic_oracle_verified_secret_extreme_remaining.rs",
-          "line": 8,
+          "line": 12,
           "function": "apply_synthetic_oracle_verified_secret_extreme_remaining_card_effect",
           "kind": "typed"
         }
@@ -8373,7 +8373,7 @@
       "routes": [
         {
           "path": "src/replay/synthetic/cards_synthetic_oracle_verified_secret_extreme_remaining.rs",
-          "line": 8,
+          "line": 12,
           "function": "apply_synthetic_oracle_verified_secret_extreme_remaining_card_effect",
           "kind": "typed"
         }

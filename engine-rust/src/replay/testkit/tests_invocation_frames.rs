@@ -238,7 +238,10 @@ fn run_shatter_blocker_case(case: &ShatterBlockerCase) {
     state.p1.turn.next_attack_shatter_defense = 1;
     match blocker {
         "current-effect" => state.set_active_effect_shatter_defense(1),
-        "formation" => state.p1.formations.shatter_formation = 1,
+        // BattleCharacter.ApplyDamage:11165-11172 checks SuiShaZhen AFTER
+        // decrementing it. Formation 2->1 still blocks 383; 1->0 consumes it.
+        // Use 2 for the blocking assertion, then 1 for the consuming case.
+        "formation" => state.p1.formations.shatter_formation = 2,
         "leaf" => state.p1.status.leaf_blade_flower = 1,
         _ => unreachable!(),
     }
@@ -249,14 +252,33 @@ fn run_shatter_blocker_case(case: &ShatterBlockerCase) {
         "{blocker} must cover the attack without spending the pending trigger"
     );
 
-    state.set_active_effect_shatter_defense(0);
-    state.p1.formations.shatter_formation = 0;
-    state.p1.status.leaf_blade_flower = 0;
-    state.apply_attack(PlayerSide::P1, 3, 0);
-    assert_eq!(
-        state.p1.turn.next_attack_shatter_defense, 0,
-        "{blocker} removed: pending trigger must now be consumed"
-    );
+    if blocker == "formation" {
+        // First segment consumed one formation charge (2->1), still blocking.
+        assert_eq!(
+            state.p1.formations.shatter_formation, 1,
+            "formation must decrement per attack segment"
+        );
+        // Second segment drops formation 1->0, so the pending trigger is
+        // consumed on the same segment (oracle pa_5dda987b turn8).
+        state.apply_attack(PlayerSide::P1, 3, 0);
+        assert_eq!(
+            state.p1.formations.shatter_formation, 0,
+            "formation 1->0 must be consumed"
+        );
+        assert_eq!(
+            state.p1.turn.next_attack_shatter_defense, 0,
+            "formation 1->0 must also consume the pending trigger"
+        );
+    } else {
+        state.set_active_effect_shatter_defense(0);
+        state.p1.formations.shatter_formation = 0;
+        state.p1.status.leaf_blade_flower = 0;
+        state.apply_attack(PlayerSide::P1, 3, 0);
+        assert_eq!(
+            state.p1.turn.next_attack_shatter_defense, 0,
+            "{blocker} removed: pending trigger must now be consumed"
+        );
+    }
     state.end_effect_invocation(PlayerSide::P1, EffectInvocationKind::Played);
 }
 
