@@ -358,24 +358,6 @@ fn load_original_card_catalog() -> OriginalCardCatalog {
     let json_text = include_str!("../../../shared/data/original-card-configs.json");
     let configs: Vec<OriginalCardConfigRaw> =
         serde_json::from_str(json_text).expect("original card configs parse");
-    // shared/data/original-card-configs.json 提取时丢了 randomDef 字段
-    // （客户端 CardConfig.json build-24610558 有 9 张带 randomDef）。缺字段
-    // 会让 [防]+{def}～{randomDef} 的随机防御退化为固定下限，且不再消耗
-    // battleParams 队列 → 后续随机卡错位。oracle 锚点：mirror-32299000
-    // pa_9bfd647f cp18（神来之笔→一掷乾坤 4000055 防御骰
-    // 20：原版 p1.def=24 = 4+20，引擎 6 = 4+2）、pa_1af7345a
-    // cp10（4020055 防御骰 17：原版 25 = 8+17，引擎 22 = 8+14）。
-    const MISSING_RANDOM_DEFENSE: &[(i64, i64)] = &[
-        (4000006, 10), // 野马分鬃 randomDef
-        (4010006, 12),
-        (4020006, 14),
-        (4000055, 20), // 一掷乾坤 randomDef
-        (4010055, 23),
-        (4020055, 26),
-        (6000004, 16), // 笔走龙蛇 randomDef
-        (6010004, 21),
-        (6020004, 26),
-    ];
     // 弯弓射虎新 otherParams 见模块级 BOW_SHOOT_TIGER_CURRENT_OTHER_PARAMS
     //（只存新值、不直接覆盖 catalog，调用方按对局 steamBuild 选参）。
     let mut cards = IdMap::default();
@@ -426,12 +408,6 @@ fn load_original_card_catalog() -> OriginalCardCatalog {
             rear_move_desc_card_ids.insert(config.id);
             rear_move_desc_card_ids.insert(base_id);
         }
-        let random_defense = config.random_defense.or_else(|| {
-            MISSING_RANDOM_DEFENSE
-                .iter()
-                .find(|(id, _)| *id == config.id)
-                .map(|(_, value)| *value)
-        });
         let card = CardDefinition {
             id: config.id,
             base_id: Some(base_id),
@@ -441,7 +417,7 @@ fn load_original_card_catalog() -> OriginalCardCatalog {
             career_name: config.career.map(|career| career.name),
             attack: config.attack,
             random_attack: config.random_attack,
-            random_defense,
+            random_defense: config.random_defense,
             attack_count: config.attack_count,
             defense: config.defense,
             damage: config.damage,

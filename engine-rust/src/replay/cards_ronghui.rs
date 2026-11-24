@@ -1,3 +1,4 @@
+use super::decisions::{seeded_decision_choice_index, ReplayDecisionKind};
 use super::effect_invocation::{
     TemporaryDeckIdentityMode, TemporaryHadUsedSource, TemporaryInvocationSpec,
 };
@@ -797,7 +798,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
 
         let thunder = self.actor(actor_side).ronghui.thunder_tune.max(0);
         if thunder > 0 {
-            let roll = self.consume_ronghui_optional_original_random(actor_side);
+            let roll = self.thunder_tune_percent_roll(actor_side);
             if roll < 10 {
                 self.apply_damage(actor_side, thunder, false, false, false);
             }
@@ -941,6 +942,35 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     fn consume_ronghui_optional_original_random(&mut self, actor_side: PlayerSide) -> i64 {
         self.consume_original_random_hexagram_side_effects(actor_side);
         self.consume_ronghui_optional_decision()
+    }
+
+    fn thunder_tune_percent_roll(&mut self, side: PlayerSide) -> i64 {
+        let used_hexagram = self.consume_original_random_hexagram_side_effects(side);
+        if !self.decision_tape.is_empty() {
+            return self.decision_tape.remove(0);
+        }
+        let Some(seed) = self.synthetic_seed_for(side) else {
+            return -1; // Original GetNextParam on an exhausted replay queue.
+        };
+        if used_hexagram {
+            return 0;
+        }
+        if self.robust_decisions {
+            return if side == PlayerSide::P1 { 99 } else { 0 };
+        }
+        // Card_192 installs one stacking effect on each player. OnTurnEnded
+        // rolls it once for the acting side, outside any card execution.
+        seeded_decision_choice_index(
+            seed,
+            side,
+            self.actor_turn,
+            192,
+            ReplayDecisionKind::PercentRoll,
+            0,
+            0,
+            0,
+            100,
+        ) as i64
     }
 
     fn negative_status_amount(&self, actor_side: PlayerSide, status: i64) -> i64 {

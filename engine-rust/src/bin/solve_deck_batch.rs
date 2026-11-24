@@ -16,6 +16,8 @@ use yixian_engine::{
     engine_identity, BattleFixture, EngineError, EngineIdentity, Result, DECK_SIZE,
 };
 
+const SUPPORTED_FEATURES: &[&str] = &["syntheticHandCounts"];
+
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct BatchInput {
@@ -73,6 +75,7 @@ struct BatchReport {
     #[serde(skip_serializing_if = "Option::is_none")]
     batch_id: Option<String>,
     engine_identity: EngineIdentity,
+    supported_features: &'static [&'static str],
     results: Vec<BatchResult>,
 }
 
@@ -196,6 +199,7 @@ fn main() -> Result<()> {
         serde_json::to_string(&BatchReport {
             batch_id: batch.batch_id,
             engine_identity: engine_identity(),
+            supported_features: SUPPORTED_FEATURES,
             results,
         })?
     );
@@ -250,6 +254,7 @@ fn serve_loop() -> Result<()> {
                 Ok(results) => serde_json::to_string(&BatchReport {
                     batch_id: batch.batch_id,
                     engine_identity: engine_identity(),
+                    supported_features: SUPPORTED_FEATURES,
                     results,
                 })
                 .map_err(|error| {

@@ -90,3 +90,39 @@ fn strict_replay_without_seed_still_fails_closed() {
         attack * (base + 3)
     );
 }
+
+#[test]
+fn solver_can_set_an_unknown_hand_count_without_card_identities() {
+    for count in 0..=4 {
+        let (mut fixture, card) = fixture_with_hand(0, vec![]);
+        let source = fixture.source.get_or_insert_with(Default::default);
+        source.eligible_for_base_rule_replay = Some(false);
+        source.synthetic_decision_fallback_seed = Some(42);
+        source.synthetic_hand_counts = Some([Some(count), None]);
+        let mut state = ReplayState::<true>::from_fixture(&fixture, true).unwrap();
+        let before = state.p2.core.hp;
+        state.test_apply_card_effect(PlayerSide::P1, &card, 0);
+        assert_eq!(
+            before - state.p2.core.hp,
+            damage_dealt_strict(count.into(), vec![], Some(42))
+        );
+    }
+}
+
+#[test]
+fn hypothetical_hand_counts_require_a_seed_and_exclude_tapes_and_known_hands() {
+    for (eligible, seed, tape, known_hand) in [
+        (Some(true), Some(42), vec![], 0),
+        (None, Some(42), vec![], 0),
+        (Some(false), None, vec![], 0),
+        (Some(false), Some(42), vec![2], 0),
+        (Some(false), Some(42), vec![], 1),
+    ] {
+        let (mut fixture, _) = fixture_with_hand(known_hand, tape);
+        let source = fixture.source.get_or_insert_with(Default::default);
+        source.eligible_for_base_rule_replay = eligible;
+        source.synthetic_decision_fallback_seed = seed;
+        source.synthetic_hand_counts = Some([Some(3), None]);
+        assert!(ReplayState::<true>::from_fixture(&fixture, true).is_err());
+    }
+}

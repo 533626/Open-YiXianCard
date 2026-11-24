@@ -203,6 +203,10 @@ pub struct FixtureSource {
     pub synthetic_decision_seed: Option<u32>,
     pub synthetic_decision_sides: Vec<PlayerSide>,
     pub synthetic_decision_fallback_seed: Option<u32>,
+    /// Solver scenarios for count-dependent effects when a participant's card identities are unknown.
+    /// Order is p1, p2. A missing count preserves the supplied hand.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub synthetic_hand_counts: Option<[Option<u16>; 2]>,
     /// Analysis-only robust mode for synthetic (tape-less) decisions: integer
     /// random ranges resolve to floor((min+max)/2); percent rolls without a
     /// hexagram resolve against p1 (p1 fails, p2 succeeds). Never set on

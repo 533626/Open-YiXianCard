@@ -77,16 +77,46 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 return Err(error);
             }
         }
-        let p1 = super::ReplayPlayer::from_fixture_view(
+        let mut p1 = super::ReplayPlayer::from_fixture_view(
             PlayerSide::P1,
             &fixture.players.p1,
             &fixture.historical_card_overrides,
         );
-        let p2 = super::ReplayPlayer::from_fixture_view(
+        let mut p2 = super::ReplayPlayer::from_fixture_view(
             PlayerSide::P2,
             &fixture.players.p2,
             &fixture.historical_card_overrides,
         );
+        if let Some((source, counts)) = fixture
+            .source
+            .as_ref()
+            .and_then(|source| source.synthetic_hand_counts.map(|counts| (source, counts)))
+        {
+            if source.eligible_for_base_rule_replay != Some(false)
+                || !fixture.decision_tape.is_empty()
+                || fixture
+                    .fallback_seed_override
+                    .or(source.synthetic_decision_fallback_seed)
+                    .is_none()
+            {
+                return Err(BattleError::Invariant {
+                    message: "syntheticHandCounts requires a seeded tape-less solver scenario excluded from admission".into(),
+                });
+            }
+            for (player, hand, count) in [
+                (&mut p1, fixture.players.p1.hand_cards, counts[0]),
+                (&mut p2, fixture.players.p2.hand_cards, counts[1]),
+            ] {
+                if let Some(count) = count {
+                    if !hand.is_empty() {
+                        return Err(BattleError::Invariant {
+                            message: "syntheticHandCounts cannot override known hand cards".into(),
+                        });
+                    }
+                    player.identity.hand_card_count = i64::from(count);
+                }
+            }
+        }
         let mut state = Box::new(Self {
             p1,
             p2,

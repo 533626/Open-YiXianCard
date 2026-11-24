@@ -1500,13 +1500,28 @@ pub fn run_replay_fixture_with_p1_deck(
     first_player_side: PlayerSide,
     fallback_seed: Option<u32>,
 ) -> Result<ReplaySummary> {
+    run_replay_fixture_with_p1_deck_and_hand(
+        base, p1_cards, p1_active_slot_count, None, first_player_side, fallback_seed,
+    )
+}
+
+/// Price a candidate formation with its own post-deployment bench. The hand is
+/// borrowed for this battle and leaves the caller's immutable template intact.
+pub fn run_replay_fixture_with_p1_deck_and_hand(
+    base: &BattleFixture,
+    p1_cards: &[CardDefinition],
+    p1_active_slot_count: usize,
+    p1_hand: Option<&[i64]>,
+    first_player_side: PlayerSide,
+    fallback_seed: Option<u32>,
+) -> Result<ReplaySummary> {
     let mut view = crate::fixture::BattleFixtureView::with_players(
-        base,
-        &base.players.p1,
-        &base.players.p2,
-        first_player_side,
+        base, &base.players.p1, &base.players.p2, first_player_side,
     );
     view.with_deck_and_slots(PlayerSide::P1, p1_cards, p1_active_slot_count);
+    if let Some(hand) = p1_hand {
+        view.players.p1.hand_cards = hand;
+    }
     view.fallback_seed_override = fallback_seed;
     view.capture_decision_events = false;
     execute_replay_view::<false>(&view, ReplayObservationMode::None)
@@ -1579,6 +1594,29 @@ mod p1_deck_view_tests {
                 summary_key(&viewed_long),
                 "long deck must match owned fixture for {side:?}"
             );
+        }
+    }
+
+    #[test]
+    fn candidate_bench_matches_played_hand_for_ling_mao_luan_jian() {
+        let mut base = seeded_base();
+        base.decision_tape.clear();
+        let cat = original_card_definition_by_id(9).unwrap();
+        base.players.p1.cards = vec![cat; 3];
+        base.players.p1.active_slot_count = 3;
+        base.players.p1.hand_cards = vec![9; 3];
+        let retained = [1_000_001];
+        for side in [PlayerSide::P1, PlayerSide::P2] {
+            let mut played = base.clone();
+            played.first_player_side = side;
+            played.players.p1.hand_cards = retained.to_vec();
+            let expected = run_replay_fixture(&played).unwrap();
+            let forecast = run_replay_fixture_with_p1_deck_and_hand(
+                &base, &played.players.p1.cards, 3, Some(&retained), side, None,
+            ).unwrap();
+            assert_eq!(summary_key(&forecast), summary_key(&expected));
+            played.players.p1.hand_cards.clone_from(&base.players.p1.hand_cards);
+            assert_ne!(summary_key(&expected), summary_key(&run_replay_fixture(&played).unwrap()));
         }
     }
 

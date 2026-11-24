@@ -476,6 +476,68 @@ fn xianmo_13002_synthetic_seed_clears_debuffs_and_heals_remainder() {
 }
 
 #[test]
+fn synthetic_painter_choices_generate_effects_without_spending_hexagrams() {
+    for id in [6_000_007, 6_000_014] {
+        let card = original_config::original_card_definition(id).expect("painter card");
+        let mut fixture = fixture_with(card.clone(), basic_attack_test_card());
+        fixture.source = Some(FixtureSource {
+            synthetic_decision_fallback_seed: Some(37),
+            ..FixtureSource::default()
+        });
+        fixture.decision_tape.clear();
+        let mut state = ReplayState::test_from_fixture(&fixture);
+        state.p1.astrology.hexagram = 1;
+        state.p1.core.hp -= 25;
+        let hp = state.p1.core.hp;
+        state.test_apply_card_effect(PlayerSide::P1, &card, 0);
+        assert_eq!(state.p1.astrology.hexagram, 1);
+        let [decision] = state.decision_events.as_slice() else {
+            panic!("expected exactly one painter decision");
+        };
+        assert_eq!(decision.provider, ReplayDecisionProvider::SeededSynthetic);
+        if id == 6_000_007 {
+            assert_eq!(state.negative_status_stack_count(PlayerSide::P2), 2);
+        } else {
+            let expected = match decision.selected_option.unwrap() {
+                0 => (20, hp, 0),
+                1 => (0, hp + 20, 0),
+                2 => (0, hp, 1),
+                branch => panic!("invalid painter branch {branch}"),
+            };
+            assert_eq!(
+                (state.p1.core.defense, state.p1.core.hp, state.p1.core.guard),
+                expected
+            );
+        }
+    }
+}
+
+#[test]
+fn wind_thunder_uses_original_defense_range_for_hexagram_rolls() {
+    for (id, maximum) in [(4_000_108, 11), (4_010_108, 16), (4_020_108, 21)] {
+        let card = original_config::original_card_definition(id).expect("风雷涌动");
+        let mut fixture = fixture_with(card.clone(), basic_attack_test_card());
+        fixture.players.p1.cards = vec![
+            card.clone(),
+            basic_attack_test_card(),
+            basic_attack_test_card(),
+        ];
+        fixture.players.p1.active_slot_count = 3;
+        fixture.source = Some(FixtureSource {
+            synthetic_decision_fallback_seed: Some(37),
+            ..FixtureSource::default()
+        });
+        fixture.decision_tape.clear();
+        let mut state = ReplayState::test_from_fixture(&fixture);
+        state.p1.astrology.hexagram = 2;
+        state.test_apply_card_effect(PlayerSide::P1, &card, 0);
+        assert_eq!(state.p1.core.defense, maximum);
+        assert_eq!(state.p1.astrology.hexagram, 0);
+        assert_eq!(state.p1.astrology.hexagram_effective_count, 2);
+    }
+}
+
+#[test]
 fn card_7000111_synthetic_seed_uses_hand_formation_and_seal_while_real_replay_fails_closed() {
     let flag = crate::replay::original_config::original_card_definition(7_000_111)
         .expect("7000111 definition");

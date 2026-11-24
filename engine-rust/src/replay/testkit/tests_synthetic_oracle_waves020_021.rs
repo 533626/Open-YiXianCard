@@ -171,6 +171,34 @@ fn earth_fiend_shatters_then_converts_exact_hp_loss_to_defense() {
 }
 
 #[test]
+fn thunder_tune_uses_a_seeded_turn_roll_and_preserves_recorded_decisions() {
+    let mut battle = state(&[192], 1);
+    apply_body(&mut battle, 192, 0, false);
+    battle.actor_turn = 7;
+    battle.synthetic_decision_fallback_seed = Some(11);
+    battle.apply_ronghui_turn_end(PlayerSide::P1); // seeded roll 5
+    assert_eq!(battle.p2.core.hp, 490);
+    battle.apply_ronghui_turn_end(PlayerSide::P2); // same seed, other side: 86
+    assert_eq!(battle.p1.core.hp, 510);
+    battle.actor_turn = 8;
+    battle.apply_ronghui_turn_end(PlayerSide::P1); // next turn: 69
+    assert_eq!(battle.p2.core.hp, 490);
+
+    battle.decision_tape = vec![10, 9];
+    battle.apply_ronghui_turn_end(PlayerSide::P1);
+    assert_eq!(battle.p2.core.hp, 490);
+    battle.apply_ronghui_turn_end(PlayerSide::P1);
+    assert_eq!(battle.p2.core.hp, 480);
+    assert!(battle.decision_tape.is_empty());
+
+    battle.p1.astrology.hexagram = 1;
+    battle.apply_ronghui_turn_end(PlayerSide::P1);
+    assert_eq!(battle.p2.core.hp, 470);
+    assert_eq!(battle.p1.astrology.hexagram, 0);
+    assert_eq!(battle.p1.astrology.hexagram_effective_count, 1);
+}
+
+#[test]
 fn turn_hooks_cover_thunder_two_polarity_and_momentum_formation() {
     let mut thunder = state(&[20_192], 1);
     thunder.p1.core.hp = 400;

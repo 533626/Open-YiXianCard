@@ -737,7 +737,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 }
                 // Card_6000007.cs:82 同落纸云烟用 GetNextParam()：空队列 catch 返回
                 // -1 → `nextParam != -1` 不成立，整张牌无效果（不回退默认状态）。
-                if self.decision_tape.is_empty() {
+                if self.decision_tape.is_empty() && self.synthetic_seed_for(actor_side).is_none() {
                     return Some(false);
                 }
                 let selected = self
@@ -810,7 +810,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 // Card_6000014.cs:80 用 GetNextParam()（原版 BattleCharacter
                 // GetNextParam:9314-9320），不消耗卦象；随机值来自服务端
                 // battleParams 队列（replay 的 decisionTape）。
-                if self.decision_tape.is_empty() {
+                if self.decision_tape.is_empty() && self.synthetic_seed_for(actor_side).is_none() {
                     // 原版 GetNextParam 对空队列 Dequeue 抛异常 → catch 返回
                     // -1 → switch 无匹配分支 → 整张牌无效果（不回退默认 0）。
                     // oracle 锚点：mirror-32299000 pa_e48d2948
