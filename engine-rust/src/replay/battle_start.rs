@@ -92,6 +92,20 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
             // at the threshold (HF 6152/aa21/bf90).
             // Talent 179（入冥）belongs to the same OnBattleStarted talent switch
             // (case 179 / case 183) and must execute in talent order.
+            // 冥心烙印（talent 150 系，case 150）与搏命之勇（171，case 171）同属该
+            // switch（BattleCharacter.cs:1100-1160 `switch (current % 10000)`），必须按天赋表
+            // 顺序内联执行，不能挪到循环后的独立 pass：其内伤/外伤经 415 疯魔架势
+            // 钩子涨体魄，会被后位的筋骨健壮（176 系，case 176 IL_1472
+            // FloorToInt(TiPo/otherParams[1])）采样。oracle 锚点：
+            // pa_1eb91a7d（天赋 [178,179,10144,20150,30176]）：179 先
+            // +1 体魄（70→71），20150 的内伤再 +2（71→73），30176 采样
+            // floor(73/6)=12；循环后置只采到 71/6=11，少 1 血。
+            // 150/171 仍先于 FateStrategyFunctions.OnBattleStart（天赋循环在命运函数
+            // 之前）：其开局内伤触发 修玄不泯(177) 回血，会改变后续 fate 27
+            // （生命+X%）采样的当前 HP。oracle 锚点：mirror-32299000
+            // pa_b578c6b2 cp0（p2 maxHp 131 = 106+12 体魄
+            // +13（27: 111×12/100），引擎原 130 = 106+12+12（27 误采样
+            // 177 回血前的 106）；hp 124 vs 123）。
             for talent in &player_fixture.talents {
                 match talent {
                     179 => {
@@ -113,6 +127,34 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                             _ => unreachable!(),
                         };
                         self.gain_anima(actor_side, amount);
+                    }
+                    150 | 10_150 | 20_150 | 30_150 => {
+                        // 原版 case 150（IL_130a）：ModifyBuffValue(NeiShang,
+                        // otherParams[0]) + ModifyBuffValue(HuiFu, otherParams[1])。
+                        // 内伤走 add_actor_negative_status，415/177 等共享钩子照常触发。
+                        if let Some((internal_injury, recovery)) =
+                            dark_heart_mark_from_talent(*talent)
+                        {
+                            self.add_actor_negative_status(actor_side, 100, internal_injury);
+                            let recovery_before = self.actor(actor_side).status.recovery;
+                            self.actor_mut(actor_side).status.recovery += recovery;
+                            self.record_counter_transition(
+                                actor_side,
+                                "状态",
+                                "recovery",
+                                "恢复",
+                                recovery_before,
+                                self.actor(actor_side).status.recovery,
+                            );
+                        }
+                    }
+                    171 => {
+                        // 原版 case 171（IL_13c0）：JiaGong/WaiShang 各 +otherParams[1]=1。
+                        // Keep 外伤 inside this actor's opening boundary: an opposing 星蚀
+                        // (30103) armed by the first actor's earlier opening still adds
+                        // its one-shot bonus through add_actor_negative_status.
+                        self.gain_attack_bonus(actor_side, 1);
+                        self.add_actor_negative_status(actor_side, 105, 1);
                     }
                     176 | 10_176 | 20_176 | 30_176 => {
                         let divisor = match talent {
@@ -177,15 +219,6 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                     dream_frenzy_sword_zero;
             }
             self.apply_battle_start_divination(actor_side, player_fixture);
-            // 冥心烙印（talent 150 系）与搏命之勇（171）属于该 actor 的 OnBattleStarted 天赋
-            // switch，必须先于 FateStrategyFunctions.OnBattleStart（原版
-            // BattleCharacter.OnBattleStarted 天赋循环在命运函数之前）——
-            // 其开局内伤触发 修玄不泯(177) 回血，会改变后续 fate 27
-            // （生命+X%）采样的当前 HP。oracle 锚点：mirror-32299000
-            // pa_b578c6b2 cp0（p2 maxHp 131 = 106+12 体魄
-            // +13（27: 111×12/100），引擎原 130 = 106+12+12（27 误采样
-            // 177 回血前的 106）；hp 124 vs 123）。
-            self.apply_opening_injury_talents(actor_side, player_fixture);
             if player_fixture.fate_strategies.contains(&342) {
                 self.actor_mut(opponent_side(actor_side))
                     .status
@@ -795,37 +828,6 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
     /// （BattleCharacter.cs:910, 2188, 1110-1189）。冥心烙印（150 系，:1620-1622）
     /// 与搏命之勇（171，:1774-1776）都走 ModifyBuffValue 加负面状态，对方星蚀
     /// 预置的 BeiXingShi 只加给本方首个负面状态（:8703-8706），故二者须按天赋表顺序结算。
-    fn apply_opening_injury_talents(
-        &mut self,
-        actor_side: PlayerSide,
-        player_fixture: &crate::fixture::FixturePlayerView<'_>,
-    ) {
-        for talent in &player_fixture.talents {
-            if *talent == 171 {
-                // Keep 外伤 out of ReplayPlayer construction: opposing 星蚀
-                // (30103) is already armed at this actor's opening boundary and
-                // must add its one-shot bonus through add_actor_negative_status.
-                self.gain_attack_bonus(actor_side, 1);
-                self.add_actor_negative_status(actor_side, 105, 1);
-                continue;
-            }
-            let Some((internal_injury, recovery)) = dark_heart_mark_from_talent(*talent) else {
-                continue;
-            };
-            self.add_actor_negative_status(actor_side, 100, internal_injury);
-            let recovery_before = self.actor(actor_side).status.recovery;
-            self.actor_mut(actor_side).status.recovery += recovery;
-            self.record_counter_transition(
-                actor_side,
-                "状态",
-                "recovery",
-                "恢复",
-                recovery_before,
-                self.actor(actor_side).status.recovery,
-            );
-        }
-    }
-
     fn apply_battle_start_divination(
         &mut self,
         actor_side: PlayerSide,

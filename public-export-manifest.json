@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "type": "open-yixiancard-public-export",
-  "sourceCommit": "81aabd86a74d16b6821d613faceeddfccd1209c1",
-  "sourceTree": "00e2fea565121c6ed352603a0ab7703dcc5e9de4",
+  "sourceCommit": "8e6dca65139d09f801967e31ac59bebbb4b836be",
+  "sourceTree": "e694fdf75f60a549d5b6aa0475514105ceb0c38e",
   "policySha256": "66b73814aff37050a01776c9fb106f38c193c3cb780b4ff95b4ed02afd9674e4",
   "files": [
     {
@@ -39,7 +39,7 @@
       "path": "README.md",
       "mode": "100644",
       "bytes": 3042,
-      "sha256": "1b10908dc3e0f3981ece755fd1a86c188a4d55c5315e79961764c2696713103d"
+      "sha256": "0128b05b826c92d72435924ea967079a2c81b666cf68c423e7626eb74644941a"
     },
     {
       "path": "engine-rust/Cargo.lock",
@@ -281,10 +281,10 @@
     {
       "path": "engine-rust/src/replay/battle_start.rs",
       "mode": "100644",
-      "bytes": 47177,
-      "sha256": "40ad0bdb5e47c3f63b2de01400a5a0c7b743ae37c3d909d34adf303456834425",
+      "bytes": 48122,
+      "sha256": "79bd39df1d7f7cec684f77e9094a6ddb6a9cd7122c1f7db0a6b7377a1d11e937",
       "redactions": {
-        "record-digest": 21
+        "record-digest": 22
       }
     },
     {
@@ -778,12 +778,12 @@
     {
       "path": "engine-rust/src/replay/testkit/tests_body.rs",
       "mode": "100644",
-      "bytes": 19044,
-      "sha256": "86709743fb9f74caa041f0d2b5acbb77e10e3d2139c1dc8c6515e861fc64eb54",
+      "bytes": 20875,
+      "sha256": "9d966669ba547a4065d9c03ab52413da281b225eac7b0f0779510ba41a2d6981",
       "redactions": {
         "mirror-batch": 1,
         "candidate-code": 3,
-        "record-digest": 1
+        "record-digest": 2
       }
     },
     {
@@ -1274,5 +1274,5 @@
       "sha256": "f7981b143ca935332a76c20bbc1e6990b84c994f3df1e6058a7a512ca9b2ac0b"
     }
   ],
-  "treeDigest": "89f7a484089f7b5d1a12a005cb46f586626641d128def0497865a8993cd664e0"
+  "treeDigest": "b76c21a20435f8130c37c742f99c669c97c1fd44628a3d7b24eb342a3ecd259c"
 }

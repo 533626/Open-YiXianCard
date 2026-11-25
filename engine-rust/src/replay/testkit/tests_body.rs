@@ -191,6 +191,41 @@ fn dark_heart_mark_start_talent_grants_internal_injury_and_recovery() {
 }
 
 #[test]
+fn dark_heart_mark_physique_counts_before_healthy_bones_samples_it() {
+    // 原版 BattleCharacter.OnBattleStarted 是单个天赋循环（switch (current % 10000)）：
+    // case 150（冥心烙印）的内伤经 415 疯魔架势钩子涨体魄，case 176（筋骨健壮）按
+    // FloorToInt(当前体魄/otherParams[1]) 回血。20150 排在 30176 之前时，30176 必须采到
+    // 20150 的 +2 体魄；排在之后时则采不到。oracle 锚点：pa_1eb91a7d
+    //（天赋 [178,179,10144,20150,30176]，永久体魄 70：179 先 +1（70→71），20150
+    // 再 +2（71→73），30176 采样 floor(73/6)=12；循环后置只采到 71/6=11，少 1 血）。
+    let run = |talents: Vec<i64>| {
+        let mut p1 = player(deck_with(vec![original_card(415)]));
+        p1.character_id = Some(4_000_003);
+        p1.talents = talents;
+        p1.permanent_buff_temp_datas
+            .insert("10023".to_string(), 70);
+        p1.permanent_buff_temp_datas
+            .insert("10024".to_string(), 100);
+        ReplayState::test_from_fixture(&fixture(p1, player(deck_with(vec![basic_attack()]))))
+    };
+
+    // 179 → 20150 → 30176：体魄 70+1+2=73，生命 50+3+floor(73/6)=65。
+    let state = run(vec![179, 20_150, 30_176]);
+    assert_eq!(state.p1.core.physique, 73);
+    assert_eq!(state.p1.core.hp, 65);
+    assert_eq!(state.p1.status.internal_injury, 2);
+    assert_eq!(state.p1.status.recovery, 2);
+
+    // 179 → 30176 → 20150：30176 只采到 71，生命 50+3+floor(71/6)=64，
+    // 终局体魄仍是 73（顺序只影响采样，不影响总量）。
+    let state = run(vec![179, 30_176, 20_150]);
+    assert_eq!(state.p1.core.physique, 73);
+    assert_eq!(state.p1.core.hp, 64);
+    assert_eq!(state.p1.status.internal_injury, 2);
+    assert_eq!(state.p1.status.recovery, 2);
+}
+
+#[test]
 fn spirit_turtle_footwork_anima_reward_respects_talent_204() {
     let mut state = ReplayState::test_from_fixture(&fixture(
         player(deck_with(vec![basic_attack()])),
