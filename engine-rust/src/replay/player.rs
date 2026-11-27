@@ -521,8 +521,8 @@ impl ReplayPlayer {
                 xian_mo_13006_triggered: 0,
                 xian_mo_5011_pending_pu_gong: 0,
                 xian_mo_11003_wuxing_upgrades: 0,
+                xian_mo_7110_upgrades: 0,
                 skip_hp_deltas: Vec::new(),
-                skip_anima_deltas: Vec::new(),
                 cu_ju_fei_xi: 0,      // 同上（416 促局飞袭）
                 wu_you_ling_niang: 0, // 同上（407 无忧灵酿）
                 wu_jing_gua_yan: 0,   // 同上（395 无尽卦衍）
@@ -978,8 +978,7 @@ impl ReplayPlayer {
                     .get(current)
                     .is_some_and(|slot| slot.card.name.contains("星弈"));
                 if is_star_chess {
-                    self.fate.skip_hp_deltas.push(3);
-                    self.fate.skip_anima_deltas.push(1);
+                    self.fate.skip_hp_deltas.push(6);
                 }
                 skipped_slot_indices.push(current);
                 self.deck.queue.push(current);

@@ -196,6 +196,11 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         // apply_battle_start_opening_effects 的每方迭代起点。
         self.apply_verified_xian_mo_before_battle_start();
         self.apply_battle_start_opening_effects(fixture);
+        // BattleExecuter.Execute initializes the 7110 budget after both openings.
+        let second = self.actor_mut(super::support::opponent_side(self.first_player));
+        if second.identity.xian_mo_strategies.contains(&7110) {
+            second.fate.xian_mo_7110_upgrades = 2;
+        }
         self.apply_battle_start_phase_perturbations(fixture)?;
         self.refresh_active_mechanisms();
         if OBSERVE {

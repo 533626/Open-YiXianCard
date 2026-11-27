@@ -973,7 +973,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         self.actor_mut(actor_side).fate.rear_move_succeeded = false;
         let mut drawn = loop {
             let mut drawn = self.actor_mut(actor_side).draw_next_card(skip_limit)?;
-            self.settle_xian_mo_skip_hp(actor_side);
+            self.settle_xian_mo_skip_rewards(actor_side);
             // FateStrategy 398 applies its +5 only when the FS398 skip loop itself
             // skipped the fifth grid (and that grid holds a 星弈 card). If a prior
             // mechanism in the original's skip chain (星弈断 XingYi_Duan, 梦EJie…)
@@ -1151,7 +1151,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
 
         // BattleExecuter pays the selected physical card's cost before
         // CardActionBase.Execute. The verified transforms run in source order:
-        // 复刻 -> 连音曲 -> 虚魂犬 -> 五帝 -> 相生 -> 仙蛋黄粽 -> 13003首次使用 -> 画龙 -> 狂剑升阶 -> 化生壶.
+        // 复刻 -> 连音曲 -> 虚魂犬 -> 五帝 -> 相生 -> 仙蛋黄粽 -> 13003首次使用 -> 画龙 -> 7110 -> 狂剑升阶 -> 化生壶.
         self.apply_synthetic_full_scope_replica_transform(actor_side, &mut drawn);
         self.apply_verified_xian_mo_normal_attack_copy(actor_side, &mut drawn);
         self.apply_ronghui_free_and_easy_tune_transform(actor_side, &mut drawn);
@@ -1177,6 +1177,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 Some(&drawn.card),
             );
         }
+        self.apply_verified_xian_mo_7110_upgrade(actor_side, &mut drawn);
         self.apply_upgrade_next_frenzy_sword(actor_side, &mut drawn);
         self.apply_verified_xian_mo_wuxing_mijuan_upgrade(actor_side, &mut drawn);
         self.apply_ronghui_alchemy_pot_transform(actor_side, &mut drawn);
@@ -1894,16 +1895,13 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         drawn.card = upgraded.into();
     }
 
-    /// 仙魔 7116/5010 的跳牌生命与灵气变化（BattleExecuter 跳牌链内 ModifyHp / ModifyAnima），在取牌边界按跳牌顺序结算。
-    fn settle_xian_mo_skip_hp(&mut self, actor_side: PlayerSide) {
+    /// BattleExecuter.Execute (26939223) 依次增加灵气、生命上限和生命。
+    fn settle_xian_mo_skip_rewards(&mut self, actor_side: PlayerSide) {
         if !self.actor(actor_side).fate.skip_hp_deltas.is_empty() {
             for delta in std::mem::take(&mut self.actor_mut(actor_side).fate.skip_hp_deltas) {
+                self.gain_anima(actor_side, 1);
+                self.modify_actor_max_hp(actor_side, delta);
                 self.modify_actor_hp(actor_side, delta, false, false);
-            }
-        }
-        if !self.actor(actor_side).fate.skip_anima_deltas.is_empty() {
-            for delta in std::mem::take(&mut self.actor_mut(actor_side).fate.skip_anima_deltas) {
-                self.gain_anima(actor_side, delta);
             }
         }
     }

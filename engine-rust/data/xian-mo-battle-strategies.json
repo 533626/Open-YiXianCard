@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "steamBuild": "26776454",
+  "steamBuild": "26939223",
   "strategies": [
     {
       "id": 1001,
@@ -81,7 +81,8 @@
     {
       "id": 2015,
       "sources": [
-        "XianMoStrategyConfig.isBattleEffect"
+        "XianMoStrategyConfig.isBattleEffect",
+        "XianMoStrategyFunctions.cs"
       ]
     },
     {
@@ -701,6 +702,7 @@
       "id": 7110,
       "sources": [
         "BattleExecuter.cs",
+        "CardActionBase.cs",
         "XianMoStrategyConfig.isBattleEffect"
       ]
     },

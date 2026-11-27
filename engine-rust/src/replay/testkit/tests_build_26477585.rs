@@ -168,6 +168,24 @@ fn xing_yi_tiao_marker_survives_7116_grid_skip() {
     assert_eq!(drawn.source_slot, 6);
     assert_eq!(drawn.skipped_slots, vec![4, 5]);
     assert_eq!(state.p1.ronghui.star_chess_jump, 0);
+    assert_eq!(state.p1.fate.skip_hp_deltas, vec![6]);
+}
+
+#[test]
+fn xian_mo_7116_skip_grants_anima_health_and_max_health() {
+    let mut cards = vec![basic_attack(); 8];
+    cards[4] = original(4_000_010);
+    let mut battle = fixture(cards, deck(basic_attack()));
+    battle.players.p1.active_slot_count = 8;
+    battle.players.p1.xian_mo_strategies = vec![7_116];
+    let mut state = ReplayState::test_from_fixture(&battle);
+    state.p1.deck.queue = vec![4, 5, 6, 7, 0, 1, 2, 3];
+    let (anima, hp, max_hp) = (state.p1.core.anima, state.p1.core.hp, state.p1.core.max_hp);
+    state.test_execute_one_card(PlayerSide::P1);
+    assert_eq!(state.p1.core.anima, anima + 1);
+    assert_eq!(state.p1.core.hp, hp + 6);
+    assert_eq!(state.p1.core.max_hp, max_hp + 6);
+    assert!(state.p1.fate.skip_hp_deltas.is_empty());
 }
 
 #[test]
@@ -327,7 +345,6 @@ fn fate_7116_isolated_overlap_prefers_7116_without_opening() {
     assert!(drawn.skipped_opening_slots.is_empty());
     assert_eq!(state.p1.fate.fate_cycle, 4);
     assert!(state.p1.fate.skip_hp_deltas.is_empty());
-    assert!(state.p1.fate.skip_anima_deltas.is_empty());
 }
 
 #[test]

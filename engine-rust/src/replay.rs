@@ -984,9 +984,9 @@ struct ReplayFateTalentState {
     xian_mo_5011_pending_pu_gong: i64,
     /// XianMo 11003 五行秘卷升级 counter (BuffType WuXingMiJuanShengJi 792).
     xian_mo_11003_wuxing_upgrades: i64,
-    /// BattleExecuter 跳牌链（仙魔 7116/5010）在取牌时产生的生命与灵气变化，按跳牌顺序，由取牌边界结算。
+    xian_mo_7110_upgrades: u8,
+    /// BattleExecuter 跳过星弈牌时累积的 7116 奖励，按跳牌顺序在取牌边界结算。
     skip_hp_deltas: Vec<i64>,
-    skip_anima_deltas: Vec<i64>,
     /// 促局飞袭 FateStrategy 416 标记（原版 BuffType CuJuFeiXi 768）：
     /// 开局 otherParams[0]=5 层（FateStrategyFunctions.cs:571-573，
     /// OnBattleStart 内）；每张名字含「火灵」的牌（含 temp 执行）在

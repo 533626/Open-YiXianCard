@@ -695,14 +695,6 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         {
             self.actor_mut(second_side).fate.next_rear_move_bypass += 1;
         }
-        if self
-            .actor(second_side)
-            .identity
-            .xian_mo_strategies
-            .contains(&7110)
-        {
-            self.actor_mut(second_side).fate.next_rear_move_bypass += 1;
-        }
     }
 
     pub(super) fn upgrade_first_battle_deck_card(

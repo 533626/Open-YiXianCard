@@ -131,6 +131,7 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         // 7022 的 +2（55900b/round-15 首张 11 grid7 首用：p2 内伤 3→5→6，
         // 防+6；旧顺序先数后加得防+4）。7022 无首用/临时限制，每次用 7 号槽皆触发。
         if self.active_mechanisms.has(super::ActiveMechanisms::XIAN_MO) {
+            self.apply_xian_mo_2015_before_star_hooks(actor_side, card);
             self.apply_xian_mo_7022_before_star_hooks(actor_side, slot);
         }
         // 伏魔 13017 数负面前于星弈连转内伤（CardActionBase

@@ -10,16 +10,16 @@ use std::sync::OnceLock;
 
 /// 已按当前 build 原版源码实现并由真实回放取证的仙魔策略。
 const IMPLEMENTED_XIAN_MO_STRATEGY_IDS: &[i64] = &[
-    1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 3001, 3002, 3003, 3004, 3011, 3012,
-    5001, 5004, 5005, 5007, 5008, 5009, 5010, 5011, 7002, 7005, 7010, 7017, 7021, 7022, 7024, 7026,
-    7028, 7031, 7032, 7035, 7036, 7037, 7042, 7048, 7049, 7050, 7051, 7052, 7053, 7054, 7056, 7057,
-    7058, 7059, 7060, 7061, 7063, 7064, 7065, 7066, 7067, 7068, 7069, 7071, 7076, 7077, 7078, 7079,
-    7080, 7082, 7083, 7084, 7085, 7087, 7088, 7089, 7090, 7091, 7092, 7093, 7094, 7095, 7096, 7097,
-    7098, 7099, 7100, 7101, 7102, 7103, 7104, 7105, 7109, 7110, 7111, 7112, 7113, 7115, 7116, 7118,
-    7120, 7122, 7123, 7127, 7128, 7129, 7130, 7132, 7133, 7135, 7136, 7138, 11001, 11002, 11003,
-    11004, 13001, 13002, 13003, 13004, 13005, 13006, 13007, 13008, 13009, 13010, 13011, 13012,
-    13013, 13014, 13015, 13016, 13017, 13018, 13019, 15018, 16024, 17071, 23045, 23058, 23062,
-    23066, 23069, 23079, 23080, 27021, 27023, 28001,
+    1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 2015, 3001, 3002, 3003, 3004, 3011,
+    3012, 5001, 5004, 5005, 5007, 5008, 5009, 5010, 5011, 7002, 7005, 7010, 7017, 7021, 7022, 7024,
+    7026, 7028, 7031, 7032, 7035, 7036, 7037, 7042, 7048, 7049, 7050, 7051, 7052, 7053, 7054, 7056,
+    7057, 7058, 7059, 7060, 7061, 7063, 7064, 7065, 7066, 7067, 7068, 7069, 7071, 7076, 7077, 7078,
+    7079, 7080, 7082, 7083, 7084, 7085, 7087, 7088, 7089, 7090, 7091, 7092, 7093, 7094, 7095, 7096,
+    7097, 7098, 7099, 7100, 7101, 7102, 7103, 7104, 7105, 7109, 7110, 7111, 7112, 7113, 7115, 7116,
+    7118, 7120, 7122, 7123, 7127, 7128, 7129, 7130, 7132, 7133, 7135, 7136, 7138, 11001, 11002,
+    11003, 11004, 13001, 13002, 13003, 13004, 13005, 13006, 13007, 13008, 13009, 13010, 13011,
+    13012, 13013, 13014, 13015, 13016, 13017, 13018, 13019, 15018, 16024, 17071, 23045, 23058,
+    23062, 23066, 23069, 23079, 23080, 27021, 27023, 28001,
 ];
 
 impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
@@ -237,6 +237,25 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
         }
         let upgraded = super::original_config::upgrade_original_card(&drawn.card, 1);
         self.actor_mut(side).deck.slots[drawn.source_slot].card = upgraded.clone().into();
+        drawn.card = upgraded.into();
+    }
+
+    /// CardActionBase.Execute IL_23b6: after 画龙点睛, upgrade the next
+    /// eligible card in the battle deck and spend one use of 谋定后动.
+    pub(super) fn apply_verified_xian_mo_7110_upgrade(
+        &mut self,
+        side: crate::model::PlayerSide,
+        drawn: &mut super::DrawnCard,
+    ) {
+        let actor = self.actor_mut(side);
+        if actor.fate.xian_mo_7110_upgrades == 0
+            || !super::original_config::can_upgrade_original_battle_deck_card(drawn.card.id)
+        {
+            return;
+        }
+        actor.fate.xian_mo_7110_upgrades -= 1;
+        let upgraded = super::original_config::upgrade_original_card(&drawn.card, 1);
+        actor.deck.slots[drawn.source_slot].card = upgraded.clone().into();
         drawn.card = upgraded.into();
     }
 
@@ -536,7 +555,7 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
             self.modify_actor_hp(actor_side, amount, false, false);
         }
         if player.xian_mo_strategies.contains(&7087) {
-            self.actor_mut(actor_side).beng.pending_momentum_bonus += 2;
+            self.actor_mut(actor_side).beng.pending_momentum_bonus += 3;
         }
         if player.xian_mo_strategies.contains(&7091) {
             self.actor_mut(actor_side).fate.tian_yan_feng_ling_duan_qu += 5;
@@ -983,7 +1002,7 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
             .contains(&7060)
             && super::support::normalized_base_id(card) == 381
         {
-            self.gain_anima(actor_side, 1);
+            self.gain_anima(actor_side, 2);
         }
         if self
             .actor(actor_side)
@@ -1023,7 +1042,7 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
             && card.id == 19
         {
             self.actor_mut(actor_side).sword.cloud_sea += 5;
-            self.gain_cloud_chain(actor_side, 2);
+            self.gain_cloud_chain(actor_side, 3);
         }
         if self
             .actor(actor_side)
@@ -1095,6 +1114,26 @@ impl<const OBSERVE: bool> super::ReplayState<OBSERVE> {
                     );
                 }
             }
+        }
+    }
+
+    /// XianMoStrategyFunctions.OnPlayCard:1331–1336, before 7022 and the
+    /// later OnBeforeExecuted resource hooks. Use the active CardConfig type.
+    pub(super) fn apply_xian_mo_2015_before_star_hooks(
+        &mut self,
+        actor_side: crate::model::PlayerSide,
+        card: &crate::model::CardDefinition,
+    ) {
+        let kind = card.card_type.as_ref().map_or(0, |kind| kind.value);
+        if matches!(kind, super::CARD_TYPE_SUSTAIN | super::CARD_TYPE_CONSUME)
+            && self
+                .actor(actor_side)
+                .identity
+                .xian_mo_strategies
+                .contains(&2015)
+        {
+            self.modify_actor_max_hp(actor_side, 3);
+            self.modify_actor_hp(actor_side, 3, false, false);
         }
     }
 
@@ -1433,14 +1472,13 @@ pub(super) fn battle_relevant_xian_mo_strategy_ids() -> &'static BTreeSet<i64> {
             // 2011 唯一调用点是 BattleExecuter.CalLifeDamage（战后命元 -otherParams[0]），
             // 不进 winner/actorTurn/hpDelta 三元：已验证无战斗影响（同址 fate 21 亦不建模）。
             // 7121 全树零引用 + R4a 十轮剔除重放全 exact：战斗惰性已验证（见契约测试）。
-            // 2015 全树零引用 + R4b 十四轮剔除重放全 exact：战斗惰性已验证（见契约测试）。
             // 3013 全树零引用 + R5a 十二轮剔除重放全 exact：战斗惰性已验证（见契约测试）。
             // 3005 全树零引用 + R5b 九轮剔除重放全 exact：战斗惰性已验证（见契约测试）。
             // 7011/7134/7038/7062/7114 全树零引用 + R12 剔除重放全 exact：战斗惰性已验证（见契约测试）。
             // 7012 全树零引用 + R13 十三轮剔除重放全 exact：战斗惰性已验证（见契约测试）。
             .filter(|id| {
                 ![
-                    2011, 2015, 3005, 3013, 7011, 7012, 7038, 7062, 7114, 7121, 7134, 26001,
+                    2011, 3005, 3013, 7011, 7012, 7038, 7062, 7114, 7121, 7134, 26001,
                 ]
                 .contains(id)
             })

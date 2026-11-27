@@ -1158,31 +1158,36 @@ fn mirage_flow_activates_both_wrapped_neighbors_on_generation() {
 }
 
 #[test]
-fn dark_owl_sword_defense_cap_is_lifted_for_rarity_two() {
-    // Card_260.cs：防御 += 灵气×otherParams[0]；rarity=2（如 20260）不钳制，
-    // 否则钳制 otherParams[2]。HF pa_96c867da cp12：20260 在
-    // 8 灵气时原版 +16 防，旧引擎按缺省 otherParams[2]=0 钳成 +0。
-    let upgraded = original(20260);
-    assert_eq!(other_param(&upgraded, 0), 2);
-    let mut state =
-        ReplayState::test_from_fixture(&fixture(deck(upgraded.clone()), deck(basic_attack())));
-    state.p1.core.anima = 8;
-    state.test_apply_card_effect(PlayerSide::P1, &upgraded, 0);
-    assert_eq!(state.p1.core.defense, 16);
+fn dark_owl_sword_grants_uncapped_defense_at_each_rarity() {
+    // Card_260.cs (26939223)：三档均取消防御上限。用 9 灵气越过前两档的旧上限。
+    for (id, attack, defense) in [(260, 4, 9), (10260, 6, 18), (20260, 8, 27)] {
+        let card = original(id);
+        let mut state =
+            ReplayState::test_from_fixture(&fixture(deck(card.clone()), deck(basic_attack())));
+        let target_hp = state.p2.core.hp;
+        state.p1.core.anima = 9;
+        state.test_apply_card_effect(PlayerSide::P1, &card, 0);
+        assert_eq!(state.p2.core.hp, target_hp - attack, "card {id}");
+        assert_eq!(state.p1.core.defense, defense, "card {id}");
+    }
 
-    // 基卡 260（rarity 0）：8×2=16 钳制到 otherParams[2]=6。
     let base = original(260);
-    let mut state =
-        ReplayState::test_from_fixture(&fixture(deck(base.clone()), deck(basic_attack())));
-    state.p1.core.anima = 8;
-    state.test_apply_card_effect(PlayerSide::P1, &base, 0);
-    assert_eq!(state.p1.core.defense, 6);
-
-    // 0 灵气：原版不调用 ModifyDef。
     let mut state =
         ReplayState::test_from_fixture(&fixture(deck(base.clone()), deck(basic_attack())));
     state.test_apply_card_effect(PlayerSide::P1, &base, 0);
     assert_eq!(state.p1.core.defense, 0);
+}
+
+#[test]
+fn dream_heavenly_mandate_shifts_the_opponent_without_self_damage() {
+    let card = original(335);
+    let mut battle = fixture(deck(card.clone()), deck(basic_attack()));
+    battle.players.p2.active_slot_count = 2;
+    let mut state = ReplayState::test_from_fixture(&battle);
+    let hp = state.p1.core.hp;
+    state.test_apply_card_effect(PlayerSide::P1, &card, 0);
+    assert_eq!(state.p1.core.hp, hp);
+    assert_eq!(state.p2.deck.queue, vec![1, 0]);
 }
 
 #[test]

@@ -387,7 +387,6 @@ fn cloud_element_cost_state() -> ReplayState {
     let mut battle = fixture(deck(basic_attack()), deck(basic_attack()));
     battle.players.p1.xian_mo_strategies = vec![11001, 11003, 7051];
     battle.players.p1.fate_strategies = vec![321];
-    battle.players.p2.xian_mo_strategies = vec![7110];
     battle.players.p2.fate_strategies = vec![329];
     ReplayState::test_from_fixture(&battle)
 }
@@ -433,7 +432,7 @@ fn shared_xian_mo_cloud_element_cost_and_second_actor_hooks_use_their_original_b
         0
     );
     assert_eq!(state.p1.fate.next_rear_move_bypass, 0);
-    assert_eq!(state.p2.fate.next_rear_move_bypass, 2);
+    assert_eq!(state.p2.fate.next_rear_move_bypass, 1);
 }
 
 const NORMAL_ATTACK_EXHAUST_CASES: &[TemporaryAttackCase] = &[
@@ -1383,32 +1382,59 @@ fn xian_mo_2011_held_runs_with_exact_triple_and_no_battle_effect() {
 }
 
 #[test]
-fn xian_mo_2015_held_runs_with_exact_triple_and_no_battle_effect() {
-    // 2015：全树零客户端代码引用；R4b p1-turkey（G2）R1–R16 十四轮实战
-    // （L1–L5，3 轮带磁带，2 轮因对手温敏仙魔过滤，xianmo_battle_prove
-    // 剔除重放）三元全 exact → 战斗惰性。持有 2015 的 fixture 必须正常跑完
-    // 且三元与无策略完全一致。
-    let mut battle = fixture(deck(basic_attack()), deck(basic_attack()));
+fn xian_mo_2015_raises_max_hp_then_heals_on_sustain_and_consume() {
+    let sustain = original_card_definition_by_id(23).unwrap();
+    let consume = original_card_definition_by_id(2_010_008).unwrap();
+    let mut battle = fixture(deck(sustain), deck(basic_attack()));
+    battle.players.p1.cards[1] = consume;
+    battle.players.p1.active_slot_count = 3;
     battle.players.p1.xian_mo_strategies = vec![2015];
-    battle.players.p2.xian_mo_strategies = vec![2015];
-    let with = run_replay_fixture(&battle).unwrap();
-    let plain = fixture(deck(basic_attack()), deck(basic_attack()));
-    let without = run_replay_fixture(&plain).unwrap();
+
+    let mut state = ReplayState::test_from_fixture(&battle);
+    assert_eq!((state.p1.core.hp, state.p1.core.max_hp), (30, 30));
+    state.test_execute_one_card(PlayerSide::P1);
+    assert_eq!((state.p1.core.hp, state.p1.core.max_hp), (33, 33));
+    state.test_execute_one_card(PlayerSide::P1);
+    assert_eq!((state.p1.core.hp, state.p1.core.max_hp), (36, 36));
+    state.test_execute_one_card(PlayerSide::P1);
+    assert_eq!((state.p1.core.hp, state.p1.core.max_hp), (36, 36));
+    assert_eq!(state.evaluation_error, None);
+}
+
+#[test]
+fn xian_mo_7110_only_upgrades_the_second_players_next_two_eligible_cards() {
+    let card = original_card_definition_by_id(4_000_015).unwrap();
+    let max_rank = original_card_definition_by_id(4_020_015).unwrap();
+    let mut battle = fixture(deck(card.clone()), deck(card));
+    battle.players.p1.xian_mo_strategies = vec![7110];
+    battle.players.p2.xian_mo_strategies = vec![7110];
+    // Play a max-rank card before the upgradable copies.
+    battle.players.p2.cards[..4].fill(battle.players.p1.cards[0].clone());
+    battle.players.p2.cards[0] = max_rank;
+    battle.players.p2.active_slot_count = 4;
+
+    let mut state = ReplayState::test_from_fixture(&battle);
+    assert_eq!(state.evaluation_error, None);
+    state.test_execute_one_card(PlayerSide::P1);
+    for _ in 0..4 {
+        state.test_execute_one_card(PlayerSide::P2);
+    }
+    let played = state
+        .test_events()
+        .iter()
+        .filter(|event| event.kind == super::ReplayEventKind::CardCompleted)
+        .map(|event| (event.actor, event.card_id.unwrap()))
+        .collect::<Vec<_>>();
     assert_eq!(
-        (
-            with.winner_side,
-            with.actor_turn_count,
-            with.hp_delta_p1_minus_p2
-        ),
-        (
-            without.winner_side,
-            without.actor_turn_count,
-            without.hp_delta_p1_minus_p2
-        )
+        played,
+        [
+            (PlayerSide::P1, 4_000_015),
+            (PlayerSide::P2, 4_020_015),
+            (PlayerSide::P2, 4_010_015),
+            (PlayerSide::P2, 4_010_015),
+            (PlayerSide::P2, 4_000_015),
+        ]
     );
-    assert_eq!(with.winner_side, PlayerSide::P1);
-    assert_eq!(with.actor_turn_count, 1);
-    assert_eq!(with.hp_delta_p1_minus_p2, 3);
 }
 
 #[test]

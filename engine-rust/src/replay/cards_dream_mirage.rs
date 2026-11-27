@@ -1,7 +1,5 @@
 use super::flow_card_effect::{param0, param1, param2};
-use super::original_config::{
-    original_card_definition, original_card_realm_level, original_config_rarity,
-};
+use super::original_config::{original_card_definition, original_card_realm_level};
 use super::support::{
     has_cloud_chain, is_spirit_sword_for_actor, is_sword_formation_card, opponent_side,
     other_param, wu_xing_count_in_deck,
@@ -338,9 +336,8 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 Some(false)
             }
             335 => {
-                self.modify_actor_hp(actor_side, -param0(card), false, false);
                 if !was_used_before_effect && self.actor(target_side).deck.queue.len() > 1 {
-                    // Card_335.cs:86 dst.RightMoveCardItems(1, CareSkip: true)
+                    // Card_335.cs dst.RightMoveCardItems(1, CareSkip: true)
                     // （BattleCharacter.cs:8268-8290）：把对方卡组末尾的牌移到
                     // 队首；末尾牌已跳过时该次移动不计入 R，继续移动新末尾牌
                     // （本轮已用/消耗的牌在快照里 skip=true）。
@@ -1312,17 +1309,11 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 Some(false)
             }
             260 => {
-                // 幻•暗鸦灵剑（Card_260.cs）：攻击 → 灵气>0 时防御 +=
-                // 灵气×otherParams[0]，rarity=2（如 20260）不设上限，否则钳制
-                // otherParams[2]。再行动的灵剑计数条件见 actionAgain 侧静态口径。
+                // Card_260.cs (26939223)：攻击后每点灵气加 otherParams[0] 防御。
                 let attacked = self.attack_by_config(actor_side, card, 0, slot);
                 let anima = self.actor(actor_side).core.anima;
                 if anima > 0 {
-                    let mut defense = param0(card) * anima;
-                    if original_config_rarity(card.id) != 2 {
-                        defense = defense.min(param2(card));
-                    }
-                    self.gain_defense(actor_side, defense);
+                    self.gain_defense(actor_side, param0(card) * anima);
                 }
                 Some(attacked)
             }

@@ -26,7 +26,7 @@
       "label": "卡牌主体 dispatch",
       "location": {
         "path": "src/replay/flow_card_effect.rs",
-        "line": 391,
+        "line": 392,
         "function": "apply_card_effect_body"
       }
     },
@@ -35,7 +35,7 @@
       "label": "配置印刷字段",
       "location": {
         "path": "src/replay/flow_card_effect.rs",
-        "line": 677,
+        "line": 678,
         "function": "apply_regular_printed_card_effects"
       }
     },
@@ -53,7 +53,7 @@
       "label": "牌后钩子",
       "location": {
         "path": "src/replay/flow_card_effect.rs",
-        "line": 716,
+        "line": 717,
         "function": "apply_regular_after_card_effect_hooks"
       }
     },
@@ -71,7 +71,7 @@
       "label": "完成态结算",
       "location": {
         "path": "src/replay/flow.rs",
-        "line": 1681,
+        "line": 1682,
         "function": "complete_card_effect_repetition"
       }
     }
@@ -313,7 +313,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -632,7 +632,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -1457,7 +1457,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         },
@@ -1727,7 +1727,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -1738,7 +1738,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -1793,7 +1793,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -1815,7 +1815,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -1826,7 +1826,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -1837,7 +1837,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -1848,7 +1848,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -1859,7 +1859,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -1892,7 +1892,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -2310,7 +2310,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -2321,7 +2321,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -2376,7 +2376,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -2420,7 +2420,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -2431,7 +2431,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -2442,7 +2442,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -2453,7 +2453,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -2464,7 +2464,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -2475,7 +2475,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -2486,7 +2486,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -2497,7 +2497,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -2574,7 +2574,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -2695,7 +2695,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -3696,7 +3696,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -3707,7 +3707,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -3751,7 +3751,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -3762,7 +3762,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -3784,7 +3784,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -3795,7 +3795,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -3806,7 +3806,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -3817,7 +3817,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -3850,7 +3850,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -3861,7 +3861,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -3872,7 +3872,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -3883,7 +3883,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -3894,7 +3894,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -5126,7 +5126,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -5137,7 +5137,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -5170,7 +5170,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -5192,7 +5192,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -5214,7 +5214,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -5225,7 +5225,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -5247,7 +5247,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -5258,7 +5258,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -5280,7 +5280,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -5291,7 +5291,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -5313,7 +5313,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -5335,7 +5335,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -6628,7 +6628,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -6639,7 +6639,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -6650,7 +6650,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -6661,7 +6661,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -6672,7 +6672,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -6683,7 +6683,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -6694,7 +6694,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -6705,7 +6705,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -6716,7 +6716,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -6727,7 +6727,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -6738,7 +6738,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -6760,7 +6760,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -6771,7 +6771,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -6793,7 +6793,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -6804,7 +6804,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -6826,7 +6826,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         },
@@ -8054,7 +8054,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -8076,7 +8076,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -8131,7 +8131,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -8142,7 +8142,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -8153,7 +8153,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -8175,7 +8175,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -8186,7 +8186,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -8197,7 +8197,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -8208,7 +8208,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -8219,7 +8219,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -8230,7 +8230,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -8252,7 +8252,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
@@ -8263,7 +8263,7 @@
       "routes": [
         {
           "path": "src/replay/cards_dream_mirage.rs",
-          "line": 309,
+          "line": 307,
           "function": "apply_synthetic_oracle_dream_mirage_card_effect",
           "kind": "typed"
         }
