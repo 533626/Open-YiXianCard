@@ -898,7 +898,7 @@ fn combat_resources_have_one_production_write_kernel_and_narrow_raw_set_calls() 
                 agility_set_callers.push(file_name.to_string());
             }
             if file_name != "resources.rs"
-                && line.contains("remove_star_power_from_original_card_4000065(")
+                && line.contains("remove_all_star_power_for_qi_xing_jie_ming(")
             {
                 star_remove_callers.push(file_name.to_string());
             }
@@ -920,8 +920,5 @@ fn combat_resources_have_one_production_write_kernel_and_narrow_raw_set_calls() 
         ]
     );
     assert_eq!(agility_set_callers, ["cards_missing.rs"]);
-    assert_eq!(
-        star_remove_callers,
-        ["cards_synthetic_oracle_verified_secret_misc.rs"]
-    );
+    assert_eq!(star_remove_callers, ["combat_core_outcome.rs"]);
 }

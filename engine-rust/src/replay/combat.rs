@@ -1144,33 +1144,33 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 || actor.turn.guaranteed_wound > 0
                 || actor.elements.long_ma_spirit > 0);
         let mut remaining = intent.amount.max(0);
-        let dream_mirage_reflected_incoming = if !intent.apply_wound_bonus
-            && remaining > 0
-            && self.dream_mirage_reflection_active(intent.target)
-        {
-            let incoming = remaining;
-            remaining = (remaining * 75 / 100).max(1);
-            incoming
-        } else {
-            0
-        };
-        if !intent.apply_wound_bonus && self.actor(intent.target).elements.metal_iron_bone > 0 {
-            remaining = (remaining - 5).max(1);
-        }
-        if !intent.apply_wound_bonus
-            && remaining > 0
-            && self.actor(intent.target).fate.dismantle_move > 0
-            && self.actor(intent.target).beng.quan_stance > 0
-        {
-            remaining = (remaining / 2).max(1);
-        }
-        if !intent.apply_wound_bonus
-            && remaining > 0
-            && self.actor(intent.actor_side).turn.own_turn_count == 3
-            && (self.is_xian_mo_switch_active(intent.actor_side, 1010)
-                || self.is_xian_mo_switch_active(intent.target, 1010))
-        {
-            remaining = (remaining * 60 / 100).max(1);
+        let mut dream_mirage_reflected_incoming = 0;
+        if !intent.apply_wound_bonus {
+            let target = self.actor(intent.target);
+            if target.elements.metal_iron_bone > 0 {
+                remaining = (remaining - 5).max(1);
+            }
+            if remaining > 0 {
+                // BattleCharacter.ApplyDamage (26965567): add the percentage
+                // reductions for Damage/ReflectDamage, then truncate and clamp once.
+                let mut reduction = 0;
+                if target.fate.dismantle_move > 0 && target.beng.quan_stance > 0 {
+                    reduction += 50;
+                }
+                if self.actor(intent.actor_side).turn.own_turn_count == 3
+                    && (self.is_xian_mo_switch_active(intent.actor_side, 1010)
+                        || self.is_xian_mo_switch_active(intent.target, 1010))
+                {
+                    reduction += 40;
+                }
+                if self.dream_mirage_reflection_active(intent.target) {
+                    reduction += 25;
+                    dream_mirage_reflected_incoming = remaining;
+                }
+                if reduction > 0 {
+                    remaining = (remaining * (100 - reduction) / 100).max(1);
+                }
+            }
         }
         let mut defense_absorbed = 0;
         if !intent.ignore_defense {

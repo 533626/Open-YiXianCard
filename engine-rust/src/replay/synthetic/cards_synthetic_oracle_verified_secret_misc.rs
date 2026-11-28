@@ -43,9 +43,10 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
                 Some(false)
             }
             4_000_065 => {
-                // 流星天陨先清空全部星力，再按原星力逐次造成伤害。
+                // Card_4000065.cs:86-97 (26965567): capture the old count,
+                // then spend via ModifyBuffValue before the damage loop.
                 let star_power = self.actor(actor_side).astrology.star_power.max(0);
-                self.remove_star_power_from_original_card_4000065(actor_side);
+                self.modify_star_power(actor_side, -star_power);
                 for _ in 0..star_power {
                     self.apply_damage(actor_side, param0(card), false, false, false);
                 }

@@ -726,15 +726,6 @@ impl<const OBSERVE: bool> ReplayState<OBSERVE> {
         self.commit_combat_resource_value(actor_side, CombatResource::Agility, value)
     }
 
-    /// Card_4000065.cs:84-91 calls RemoveBuff(XingLi), deliberately bypassing
-    /// ModifyBuffValue's Star Power loss conversion.
-    pub(super) fn remove_star_power_from_original_card_4000065(
-        &mut self,
-        actor_side: PlayerSide,
-    ) -> i64 {
-        self.commit_combat_resource_value(actor_side, CombatResource::StarPower, 0)
-    }
-
     /// 七星借命 FateStrategy 436 的清空星力（BattleExecuter.
     /// CharacterResurrectionCheckAsync 的 RemoveBuff(XingLi)）：同为原始
     /// 移除，绕过 ModifyBuffValue 的星力流失转换钩子（如 422 紫芒星爆）。

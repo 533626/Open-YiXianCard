@@ -110,6 +110,21 @@ fn meteor_heaven_fall_spends_all_star_power_before_repeating_damage() {
 }
 
 #[test]
+fn meteor_heaven_fall_converts_spent_star_power_with_zi_mang_xing_bao() {
+    let mut state = ReplayState::test_from_fixture(&fixture(original_card(4_000_065)));
+    state.p1.astrology.star_power = 5;
+    state.p1.astrology.zi_mang_xing_bao = 1;
+    state.p1.core.attack_bonus = 1;
+
+    state.test_execute_one_card(PlayerSide::P1);
+
+    assert_eq!(state.p1.astrology.star_power, 0);
+    assert_eq!(state.p1.astrology.zi_mang_xing_bao, 1);
+    assert_eq!(state.p1.core.attack_bonus, 6);
+    assert_eq!(state.p2.core.hp, 10); // Five 8-damage hits, not attacks.
+}
+
+#[test]
 fn thunder_mindset_applies_percent_only_to_thunder_card_body_attacks() {
     let mut state = ReplayState::test_from_fixture(&fixture(original_card(4_000_064)));
     state.test_execute_one_card(PlayerSide::P1);

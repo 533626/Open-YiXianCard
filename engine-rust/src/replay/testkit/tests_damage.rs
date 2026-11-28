@@ -157,6 +157,50 @@ fn dismantle_fist_stance_reduces_non_attack_damage_after_iron_bone() {
 }
 
 #[test]
+fn dismantle_fist_stance_and_xian_mo_1010_add_non_attack_reductions() {
+    let mut battle = fixture();
+    battle.players.p1.xian_mo_strategies.push(1010);
+
+    for reflect in [false, true] {
+        let mut state = ReplayState::test_from_fixture(&battle);
+        state.p1.turn.own_turn_count = 3;
+        state.p2.fate.dismantle_move = 1;
+        state.p2.beng.quan_stance = 1;
+        state.p2.core.defense = 7;
+
+        // Frozen Oracle pa_827935dd, turn 5:
+        // 11 Damage with 50% + 40% reduction spends 1 defense, not 3.
+        // ApplyDamage uses that same percentage branch for ReflectDamage.
+        if reflect {
+            state.apply_reflect_damage(PlayerSide::P1, 11);
+        } else {
+            state.apply_damage(PlayerSide::P1, 11, false, false, false);
+        }
+        assert_eq!(state.p2.core.defense, 6);
+        assert_eq!(state.p2.core.hp, 50);
+    }
+}
+
+#[test]
+fn non_attack_dream_reflection_uses_damage_after_flat_but_before_percent_reduction() {
+    let mut state = ReplayState::test_from_fixture(&fixture());
+    state.p2.elements.metal_iron_bone = 1;
+    state.p2.fate.dismantle_move = 1;
+    state.p2.beng.quan_stance = 1;
+    state.modify_dream_mirage_value(
+        PlayerSide::P2,
+        super::cards_dream_mirage::DreamMirageValue::DreamReflection,
+        1,
+    );
+
+    // 17 - 5 = 12. The target takes floor(12 * 25%) after the two
+    // reductions; the source loses ceil(12 * 25%) to dream reflection.
+    state.apply_damage(PlayerSide::P1, 17, false, false, false);
+    assert_eq!(state.p2.core.hp, 47);
+    assert_eq!(state.p1.core.hp, 47);
+}
+
+#[test]
 fn attack_damage_does_not_apply_iron_bone_twice() {
     let mut state = ReplayState::test_from_fixture(&fixture());
     state.p2.elements.metal_iron_bone = 1;
